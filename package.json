@@ -1,0 +1,31 @@
+{
+  "name": "trekie",
+  "version": "0.0.1",
+  "description": "the gamified digital life companion.",
+  "scripts": {
+    "buildbackend": "cd ./backend && npm run build",
+    "buildfrontend": "cd ./frontend && npm run build",
+    "build": "npm-run-all --parallel buildbackend buildfrontend",
+    "backenddev": "cd ./backend && npm run dev",
+    "frontenddev": "cd ./frontend && npm run dev",
+    "dev": "npm-run-all --parallel backenddev frontenddev",
+    "start": "node ./backend/public/index.js",
+    "installdepsfrontend": "cd ./frontend && npm i",
+    "installdepsbackend": "cd ./backend && npm i",
+    "installdeps": "npm-run-all --parallel installdepsfrontend installdepsbackend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dorkodu/trekie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dorkodu/trekie/issues"
+  },
+  "homepage": "https://github.com/dorkodu/trekie#readme",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
