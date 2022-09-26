@@ -1,47 +1,19 @@
 {
   "name": "trekie",
-  "private": true,
-  "description": "the social & gamified personal growth companion.",
   "version": "0.0.1",
-  "author": "dorkodu",
-  "homepage": "https://trekie.dorkodu.com",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dorkodu/trekie.git"
-  },
-  "keywords": [
-    "trekie",
-    "gamification",
-    "personal growth",
-    "life companion"
-  ],
-  "bugs": {
-    "url": "https://github.com/dorkodu/trekie/issues"
-  },
-  "workspaces": [
-    "api",
-    "web",
-    "www"
-  ],
   "scripts": {
-    "build:api": "cd ./api && yarn build",
-    "build:web": "cd ./web && yarn build",
-    "build": "npm-run-all --parallel build:api build:web",
-    "dev:api": "cd ./api && yarn dev",
-    "dev:web": "cd ./web && yarn dev",
-    "dev": "npm-run-all --parallel dev:api dev:web",
-    "start": "node ./api/dist/index.js",
-    "warm:web": "cd ./web && yarn install",
-    "warm:api": "cd ./api && yarn install",
-    "warm": "npm-run-all --parallel warm:web warm:api"
+    "build:api": "cd ./api && pnpm build",
+    "build:web": "cd ./web && pnpm build",
+    "build": "run-p build:*",
+    "dev:api": "cd ./api && pnpm dev",
+    "dev:web": "cd ./web && pnpm dev",
+    "dev": "run-p dev:*",
+    "warm:api": "cd ./api && pnpm i",
+    "warm:web": "cd ./web && pnpm i",
+    "warm": "pnpm i && run-p warm:*",
+    "start": "node ./api/dist/index.js"
   },
-  "devDependencies": {
-    "@types/node": "^18.7.14",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.8.2"
-  },
-  "packageManager": "yarn@3.2.3"
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
 }

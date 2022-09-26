@@ -1,2 +1,2 @@
 # trekie
- the gamified digital life companion.
+the gamified digital life companion.

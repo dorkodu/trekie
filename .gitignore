@@ -93,6 +93,7 @@ out
 .nitro
 .output
 dist
+dev-dist
 
 # Gatsby files
 .cache/
