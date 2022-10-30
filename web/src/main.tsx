@@ -1,12 +1,10 @@
+import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ThemeProvider } from 'styled-components'
-
-import "./i18n";
-import Router from './routes/_Router'
-import { theme } from './styles/theme'
+import App from './App'
+import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <ThemeProvider theme={theme}>
-    <Router />
-  </ThemeProvider>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 )

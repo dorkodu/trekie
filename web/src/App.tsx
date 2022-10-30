@@ -1,39 +1,34 @@
-import { Outlet } from 'react-router-dom';
-import { createGlobalStyle } from 'styled-components'
-import { Normalize } from 'styled-normalize'
-
-import { registerSW } from 'virtual:pwa-register'
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    overflow-y: scroll;
-
-    font-size: 16px;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-
-    // Disable highlight on mobile's when clicking
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-`
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import './App.css'
 
 function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <>
-      <Normalize />
-      <GlobalStyle />
-      <Outlet />
-    </>
+    <div className="App">
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src="/vite.svg" className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://reactjs.org" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </div>
   )
 }
 
-export default App;
-
-const updateSW = registerSW({
-  onNeedRefresh() { /* show some sh*t */ },
-  onOfflineReady() { /* show some sh*t */ },
-})
+export default App

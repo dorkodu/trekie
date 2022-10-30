@@ -24,10 +24,6 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    
-    "types": [
-      "vite-plugin-pwa/client"
-    ],
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
