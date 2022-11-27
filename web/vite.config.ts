@@ -12,7 +12,7 @@ export default defineConfig({
     port: 8002,
     strictPort: true,
     proxy: {
-      "/api": "http://oath_api:8003"
+      "/api": "http://trekie_api:8003"
     }
   }
 })
