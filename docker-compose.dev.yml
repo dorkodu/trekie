@@ -30,7 +30,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=oath
+      - POSTGRES_DB=trekie
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always

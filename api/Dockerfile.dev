@@ -1,11 +1,16 @@
 FROM node:16-alpine
-WORKDIR /api
+WORKDIR /trekie
+
+RUN mkdir -p /trekie/api
+RUN mkdir -p /trekie/shared
 
 RUN npm install -g pnpm
 
-COPY pnpm-lock.yaml .
-RUN pnpm fetch
-COPY . .
-RUN pnpm install --offline
+COPY ./api/pnpm-lock.yaml /trekie/api
+RUN cd api && pnpm fetch
+COPY ./api /trekie/api
+COPY ./shared /trekie/shared
+RUN cd api && pnpm install --offline
 
+WORKDIR /trekie/api
 CMD [ "pnpm", "run", "dev" ]
