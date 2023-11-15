@@ -1,5 +1,5 @@
 import Emoji from "@/components/Emoji"
-import { ActionIcon, Avatar, Button, Card, Flex, Image, Paper, SimpleGrid, Text, Title } from "@mantine/core"
+import { ActionIcon, Avatar, Badge, Button, Card, Flex, Image, Paper, SimpleGrid, Text, Title } from "@mantine/core"
 import { IconChevronRight, IconDots, IconFlame, IconMinus, IconPlus, IconRocket, IconStar, IconStarFilled } from "@tabler/icons-react"
 
 function Home() {
@@ -119,6 +119,56 @@ function Home() {
           </Card>
 
         </Flex>
+
+      </Flex>
+
+      <Flex direction="column" gap="xs">
+
+        <Flex align="center">
+          <Title order={4}>Dreams</Title>
+          <IconChevronRight />
+        </Flex>
+
+        <Paper withBorder p="md">
+          <Flex gap="md">
+
+            <Emoji emoji="👨‍💻" size={32} />
+
+            <Flex direction="column">
+              <Title order={5}>Become the best Programmer</Title>
+              <Text>No one can stop me afterwards.</Text>
+              <Flex mt="xs" gap="xs">
+                <Badge>10/20 Tasks</Badge>
+              </Flex>
+            </Flex>
+
+          </Flex>
+        </Paper>
+
+      </Flex>
+
+      <Flex direction="column" gap="xs">
+
+        <Flex align="center">
+          <Title order={4}>Fun</Title>
+          <IconChevronRight />
+        </Flex>
+
+        <Paper withBorder p="md">
+          <Flex gap="md">
+
+            <Emoji emoji="🫙" size={32} />
+
+            <Flex direction="column">
+              <Title order={5}>The life jar</Title>
+              <Text>See a random memory of yours.</Text>
+              <Flex mt="xs">
+                <Button>Let's see</Button>
+              </Flex>
+            </Flex>
+
+          </Flex>
+        </Paper>
 
       </Flex>
 
