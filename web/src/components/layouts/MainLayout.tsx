@@ -1,9 +1,13 @@
+import { useAppStore } from "@/stores/appStore";
 import { ActionIcon, Divider, Flex, Image, Paper, Title, useMantineTheme } from "@mantine/core";
 import { IconArrowLeft, IconBuildingStore, IconChecklist, IconHome, IconMenu2, IconSearch, IconUsers } from "@tabler/icons-react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function MainLayout() {
   const theme = useMantineTheme();
+  const navigate = useNavigate();
+
+  const route = useAppStore(state => state.route);
 
   return (
     <>
@@ -11,7 +15,10 @@ function MainLayout() {
         <Paper>
           <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
 
-            <ActionIcon variant="subtle" size={32}>
+            <ActionIcon
+              variant="subtle" size={32} onClick={() => navigate(-1)}
+              style={{ visibility: route === "home" ? "hidden" : "visible" }}
+            >
               <IconArrowLeft />
             </ActionIcon>
 
@@ -37,11 +44,21 @@ function MainLayout() {
         <Paper>
           <Divider w="100%" />
           <Flex align="center" justify="center" gap="xs" h={64}>
-            <ActionIcon variant="subtle" size={32}><IconHome /></ActionIcon>
-            <ActionIcon variant="subtle" size={32}><IconSearch /></ActionIcon>
-            <ActionIcon variant="subtle" size={32}><IconChecklist /></ActionIcon>
-            <ActionIcon variant="subtle" size={32}><IconUsers /></ActionIcon>
-            <ActionIcon variant="subtle" size={32}><IconBuildingStore /></ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/home")}>
+              <IconHome />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/explore")}>
+              <IconSearch />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/track")}>
+              <IconChecklist />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/community")}>
+              <IconUsers />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/marketplace")}>
+              <IconBuildingStore />
+            </ActionIcon>
           </Flex>
         </Paper>
       </Flex>
