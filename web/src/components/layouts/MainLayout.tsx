@@ -1,13 +1,18 @@
 import { useAppStore } from "@/stores/appStore";
-import { ActionIcon, Divider, Flex, Image, Paper, Title, useMantineTheme } from "@mantine/core";
-import { IconArrowLeft, IconBuildingStore, IconChecklist, IconHome, IconMenu2, IconSearch, IconUsers } from "@tabler/icons-react";
+import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, useMantineTheme } from "@mantine/core";
+import { IconArrowLeft, IconBuildingStore, IconChecklist, IconChevronRight, IconHome, IconMenu2, IconSearch, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useDisclosure } from '@mantine/hooks';
+import Emoji from "../Emoji";
+import ColorToggle from "../ColorToggle";
 
 function MainLayout() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
 
   const route = useAppStore(state => state.route);
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
@@ -27,7 +32,7 @@ function MainLayout() {
               <Title order={3}>Trekie</Title>
             </Flex>
 
-            <ActionIcon variant="subtle" size={32}>
+            <ActionIcon variant="subtle" size={32} onClick={() => open()}>
               <IconMenu2 />
             </ActionIcon>
 
@@ -62,6 +67,52 @@ function MainLayout() {
           </Flex>
         </Paper>
       </Flex>
+
+      <Drawer
+        opened={opened} onClose={close}
+        lockScroll={false} position="right"
+        title="Trekie - The gamified digital life companion"
+      >
+        <Flex direction="column" gap="md">
+
+          <Button variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}>
+            <Flex align="center" gap="xs" w="100%">
+              <Avatar src="/favicon.svg" size={32} />
+              <Flex direction="column" align="start" style={{ flex: 1 }}>
+                <Title order={5}>John Doe</Title>
+                <Text>@johndoe</Text>
+              </Flex>
+              <IconChevronRight />
+            </Flex>
+          </Button>
+
+          <Button>
+            <Emoji emoji="🤩" size={24} />
+            &nbsp;
+            <Title order={5}>Join Trekie, Today, for Free</Title>
+          </Button>
+
+          <Flex direction="column" align="center">
+            <Flex gap="xs">
+              <Anchor href="/privacy-policy">
+                Privacy Policy
+              </Anchor>
+              <Anchor href="/terms-of-service">
+                Terms of Service
+              </Anchor>
+            </Flex>
+
+            <Anchor href="https://dorkodu.com">
+              © {new Date().getFullYear()}, Dorkodu
+            </Anchor>
+          </Flex>
+
+          <Flex justify="center">
+            <ColorToggle />
+          </Flex>
+
+        </Flex>
+      </Drawer>
     </>
   )
 }
