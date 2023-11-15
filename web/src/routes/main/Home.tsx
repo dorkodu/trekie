@@ -1,3 +1,4 @@
+import Emoji from "@/components/Emoji"
 import { ActionIcon, Avatar, Button, Card, Flex, Image, Paper, SimpleGrid, Text, Title } from "@mantine/core"
 import { IconChevronRight, IconDots, IconFlame, IconMinus, IconPlus, IconRocket, IconStar, IconStarFilled } from "@tabler/icons-react"
 
@@ -7,7 +8,7 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Title order={4}>Welcome John!</Title>
+        <Title order={4}>Welcome John! <Emoji emoji="👋" /></Title>
 
         <SimpleGrid cols={2} spacing="md">
 
