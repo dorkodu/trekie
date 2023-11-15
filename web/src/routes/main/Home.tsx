@@ -13,8 +13,7 @@ function Home() {
 
           <Flex direction="column" align="start" gap="xs">
             <Text>
-              Hello, world! Welcome to Trekie.
-              <Text fw="bold">The gamified digital life companion.</Text>
+              Hello, world! Welcome to Trekie. <b>The gamified digital life companion.</b>
             </Text>
 
             <Button variant="filled">Primary action</Button>
