@@ -1,5 +1,6 @@
-import { ActionIcon, Avatar, Button, Card, Flex, Text, Title } from "@mantine/core"
-import { IconDiscountCheckFilled, IconDots } from "@tabler/icons-react"
+import ProfileMenu from "@/components/menus/ProfileMenu"
+import { Avatar, Button, Card, Flex, Text, Title } from "@mantine/core"
+import { IconDiscountCheckFilled } from "@tabler/icons-react"
 
 function Profile() {
   return (
@@ -27,10 +28,7 @@ function Profile() {
             />
 
             <Flex align="center" gap="xs">
-              <ActionIcon radius="xl" size={32}>
-                <IconDots />
-              </ActionIcon>
-
+              <ProfileMenu />
               <Button radius="xl">Follow</Button>
             </Flex>
 
