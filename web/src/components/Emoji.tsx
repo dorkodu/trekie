@@ -2,7 +2,12 @@ import { useMemo } from "react";
 import twemoji from "twemoji";
 import classes from "./Emoji.module.css";
 
-function Emoji({ emoji, ...props }: React.ComponentPropsWithoutRef<"img"> & { emoji: string }) {
+interface Props {
+  emoji: string;
+  size?: number;
+}
+
+function Emoji({ emoji, size, ...props }: React.ComponentPropsWithoutRef<"img"> & Props) {
   const src = useMemo(() => {
     const element = document.createElement("div");
     element.innerHTML = twemoji.parse(
@@ -18,6 +23,7 @@ function Emoji({ emoji, ...props }: React.ComponentPropsWithoutRef<"img"> & { em
       className={classes.emoji}
       alt={emoji}
       draggable={false}
+      style={{ width: size, height: size }}
       {...props}
     />
   )
