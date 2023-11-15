@@ -1,5 +1,5 @@
-import { ActionIcon, Avatar, Badge, Button, Card, Flex, Text, Title } from "@mantine/core"
-import { IconCalendar, IconDiscountCheckFilled, IconDots } from "@tabler/icons-react"
+import { ActionIcon, Avatar, Button, Card, Flex, Text, Title } from "@mantine/core"
+import { IconDiscountCheckFilled, IconDots } from "@tabler/icons-react"
 
 function Profile() {
   return (

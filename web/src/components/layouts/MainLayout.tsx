@@ -10,9 +10,18 @@ function MainLayout() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
 
+  const [opened, { open, close }] = useDisclosure(false);
+
   const route = useAppStore(state => state.route);
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const closeNavigate = (route: string) => {
+    close();
+    navigate(route);
+  }
+  const preventNavigate = (ev: React.MouseEvent, route: string) => {
+    ev.preventDefault();
+    navigate(route);
+  }
 
   return (
     <>
@@ -77,7 +86,7 @@ function MainLayout() {
 
           <Button
             variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}
-            onClick={() => navigate("/profile")}
+            onClick={() => closeNavigate("/profile")}
           >
             <Flex align="center" gap="xs" w="100%">
               <Avatar src="/favicon.svg" size={32} />
@@ -95,19 +104,19 @@ function MainLayout() {
             <Title order={5}>Join Trekie, Today, for Free</Title>
           </Button>
 
-          <Button variant="subtle" onClick={() => navigate("/premium")}>
+          <Button variant="subtle" onClick={() => closeNavigate("/premium")}>
             <IconCashBanknote />
             &nbsp;
             <Title order={5}>Premium</Title>
           </Button>
 
-          <Button variant="subtle" onClick={() => navigate("/archive")}>
+          <Button variant="subtle" onClick={() => closeNavigate("/archive")}>
             <IconArchive />
             &nbsp;
             <Title order={5}>Archive</Title>
           </Button>
 
-          <Button variant="subtle" onClick={() => navigate("/settings")}>
+          <Button variant="subtle" onClick={() => closeNavigate("/settings")}>
             <IconSettings />
             &nbsp;
             <Title order={5}>Settings</Title>
@@ -123,19 +132,19 @@ function MainLayout() {
             <Flex gap="xs">
               <Anchor
                 href="/privacy-policy"
-                onClick={(ev) => { ev.preventDefault(); navigate("/privacy-policy") }}
+                onClick={(ev) => preventNavigate(ev, "/privacy-policy")}
               >
                 Privacy Policy
               </Anchor>
               <Anchor
                 href="/terms-of-service"
-                onClick={(ev) => { ev.preventDefault(); navigate("/terms-of-service") }}
+                onClick={(ev) => preventNavigate(ev, "/terms-of-service")}
               >
                 Terms of Service
               </Anchor>
               <Anchor
                 href="/about"
-                onClick={(ev) => { ev.preventDefault(); navigate("/about") }}
+                onClick={(ev) => preventNavigate(ev, "/about")}
               >
                 About
               </Anchor>
