@@ -1,32 +1,47 @@
-import { Button, Flex, Image, Title, em } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { ActionIcon, Divider, Flex, Image, Title, useMantineTheme } from "@mantine/core";
+import { IconArrowLeft, IconBuildingStore, IconChecklist, IconHome, IconMenu2, IconSearch, IconUsers } from "@tabler/icons-react";
 import { Outlet } from "react-router-dom";
 
 function MainLayout() {
-  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
-  console.log(isMobile);
+  const theme = useMantineTheme();
 
   return (
-    <Flex direction="column" gap="md" p="md">
+    <>
+      <Flex direction="column" pos="absolute" top={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
+        <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
 
-      <Flex align="center" justify="space-between">
-        <Flex align="center" gap="md">
-          <Image src="/favicon.svg" w={40} h={40} />
-          <Title order={4}>Trekie</Title>
+          <ActionIcon variant="subtle" size={32}>
+            <IconArrowLeft />
+          </ActionIcon>
+
+          <Flex align="center" gap="xs">
+            <Image src="/favicon.svg" width={32} height={32} />
+            <Title order={3}>Trekie</Title>
+          </Flex>
+
+          <ActionIcon variant="subtle" size={32}>
+            <IconMenu2 />
+          </ActionIcon>
+
         </Flex>
-
-        <Button.Group>
-          <Button variant="default">Services</Button>
-          <Button variant="default">About</Button>
-          <Button variant="default">FAQ</Button>
-        </Button.Group>
-
-        <Button>Contact Us</Button>
+        <Divider w="100%" />
       </Flex>
 
-      <Outlet />
+      <Flex direction="column" py={64} pos="absolute" left={0} right={0} maw={theme.breakpoints.xs} mx="auto">
+        <Outlet />
+      </Flex>
 
-    </Flex>
+      <Flex direction="column" pos="absolute" bottom={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
+        <Divider w="100%" />
+        <Flex align="center" justify="center" gap="xs" h={64}>
+          <ActionIcon variant="subtle" size={32}><IconHome /></ActionIcon>
+          <ActionIcon variant="subtle" size={32}><IconSearch /></ActionIcon>
+          <ActionIcon variant="subtle" size={32}><IconChecklist /></ActionIcon>
+          <ActionIcon variant="subtle" size={32}><IconUsers /></ActionIcon>
+          <ActionIcon variant="subtle" size={32}><IconBuildingStore /></ActionIcon>
+        </Flex>
+      </Flex>
+    </>
   )
 }
 
