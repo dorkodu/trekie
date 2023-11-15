@@ -7,7 +7,7 @@ export default function CenterLoader() {
 
   return (
     <Flex align="center" justify="center" pos="fixed" top={0} bottom={0} left={0} right={0}>
-      <Loader variant="dots" />
+      <Loader type="dots" />
     </Flex>
   )
 }
