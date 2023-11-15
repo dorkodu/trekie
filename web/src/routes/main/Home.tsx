@@ -1,5 +1,5 @@
-import { Button, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
-import { IconFlame, IconMinus, IconPlus, IconRocket, IconStarFilled } from "@tabler/icons-react"
+import { ActionIcon, Avatar, Button, Card, Flex, Image, Paper, SimpleGrid, Text, Title } from "@mantine/core"
+import { IconChevronRight, IconDots, IconFlame, IconMinus, IconPlus, IconRocket, IconStar, IconStarFilled } from "@tabler/icons-react"
 
 function Home() {
   return (
@@ -52,7 +52,10 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Title order={4}>Habits</Title>
+        <Flex align="center">
+          <Title order={4}>Habits</Title>
+          <IconChevronRight />
+        </Flex>
 
         <Button.Group h={64}>
           <Button h="auto">
@@ -71,9 +74,51 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Title order={4}>Memories</Title>
+        <Flex align="center">
+          <Title order={4}>Memories</Title>
+          <IconChevronRight />
+        </Flex>
 
-        <Text>Can't remember right now. Please try again later...</Text>
+        <Flex direction="row">
+
+          <Card withBorder w={200}>
+
+            <Card.Section>
+              <Image
+                src="https://i.pinimg.com/564x/80/12/d1/8012d171d4d5bcfea05ef04af626b3a3.jpg"
+                alt="Image of a memory"
+                w={200}
+                h={150}
+              />
+            </Card.Section>
+
+            <Flex direction="column" gap="xs" mt="md">
+
+              <Text lineClamp={3}>
+                Me and my friends rewriting Minecraft in C++ because Java is trash.
+              </Text>
+
+              <Flex gap="xs">
+                <Avatar src="/favicon.svg" size={32} />
+                <Flex direction="column">
+                  <Text>John Doe</Text>
+                  <Text size="sm">3 days ago</Text>
+                </Flex>
+              </Flex>
+
+              <Flex justify="space-between" gap="xs">
+                <Flex align="center" gap="xs">
+                  <ActionIcon variant="subtle"><IconStar /></ActionIcon>
+                  <Text>123</Text>
+                </Flex>
+                <ActionIcon variant="subtle"><IconDots /></ActionIcon>
+              </Flex>
+
+            </Flex>
+
+          </Card>
+
+        </Flex>
 
       </Flex>
 
