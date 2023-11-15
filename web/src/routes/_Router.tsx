@@ -11,7 +11,17 @@ const Track = React.lazy(util.wait(() => import("./main/Track")));
 const Community = React.lazy(util.wait(() => import("./main/Community")));
 const Marketplace = React.lazy(util.wait(() => import("./main/Marketplace")));
 
+const Profile = React.lazy(util.wait(() => import("./main/Profile")));
+const Premium = React.lazy(util.wait(() => import("./main/Premium")));
+const Archive = React.lazy(util.wait(() => import("./main/Archive")));
+const Settings = React.lazy(util.wait(() => import("./main/Settings")));
+
+const PrivacyPolicy = React.lazy(util.wait(() => import("./other/PrivacyPolicy")));
+const TermsOfService = React.lazy(util.wait(() => import("./other/TermsOfService")));
+const About = React.lazy(util.wait(() => import("./other/About")));
+
 const Dashboard = React.lazy(util.wait(() => import("./dashboard/Dashboard")));
+
 const NotFound = React.lazy(util.wait(() => import("./NotFound")));
 // Lazy routes \\
 
@@ -40,11 +50,20 @@ export const router = createBrowserRouter(
         <Route path="/track" element={Page(Track)} />
         <Route path="/community" element={Page(Community)} />
         <Route path="/marketplace" element={Page(Marketplace)} />
+
+        <Route path="/profile" element={Page(Profile)} />
+        <Route path="/premium" element={Page(Premium)} />
+        <Route path="/archive" element={Page(Archive)} />
+        <Route path="/settings" element={Page(Settings)} />
       </Route>
 
       <Route element={Page(DashboardLayout)}>
         <Route path="/dashboard" element={Page(Dashboard)} />
       </Route>
+
+      <Route path="/privacy-policy" element={Page(PrivacyPolicy)} />
+      <Route path="/terms-of-service" element={Page(TermsOfService)} />
+      <Route path="/about" element={Page(About)} />
 
       {/* Error routes & catch all */}
       <Route path="/404" element={Page(NotFound)} />

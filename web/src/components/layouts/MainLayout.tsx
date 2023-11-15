@@ -75,7 +75,10 @@ function MainLayout() {
       >
         <Flex direction="column" gap="md">
 
-          <Button variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}>
+          <Button
+            variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}
+            onClick={() => navigate("/profile")}
+          >
             <Flex align="center" gap="xs" w="100%">
               <Avatar src="/favicon.svg" size={32} />
               <Flex direction="column" align="start" style={{ flex: 1 }}>
@@ -92,19 +95,19 @@ function MainLayout() {
             <Title order={5}>Join Trekie, Today, for Free</Title>
           </Button>
 
-          <Button variant="subtle">
+          <Button variant="subtle" onClick={() => navigate("/premium")}>
             <IconCashBanknote />
             &nbsp;
             <Title order={5}>Premium</Title>
           </Button>
 
-          <Button variant="subtle">
+          <Button variant="subtle" onClick={() => navigate("/archive")}>
             <IconArchive />
             &nbsp;
             <Title order={5}>Archive</Title>
           </Button>
 
-          <Button variant="subtle">
+          <Button variant="subtle" onClick={() => navigate("/settings")}>
             <IconSettings />
             &nbsp;
             <Title order={5}>Settings</Title>
@@ -118,28 +121,37 @@ function MainLayout() {
 
           <Flex direction="column" align="center">
             <Flex gap="xs">
-              <Anchor href="/privacy-policy">
+              <Anchor
+                href="/privacy-policy"
+                onClick={(ev) => { ev.preventDefault(); navigate("/privacy-policy") }}
+              >
                 Privacy Policy
               </Anchor>
-              <Anchor href="/terms-of-service">
+              <Anchor
+                href="/terms-of-service"
+                onClick={(ev) => { ev.preventDefault(); navigate("/terms-of-service") }}
+              >
                 Terms of Service
               </Anchor>
-              <Anchor href="/about">
+              <Anchor
+                href="/about"
+                onClick={(ev) => { ev.preventDefault(); navigate("/about") }}
+              >
                 About
               </Anchor>
             </Flex>
 
-            <Anchor href="https://dorkodu.com">
+            <Anchor href="https://dorkodu.com" target="_blank">
               Dorkodu © {new Date().getFullYear()}
             </Anchor>
-          </Flex>
+          </Flex >
 
           <Flex justify="center">
             <ColorToggle />
           </Flex>
 
-        </Flex>
-      </Drawer>
+        </Flex >
+      </Drawer >
     </>
   )
 }
