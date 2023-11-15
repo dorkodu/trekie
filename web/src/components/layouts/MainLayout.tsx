@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Flex, Image, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Divider, Flex, Image, Paper, Title, useMantineTheme } from "@mantine/core";
 import { IconArrowLeft, IconBuildingStore, IconChecklist, IconHome, IconMenu2, IconSearch, IconUsers } from "@tabler/icons-react";
 import { Outlet } from "react-router-dom";
 
@@ -7,39 +7,43 @@ function MainLayout() {
 
   return (
     <>
-      <Flex direction="column" pos="absolute" top={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
-        <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
+      <Flex direction="column" pos="fixed" top={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
+        <Paper>
+          <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
 
-          <ActionIcon variant="subtle" size={32}>
-            <IconArrowLeft />
-          </ActionIcon>
+            <ActionIcon variant="subtle" size={32}>
+              <IconArrowLeft />
+            </ActionIcon>
 
-          <Flex align="center" gap="xs">
-            <Image src="/favicon.svg" width={32} height={32} />
-            <Title order={3}>Trekie</Title>
+            <Flex align="center" gap="xs">
+              <Image src="/favicon.svg" width={32} height={32} />
+              <Title order={3}>Trekie</Title>
+            </Flex>
+
+            <ActionIcon variant="subtle" size={32}>
+              <IconMenu2 />
+            </ActionIcon>
+
           </Flex>
-
-          <ActionIcon variant="subtle" size={32}>
-            <IconMenu2 />
-          </ActionIcon>
-
-        </Flex>
-        <Divider w="100%" />
+          <Divider w="100%" />
+        </Paper>
       </Flex>
 
-      <Flex direction="column" py={64} pos="absolute" left={0} right={0} maw={theme.breakpoints.xs} mx="auto">
+      <Flex direction="column" py={64} left={0} right={0} maw={theme.breakpoints.xs} mx="auto">
         <Outlet />
       </Flex>
 
-      <Flex direction="column" pos="absolute" bottom={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
-        <Divider w="100%" />
-        <Flex align="center" justify="center" gap="xs" h={64}>
-          <ActionIcon variant="subtle" size={32}><IconHome /></ActionIcon>
-          <ActionIcon variant="subtle" size={32}><IconSearch /></ActionIcon>
-          <ActionIcon variant="subtle" size={32}><IconChecklist /></ActionIcon>
-          <ActionIcon variant="subtle" size={32}><IconUsers /></ActionIcon>
-          <ActionIcon variant="subtle" size={32}><IconBuildingStore /></ActionIcon>
-        </Flex>
+      <Flex direction="column" pos="fixed" bottom={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
+        <Paper>
+          <Divider w="100%" />
+          <Flex align="center" justify="center" gap="xs" h={64}>
+            <ActionIcon variant="subtle" size={32}><IconHome /></ActionIcon>
+            <ActionIcon variant="subtle" size={32}><IconSearch /></ActionIcon>
+            <ActionIcon variant="subtle" size={32}><IconChecklist /></ActionIcon>
+            <ActionIcon variant="subtle" size={32}><IconUsers /></ActionIcon>
+            <ActionIcon variant="subtle" size={32}><IconBuildingStore /></ActionIcon>
+          </Flex>
+        </Paper>
       </Flex>
     </>
   )
