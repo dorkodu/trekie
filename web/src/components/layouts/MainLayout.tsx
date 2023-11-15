@@ -1,6 +1,6 @@
 import { useAppStore } from "@/stores/appStore";
 import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, useMantineTheme } from "@mantine/core";
-import { IconArrowLeft, IconBuildingStore, IconChecklist, IconChevronRight, IconHome, IconMenu2, IconSearch, IconUsers } from "@tabler/icons-react";
+import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
 import Emoji from "../Emoji";
@@ -92,6 +92,30 @@ function MainLayout() {
             <Title order={5}>Join Trekie, Today, for Free</Title>
           </Button>
 
+          <Button variant="subtle">
+            <IconCashBanknote />
+            &nbsp;
+            <Title order={5}>Premium</Title>
+          </Button>
+
+          <Button variant="subtle">
+            <IconArchive />
+            &nbsp;
+            <Title order={5}>Archive</Title>
+          </Button>
+
+          <Button variant="subtle">
+            <IconSettings />
+            &nbsp;
+            <Title order={5}>Settings</Title>
+          </Button>
+
+          <Button variant="subtle">
+            <IconExternalLink />
+            &nbsp;
+            <Title order={5}>Dorkodu Account</Title>
+          </Button>
+
           <Flex direction="column" align="center">
             <Flex gap="xs">
               <Anchor href="/privacy-policy">
@@ -100,10 +124,13 @@ function MainLayout() {
               <Anchor href="/terms-of-service">
                 Terms of Service
               </Anchor>
+              <Anchor href="/about">
+                About
+              </Anchor>
             </Flex>
 
             <Anchor href="https://dorkodu.com">
-              © {new Date().getFullYear()}, Dorkodu
+              Dorkodu © {new Date().getFullYear()}
             </Anchor>
           </Flex>
 
