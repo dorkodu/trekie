@@ -1,6 +1,6 @@
 import { useAppStore } from "@/stores/appStore";
-import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, useMantineTheme } from "@mantine/core";
-import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
+import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, px, useMantineTheme } from "@mantine/core";
+import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconPencilPlus, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
 import Emoji from "../Emoji";
@@ -75,6 +75,12 @@ function MainLayout() {
             </ActionIcon>
           </Flex>
         </Paper>
+
+        <Flex pos="absolute" right={theme.spacing.xs} top={-48 - (px(theme.spacing.xs) as number)}>
+          <ActionIcon radius="xl" size={48}>
+            <IconPencilPlus />
+          </ActionIcon>
+        </Flex>
       </Flex>
 
       <Drawer
@@ -160,7 +166,7 @@ function MainLayout() {
           </Flex>
 
         </Flex >
-      </Drawer >
+      </Drawer>
     </>
   )
 }
