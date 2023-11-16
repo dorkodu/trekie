@@ -1,5 +1,5 @@
 import Emoji from "@/components/Emoji"
-import Dream from "@/components/custom/Dream"
+import Goal from "@/components/custom/Goal"
 import Habit from "@/components/custom/Habit"
 import Memory from "@/components/custom/Memory"
 import { Button, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
@@ -82,11 +82,11 @@ function Home() {
       <Flex direction="column" gap="xs">
 
         <Flex align="center">
-          <Title order={4}>Dreams</Title>
+          <Title order={4}>Goals</Title>
           <IconChevronRight />
         </Flex>
 
-        <Dream />
+        <Goal />
 
       </Flex>
 

@@ -1,5 +1,5 @@
 import Community from "@/components/custom/Community"
-import Dream from "@/components/custom/Dream"
+import Goal from "@/components/custom/Goal"
 import Memory from "@/components/custom/Memory"
 import ProfileMenu from "@/components/menus/ProfileMenu"
 import { Anchor, Avatar, Button, Card, Flex, Text, Title, rem } from "@mantine/core"
@@ -52,6 +52,10 @@ function Profile() {
               <Anchor>123 Following</Anchor>
             </Flex>
 
+            <Flex>
+              test
+            </Flex>
+
           </Flex>
 
           <Flex direction="column" gap="xs">
@@ -61,7 +65,7 @@ function Profile() {
               <IconChevronRight />
             </Flex>
 
-            <Dream />
+            <Goal />
 
           </Flex>
 

@@ -5,7 +5,7 @@ interface Props {
 
 }
 
-function Dream({ }: Props) {
+function Goal({ }: Props) {
   return (
     <Paper withBorder p="md">
       <Flex gap="md">
@@ -25,4 +25,4 @@ function Dream({ }: Props) {
   )
 }
 
-export default Dream
+export default Goal
