@@ -40,14 +40,17 @@ function Profile() {
 
             <Flex direction="column">
               <Flex align="center">
-                <Title order={5}>John Doe</Title>
+                <Title order={5}>John Doe 👑</Title>
                 &nbsp;
                 <IconDiscountCheckFilled />
               </Flex>
               <Text>@johndoe</Text>
             </Flex>
 
-            <Text>Hello, world! This is my biography. I am John Doe.</Text>
+            <Text>
+              Hello, world! This is my biography. I am John Doe. 👋
+              This is my website https://dorkodu.com
+            </Text>
 
             <Flex gap="xs">
               <Anchor>123 Followers</Anchor>
