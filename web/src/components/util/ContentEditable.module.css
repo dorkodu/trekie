@@ -1,0 +1,4 @@
+.input:empty::before {
+  content: attr(placeholder);
+  color: #555;
+}

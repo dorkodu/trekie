@@ -1,5 +1,6 @@
 import { useAppStore } from "@/stores/appStore";
-import { Flex, Modal } from "@mantine/core";
+import { Flex, Modal, Paper } from "@mantine/core";
+import ContentEditable from "../util/ContentEditable";
 
 function EditProfileModal() {
   const editProfile = useAppStore(state => state.modals.editProfile);
@@ -16,6 +17,9 @@ function EditProfileModal() {
     >
       <Flex direction="column" gap="md">
         EditProfileModal
+        <Paper withBorder p="xs">
+          <ContentEditable />
+        </Paper>
       </Flex>
     </Modal>
   )
