@@ -1,5 +1,5 @@
 import { ActionIcon, Menu } from "@mantine/core"
-import { IconDots, IconExclamationCircle } from "@tabler/icons-react"
+import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare } from "@tabler/icons-react"
 
 function ProfileMenu() {
   return (
@@ -12,9 +12,25 @@ function ProfileMenu() {
       </Menu.Target>
 
       <Menu.Dropdown>
+
+        <Menu.Item leftSection={<IconShare />}>
+          Share
+        </Menu.Item>
+
+        <Menu.Item leftSection={<IconClipboardText />}>
+          Copy To Clipboard
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Item leftSection={<IconEdit />}>
+          Edit Profile
+        </Menu.Item>
+
         <Menu.Item color="red" leftSection={<IconExclamationCircle />}>
           Report User
         </Menu.Item>
+
       </Menu.Dropdown>
 
     </Menu>
