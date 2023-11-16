@@ -1,14 +1,12 @@
-
+import React, { useMemo } from "react";
+import { Anchor } from "@mantine/core";
+import Emoji from "../Emoji";
 import urlRegexp from "url-regex";
 import emojiRegexp from "emoji-regex";
-import React, { useMemo } from "react";
-import Emoji from "../Emoji";
-import { Anchor } from "@mantine/core";
 
 const urlRegex = urlRegexp();
 const emojiRegex = emojiRegexp();
 
-type TextParserTypeId = keyof typeof textParserTypes;
 const textParserTypes = {
   url: {
     regex: urlRegex,
@@ -18,7 +16,9 @@ const textParserTypes = {
     regex: emojiRegex,
     component: ({ text }: { text: string }) => <Emoji emoji={text} />
   },
-}
+};
+
+type TextParserTypeId = keyof typeof textParserTypes;
 
 interface Props {
   text: string;
@@ -27,47 +27,34 @@ interface Props {
 
 function TextParser({ text, types }: Props) {
   const parserTypes = useMemo(() => {
-    const out: TextParserTypeId[] = [];
-
-    Object.keys(textParserTypes).forEach((id) => {
-      if (types?.includes(id as any)) out.push(id as any);
-    });
-
-    return out;
+    return types?.filter(type => textParserTypes[type]) || [];
   }, [types]);
 
   const elements = useMemo(() => {
-    const out = [];
-    let matches: Array<{ index: number, text: string, id: TextParserTypeId }> = [];
-
-    parserTypes.forEach(id => {
-      let match: RegExpExecArray | null;
-      while (match = textParserTypes[id].regex.exec(text)) {
-        matches.push({ index: match.index, text: match[0], id });
-      }
+    const matches = parserTypes.flatMap(id => {
+      return Array.from(text.matchAll(textParserTypes[id].regex), match => ({ index: match.index || 0, text: match[0], id }));
     });
 
-    matches = matches.sort((a, b) => a.index - b.index);
+    const sortedMatches = matches.sort((a, b) => a.index - b.index);
 
-    for (let i = 0, key = 0; i < text.length;) {
-      const match = matches.shift();
-      if (match && match.index < i) continue;
+    let currentIndex = 0;
+    let key = 0;
 
-      if (match) {
-        const diff = match.index - i;
-        if (diff > 0) {
-          out.push(<React.Fragment key={key++} >{text.substring(i, i + diff)}</React.Fragment>);
-          i += diff;
-        }
+    const out = sortedMatches.flatMap(match => {
+      const diff = match.index - currentIndex;
+      const i = currentIndex;
+      currentIndex += diff + match.text.length;
 
-        const Component = textParserTypes[match.id].component;
-        out.push(<Component key={key++} text={match.text} />)
-        i += match.text.length;
-      }
-      else {
-        out.push(<React.Fragment key={key++}>{text.substring(i)}</React.Fragment>);
-        break;
-      }
+      const Component = textParserTypes[match.id].component;
+
+      return [
+        diff > 0 && <React.Fragment key={key++}>{text.substring(i, i + diff)}</React.Fragment>,
+        <Component key={key++} text={match.text} />
+      ];
+    });
+
+    if (currentIndex < text.length) {
+      out.push(<React.Fragment key={key++}>{text.substring(currentIndex)}</React.Fragment>);
     }
 
     return out;
@@ -76,4 +63,4 @@ function TextParser({ text, types }: Props) {
   return <>{elements}</>;
 }
 
-export default TextParser
+export default TextParser;
