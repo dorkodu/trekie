@@ -104,7 +104,7 @@ function MainLayout() {
             </Flex>
           </Button>
 
-          <Button>
+          <Button onClick={() => closeNavigate("/join")}>
             <Emoji emoji="🤩" size={24} />
             &nbsp;
             <Title order={5}>Join Trekie, Today, for Free</Title>

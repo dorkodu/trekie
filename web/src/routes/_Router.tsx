@@ -22,6 +22,7 @@ const Memories = React.lazy(util.wait(() => import("./main/Memories")));
 const Communities = React.lazy(util.wait(() => import("./main/Communities")));
 const Fun = React.lazy(util.wait(() => import("./main/Fun")));
 
+const Join = React.lazy(util.wait(() => import("./other/Join")));
 const PrivacyPolicy = React.lazy(util.wait(() => import("./other/PrivacyPolicy")));
 const TermsOfService = React.lazy(util.wait(() => import("./other/TermsOfService")));
 const About = React.lazy(util.wait(() => import("./other/About")));
@@ -73,6 +74,7 @@ export const router = createBrowserRouter(
         <Route path="/dashboard" element={Page(Dashboard)} />
       </Route>
 
+      <Route path="/join" element={Page(Join)} />
       <Route path="/privacy-policy" element={Page(PrivacyPolicy)} />
       <Route path="/terms-of-service" element={Page(TermsOfService)} />
       <Route path="/about" element={Page(About)} />
