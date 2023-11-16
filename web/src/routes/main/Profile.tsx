@@ -8,7 +8,6 @@ import { IconChevronRight, IconDiscountCheckFilled, IconFlame, IconRocket, IconS
 function Profile() {
   const theme = useMantineTheme();
 
-  console.log()
   return (
     <Flex direction="column" m="md">
 
