@@ -76,7 +76,7 @@ function MainLayout() {
           </Flex>
         </Paper>
 
-        <Flex pos="absolute" right={theme.spacing.xs} top={-48 - (px(theme.spacing.xs) as number)}>
+        <Flex pos="absolute" right={theme.spacing.md} top={-48 - (px(theme.spacing.md) as number)}>
           <ActionIcon radius="xl" size={48}>
             <IconPencilPlus />
           </ActionIcon>
