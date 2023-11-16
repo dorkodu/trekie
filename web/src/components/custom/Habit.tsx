@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Text, Title } from "@mantine/core"
+import { Button, Card, Flex, Paper, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
 
 interface Props {
@@ -7,8 +7,9 @@ interface Props {
 
 function Habit({ }: Props) {
   return (
-    <Card withBorder p={0}>
-      <Button.Group h={64}>
+    <Card withBorder p={0} mb="xs" style={{ overflow: "visible" }}>
+
+      <Button.Group h={80}>
         <Button h="auto">
           <IconMinus />
         </Button>
@@ -20,6 +21,15 @@ function Habit({ }: Props) {
           <IconPlus />
         </Button>
       </Button.Group>
+
+      <Paper
+        withBorder px="md"
+        pos="absolute" bottom="0" left="50%"
+        style={{ transform: "translate(-50%,50%)" }}
+      >
+        <Title order={5}>123</Title>
+      </Paper>
+
     </Card>
   )
 }
