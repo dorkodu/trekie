@@ -7,7 +7,8 @@ import emojiRegexp from "emoji-regex";
 const urlRegex = urlRegexp();
 const emojiRegex = emojiRegexp();
 
-const textParserTypes = {
+type ParseableId = keyof typeof parseables;
+const parseables = {
   url: {
     regex: urlRegex,
     component: ({ text }: { text: string }) => <Anchor href={text} target="_blank">{text}</Anchor>
@@ -16,23 +17,21 @@ const textParserTypes = {
     regex: emojiRegex,
     component: ({ text }: { text: string }) => <Emoji emoji={text} />
   },
-};
-
-type TextParserTypeId = keyof typeof textParserTypes;
+}
 
 interface Props {
   text: string;
-  types?: Array<TextParserTypeId>;
+  ids?: Array<ParseableId>;
 }
 
-function TextParser({ text, types }: Props) {
-  const parserTypes = useMemo(() => {
-    return types?.filter(type => textParserTypes[type]) || [];
-  }, [types]);
+function TextParser({ text, ids }: Props) {
+  const parseableIds = useMemo(() => {
+    return ids?.filter(id => parseables[id]) || [];
+  }, [ids]);
 
   const elements = useMemo(() => {
-    const matches = parserTypes.flatMap(id => {
-      return Array.from(text.matchAll(textParserTypes[id].regex), match => ({ index: match.index || 0, text: match[0], id }));
+    const matches = parseableIds.flatMap(id => {
+      return Array.from(text.matchAll(parseables[id].regex), match => ({ index: match.index || 0, text: match[0], id }));
     });
 
     const sortedMatches = matches.sort((a, b) => a.index - b.index);
@@ -45,7 +44,7 @@ function TextParser({ text, types }: Props) {
       const i = currentIndex;
       currentIndex += diff + match.text.length;
 
-      const Component = textParserTypes[match.id].component;
+      const Component = parseables[match.id].component;
 
       return [
         diff > 0 && <React.Fragment key={key++}>{text.substring(i, i + diff)}</React.Fragment>,
@@ -58,7 +57,7 @@ function TextParser({ text, types }: Props) {
     }
 
     return out;
-  }, [text, types]);
+  }, [text, ids]);
 
   return <>{elements}</>;
 }

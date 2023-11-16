@@ -41,7 +41,7 @@ function Profile() {
 
             <Flex direction="column">
               <Flex align="center">
-                <Title order={5}><TextParser types={["emoji"]} text="John Doe 👑" /></Title>
+                <Title order={5}><TextParser ids={["emoji"]} text="John Doe 👑" /></Title>
                 &nbsp;
                 <IconDiscountCheckFilled />
               </Flex>
@@ -49,7 +49,7 @@ function Profile() {
             </Flex>
 
             <Text>
-              <TextParser types={["emoji", "url"]} text="Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com" />
+              <TextParser ids={["emoji", "url"]} text="Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com" />
             </Text>
 
             <Flex gap="xs">
