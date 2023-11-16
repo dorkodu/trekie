@@ -5,6 +5,7 @@ import { Route, useAppStore } from "./stores/appStore";
 import OverlayLoader from "./components/loaders/OverlayLoader";
 import { useEffect } from "react";
 import UpdateSWModal from "./components/modals/UpdateSWModal";
+import EditProfileModal from "./components/modals/EditProfileModal";
 
 function App() {
   const loading = useAppStore(state => state.loading);
@@ -39,6 +40,7 @@ function App() {
 
         {/* Modals */}
         <UpdateSWModal />
+        <EditProfileModal />
       </MantineProvider>
 
       <ScrollRestoration />
