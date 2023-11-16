@@ -2,6 +2,7 @@ import Community from "@/components/custom/Community"
 import Goal from "@/components/custom/Goal"
 import Memory from "@/components/custom/Memory"
 import ProfileMenu from "@/components/menus/ProfileMenu"
+import TextParser from "@/components/util/TextParser"
 import { Anchor, Avatar, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
 import { IconChevronRight, IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 
@@ -40,7 +41,7 @@ function Profile() {
 
             <Flex direction="column">
               <Flex align="center">
-                <Title order={5}>John Doe 👑</Title>
+                <Title order={5}><TextParser types={["emoji"]} text="John Doe 👑" /></Title>
                 &nbsp;
                 <IconDiscountCheckFilled />
               </Flex>
@@ -48,8 +49,7 @@ function Profile() {
             </Flex>
 
             <Text>
-              Hello, world! This is my biography. I am John Doe. 👋
-              This is my website https://dorkodu.com
+              <TextParser types={["emoji", "url"]} text="Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com" />
             </Text>
 
             <Flex gap="xs">
