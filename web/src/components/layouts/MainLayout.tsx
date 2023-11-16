@@ -92,7 +92,7 @@ function MainLayout() {
 
           <Button
             variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}
-            onClick={() => closeNavigate("/profile")}
+            onClick={() => closeNavigate("/profile/johndoe")}
           >
             <Flex align="center" gap="xs" w="100%">
               <Avatar src="/favicon.svg" size={32} />

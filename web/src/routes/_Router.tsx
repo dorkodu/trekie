@@ -16,6 +16,12 @@ const Premium = React.lazy(util.wait(() => import("./main/Premium")));
 const Archive = React.lazy(util.wait(() => import("./main/Archive")));
 const Settings = React.lazy(util.wait(() => import("./main/Settings")));
 
+const Habits = React.lazy(util.wait(() => import("./main/Habits")));
+const Goals = React.lazy(util.wait(() => import("./main/Goals")));
+const Memories = React.lazy(util.wait(() => import("./main/Memories")));
+const Communities = React.lazy(util.wait(() => import("./main/Communities")));
+const Fun = React.lazy(util.wait(() => import("./main/Fun")));
+
 const PrivacyPolicy = React.lazy(util.wait(() => import("./other/PrivacyPolicy")));
 const TermsOfService = React.lazy(util.wait(() => import("./other/TermsOfService")));
 const About = React.lazy(util.wait(() => import("./other/About")));
@@ -51,10 +57,16 @@ export const router = createBrowserRouter(
         <Route path="/community" element={Page(Community)} />
         <Route path="/marketplace" element={Page(Marketplace)} />
 
-        <Route path="/profile" element={Page(Profile)} />
+        <Route path="/profile/:username" element={Page(Profile)} />
         <Route path="/premium" element={Page(Premium)} />
         <Route path="/archive" element={Page(Archive)} />
         <Route path="/settings" element={Page(Settings)} />
+
+        <Route path="/habits/:username" element={Page(Habits)} />
+        <Route path="/goals/:username" element={Page(Goals)} />
+        <Route path="/memories/:username" element={Page(Memories)} />
+        <Route path="/communities/:username" element={Page(Communities)} />
+        <Route path="/fun" element={Page(Fun)} />
       </Route>
 
       <Route element={Page(DashboardLayout)}>
