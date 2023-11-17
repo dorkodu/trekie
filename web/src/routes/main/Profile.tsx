@@ -1,3 +1,4 @@
+import ChevronTitle from "@/components/custom/ChevronTitle"
 import Community from "@/components/custom/Community"
 import Goal from "@/components/custom/Goal"
 import Memory from "@/components/custom/Memory"
@@ -5,7 +6,7 @@ import ProfileMenu from "@/components/menus/ProfileMenu"
 import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
 import { Anchor, Avatar, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
-import { IconChevronRight, IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
+import { IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 
 function Profile() {
@@ -111,10 +112,9 @@ function Profile() {
 
           <Flex direction="column" gap="xs">
 
-            <Flex align="center">
-              <Title order={5}>Goals</Title>
-              <IconChevronRight />
-            </Flex>
+            <ChevronTitle order={5} href={`/goals/${user.username}`}>
+              Goals
+            </ChevronTitle>
 
             <Goal />
 
@@ -122,10 +122,9 @@ function Profile() {
 
           <Flex direction="column" gap="xs">
 
-            <Flex align="center">
-              <Title order={5}>Memories</Title>
-              <IconChevronRight />
-            </Flex>
+            <ChevronTitle order={5} href={`/memories/${user.username}`}>
+              Memories
+            </ChevronTitle>
 
             <Memory />
 
@@ -133,10 +132,9 @@ function Profile() {
 
           <Flex direction="column" gap="xs">
 
-            <Flex align="center">
-              <Title order={5}>Communities</Title>
-              <IconChevronRight />
-            </Flex>
+            <ChevronTitle order={5} href={`/communities/${user.username}`}>
+              Communities
+            </ChevronTitle>
 
             <Community />
 

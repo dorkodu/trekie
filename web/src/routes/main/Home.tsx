@@ -1,11 +1,19 @@
 import Emoji from "@/components/Emoji"
+import ChevronTitle from "@/components/custom/ChevronTitle"
 import Goal from "@/components/custom/Goal"
 import Habit from "@/components/custom/Habit"
 import Memory from "@/components/custom/Memory"
+import { useApiStore } from "@/stores/apiStore"
 import { Button, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
-import { IconChevronRight, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
+import { IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 
 function Home() {
+  const userId = useApiStore(state => state.userId);
+  const users = useApiStore(state => state.users);
+  const user = userId ? users[userId] : undefined;
+
+  const habits = useApiStore(state => state.habits);
+
   return (
     <Flex direction="column" m="md" gap="xl">
 
@@ -55,21 +63,23 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Flex align="center">
-          <Title order={4}>Habits</Title>
-          <IconChevronRight />
-        </Flex>
+        <ChevronTitle order={4} href={`/habits/${user?.username}`}>
+          Habits
+        </ChevronTitle>
 
-        <Habit />
+        {Object.values(habits).length > 0 ?
+          <Habit habit={Object.values(habits)[0]!} />
+          :
+          <>No habits.</>
+        }
 
       </Flex>
 
       <Flex direction="column" gap="xs">
 
-        <Flex align="center">
-          <Title order={4}>Memories</Title>
-          <IconChevronRight />
-        </Flex>
+        <ChevronTitle order={4} href={`/memories/${user?.username}`}>
+          Memories
+        </ChevronTitle>
 
         <Flex direction="row">
 
@@ -81,10 +91,9 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Flex align="center">
-          <Title order={4}>Goals</Title>
-          <IconChevronRight />
-        </Flex>
+        <ChevronTitle order={4} href={`/goals/${user?.username}`}>
+          Goals
+        </ChevronTitle>
 
         <Goal />
 
@@ -92,10 +101,9 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Flex align="center">
-          <Title order={4}>Fun</Title>
-          <IconChevronRight />
-        </Flex>
+        <ChevronTitle order={4} href="/fun">
+          Fun
+        </ChevronTitle>
 
         <Paper withBorder p="md">
           <Flex gap="md">
