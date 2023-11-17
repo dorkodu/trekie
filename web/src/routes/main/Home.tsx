@@ -15,6 +15,7 @@ function Home() {
 
   const previewHabits = useApiStore(state => state.getHabits(userId));
   const previewMemories = useApiStore(state => state.getMemories(userId));
+  const previewGoals = useApiStore(state => state.getGoals(userId));
 
   return (
     <Flex direction="column" m="md" gap="xl">
@@ -104,7 +105,11 @@ function Home() {
           Goals
         </ChevronTitle>
 
-        <Goal />
+        {previewGoals.length > 0 ?
+          <Goal goal={previewGoals[0]!} />
+          :
+          <>No goals.</>
+        }
 
       </Flex>
 

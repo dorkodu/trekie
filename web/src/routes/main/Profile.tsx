@@ -20,6 +20,7 @@ function Profile() {
   const currentUserId = useApiStore(state => state.userId);
 
   const previewMemories = useApiStore(state => state.getMemories(userId));
+  const previewGoals = useApiStore(state => state.getGoals(userId));
 
   if (!user) {
     return (
@@ -118,7 +119,11 @@ function Profile() {
               Goals
             </ChevronTitle>
 
-            <Goal />
+            {previewGoals.length > 0 ?
+              <Goal goal={previewGoals[0]!} />
+              :
+              <>No goals.</>
+            }
 
           </Flex>
 
@@ -133,7 +138,6 @@ function Profile() {
               :
               <>No memories.</>
             }
-
 
           </Flex>
 

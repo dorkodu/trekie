@@ -1,11 +1,13 @@
 import { Badge, Flex, Paper, Text, Title } from "@mantine/core"
 import Emoji from "../Emoji"
+import { IGoal } from "@api/types/goal"
+import TextParser from "../util/TextParser";
 
 interface Props {
-
+  goal: IGoal;
 }
 
-function Goal({ }: Props) {
+function Goal({ goal }: Props) {
   return (
     <Paper withBorder p="md">
       <Flex gap="md">
@@ -13,10 +15,10 @@ function Goal({ }: Props) {
         <Emoji emoji="👨‍💻" size={32} />
 
         <Flex direction="column">
-          <Title order={5}>Become the best Programmer</Title>
-          <Text>No one can stop me afterwards.</Text>
+          <Title order={5}><TextParser ids={["emoji"]} text={goal.title} /></Title>
+          <Text><TextParser ids={["emoji", "url"]} text={goal.description} /></Text>
           <Flex mt="xs" gap="xs">
-            <Badge>10/20 Tasks</Badge>
+            <Badge>{goal.tasksTodo} / {goal.tasksDone} Tasks</Badge>
           </Flex>
         </Flex>
 

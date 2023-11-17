@@ -3,6 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import type { IUser } from "@api/types/user";
 import type { IHabit } from "@api/types/habit";
 import type { IMemory } from "@api/types/memory";
+import type { IGoal } from "@api/types/goal";
 
 export interface ApiStoreState {
   userId: string | undefined;
@@ -10,10 +11,12 @@ export interface ApiStoreState {
   users: Record<string, IUser>;
   habits: Record<string, IHabit>;
   memories: Record<string, IMemory>;
+  goals: Record<string, IGoal>;
 
   usernameToUserId: Record<string, string>;
   userIdToHabitIds: Record<string, string[]>;
   userIdToMemoryIds: Record<string, string[]>;
+  userIdToGoalIds: Record<string, string[]>;
 }
 
 export interface ApiStoreAction {
@@ -27,6 +30,10 @@ export interface ApiStoreAction {
   addMemory: (memory: IMemory) => void;
   removeMemory: (memory: IMemory) => void;
   getMemories: (userId: string | undefined) => IMemory[];
+
+  addGoal: (goal: IGoal) => void;
+  removeGoal: (goal: IGoal) => void;
+  getGoals: (userId: string | undefined) => IGoal[];
 }
 
 const initialState: ApiStoreState = {
@@ -35,10 +42,12 @@ const initialState: ApiStoreState = {
   users: {},
   habits: {},
   memories: {},
+  goals: {},
 
   usernameToUserId: {},
   userIdToHabitIds: {},
   userIdToMemoryIds: {},
+  userIdToGoalIds: {},
 }
 
 export const useApiStore = create(
@@ -103,7 +112,7 @@ export const useApiStore = create(
 
     getMemories(userId) {
       if (!userId) return [];
-      
+
       const memories = get().memories;
       const userIdToMemoryIds = get().userIdToMemoryIds;
 
@@ -111,6 +120,34 @@ export const useApiStore = create(
       if (!memoryIds) return [];
 
       return memoryIds.map(memoryId => memories[memoryId]).filter(Boolean) as IMemory[];
+    },
+
+    addGoal(goal) {
+      set(s => {
+        s.goals[goal.id] = goal;
+        if (!s.userIdToGoalIds[goal.userId]) s.userIdToGoalIds[goal.userId] = [];
+        s.userIdToGoalIds[goal.userId]?.push(goal.id);
+      });
+    },
+
+    removeGoal(goal) {
+      set(s => {
+        delete s.goals[goal.id];
+        delete s.userIdToGoalIds[goal.userId];
+      });
+    },
+
+    getGoals(userId) {
+      if (!userId) return [];
+
+      const goals = get().goals;
+      const userIdToGoalIds = get().userIdToGoalIds;
+
+      const goalIds = userIdToGoalIds[userId];
+      if (!goalIds) return [];
+
+      return goalIds.map(goalId => goals[goalId]).filter(Boolean) as IGoal[];
+
     },
   }))
 );

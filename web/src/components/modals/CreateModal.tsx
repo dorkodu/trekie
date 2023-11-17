@@ -1,5 +1,6 @@
 import { useApiStore } from "@/stores/apiStore";
 import { useAppStore } from "@/stores/appStore";
+import { IGoal } from "@api/types/goal";
 import { IHabit } from "@api/types/habit";
 import { IMemory } from "@api/types/memory";
 import { Button, Flex, Modal, Select, TextInput, Textarea } from "@mantine/core";
@@ -88,8 +89,46 @@ function CreateHabit({ close }: { close: () => void }) {
 }
 
 function CreateGoal({ close }: { close: () => void }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const onCreate = () => {
+    const currentUserId = useApiStore.getState().userId;
+    if (!currentUserId) return;
+
+    const goal: IGoal = {
+      id: Date.now().toString(),
+      userId: currentUserId,
+      title,
+      description,
+      tasksTodo: 0,
+      tasksDone: 0,
+    }
+
+    useApiStore.getState().addGoal(goal);
+
+    close();
+  }
+
   return (
-    <>CreateGoal</>
+    <>
+      <TextInput
+        label="Title"
+        placeholder="Title..."
+        value={title}
+        onChange={(ev) => setTitle(ev.currentTarget.value)}
+      />
+
+      <Textarea
+        label="Description"
+        placeholder="Description..."
+        value={description}
+        onChange={(ev) => setDescription(ev.currentTarget.value)}
+        autosize
+      />
+
+      <Button onClick={onCreate}>Create</Button>
+    </>
   )
 }
 
