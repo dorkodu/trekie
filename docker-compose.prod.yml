@@ -1,8 +1,8 @@
 version: '3.8'
-name: app-template_prod
+name: trekie_prod
 
 services:
-  app-template_web:
+  trekie_web:
     build:
       context: .
       dockerfile: ./web/Dockerfile.prod
@@ -11,7 +11,7 @@ services:
     environment:
       - NODE_ENV=production
 
-  app-template_api:
+  trekie_api:
     build:
       context: .
       dockerfile: ./api/Dockerfile.prod

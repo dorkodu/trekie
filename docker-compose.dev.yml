@@ -1,8 +1,8 @@
 version: '3.8'
-name: app-template_dev
+name: trekie_dev
 
 services:
-  app-template_web:
+  trekie_web:
     build:
       context: .
       dockerfile: ./web/Dockerfile.dev
@@ -27,7 +27,7 @@ services:
       - app
       - nginx-proxy
 
-  app-template_api:
+  trekie_api:
     build:
       context: .
       dockerfile: ./api/Dockerfile.dev
@@ -50,7 +50,7 @@ services:
       - app
       - nginx-proxy
 
-  app-template_postgres:
+  trekie_postgres:
     image: postgres:16-alpine
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}

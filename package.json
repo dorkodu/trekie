@@ -3,8 +3,8 @@
     "docker:build:prod": "docker compose -f docker-compose.prod.yml build",
     "docker:build:dev": "docker compose -f docker-compose.dev.yml build",
     "docker:dev": "docker compose -f docker-compose.dev.yml up",
-    "docker:dev:api": "docker exec -it app-template_dev-app-template_api-1 /bin/sh",
-    "docker:dev:web": "docker exec -it app-template_dev-app-template_web-1 /bin/sh",
-    "docker:dev:postgres": "docker exec -it app-template_dev-app-template_postgres-1 psql -U postgres"
+    "docker:dev:api": "docker exec -it trekie_dev-trekie_api-1 /bin/sh",
+    "docker:dev:web": "docker exec -it trekie_dev-trekie_web-1 /bin/sh",
+    "docker:dev:postgres": "docker exec -it trekie_dev-trekie_postgres-1 psql -U postgres"
   }
 }

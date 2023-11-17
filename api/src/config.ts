@@ -6,7 +6,7 @@ const env: "development" | "production" = (
 const epochTime = Number(process.env.EPOCH_TIME) || 1695859200069;
 const machineId = Number(process.env.MACHINE_ID) || 0;
 
-const postgresHost = process.env.POSTGRES_HOST || "app-template_postgres";
+const postgresHost = process.env.POSTGRES_HOST || "trekie_postgres";
 const postgresPort = Number(process.env.PGPORT) || 7007;
 const postgresName = process.env.POSTGRES_DB || "app";
 const postgresUser = process.env.POSTGRES_USER || "postgres";

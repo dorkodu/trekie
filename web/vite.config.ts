@@ -52,7 +52,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       "/api": {
-        target: "app-template_api:8015",
+        target: "trekie_api:8015",
         ws: true,
       },
     },
