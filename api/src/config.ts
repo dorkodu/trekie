@@ -1,4 +1,4 @@
-const port = Number(process.env.PORT) || 8001;
+const port = Number(process.env.PORT) || 8015;
 const env: "development" | "production" = (
   process.env.NODE_ENV === "development" || process.env.NODE_ENV === "production"
 ) && process.env.NODE_ENV || "development";
@@ -7,7 +7,7 @@ const epochTime = Number(process.env.EPOCH_TIME) || 1695859200069;
 const machineId = Number(process.env.MACHINE_ID) || 0;
 
 const postgresHost = process.env.POSTGRES_HOST || "app-template_postgres";
-const postgresPort = Number(process.env.PGPORT) || 7000;
+const postgresPort = Number(process.env.PGPORT) || 7007;
 const postgresName = process.env.POSTGRES_DB || "app";
 const postgresUser = process.env.POSTGRES_USER || "postgres";
 const postgresPassword = process.env.POSTGRES_PASSWORD || "postgres";

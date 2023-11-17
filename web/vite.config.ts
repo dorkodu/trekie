@@ -48,11 +48,11 @@ export default defineConfig({
   server: {
     watch: { usePolling: true },
     host: true,
-    port: 8000,
+    port: 8014,
     strictPort: true,
     proxy: {
       "/api": {
-        target: "app-template_api:8001",
+        target: "app-template_api:8015",
         ws: true,
       },
     },

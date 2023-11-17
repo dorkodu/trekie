@@ -8,6 +8,6 @@ Note: Use "Match Case" and "Match Whole Word" when performing replace all.
 * Replace all `trekie` (repo name).
 * Replace all `Trekie` (app name).
 * Replace all `The gamified digital life companion.` (app description).
-* Replace all `8000` (web port).
-* Replace all `8001` (api port).
-* Replace all `7000` (postgres port).
+* Replace all `8014` (web port).
+* Replace all `8015` (api port).
+* Replace all `7007` (postgres port).
