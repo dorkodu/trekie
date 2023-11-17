@@ -13,7 +13,7 @@ function Profile() {
   const params = useParams();
 
   const username = params["username"];
-  const usernameToId = useApiStore(state => username && state.usernameToId[username]);
+  const usernameToId = useApiStore(state => username && state.usernameToUserId[username]);
   const user = useApiStore(state => usernameToId && state.users[usernameToId]);
 
   const currentUserId = useApiStore(state => state.userId);

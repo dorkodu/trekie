@@ -28,6 +28,10 @@ function MainLayout() {
     navigate(route);
   }
 
+  const onCreate = () => {
+    useAppStore.setState(s => { s.modals.create.opened = true });
+  }
+
   return (
     <>
       <Flex direction="column" pos="fixed" top={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
@@ -88,7 +92,7 @@ function MainLayout() {
         </Paper>
 
         <Flex pos="absolute" right={theme.spacing.md} top={-48 - (px(theme.spacing.md) as number)}>
-          <ActionIcon radius="xl" size={48}>
+          <ActionIcon radius="xl" size={48} onClick={onCreate}>
             <IconPencilPlus />
           </ActionIcon>
         </Flex>

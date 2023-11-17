@@ -1,23 +1,33 @@
+import { useApiStore } from "@/stores/apiStore";
+import { IHabit } from "@api/types/habit"
 import { Button, Card, Flex, Paper, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
 
 interface Props {
-
+  habit: IHabit;
 }
 
-function Habit({ }: Props) {
+function Habit({ habit }: Props) {
+  const onChangeCount = (count: number) => {
+    useApiStore.setState(s => {
+      const h = s.habits[habit.id];
+      if (!h) return;
+      h.count += count;
+    });
+  }
+
   return (
     <Card withBorder p={0} mb="xs" style={{ overflow: "visible" }}>
 
       <Button.Group h={80}>
-        <Button h="auto">
+        <Button h="auto" onClick={() => onChangeCount(-1)}>
           <IconMinus />
         </Button>
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
-          <Title order={5}>Write 15 pages of code</Title>
-          <Text>Gotta beat Linus Torvalds.</Text>
+          <Title order={5}>{habit.title}</Title>
+          <Text>{habit.description}</Text>
         </Flex>
-        <Button h="auto">
+        <Button h="auto" onClick={() => onChangeCount(+1)}>
           <IconPlus />
         </Button>
       </Button.Group>
@@ -27,7 +37,7 @@ function Habit({ }: Props) {
         pos="absolute" bottom="0" left="50%"
         style={{ transform: "translate(-50%,50%)" }}
       >
-        <Title order={5}>123</Title>
+        <Title order={5}>{habit.count}</Title>
       </Paper>
 
     </Card>

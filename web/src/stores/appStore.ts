@@ -22,6 +22,10 @@ export interface AppStoreState {
     editProfile: {
       opened: boolean;
     }
+
+    create: {
+      opened: boolean;
+    }
   }
 }
 
@@ -43,6 +47,7 @@ const initialState: AppStoreState = {
   modals: {
     updateSW: { opened: false },
     editProfile: { opened: false },
+    create: { opened: false },
   },
 }
 

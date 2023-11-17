@@ -8,28 +8,24 @@ import UpdateSWModal from "./components/modals/UpdateSWModal";
 import EditProfileModal from "./components/modals/EditProfileModal";
 import { useApiStore } from "./stores/apiStore";
 import { IUser } from "@api/types/user";
+import CreateModal from "./components/modals/CreateModal";
 
 function App() {
   const loading = useAppStore(state => state.loading);
 
   useEffect(() => {
     // TODO: Perform authorization logic
+    const user: IUser = {
+      id: Date.now().toString(),
+      name: "John Doe 👑",
+      username: "johndoe",
+      bio: "Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com",
+      followers: 123,
+      following: 123,
+    }
     useAppStore.setState(s => { s.loading.auth = false });
-    useApiStore.setState(s => {
-      const user: IUser = {
-        id: "0",
-        name: "John Doe 👑",
-        username: "johndoe",
-        bio: "Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com",
-        followers: 123,
-        following: 123,
-      }
-
-      s.userId = user.id;
-
-      s.users[user.id] = user;
-      s.usernameToId[user.username] = user.id;
-    });
+    useApiStore.setState(s => { s.userId = user.id });
+    useApiStore.getState().addUser(user);
   }, []);
 
   const location = useLocation();
@@ -55,6 +51,7 @@ function App() {
         {/* Modals */}
         <UpdateSWModal />
         <EditProfileModal />
+        <CreateModal />
       </MantineProvider>
 
       <ScrollRestoration />
