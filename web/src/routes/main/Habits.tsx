@@ -3,12 +3,12 @@ import { useApiStore } from "@/stores/apiStore"
 import { Flex } from "@mantine/core"
 
 function Habits() {
-  const habits = useApiStore(state => state.habits);
+  const habits = useApiStore(state => state.getHabits(state.userId));
 
   return (
-    <Flex direction="column" m="md">
+    <Flex direction="column" m="md" gap="md">
 
-      {Object.values(habits).map((habit) => <Habit key={habit.id} habit={habit} />)}
+      {habits.map((habit) => <Habit key={habit.id} habit={habit} />)}
 
     </Flex>
   )
