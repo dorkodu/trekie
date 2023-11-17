@@ -1,7 +1,7 @@
 import { useApiStore } from "@/stores/apiStore";
 import { useAppStore } from "@/stores/appStore";
 import { Button, Flex, Modal, TextInput, Textarea } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function EditProfileModal() {
   const editProfile = useAppStore(state => state.modals.editProfile);
@@ -23,6 +23,12 @@ function EditProfileModal() {
     });
     close();
   }
+
+  useEffect(() => {
+    if (!editProfile.opened) return;
+    setName(user?.name ?? "");
+    setBio(user?.bio ?? "");
+  }, [editProfile.opened]);
 
   return (
     <Modal
