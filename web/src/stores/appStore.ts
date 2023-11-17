@@ -13,6 +13,7 @@ export interface AppStoreState {
   }
 
   segments: {}
+
   modals: {
     updateSW: {
       opened: boolean;
@@ -38,6 +39,7 @@ const initialState: AppStoreState = {
   },
 
   segments: {},
+
   modals: {
     updateSW: { opened: false },
     editProfile: { opened: false },

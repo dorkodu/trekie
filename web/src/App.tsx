@@ -6,16 +6,30 @@ import OverlayLoader from "./components/loaders/OverlayLoader";
 import { useEffect } from "react";
 import UpdateSWModal from "./components/modals/UpdateSWModal";
 import EditProfileModal from "./components/modals/EditProfileModal";
+import { useApiStore } from "./stores/apiStore";
+import { IUser } from "@api/types/user";
 
 function App() {
   const loading = useAppStore(state => state.loading);
 
   useEffect(() => {
     // TODO: Perform authorization logic
-    const timeout = setTimeout(() => {
-      useAppStore.setState(s => { s.loading.auth = false });
-    }, 1000);
-    return () => clearTimeout(timeout);
+    useAppStore.setState(s => { s.loading.auth = false });
+    useApiStore.setState(s => {
+      const user: IUser = {
+        id: "0",
+        name: "John Doe 👑",
+        username: "johndoe",
+        bio: "Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com",
+        followers: 123,
+        following: 123,
+      }
+
+      s.authorized = true;
+      s.user = user.id;
+
+      s.users[user.id] = user;
+    });
   }, []);
 
   const location = useLocation();
