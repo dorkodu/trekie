@@ -36,10 +36,16 @@ function MainLayout() {
               <IconArrowLeft />
             </ActionIcon>
 
-            <Flex align="center" gap="xs">
-              <Image src="/favicon.svg" width={32} height={32} />
-              <Title order={3}>Trekie</Title>
-            </Flex>
+            <Anchor
+              underline="never"
+              href="/home"
+              onClick={(ev) => preventNavigate(ev, "/home")}
+            >
+              <Flex align="center" gap="xs">
+                <Image src="/favicon.svg" width={32} height={32} />
+                <Title order={3}>Trekie</Title>
+              </Flex>
+            </Anchor>
 
             <ActionIcon variant="subtle" size={32} onClick={() => open()}>
               <IconMenu2 />
