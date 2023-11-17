@@ -3,5 +3,5 @@ export interface IMemory {
   userId: string;
   date: number;
   description: string;
-  favouriteCount: number;
+  favourites: number;
 }

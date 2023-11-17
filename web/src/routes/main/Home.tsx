@@ -13,6 +13,7 @@ function Home() {
   const user = userId ? users[userId] : undefined;
 
   const habits = useApiStore(state => state.habits);
+  const memories = useApiStore(state => state.memories);
 
   return (
     <Flex direction="column" m="md" gap="xl">
@@ -83,7 +84,11 @@ function Home() {
 
         <Flex direction="row">
 
-          <Memory />
+          {Object.values(memories).length > 0 ?
+            <Memory memory={Object.values(memories)[0]!} />
+            :
+            <>No memories.</>
+          }
 
         </Flex>
 

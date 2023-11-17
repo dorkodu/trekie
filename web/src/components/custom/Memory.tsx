@@ -1,11 +1,16 @@
+import { useApiStore } from "@/stores/apiStore";
+import { IMemory } from "@api/types/memory"
 import { ActionIcon, Avatar, Card, Flex, Image, Text } from "@mantine/core"
 import { IconDots, IconStar } from "@tabler/icons-react"
+import TextParser from "../util/TextParser";
 
 interface Props {
-
+  memory: IMemory;
 }
 
-function Memory({ }: Props) {
+function Memory({ memory }: Props) {
+  const user = useApiStore(state => state.users[memory.userId]);
+
   return (
     <Card withBorder w={200}>
 
@@ -21,21 +26,21 @@ function Memory({ }: Props) {
       <Flex direction="column" gap="xs" mt="md">
 
         <Text lineClamp={3}>
-          Me and my friends rewriting Minecraft in C++ because Java is trash.
+          <TextParser ids={["emoji", "url"]} text={memory.description} />
         </Text>
 
         <Flex gap="xs">
           <Avatar src="/favicon.svg" size={32} />
           <Flex direction="column">
-            <Text>John Doe</Text>
-            <Text size="sm">3 days ago</Text>
+            <Text><TextParser ids={["emoji"]} text={user?.name ?? ""} /></Text>
+            <Text size="sm">{memory.date}</Text>
           </Flex>
         </Flex>
 
         <Flex justify="space-between" gap="xs">
           <Flex align="center" gap="xs">
             <ActionIcon variant="subtle"><IconStar /></ActionIcon>
-            <Text>123</Text>
+            <Text>{memory.favourites}</Text>
           </Flex>
           <ActionIcon variant="subtle"><IconDots /></ActionIcon>
         </Flex>

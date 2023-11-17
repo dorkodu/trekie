@@ -2,15 +2,18 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import type { IUser } from "@api/types/user";
 import type { IHabit } from "@api/types/habit";
+import type { IMemory } from "@api/types/memory";
 
 export interface ApiStoreState {
   userId: string | undefined;
 
   users: Record<string, IUser>;
   habits: Record<string, IHabit>;
+  memories: Record<string, IMemory>;
 
   usernameToUserId: Record<string, string>;
   userIdToHabitIds: Record<string, string[]>;
+  userIdToMemoryIds: Record<string, string[]>;
 }
 
 export interface ApiStoreAction {
@@ -19,6 +22,9 @@ export interface ApiStoreAction {
 
   addHabit: (habit: IHabit) => void;
   removeHabit: (habit: IHabit) => void;
+
+  addMemory: (memory: IMemory) => void;
+  removeMemory: (memory: IMemory) => void;
 }
 
 const initialState: ApiStoreState = {
@@ -26,9 +32,11 @@ const initialState: ApiStoreState = {
 
   users: {},
   habits: {},
+  memories: {},
 
   usernameToUserId: {},
   userIdToHabitIds: {},
+  userIdToMemoryIds: {},
 }
 
 export const useApiStore = create(
@@ -59,8 +67,23 @@ export const useApiStore = create(
 
     removeHabit(habit) {
       set(s => {
-        delete s.users[habit.id];
+        delete s.habits[habit.id];
         delete s.userIdToHabitIds[habit.userId];
+      });
+    },
+
+    addMemory(memory) {
+      set(s => {
+        s.memories[memory.id] = memory;
+        if (!s.userIdToMemoryIds[memory.userId]) s.userIdToMemoryIds[memory.userId] = [];
+        s.userIdToMemoryIds[memory.userId]?.push(memory.id);
+      });
+    },
+
+    removeMemory(memory) {
+      set(s => {
+        delete s.memories[memory.id];
+        delete s.userIdToMemoryIds[memory.userId];
       });
     },
   }))
