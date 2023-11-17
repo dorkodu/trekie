@@ -14,10 +14,12 @@ function Profile() {
   const params = useParams();
 
   const username = params["username"];
-  const usernameToId = useApiStore(state => username && state.usernameToUserId[username]);
-  const user = useApiStore(state => usernameToId && state.users[usernameToId]);
+  const userId = useApiStore(state => username && state.usernameToUserId[username]);
+  const user = useApiStore(state => userId && state.users[userId]);
 
   const currentUserId = useApiStore(state => state.userId);
+
+  const previewMemories = useApiStore(state => state.getMemories(userId));
 
   if (!user) {
     return (
@@ -126,7 +128,12 @@ function Profile() {
               Memories
             </ChevronTitle>
 
-            <Memory />
+            {previewMemories.length > 0 ?
+              <Memory memory={previewMemories[0]!} />
+              :
+              <>No memories.</>
+            }
+
 
           </Flex>
 

@@ -12,8 +12,8 @@ function Home() {
   const users = useApiStore(state => state.users);
   const user = userId ? users[userId] : undefined;
 
-  const habits = useApiStore(state => state.habits);
-  const memories = useApiStore(state => state.memories);
+  const previewHabits = useApiStore(state => state.getHabits(userId));
+  const previewMemories = useApiStore(state => state.getMemories(userId));
 
   return (
     <Flex direction="column" m="md" gap="xl">
@@ -68,8 +68,8 @@ function Home() {
           Habits
         </ChevronTitle>
 
-        {Object.values(habits).length > 0 ?
-          <Habit habit={Object.values(habits)[0]!} />
+        {previewHabits.length > 0 ?
+          <Habit habit={previewHabits[0]!} />
           :
           <>No habits.</>
         }
@@ -84,8 +84,8 @@ function Home() {
 
         <Flex direction="row">
 
-          {Object.values(memories).length > 0 ?
-            <Memory memory={Object.values(memories)[0]!} />
+          {previewMemories.length > 0 ?
+            <Memory memory={previewMemories[0]!} />
             :
             <>No memories.</>
           }

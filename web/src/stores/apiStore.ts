@@ -22,9 +22,11 @@ export interface ApiStoreAction {
 
   addHabit: (habit: IHabit) => void;
   removeHabit: (habit: IHabit) => void;
+  getHabits: (userId: string | undefined) => IHabit[];
 
   addMemory: (memory: IMemory) => void;
   removeMemory: (memory: IMemory) => void;
+  getMemories: (userId: string | undefined) => IMemory[];
 }
 
 const initialState: ApiStoreState = {
@@ -40,7 +42,7 @@ const initialState: ApiStoreState = {
 }
 
 export const useApiStore = create(
-  immer<ApiStoreState & ApiStoreAction>((set, _get) => ({
+  immer<ApiStoreState & ApiStoreAction>((set, get) => ({
     ...initialState,
 
     addUser(user) {
@@ -72,6 +74,18 @@ export const useApiStore = create(
       });
     },
 
+    getHabits(userId) {
+      if (!userId) return [];
+
+      const habits = get().habits;
+      const userIdToHabitIds = get().userIdToHabitIds;
+
+      const habitIds = userIdToHabitIds[userId];
+      if (!habitIds) return [];
+
+      return habitIds.map(habitId => habits[habitId]).filter(Boolean) as IHabit[];
+    },
+
     addMemory(memory) {
       set(s => {
         s.memories[memory.id] = memory;
@@ -85,6 +99,18 @@ export const useApiStore = create(
         delete s.memories[memory.id];
         delete s.userIdToMemoryIds[memory.userId];
       });
+    },
+
+    getMemories(userId) {
+      if (!userId) return [];
+      
+      const memories = get().memories;
+      const userIdToMemoryIds = get().userIdToMemoryIds;
+
+      const memoryIds = userIdToMemoryIds[userId];
+      if (!memoryIds) return [];
+
+      return memoryIds.map(memoryId => memories[memoryId]).filter(Boolean) as IMemory[];
     },
   }))
 );
