@@ -10,6 +10,6 @@ COPY ./api /api
 RUN pnpm install --offline && pnpm run build
 
 FROM base
-COPY --from=build /api/dist /api/dist
+COPY --from=build /api/dist /api/package.json /api
 RUN pnpm install --offline --prod
 CMD [ "node", "/api/dist/index.js" ]
