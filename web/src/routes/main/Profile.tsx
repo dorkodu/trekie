@@ -3,11 +3,26 @@ import Goal from "@/components/custom/Goal"
 import Memory from "@/components/custom/Memory"
 import ProfileMenu from "@/components/menus/ProfileMenu"
 import TextParser from "@/components/util/TextParser"
+import { useApiStore } from "@/stores/apiStore"
 import { Anchor, Avatar, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
 import { IconChevronRight, IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
+import { useParams } from "react-router-dom"
 
 function Profile() {
   const theme = useMantineTheme();
+  const params = useParams();
+
+  const username = params["username"];
+  const usernameToId = useApiStore(state => username && state.usernameToId[username]);
+  const user = useApiStore(state => usernameToId && state.users[usernameToId]);
+
+  const currentUserId = useApiStore(state => state.userId);
+
+  if (!user) {
+    return (
+      <>User not found.</>
+    )
+  }
 
   return (
     <Flex direction="column" m="md">
@@ -33,28 +48,29 @@ function Profile() {
           />
 
           <Flex align="center" justify="end" gap="xs" mt="xs">
-            <ProfileMenu />
-            <Button radius="xl">Follow</Button>
+            <ProfileMenu user={user} />
+            {currentUserId !== user.id && <Button radius="xl">Follow</Button>}
           </Flex>
 
           <Flex direction="column" gap="xs">
 
             <Flex direction="column">
               <Flex align="center">
-                <Title order={5}><TextParser ids={["emoji"]} text="John Doe 👑" /></Title>
-                &nbsp;
-                <IconDiscountCheckFilled />
+                <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
+                {user.premium && <>&nbsp;<IconDiscountCheckFilled /></>}
               </Flex>
-              <Text>@johndoe</Text>
+              <Text>@{user.username}</Text>
             </Flex>
 
-            <Text>
-              <TextParser ids={["emoji", "url"]} text="Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com" />
-            </Text>
+            {user.bio &&
+              <Text>
+                <TextParser ids={["emoji", "url"]} text={user.bio} />
+              </Text>
+            }
 
             <Flex gap="xs">
-              <Anchor>123 Followers</Anchor>
-              <Anchor>123 Following</Anchor>
+              <Anchor>{user.followers} Followers</Anchor>
+              <Anchor>{user.following} Following</Anchor>
             </Flex>
 
             <Flex direction="column" align="start" gap="xs">

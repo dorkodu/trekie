@@ -3,10 +3,10 @@ import { immer } from "zustand/middleware/immer";
 import type { IUser } from "@api/types/user";
 
 export interface ApiStoreState {
-  authorized: boolean;
-  user: string | undefined;
+  userId: string | undefined;
 
   users: Record<string, IUser>;
+  usernameToId: Record<string, string>;
 }
 
 export interface ApiStoreAction {
@@ -14,10 +14,10 @@ export interface ApiStoreAction {
 }
 
 const initialState: ApiStoreState = {
-  authorized: false,
-  user: undefined,
+  userId: undefined,
 
   users: {},
+  usernameToId: {},
 }
 
 export const useApiStore = create(

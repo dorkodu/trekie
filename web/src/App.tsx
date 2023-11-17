@@ -25,10 +25,10 @@ function App() {
         following: 123,
       }
 
-      s.authorized = true;
-      s.user = user.id;
+      s.userId = user.id;
 
       s.users[user.id] = user;
+      s.usernameToId[user.username] = user.id;
     });
   }, []);
 

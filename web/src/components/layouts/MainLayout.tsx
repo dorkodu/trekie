@@ -3,8 +3,9 @@ import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper
 import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconPencilPlus, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
-import Emoji from "../Emoji";
 import ColorToggle from "../ColorToggle";
+import { useApiStore } from "@/stores/apiStore";
+import TextParser from "../util/TextParser";
 
 function MainLayout() {
   const theme = useMantineTheme();
@@ -13,6 +14,10 @@ function MainLayout() {
   const [opened, { open, close }] = useDisclosure(false);
 
   const route = useAppStore(state => state.route);
+
+  const userId = useApiStore(state => state.userId);
+  const users = useApiStore(state => state.users);
+  const user = userId ? users[userId] : undefined;
 
   const closeNavigate = (route: string) => {
     close();
@@ -96,25 +101,21 @@ function MainLayout() {
       >
         <Flex direction="column" gap="md">
 
-          <Button
-            variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}
-            onClick={() => closeNavigate("/profile/johndoe")}
-          >
-            <Flex align="center" gap="xs" w="100%">
-              <Avatar src="/favicon.svg" size={32} />
-              <Flex direction="column" align="start" style={{ flex: 1 }}>
-                <Title order={5}>John Doe</Title>
-                <Text>@johndoe</Text>
+          {user &&
+            <Button
+              variant="default" p="md" h="auto" styles={{ label: { flex: 1 } }}
+              onClick={() => closeNavigate(`/profile/${user.username}`)}
+            >
+              <Flex align="center" gap="xs" w="100%">
+                <Avatar src="/favicon.svg" size={32} />
+                <Flex direction="column" align="start" style={{ flex: 1 }}>
+                  <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
+                  <Text>@{user.username}</Text>
+                </Flex>
+                <IconChevronRight />
               </Flex>
-              <IconChevronRight />
-            </Flex>
-          </Button>
-
-          <Button onClick={() => closeNavigate("/join")}>
-            <Emoji emoji="🤩" size={24} />
-            &nbsp;
-            <Title order={5}>Join Trekie, Today, for Free</Title>
-          </Button>
+            </Button>
+          }
 
           <Button variant="subtle" onClick={() => closeNavigate("/premium")}>
             <IconCashBanknote />

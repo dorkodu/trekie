@@ -1,8 +1,16 @@
+import { useApiStore } from "@/stores/apiStore";
 import { useAppStore } from "@/stores/appStore"
+import { IUser } from "@api/types/user"
 import { ActionIcon, Menu } from "@mantine/core"
 import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare } from "@tabler/icons-react"
 
-function ProfileMenu() {
+interface Props {
+  user: IUser;
+}
+
+function ProfileMenu({ user }: Props) {
+  const currentUserId = useApiStore(state => state.userId);
+
   const onShare = () => { }
   const onClipboard = () => { }
   const onEdit = () => { useAppStore.setState(s => { s.modals.editProfile.opened = true }) }
@@ -27,15 +35,21 @@ function ProfileMenu() {
           Copy To Clipboard
         </Menu.Item>
 
-        <Menu.Divider />
+        {currentUserId &&
+          <>
+            <Menu.Divider />
 
-        <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-          Edit Profile
-        </Menu.Item>
-
-        <Menu.Item onClick={onReport} color="red" leftSection={<IconExclamationCircle />}>
-          Report User
-        </Menu.Item>
+            {currentUserId === user.id ?
+              <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
+                Edit Profile
+              </Menu.Item>
+              :
+              <Menu.Item onClick={onReport} color="red" leftSection={<IconExclamationCircle />}>
+                Report User
+              </Menu.Item>
+            }
+          </>
+        }
 
       </Menu.Dropdown>
 
