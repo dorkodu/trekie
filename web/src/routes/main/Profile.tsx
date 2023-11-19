@@ -8,7 +8,7 @@ import { util } from "@/lib/util"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
 import { Anchor, Avatar, Badge, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
-import { IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
+import { IconCalendarMonth, IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 
 function Profile() {
@@ -71,11 +71,11 @@ function Profile() {
             <Flex direction="column">
               <Flex align="start">
                 <Title order={5} className={wrapContent}>
-                  <TextParser ids={["emoji"]} text={user.name} />
-                  <Flex align="center" display="inline-flex">
+                  <Flex align="center" display="inline-flex" style={{ float: "right" }}>
                     {user.premium && <>&nbsp;<IconDiscountCheckFilled style={{ flexShrink: 0 }} /></>}
                     {user.follower && <>&nbsp;<Badge size="xs" style={{ flexShrink: 0 }} >Follows you</Badge></>}
                   </Flex>
+                  <TextParser ids={["emoji"]} text={user.name} />
                 </Title>
               </Flex>
               <Text className={wrapContent}>@{user.username}</Text>
@@ -94,6 +94,11 @@ function Profile() {
               <Anchor title={`${util.formatNumber(user.followingCount, true)} Following`}>
                 {util.formatNumber(user.followingCount)} Following
               </Anchor>
+            </Flex>
+
+            <Flex gap="xs">
+              <IconCalendarMonth />
+              <Text>{util.formatDate(user.joinDate)}</Text>
             </Flex>
 
             <Flex direction="column" align="start" gap="xs">

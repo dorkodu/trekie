@@ -19,8 +19,9 @@ function App() {
     // TODO: Perform authorization logic
     const user: IUser = {
       id: Date.now().toString(),
-      name: "John Doe 👑",
-      username: "johndoe",
+      joinDate: Date.now(),
+      name: "John Doe 👑wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+      username: "johndoewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
       bio: "Hello, world!\nThis is my biography. I am John Doe. 👋\nThis is my website https://dorkodu.com",
       followerCount: 123,
       followingCount: 123,
@@ -35,8 +36,9 @@ function App() {
 
     const testUser: IUser = {
       id: (Date.now() + 1).toString(),
-      name: "Test User 🤖",
-      username: "testuser",
+      joinDate: Date.now(),
+      name: "Test User 🤖wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+      username: "testuserwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
       bio: "👋 Hey, I am a test user!",
       followerCount: 1234,
       followingCount: 1234567,

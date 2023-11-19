@@ -1,6 +1,8 @@
 export interface IUser {
   id: string;
 
+  joinDate: number;
+
   username: string;
   name: string;
 
