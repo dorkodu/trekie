@@ -5,7 +5,7 @@ import Memory from "@/components/custom/Memory"
 import ProfileMenu from "@/components/menus/ProfileMenu"
 import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
-import { Anchor, Avatar, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
+import { Anchor, Avatar, Badge, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
 import { IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 
@@ -70,6 +70,7 @@ function Profile() {
               <Flex align="center">
                 <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
                 {user.premium && <>&nbsp;<IconDiscountCheckFilled /></>}
+                {user.follower && <>&nbsp;<Badge size="xs">Follows you</Badge></>}
               </Flex>
               <Text>@{user.username}</Text>
             </Flex>
