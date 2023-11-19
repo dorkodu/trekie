@@ -38,7 +38,8 @@ function Profile() {
         <Card.Section
           h={200}
           style={{
-            backgroundImage: "url(https://i.pinimg.com/564x/80/12/d1/8012d171d4d5bcfea05ef04af626b3a3.jpg)",
+            backgroundImage: "",
+            backgroundColor: "var(--mantine-color-body)",
           }}
         />
 

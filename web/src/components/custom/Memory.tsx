@@ -1,6 +1,6 @@
 import { useApiStore } from "@/stores/apiStore";
 import { IMemory } from "@api/types/memory"
-import { ActionIcon, Avatar, Card, Flex, Image, Text } from "@mantine/core"
+import { ActionIcon, Avatar, Card, Flex, Text } from "@mantine/core"
 import { IconDots, IconStar } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { wrapContent } from "@/styles/shared.css";
@@ -16,14 +16,13 @@ function Memory({ memory }: Props) {
   return (
     <Card withBorder w={200}>
 
-      <Card.Section>
-        <Image
-          src="https://i.pinimg.com/564x/80/12/d1/8012d171d4d5bcfea05ef04af626b3a3.jpg"
-          alt="Image of a memory"
-          w={200}
-          h={150}
-        />
-      </Card.Section>
+      <Card.Section
+        style={{
+          backgroundImage: "",
+          backgroundColor: "var(--mantine-color-body)",
+        }}
+        w={200} h={150}
+      />
 
       <Flex direction="column" gap="xs" mt="md">
 
@@ -32,7 +31,7 @@ function Memory({ memory }: Props) {
         </Text>
 
         <Flex gap="xs">
-          <Avatar src="/favicon.svg" size={32} />
+          <Avatar src="/assets/avatar.webp" size={32} />
           <Flex direction="column">
             <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
               <Text truncate><TextParser ids={["emoji"]} text={user?.name ?? ""} /></Text>
@@ -51,7 +50,7 @@ function Memory({ memory }: Props) {
 
       </Flex>
 
-    </Card>
+    </Card >
   )
 }
 

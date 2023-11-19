@@ -120,7 +120,7 @@ function MainLayout() {
               onClick={() => closeNavigate(`/profile/${user.username}`)}
             >
               <Flex align="center" gap="xs" w="100%">
-                <Avatar src="/favicon.svg" size={32} />
+                <Avatar src="/assets/avatar.webp" size={32} />
                 <Flex direction="column" align="start">
                   <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
                     <Title order={5} className={truncate}><TextParser ids={["emoji"]} text={user.name} /></Title>

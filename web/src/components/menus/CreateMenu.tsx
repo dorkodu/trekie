@@ -1,7 +1,7 @@
 import { useAppStore } from "@/stores/appStore";
-import { ActionIcon, Button, Flex, Image, Menu, Title } from "@mantine/core"
+import { ActionIcon, Button, Flex, Menu, Title } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { IconPencilPlus } from "@tabler/icons-react"
+import { IconChecklist, IconNotebook, IconPencilPlus, IconTargetArrow } from "@tabler/icons-react"
 
 interface Props {
 
@@ -34,19 +34,19 @@ function CreateMenu({ }: Props) {
         <Flex direction="column" gap={4}>
           <Button variant="default" onClick={onHabit} h="auto" py="md" styles={{ label: { flex: 1 } }}>
             <Flex align="center" gap="md">
-              <Image src="/favicon.svg" w={32} h={32} />
+              <IconChecklist width={32} height={32} />
               <Title order={5}>Create a habit</Title>
             </Flex>
           </Button>
           <Button variant="default" onClick={onGoal} h="auto" py="md" styles={{ label: { flex: 1 } }}>
             <Flex align="center" gap="md">
-              <Image src="/favicon.svg" w={32} h={32} />
+              <IconTargetArrow width={32} height={32} />
               <Title order={5}>Create a goal</Title>
             </Flex>
           </Button>
           <Button variant="default" onClick={onMemory} h="auto" py="md" styles={{ label: { flex: 1 } }}>
             <Flex align="center" gap="md">
-              <Image src="/favicon.svg" w={32} h={32} />
+              <IconNotebook width={32} height={32} />
               <Title order={5}>Create a memory</Title>
             </Flex>
           </Button>
