@@ -8,8 +8,11 @@ import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
 import { Button, Divider, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
+import { useNavigate } from "react-router-dom"
 
 function Home() {
+  const navigate = useNavigate();
+
   const userId = useApiStore(state => state.userId);
   const users = useApiStore(state => state.users);
   const user = userId ? users[userId] : undefined;
@@ -62,7 +65,7 @@ function Home() {
         </ChevronTitle>
 
         {previewHabits.length > 0 ?
-          <Habit habit={previewHabits[0]!} />
+          <Habit habit={previewHabits[0]!} onClick={() => navigate(`/habits/${user?.username}`)} />
           :
           <>No habits.</>
         }

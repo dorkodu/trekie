@@ -5,13 +5,17 @@ import { IHabit } from "@api/types/habit"
 import { Button, Card, Flex, Paper, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
+import { MouseEvent } from "react";
 
 interface Props {
   habit: IHabit;
+
+  onClick?: () => void;
 }
 
-function Habit({ habit }: Props) {
-  const onChangeCount = (count: number) => {
+function Habit({ habit, onClick }: Props) {
+  const onChangeCount = (ev: MouseEvent, count: number) => {
+    ev.stopPropagation();
     useApiStore.setState(s => {
       const h = s.habits[habit.id];
       if (!h) return;
@@ -20,10 +24,10 @@ function Habit({ habit }: Props) {
   }
 
   return (
-    <Card withBorder p={0} mb="xs" style={{ overflow: "visible" }}>
+    <Card withBorder p={0} mb="xs" style={{ overflow: "visible" }} onClick={onClick}>
 
       <Button.Group h={80}>
-        <Button h="auto" onClick={() => onChangeCount(-1)}>
+        <Button h="auto" onClick={(ev) => onChangeCount(ev, -1)}>
           <IconMinus />
         </Button>
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
@@ -32,7 +36,7 @@ function Habit({ habit }: Props) {
             <Text truncate><TextParser ids={["emoji", "url", "username"]} text={habit.description} /></Text>
           </Flex>
         </Flex>
-        <Button h="auto" onClick={() => onChangeCount(+1)}>
+        <Button h="auto" onClick={(ev) => onChangeCount(ev, +1)}>
           <IconPlus />
         </Button>
       </Button.Group>

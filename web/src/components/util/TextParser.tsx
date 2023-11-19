@@ -13,7 +13,13 @@ type ParseableId = keyof typeof parseables;
 const parseables = {
   url: {
     regex: urlRegex,
-    component: ({ text }: { text: string }) => <Anchor href={text} target="_blank">{text}</Anchor>
+    component: ({ text }: { text: string }) => {
+      const onClick = (ev: MouseEvent) => { ev.stopPropagation() }
+
+      return (
+        <Anchor href={text} target="_blank" onClick={onClick}>{text}</Anchor>
+      )
+    }
   },
   emoji: {
     regex: emojiRegex,
@@ -23,7 +29,12 @@ const parseables = {
     regex: usernameRegex,
     component: ({ text }: { text: string }) => {
       const navigate = useNavigate();
-      const onClick = (ev: MouseEvent) => { ev.preventDefault(); navigate(`/profile/${text.split("@")[1]}`); }
+      const onClick = (ev: MouseEvent) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        navigate(`/profile/${text.split("@")[1]}`);
+      }
+
       return <Anchor href={text} onClick={onClick}>{text}</Anchor>
     }
   }

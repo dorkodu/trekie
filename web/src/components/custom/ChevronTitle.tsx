@@ -12,7 +12,7 @@ function ChevronTitle({ children, href, order }: React.PropsWithChildren<Props>)
 
   const preventNavigate = (ev: React.MouseEvent, route: string) => {
     ev.preventDefault();
-    navigate(route);
+    route && navigate(route);
   }
 
   return (
