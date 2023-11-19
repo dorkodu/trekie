@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const urlRegex = urlRegexp();
 const emojiRegex = emojiRegexp();
-const usernameRegex = new RegExp("(?:@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])", "g");
+const usernameRegex = new RegExp("(?<!\\S)(?:@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])", "g");
 
 type ParseableId = keyof typeof parseables;
 const parseables = {
