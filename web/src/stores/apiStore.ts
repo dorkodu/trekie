@@ -74,11 +74,17 @@ export const useApiStore = create(
 
     followUser(user) {
       set(state => {
+        const currentUserId = state.userId;
+        const currentUser = currentUserId && state.users[currentUserId];
+        if (!currentUser) return;
+
         const targetUserId = user.id;
         const targetUser = targetUserId && state.users[targetUserId];
         if (!targetUser) return;
 
         targetUser.following = !targetUser.following;
+        targetUser.followerCount += targetUser.following ? +1 : -1;
+        currentUser.followingCount += targetUser.following ? +1 : -1;
       });
     },
 
@@ -143,6 +149,7 @@ export const useApiStore = create(
         if (!targetMemory) return;
 
         targetMemory.favourited = !targetMemory.favourited;
+        targetMemory.favourites += targetMemory.favourited ? +1 : -1;
       });
     },
 
