@@ -22,12 +22,24 @@ function App() {
       name: "John Doe 👑",
       username: "johndoe",
       bio: "Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com",
-      followers: 123,
-      following: 123,
+      followerCount: 123,
+      followingCount: 123,
     }
     useAppStore.setState(s => { s.loading.auth = false });
     useApiStore.setState(s => { s.userId = user.id });
     useApiStore.getState().addUser(user);
+
+    const testUser: IUser = {
+      id: (Date.now() + 1).toString(),
+      name: "Test User 🤖",
+      username: "testuser",
+      bio: "👋 Hey, I am a test user!",
+      followerCount: 1234,
+      followingCount: 1234567,
+      premium: true,
+      follower: true,
+    }
+    useApiStore.getState().addUser(testUser);
   }, []);
 
   const location = useLocation();

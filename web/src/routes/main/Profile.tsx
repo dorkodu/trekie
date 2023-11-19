@@ -53,7 +53,15 @@ function Profile() {
 
           <Flex align="center" justify="end" gap="xs" mt="xs">
             <ProfileMenu user={user} />
-            {currentUserId !== user.id && <Button radius="xl">Follow</Button>}
+            {currentUserId !== user.id &&
+              <Button
+                onClick={() => useApiStore.getState().followUser(user)}
+                variant={!user.following ? "filled" : "default"}
+                radius="xl"
+              >
+                {!user.following ? "Follow" : "Unfollow"}
+              </Button>
+            }
           </Flex>
 
           <Flex direction="column" gap="xs">
@@ -73,8 +81,8 @@ function Profile() {
             }
 
             <Flex gap="xs">
-              <Anchor>{user.followers} Followers</Anchor>
-              <Anchor>{user.following} Following</Anchor>
+              <Anchor>{user.followerCount} Followers</Anchor>
+              <Anchor>{user.followingCount} Following</Anchor>
             </Flex>
 
             <Flex direction="column" align="start" gap="xs">

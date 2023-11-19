@@ -23,6 +23,8 @@ export interface ApiStoreAction {
   addUser: (user: IUser) => void;
   removeUser: (user: IUser) => void;
 
+  followUser: (user: IUser) => void;
+
   addHabit: (habit: IHabit) => void;
   removeHabit: (habit: IHabit) => void;
   getHabits: (userId: string | undefined) => IHabit[];
@@ -65,6 +67,16 @@ export const useApiStore = create(
       set(s => {
         delete s.users[user.id];
         delete s.usernameToUserId[user.username];
+      });
+    },
+
+    followUser(user) {
+      set(state => {
+        const targetUserId = user.id;
+        const targetUser = targetUserId && state.users[targetUserId];
+        if (!targetUser) return;
+
+        targetUser.following = !targetUser.following;
       });
     },
 
