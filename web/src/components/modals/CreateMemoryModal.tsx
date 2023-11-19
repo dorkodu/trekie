@@ -34,7 +34,7 @@ function CreateMemoryModal() {
       lockScroll={false}
       centered
       size={360}
-      title="Create a goal"
+      title="Create a memory"
     >
       <Flex direction="column" gap="md">
 

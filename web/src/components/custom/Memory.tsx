@@ -3,6 +3,7 @@ import { IMemory } from "@api/types/memory"
 import { ActionIcon, Avatar, Card, Flex, Image, Text } from "@mantine/core"
 import { IconDots, IconStar } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
+import { wrapContent } from "@/styles/shared.css";
 
 interface Props {
   memory: IMemory;
@@ -25,7 +26,7 @@ function Memory({ memory }: Props) {
 
       <Flex direction="column" gap="xs" mt="md">
 
-        <Text lineClamp={3}>
+        <Text lineClamp={3} className={wrapContent}>
           <TextParser ids={["emoji", "url"]} text={memory.description} />
         </Text>
 

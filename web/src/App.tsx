@@ -21,7 +21,7 @@ function App() {
       id: Date.now().toString(),
       name: "John Doe 👑",
       username: "johndoe",
-      bio: "Hello, world! This is my biography. I am John Doe. 👋 This is my website https://dorkodu.com",
+      bio: "Hello, world!\nThis is my biography. I am John Doe. 👋\nThis is my website https://dorkodu.com",
       followerCount: 123,
       followingCount: 123,
     }

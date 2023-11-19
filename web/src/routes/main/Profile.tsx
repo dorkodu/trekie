@@ -5,6 +5,7 @@ import Memory from "@/components/custom/Memory"
 import ProfileMenu from "@/components/menus/ProfileMenu"
 import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
+import { wrapContent } from "@/styles/shared.css"
 import { Anchor, Avatar, Badge, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
 import { IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
@@ -76,7 +77,7 @@ function Profile() {
             </Flex>
 
             {user.bio &&
-              <Text>
+              <Text className={wrapContent}>
                 <TextParser ids={["emoji", "url"]} text={user.bio} />
               </Text>
             }
