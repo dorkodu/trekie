@@ -82,9 +82,11 @@ export const useApiStore = create(
         const targetUser = targetUserId && state.users[targetUserId];
         if (!targetUser) return;
 
-        targetUser.following = !targetUser.following;
-        targetUser.followerCount += targetUser.following ? +1 : -1;
-        currentUser.followingCount += targetUser.following ? +1 : -1;
+        const newState = !targetUser.following;
+
+        targetUser.following = newState;
+        targetUser.followerCount += newState ? +1 : -1;
+        currentUser.followingCount += newState ? +1 : -1;
       });
     },
 
@@ -148,8 +150,10 @@ export const useApiStore = create(
         const targetMemory = targetMemoryId && state.memories[targetMemoryId];
         if (!targetMemory) return;
 
-        targetMemory.favourited = !targetMemory.favourited;
-        targetMemory.favourites += targetMemory.favourited ? +1 : -1;
+        const newState = !targetMemory.favourited;
+
+        targetMemory.favourited = newState;
+        targetMemory.favourites += newState ? +1 : -1;
       });
     },
 
