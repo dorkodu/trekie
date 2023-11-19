@@ -17,7 +17,7 @@ function Goal({ goal }: Props) {
 
         <Flex direction="column">
           <Title order={5}><TextParser ids={["emoji"]} text={goal.title} /></Title>
-          <Text className={wrapContent}><TextParser ids={["emoji", "url"]} text={goal.description} /></Text>
+          <Text className={wrapContent}><TextParser ids={["emoji", "url", "username"]} text={goal.description} /></Text>
           <Flex mt="xs" gap="xs">
             <Badge>{goal.tasksDone} / {goal.tasksTodo} Tasks</Badge>
           </Flex>

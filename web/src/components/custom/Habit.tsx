@@ -4,6 +4,7 @@ import { truncate } from "@/styles/shared.css";
 import { IHabit } from "@api/types/habit"
 import { Button, Card, Flex, Paper, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
+import TextParser from "../util/TextParser";
 
 interface Props {
   habit: IHabit;
@@ -27,8 +28,8 @@ function Habit({ habit }: Props) {
         </Button>
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
           <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
-            <Title order={5} className={truncate}>{habit.title}</Title>
-            <Text truncate>{habit.description}</Text>
+            <Title order={5} className={truncate}><TextParser ids={["emoji"]} text={habit.title} /></Title>
+            <Text truncate><TextParser ids={["emoji", "url", "username"]} text={habit.description} /></Text>
           </Flex>
         </Flex>
         <Button h="auto" onClick={() => onChangeCount(+1)}>

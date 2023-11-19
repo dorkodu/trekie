@@ -84,7 +84,7 @@ function Profile() {
 
             {user.bio &&
               <Text className={wrapContent}>
-                <TextParser ids={["emoji", "url"]} text={user.bio} />
+                <TextParser ids={["emoji", "url", "username"]} text={user.bio} />
               </Text>
             }
 

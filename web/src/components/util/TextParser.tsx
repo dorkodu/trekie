@@ -6,6 +6,7 @@ import emojiRegexp from "emoji-regex";
 
 const urlRegex = urlRegexp();
 const emojiRegex = emojiRegexp();
+const usernameRegex = new RegExp("(?:\\s@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])", "g");
 
 type ParseableId = keyof typeof parseables;
 const parseables = {
@@ -17,6 +18,10 @@ const parseables = {
     regex: emojiRegex,
     component: ({ text }: { text: string }) => <Emoji emoji={text} />
   },
+  username: {
+    regex: usernameRegex,
+    component: ({ text }: { text: string }) => <Anchor href={text} target="_blank">{text}</Anchor>
+  }
 }
 
 interface Props {
