@@ -20,8 +20,8 @@ function App() {
     const user: IUser = {
       id: Date.now().toString(),
       joinDate: Date.now(),
-      name: "John Doe 👑wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-      username: "johndoewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+      name: "John Doe 👑",
+      username: "johndoe",
       bio: "Hello, world!\nThis is my biography. I am John Doe. 👋\nThis is my website https://dorkodu.com",
       followerCount: 123,
       followingCount: 123,
@@ -30,15 +30,15 @@ function App() {
     useApiStore.setState(s => { s.userId = user.id });
     useApiStore.getState().addUser(user);
 
-    useApiStore.getState().addHabit({ id: "0", userId: user.id, title: "test @johndoe", description: "test @johndoe", count: 1234 })
-    useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test @johndoe", description: "test @johndoe. awdaw johndoe@gmail.com test", tasksTodo: 10, tasksDone: 5 })
-    useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test @johndoe", favourites: 1234567 })
+    useApiStore.getState().addHabit({ id: "0", userId: user.id, title: "test @johndoe", description: "test @testuser", count: 1234 })
+    useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test @testuser", description: "test @johndoe. awdaw johndoe@gmail.com test", tasksTodo: 10, tasksDone: 5 })
+    useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test @testuser", favourites: 1234567 })
 
     const testUser: IUser = {
       id: (Date.now() + 1).toString(),
       joinDate: Date.now(),
-      name: "Test User 🤖wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-      username: "testuserwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+      name: "Test User 🤖",
+      username: "testuser",
       bio: "👋 Hey, I am a test user!",
       followerCount: 1234,
       followingCount: 1234567,

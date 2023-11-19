@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
+import React, { MouseEvent, useMemo } from "react";
 import { Anchor } from "@mantine/core";
 import Emoji from "../Emoji";
 import urlRegexp from "url-regex";
 import emojiRegexp from "emoji-regex";
+import { useNavigate } from "react-router-dom";
 
 const urlRegex = urlRegexp();
 const emojiRegex = emojiRegexp();
-const usernameRegex = new RegExp("(?:\\s@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])", "g");
+const usernameRegex = new RegExp("(?:@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])", "g");
 
 type ParseableId = keyof typeof parseables;
 const parseables = {
@@ -20,7 +21,11 @@ const parseables = {
   },
   username: {
     regex: usernameRegex,
-    component: ({ text }: { text: string }) => <Anchor href={text} target="_blank">{text}</Anchor>
+    component: ({ text }: { text: string }) => {
+      const navigate = useNavigate();
+      const onClick = (ev: MouseEvent) => { ev.preventDefault(); navigate(`/profile/${text.split("@")[1]}`); }
+      return <Anchor href={text} onClick={onClick}>{text}</Anchor>
+    }
   }
 }
 
