@@ -99,7 +99,7 @@ function Profile() {
 
             <Flex gap="xs">
               <IconCalendarMonth />
-              <Text>{util.formatDate(user.joinDate)}</Text>
+              <Text>Joined {util.formatDate(user.joinDate)}</Text>
             </Flex>
 
 
