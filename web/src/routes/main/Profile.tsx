@@ -43,11 +43,11 @@ function Profile() {
         <Flex direction="column" gap="md">
 
           <Avatar
-            src="https://avatars.githubusercontent.com/u/50113500?v=4"
+            src="/assets/avatar.webp"
             radius={80}
             size={80}
             mt={-40 + (px(theme.spacing.xs) as number)}
-            style={{ border: `${rem(2)} solid var(--mantine-color-body)` }}
+            style={{ border: `${rem(2)} solid var(--mantine-color-body)`, backgroundColor: "var(--mantine-color-body)" }}
             pos="absolute"
           />
 

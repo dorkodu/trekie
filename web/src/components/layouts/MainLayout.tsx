@@ -119,7 +119,7 @@ function MainLayout() {
               onClick={() => closeNavigate(`/profile/${user.username}`)}
             >
               <Flex align="center" gap="xs" w="100%">
-                <Avatar src="/favicon.svg" size={32} />
+                <Avatar src="/assets/avatar.webp" size={32} />
                 <Flex direction="column" align="start" style={{ flex: 1 }}>
                   <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
                   <Text>@{user.username}</Text>
@@ -191,24 +191,3 @@ function MainLayout() {
 }
 
 export default MainLayout
-
-/*
-
-          <Flex align="center" justify="center" gap="xs" h={64}>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/home")}>
-              <IconHome />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/explore")}>
-              <IconSearch />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/track")}>
-              <IconChecklist />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/community")}>
-              <IconUsers />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/marketplace")}>
-              <IconBuildingStore />
-            </ActionIcon>
-          </Flex>
-*/
