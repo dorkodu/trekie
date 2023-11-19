@@ -8,7 +8,6 @@ import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
 import { Button, Divider, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
-import { IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 
 function Home() {
   const userId = useApiStore(state => state.userId);

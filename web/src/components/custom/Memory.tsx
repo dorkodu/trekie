@@ -22,7 +22,7 @@ function Memory({ memory }: Props) {
         backgroundColor: "var(--mantine-color-body)",
       }}
     >
-      <Overlay backgroundOpacity={0} m="xs">
+      <Overlay backgroundOpacity={0} m="xs" zIndex={99}>
 
         <Flex gap="xs" align="center">
           <Avatar src="/assets/avatar.webp" size={32} />
