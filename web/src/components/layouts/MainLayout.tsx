@@ -1,5 +1,5 @@
 import { useAppStore } from "@/stores/appStore";
-import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, px, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, px, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
@@ -10,6 +10,7 @@ import CreateMenu from "../menus/CreateMenu";
 
 function MainLayout() {
   const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
   const navigate = useNavigate();
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -47,10 +48,7 @@ function MainLayout() {
               href="/home"
               onClick={(ev) => preventNavigate(ev, "/home")}
             >
-              <Flex align="center" gap="xs">
-                <Image src="/favicon.svg" width={32} height={32} />
-                <Title order={3}>Trekie</Title>
-              </Flex>
+              <Image src={colorScheme === "dark" ? "/brand-light.svg" : "brand-dark.svg"} height={32} />
             </Anchor>
 
             <ActionIcon variant="subtle" size={32} onClick={() => open()}>
