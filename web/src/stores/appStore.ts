@@ -1,7 +1,16 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-export type Route = "home" | "explore" | "track" | "community" | "marketplace" | "any";
+export type Route =
+  "home" |
+  "explore" |
+  "track" |
+  "community" |
+  "marketplace" |
+  "premium" |
+  "archive" |
+  "settings" |
+  "any";
 
 export interface AppStoreState {
   online: boolean;

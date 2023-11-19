@@ -137,25 +137,25 @@ function MainLayout() {
             </Button>
           }
 
-          <Button variant="subtle" p={0} onClick={() => closeNavigate("/premium")}>
+          <Button variant="subtle" c={getRouteColor("premium")} p={0} onClick={() => closeNavigate("/premium")}>
             <IconCashBanknote />
             &nbsp;
             <Title order={5}>Premium</Title>
           </Button>
 
-          <Button variant="subtle" p={0} onClick={() => closeNavigate("/archive")}>
+          <Button variant="subtle" c={getRouteColor("archive")} p={0} onClick={() => closeNavigate("/archive")}>
             <IconArchive />
             &nbsp;
             <Title order={5}>Archive</Title>
           </Button>
 
-          <Button variant="subtle" p={0} onClick={() => closeNavigate("/settings")}>
+          <Button variant="subtle" c={getRouteColor("settings")} p={0} onClick={() => closeNavigate("/settings")}>
             <IconSettings />
             &nbsp;
             <Title order={5}>Settings</Title>
           </Button>
 
-          <Button variant="subtle" p={0}>
+          <Button variant="subtle" c="var(--text-color)" p={0}>
             <IconExternalLink />
             &nbsp;
             <Title order={5}>Dorkodu Account</Title>

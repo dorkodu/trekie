@@ -59,6 +59,10 @@ function App() {
     else if (location.pathname.indexOf("/community") !== -1) route = "community";
     else if (location.pathname.indexOf("/marketplace") !== -1) route = "marketplace";
 
+    else if (location.pathname.indexOf("/premium") !== -1) route = "premium";
+    else if (location.pathname.indexOf("/archive") !== -1) route = "archive";
+    else if (location.pathname.indexOf("/settings") !== -1) route = "settings";
+
     useAppStore.setState(s => { s.route = route; });
   }, [location.pathname]);
 
