@@ -1,6 +1,6 @@
 import { Route, useAppStore } from "@/stores/appStore";
 import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, MantineColor, Paper, Text, Title, px, useMantineColorScheme, useMantineTheme } from "@mantine/core";
-import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
+import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconRoad, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
 import ColorToggle from "../ColorToggle";
@@ -88,7 +88,7 @@ function MainLayout() {
             </Button>
             <Button variant="subtle" c={getRouteColor("life")} p={0} w="20%" h="auto" onClick={() => navigate("/life")}>
               <Flex direction="column" align="center">
-                <IconChecklist />
+                <IconRoad />
                 <Text fz={10}>Life</Text>
               </Flex>
             </Button>
