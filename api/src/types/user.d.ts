@@ -1,12 +1,17 @@
 export interface IUser {
   id: string;
 
-  joinDate: number;
-
   username: string;
   name: string;
 
   bio?: string;
+
+  joinDate: number;
+
+  dailyXpTarget: number;
+  dailyXpCurrent: number;
+  totalXp: number;
+  streaks: number;
 
   followerCount: number;
   followingCount: number;

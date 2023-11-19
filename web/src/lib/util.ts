@@ -32,6 +32,10 @@ export function formatNumber(number: number, long?: boolean) {
   return Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(number);
 }
 
+export function formatPercent(number: number) {
+  return Intl.NumberFormat("en", { notation: "compact", style: "percent" }).format(number);
+}
+
 export function relativeDate(date: number) {
   const current = new Date();
   const target = new Date(date);

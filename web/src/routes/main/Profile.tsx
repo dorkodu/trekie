@@ -7,7 +7,7 @@ import TextParser from "@/components/util/TextParser"
 import { util } from "@/lib/util"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
-import { Anchor, Avatar, Badge, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
+import { Anchor, Avatar, Badge, Button, Card, Divider, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
 import { IconCalendarMonth, IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 
@@ -102,39 +102,42 @@ function Profile() {
               <Text>{util.formatDate(user.joinDate)}</Text>
             </Flex>
 
-            <Flex direction="column" align="start" gap="xs">
 
-              <Paper withBorder p="md">
-                <Flex align="center" gap="xs">
-                  Momentum
-                  <Flex gap="xs">
+            <Paper withBorder p="md">
+              <Flex justify="space-evenly">
+                <Flex direction="column" align="center">
+                  <Flex align="center">
                     <IconRocket />
-                    <Text>80%</Text>
+                    &nbsp;
+                    <Text>{util.formatPercent(user.dailyXpCurrent / user.dailyXpTarget)}</Text>
                   </Flex>
+                  <Text size="xs">Momentum</Text>
                 </Flex>
-              </Paper>
 
-              <Paper withBorder p="md">
-                <Flex align="center" gap="xs">
-                  Experience
-                  <Flex gap="xs">
+                <Divider orientation="vertical" />
+
+                <Flex direction="column" align="center">
+                  <Flex align="center">
                     <IconStarFilled />
-                    <Text>964</Text>
+                    &nbsp;
+                    <Text title={util.formatNumber(user.totalXp, true)}>{util.formatNumber(user.totalXp)}</Text>
                   </Flex>
+                  <Text size="xs">Experience</Text>
                 </Flex>
-              </Paper>
 
-              <Paper withBorder p="md">
-                <Flex align="center" gap="xs">
-                  Streaks
-                  <Flex gap="xs">
+                <Divider orientation="vertical" />
+
+                <Flex direction="column" align="center">
+                  <Flex align="center">
                     <IconFlame />
-                    <Text>6 days</Text>
+                    &nbsp;
+                    <Text title={util.formatNumber(user.streaks, true)}>{util.formatNumber(user.streaks)}</Text>
                   </Flex>
+                  <Text size="xs">Streaks</Text>
                 </Flex>
-              </Paper>
+              </Flex>
 
-            </Flex>
+            </Paper>
 
           </Flex>
 

@@ -25,6 +25,10 @@ function App() {
       bio: "Hello, world!\nThis is my biography. I am John Doe. 👋\nThis is my website https://dorkodu.com",
       followerCount: 123,
       followingCount: 123,
+      dailyXpCurrent: 100,
+      dailyXpTarget: 57,
+      totalXp: 3464,
+      streaks: 10,
     }
     useAppStore.setState(s => { s.loading.auth = false });
     useApiStore.setState(s => { s.userId = user.id });
@@ -44,6 +48,10 @@ function App() {
       followingCount: 1234567,
       premium: true,
       follower: true,
+      dailyXpCurrent: 99,
+      dailyXpTarget: 577,
+      totalXp: 346444,
+      streaks: 10123,
     }
     useApiStore.getState().addUser(testUser);
   }, []);
