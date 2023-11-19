@@ -29,6 +29,10 @@ function App() {
     useApiStore.setState(s => { s.userId = user.id });
     useApiStore.getState().addUser(user);
 
+    useApiStore.getState().addHabit({ id: "0", userId: user.id, title: "test", description: "test", count: 1234 })
+    useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test", description: "test", tasksTodo: 10, tasksDone: 5 })
+    useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test", favourites: 1234567 })
+
     const testUser: IUser = {
       id: (Date.now() + 1).toString(),
       name: "Test User 🤖",
