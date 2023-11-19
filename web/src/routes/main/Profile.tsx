@@ -4,6 +4,7 @@ import Goal from "@/components/custom/Goal"
 import Memory from "@/components/custom/Memory"
 import ProfileMenu from "@/components/menus/ProfileMenu"
 import TextParser from "@/components/util/TextParser"
+import { util } from "@/lib/util"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
 import { Anchor, Avatar, Badge, Button, Card, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
@@ -68,12 +69,16 @@ function Profile() {
           <Flex direction="column" gap="xs">
 
             <Flex direction="column">
-              <Flex align="center">
-                <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
-                {user.premium && <>&nbsp;<IconDiscountCheckFilled /></>}
-                {user.follower && <>&nbsp;<Badge size="xs">Follows you</Badge></>}
+              <Flex align="start">
+                <Title order={5} className={wrapContent}>
+                  <TextParser ids={["emoji"]} text={user.name} />
+                  <Flex align="center" display="inline-flex">
+                    {user.premium && <>&nbsp;<IconDiscountCheckFilled style={{ flexShrink: 0 }} /></>}
+                    {user.follower && <>&nbsp;<Badge size="xs" style={{ flexShrink: 0 }} >Follows you</Badge></>}
+                  </Flex>
+                </Title>
               </Flex>
-              <Text>@{user.username}</Text>
+              <Text className={wrapContent}>@{user.username}</Text>
             </Flex>
 
             {user.bio &&
@@ -83,8 +88,12 @@ function Profile() {
             }
 
             <Flex gap="xs">
-              <Anchor>{user.followerCount} Followers</Anchor>
-              <Anchor>{user.followingCount} Following</Anchor>
+              <Anchor title={`${util.formatNumber(user.followerCount, true)} Followers`}>
+                {util.formatNumber(user.followerCount)} Followers
+              </Anchor>
+              <Anchor title={`${util.formatNumber(user.followingCount, true)} Following`}>
+                {util.formatNumber(user.followingCount)} Following
+              </Anchor>
             </Flex>
 
             <Flex direction="column" align="start" gap="xs">

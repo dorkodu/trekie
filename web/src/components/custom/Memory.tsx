@@ -4,6 +4,7 @@ import { ActionIcon, Avatar, Card, Flex, Image, Text } from "@mantine/core"
 import { IconDots, IconStar } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { wrapContent } from "@/styles/shared.css";
+import { util } from "@/lib/util";
 
 interface Props {
   memory: IMemory;
@@ -33,8 +34,10 @@ function Memory({ memory }: Props) {
         <Flex gap="xs">
           <Avatar src="/favicon.svg" size={32} />
           <Flex direction="column">
-            <Text><TextParser ids={["emoji"]} text={user?.name ?? ""} /></Text>
-            <Text size="sm">{memory.date}</Text>
+            <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
+              <Text truncate><TextParser ids={["emoji"]} text={user?.name ?? ""} /></Text>
+            </Flex>
+            <Text size="sm" title={util.formatDate(memory.date, true)}>{util.relativeDate(memory.date)}</Text>
           </Flex>
         </Flex>
 

@@ -7,6 +7,7 @@ import ColorToggle from "../ColorToggle";
 import { useApiStore } from "@/stores/apiStore";
 import TextParser from "../util/TextParser";
 import CreateMenu from "../menus/CreateMenu";
+import { truncate } from "@/styles/shared.css";
 
 function MainLayout() {
   const theme = useMantineTheme();
@@ -120,11 +121,13 @@ function MainLayout() {
             >
               <Flex align="center" gap="xs" w="100%">
                 <Avatar src="/favicon.svg" size={32} />
-                <Flex direction="column" align="start" style={{ flex: 1 }}>
-                  <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
-                  <Text>@{user.username}</Text>
+                <Flex direction="column" align="start">
+                  <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
+                    <Title order={5} className={truncate}><TextParser ids={["emoji"]} text={user.name} /></Title>
+                    <Text truncate>@{user.username}</Text>
+                  </Flex>
                 </Flex>
-                <IconChevronRight />
+                <IconChevronRight style={{ flexShrink: 0 }} />
               </Flex>
             </Button>
           }

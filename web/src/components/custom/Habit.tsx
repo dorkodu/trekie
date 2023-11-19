@@ -1,5 +1,6 @@
+import { util } from "@/lib/util";
 import { useApiStore } from "@/stores/apiStore";
-import { wrapContent } from "@/styles/shared.css";
+import { truncate } from "@/styles/shared.css";
 import { IHabit } from "@api/types/habit"
 import { Button, Card, Flex, Paper, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
@@ -25,8 +26,10 @@ function Habit({ habit }: Props) {
           <IconMinus />
         </Button>
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
-          <Title order={5}>{habit.title}</Title>
-          <Text className={wrapContent}>{habit.description}</Text>
+          <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
+            <Title order={5} className={truncate}>{habit.title}</Title>
+            <Text truncate>{habit.description}</Text>
+          </Flex>
         </Flex>
         <Button h="auto" onClick={() => onChangeCount(+1)}>
           <IconPlus />
@@ -38,7 +41,9 @@ function Habit({ habit }: Props) {
         pos="absolute" bottom="0" left="50%"
         style={{ transform: "translate(-50%,50%)" }}
       >
-        <Title order={5}>{habit.count}</Title>
+        <Title order={5} title={util.formatNumber(habit.count, true)}>
+          {util.formatNumber(habit.count)}
+        </Title>
       </Paper>
 
     </Card>

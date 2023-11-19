@@ -5,6 +5,7 @@ import Habit from "@/components/custom/Habit"
 import Memory from "@/components/custom/Memory"
 import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
+import { wrapContent } from "@/styles/shared.css"
 import { Button, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
 import { IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 
@@ -22,7 +23,7 @@ function Home() {
 
       <Flex direction="column" gap="xs">
 
-        <Title order={4}>
+        <Title order={4} className={wrapContent}>
           <Emoji emoji="👋" /> Welcome,&nbsp;
           <TextParser ids={["emoji"]} text={user?.name ?? ""} />
         </Title>
