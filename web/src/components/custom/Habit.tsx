@@ -1,4 +1,5 @@
 import { useApiStore } from "@/stores/apiStore";
+import { wrapContent } from "@/styles/shared.css";
 import { IHabit } from "@api/types/habit"
 import { Button, Card, Flex, Paper, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
@@ -25,7 +26,7 @@ function Habit({ habit }: Props) {
         </Button>
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
           <Title order={5}>{habit.title}</Title>
-          <Text>{habit.description}</Text>
+          <Text className={wrapContent}>{habit.description}</Text>
         </Flex>
         <Button h="auto" onClick={() => onChangeCount(+1)}>
           <IconPlus />
