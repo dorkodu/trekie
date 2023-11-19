@@ -67,23 +67,38 @@ function MainLayout() {
       <Flex direction="column" pos="fixed" bottom={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
         <Paper>
           <Divider w="100%" />
-          <Flex align="center" justify="center" gap="xs" h={64}>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/home")}>
-              <IconHome />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/explore")}>
-              <IconSearch />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/track")}>
-              <IconChecklist />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/community")}>
-              <IconUsers />
-            </ActionIcon>
-            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/marketplace")}>
-              <IconBuildingStore />
-            </ActionIcon>
-          </Flex>
+          <Button.Group h={64}>
+            <Button variant="subtle" p={0} w="20%" h="auto" radius={0}>
+              <Flex direction="column" align="center">
+                <IconHome />
+                <Text fz={10}>Home</Text>
+              </Flex>
+            </Button>
+            <Button variant="subtle" p={0} w="20%" h="auto">
+              <Flex direction="column" align="center">
+                <IconSearch />
+                <Text fz={10}>Explore</Text>
+              </Flex>
+            </Button>
+            <Button variant="subtle" p={0} w="20%" h="auto">
+              <Flex direction="column" align="center">
+                <IconChecklist />
+                <Text fz={10}>Track</Text>
+              </Flex>
+            </Button>
+            <Button variant="subtle" p={0} w="20%" h="auto">
+              <Flex direction="column" align="center">
+                <IconUsers />
+                <Text fz={10}>Community</Text>
+              </Flex>
+            </Button>
+            <Button variant="subtle" p={0} w="20%" h="auto" radius={0}>
+              <Flex direction="column" align="center">
+                <IconBuildingStore />
+                <Text fz={10}>Marketplace</Text>
+              </Flex>
+            </Button>
+          </Button.Group>
         </Paper>
 
         <Flex pos="absolute" right={theme.spacing.md} top={-48 - (px(theme.spacing.md) as number)}>
@@ -114,25 +129,25 @@ function MainLayout() {
             </Button>
           }
 
-          <Button variant="subtle" onClick={() => closeNavigate("/premium")}>
+          <Button variant="subtle" p={0} onClick={() => closeNavigate("/premium")}>
             <IconCashBanknote />
             &nbsp;
             <Title order={5}>Premium</Title>
           </Button>
 
-          <Button variant="subtle" onClick={() => closeNavigate("/archive")}>
+          <Button variant="subtle" p={0} onClick={() => closeNavigate("/archive")}>
             <IconArchive />
             &nbsp;
             <Title order={5}>Archive</Title>
           </Button>
 
-          <Button variant="subtle" onClick={() => closeNavigate("/settings")}>
+          <Button variant="subtle" p={0} onClick={() => closeNavigate("/settings")}>
             <IconSettings />
             &nbsp;
             <Title order={5}>Settings</Title>
           </Button>
 
-          <Button variant="subtle">
+          <Button variant="subtle" p={0}>
             <IconExternalLink />
             &nbsp;
             <Title order={5}>Dorkodu Account</Title>
@@ -176,3 +191,24 @@ function MainLayout() {
 }
 
 export default MainLayout
+
+/*
+
+          <Flex align="center" justify="center" gap="xs" h={64}>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/home")}>
+              <IconHome />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/explore")}>
+              <IconSearch />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/track")}>
+              <IconChecklist />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/community")}>
+              <IconUsers />
+            </ActionIcon>
+            <ActionIcon variant="subtle" size={32} onClick={() => navigate("/marketplace")}>
+              <IconBuildingStore />
+            </ActionIcon>
+          </Flex>
+*/
