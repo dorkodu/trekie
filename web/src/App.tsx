@@ -8,9 +8,9 @@ import UpdateSWModal from "./components/modals/UpdateSWModal";
 import EditProfileModal from "./components/modals/EditProfileModal";
 import { useApiStore } from "./stores/apiStore";
 import { IUser } from "@api/types/user";
-import CreateHabitModal from "./components/modals/CreateHabitModal";
-import CreateGoalModal from "./components/modals/CreateGoalModal";
-import CreateMemoryModal from "./components/modals/CreateMemoryModal";
+import HabitEditorModal from "./components/modals/HabitEditorModal";
+import GoalEditorModal from "./components/modals/GoalEditorModal";
+import MemoryEditorModal from "./components/modals/MemoryEditorModal";
 
 function App() {
   const loading = useAppStore(state => state.loading);
@@ -76,9 +76,9 @@ function App() {
         <UpdateSWModal />
         <EditProfileModal />
 
-        <CreateHabitModal />
-        <CreateGoalModal />
-        <CreateMemoryModal />
+        <HabitEditorModal />
+        <GoalEditorModal />
+        <MemoryEditorModal />
       </MantineProvider>
 
       <ScrollRestoration />

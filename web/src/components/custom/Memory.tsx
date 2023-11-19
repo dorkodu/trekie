@@ -1,10 +1,11 @@
 import { useApiStore } from "@/stores/apiStore";
 import { IMemory } from "@api/types/memory"
 import { ActionIcon, Avatar, Card, Flex, Overlay, Text } from "@mantine/core"
-import { IconDots, IconStar, IconStarFilled } from "@tabler/icons-react"
+import { IconStar, IconStarFilled } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { wrapContent } from "@/styles/shared.css";
 import { util } from "@/lib/util";
+import MemoryMenu from "../menus/MemoryMenu";
 
 interface Props {
   memory: IMemory;
@@ -27,11 +28,11 @@ function Memory({ memory }: Props) {
           <Avatar src="/assets/avatar.webp" size={32} />
 
           <Flex direction="column" style={{ flex: 1 }}>
-            <Flex justify="space-between">
+            <Flex justify="space-between" align="center">
               <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
                 <Text truncate><TextParser ids={["emoji"]} text={user?.name ?? ""} /></Text>
               </Flex>
-              <ActionIcon variant="subtle" c="var(--text-color)"><IconDots /></ActionIcon>
+              <MemoryMenu memory={memory} />
             </Flex>
             <Text size="sm" title={util.formatDate(memory.date, true)}>{util.relativeDate(memory.date)}</Text>
           </Flex>

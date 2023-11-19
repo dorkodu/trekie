@@ -11,15 +11,15 @@ function CreateMenu({ }: Props) {
   const [opened, { open, close }] = useDisclosure();
 
   const onHabit = () => {
-    useAppStore.setState(s => { s.modals.createHabit.opened = true });
+    useAppStore.setState(s => { s.modals.habitEditor.opened = true });
     close();
   }
   const onGoal = () => {
-    useAppStore.setState(s => { s.modals.createGoal.opened = true });
+    useAppStore.setState(s => { s.modals.goalEditor.opened = true });
     close();
   }
   const onMemory = () => {
-    useAppStore.setState(s => { s.modals.createMemory.opened = true });
+    useAppStore.setState(s => { s.modals.memoryEditor.opened = true });
     close();
   }
 
