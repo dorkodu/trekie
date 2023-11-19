@@ -1,5 +1,5 @@
-import { useAppStore } from "@/stores/appStore";
-import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, px, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { Route, useAppStore } from "@/stores/appStore";
+import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, MantineColor, Paper, Text, Title, px, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
@@ -31,6 +31,10 @@ function MainLayout() {
     navigate(route);
   }
 
+  const getRouteColor = (_route: Route): MantineColor | undefined => {
+    return _route === route ? undefined : "var(--text-color)";
+  }
+
   return (
     <>
       <Flex direction="column" pos="fixed" top={0} left={0} right={0} maw={theme.breakpoints.xs} mx="auto" style={{ zIndex: 99 }}>
@@ -40,6 +44,7 @@ function MainLayout() {
             <ActionIcon
               variant="subtle" size={32} onClick={() => navigate(-1)}
               style={{ visibility: route === "home" ? "hidden" : "visible" }}
+              c="var(--text-color)"
             >
               <IconArrowLeft />
             </ActionIcon>
@@ -52,7 +57,7 @@ function MainLayout() {
               <Image src={colorScheme === "dark" ? "/brand-light.svg" : "brand-dark.svg"} height={32} />
             </Anchor>
 
-            <ActionIcon variant="subtle" size={32} onClick={() => open()}>
+            <ActionIcon variant="subtle" size={32} onClick={() => open()} c="var(--text-color)">
               <IconMenu2 />
             </ActionIcon>
 
@@ -69,31 +74,31 @@ function MainLayout() {
         <Paper>
           <Divider w="100%" />
           <Button.Group h={64}>
-            <Button variant="subtle" p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/home")}>
+            <Button variant="subtle" c={getRouteColor("home")} p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/home")}>
               <Flex direction="column" align="center">
                 <IconHome />
                 <Text fz={10}>Home</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto" onClick={() => navigate("/explore")}>
+            <Button variant="subtle" c={getRouteColor("explore")} p={0} w="20%" h="auto" onClick={() => navigate("/explore")}>
               <Flex direction="column" align="center">
                 <IconSearch />
                 <Text fz={10}>Explore</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto" onClick={() => navigate("/track")}>
+            <Button variant="subtle" c={getRouteColor("track")} p={0} w="20%" h="auto" onClick={() => navigate("/track")}>
               <Flex direction="column" align="center">
                 <IconChecklist />
                 <Text fz={10}>Track</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto" onClick={() => navigate("/community")}>
+            <Button variant="subtle" c={getRouteColor("community")} p={0} w="20%" h="auto" onClick={() => navigate("/community")}>
               <Flex direction="column" align="center">
                 <IconUsers />
                 <Text fz={10}>Community</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/marketplace")}>
+            <Button variant="subtle" c={getRouteColor("marketplace")} p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/marketplace")}>
               <Flex direction="column" align="center">
                 <IconBuildingStore />
                 <Text fz={10}>Marketplace</Text>
