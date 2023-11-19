@@ -18,7 +18,7 @@ function Goal({ goal }: Props) {
           <Title order={5}><TextParser ids={["emoji"]} text={goal.title} /></Title>
           <Text><TextParser ids={["emoji", "url"]} text={goal.description} /></Text>
           <Flex mt="xs" gap="xs">
-            <Badge>{goal.tasksTodo} / {goal.tasksDone} Tasks</Badge>
+            <Badge>{goal.tasksDone} / {goal.tasksTodo} Tasks</Badge>
           </Flex>
         </Flex>
 
