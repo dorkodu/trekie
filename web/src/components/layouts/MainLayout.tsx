@@ -126,10 +126,10 @@ function MainLayout() {
             >
               <Flex align="center" gap="xs" w="100%">
                 <Avatar src="/assets/avatar.webp" size={32} />
-                <Flex direction="column" align="start">
+                <Flex direction="column" align="start" style={{ flex: 1 }}>
                   <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
                     <Title order={5} className={truncate}><TextParser ids={["emoji"]} text={user.name} /></Title>
-                    <Text truncate>@{user.username}</Text>
+                    <Text truncate ta="start">@{user.username}</Text>
                   </Flex>
                 </Flex>
                 <IconChevronRight style={{ flexShrink: 0 }} />
