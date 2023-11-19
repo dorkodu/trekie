@@ -1,7 +1,7 @@
 import { useApiStore } from "@/stores/apiStore";
 import { IMemory } from "@api/types/memory"
 import { ActionIcon, Avatar, Card, Flex, Overlay, Text } from "@mantine/core"
-import { IconDots, IconStar } from "@tabler/icons-react"
+import { IconDots, IconStar, IconStarFilled } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { wrapContent } from "@/styles/shared.css";
 import { util } from "@/lib/util";
@@ -44,7 +44,13 @@ function Memory({ memory }: Props) {
           </Text>
 
           <Flex align="center" gap="xs">
-            <ActionIcon variant="subtle"><IconStar /></ActionIcon>
+            <ActionIcon
+              onClick={() => useApiStore.getState().favouriteMemory(memory)}
+              c={!memory.favourited ? "var(--text-color)" : "green"}
+              variant="subtle"
+            >
+              {!memory.favourited ? <IconStar /> : <IconStarFilled />}
+            </ActionIcon>
             <Text title={util.formatNumber(memory.favourites, true)}>{util.formatNumber(memory.favourites)}</Text>
           </Flex>
         </Flex>

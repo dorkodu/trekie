@@ -33,6 +33,8 @@ export interface ApiStoreAction {
   removeMemory: (memory: IMemory) => void;
   getMemories: (userId: string | undefined) => IMemory[];
 
+  favouriteMemory: (memory: IMemory) => void;
+
   addGoal: (goal: IGoal) => void;
   removeGoal: (goal: IGoal) => void;
   getGoals: (userId: string | undefined) => IGoal[];
@@ -132,6 +134,16 @@ export const useApiStore = create(
       if (!memoryIds) return [];
 
       return memoryIds.map(memoryId => memories[memoryId]).filter(Boolean) as IMemory[];
+    },
+
+    favouriteMemory(memory) {
+      set(state => {
+        const targetMemoryId = memory.id;
+        const targetMemory = targetMemoryId && state.memories[targetMemoryId];
+        if (!targetMemory) return;
+
+        targetMemory.favourited = !targetMemory.favourited;
+      });
     },
 
     addGoal(goal) {

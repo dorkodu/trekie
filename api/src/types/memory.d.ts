@@ -4,4 +4,5 @@ export interface IMemory {
   date: number;
   description: string;
   favourites: number;
+  favourited?: boolean;
 }
