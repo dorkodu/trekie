@@ -86,10 +86,10 @@ function MainLayout() {
                 <Text fz={10}>Explore</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" c={getRouteColor("track")} p={0} w="20%" h="auto" onClick={() => navigate("/track")}>
+            <Button variant="subtle" c={getRouteColor("life")} p={0} w="20%" h="auto" onClick={() => navigate("/life")}>
               <Flex direction="column" align="center">
                 <IconChecklist />
-                <Text fz={10}>Track</Text>
+                <Text fz={10}>Life</Text>
               </Flex>
             </Button>
             <Button variant="subtle" c={getRouteColor("community")} p={0} w="20%" h="auto" onClick={() => navigate("/community")}>
@@ -98,10 +98,10 @@ function MainLayout() {
                 <Text fz={10}>Community</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" c={getRouteColor("marketplace")} p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/marketplace")}>
+            <Button variant="subtle" c={getRouteColor("market")} p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/market")}>
               <Flex direction="column" align="center">
                 <IconBuildingStore />
-                <Text fz={10}>Marketplace</Text>
+                <Text fz={10}>Market</Text>
               </Flex>
             </Button>
           </Button.Group>

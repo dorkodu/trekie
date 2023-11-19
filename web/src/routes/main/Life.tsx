@@ -1,13 +1,13 @@
 import { Flex } from "@mantine/core"
 
-function Marketplace() {
+function Life() {
   return (
     <Flex direction="column" m="md">
 
-      Marketplace
+      Life
 
     </Flex>
   )
 }
 
-export default Marketplace
+export default Life

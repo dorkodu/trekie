@@ -1,13 +1,13 @@
 import { Flex } from "@mantine/core"
 
-function Track() {
+function Market() {
   return (
     <Flex direction="column" m="md">
 
-      Track
+      Market
 
     </Flex>
   )
 }
 
-export default Track
+export default Market

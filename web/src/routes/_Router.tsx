@@ -7,9 +7,9 @@ import App from "../App";
 // Lazy routes \\
 const Home = React.lazy(util.wait(() => import("./main/Home")));
 const Explore = React.lazy(util.wait(() => import("./main/Explore")));
-const Track = React.lazy(util.wait(() => import("./main/Track")));
+const Life = React.lazy(util.wait(() => import("./main/Life")));
 const Community = React.lazy(util.wait(() => import("./main/Community")));
-const Marketplace = React.lazy(util.wait(() => import("./main/Marketplace")));
+const Market = React.lazy(util.wait(() => import("./main/Market")));
 
 const Profile = React.lazy(util.wait(() => import("./main/Profile")));
 const Premium = React.lazy(util.wait(() => import("./main/Premium")));
@@ -54,9 +54,9 @@ export const router = createBrowserRouter(
       <Route element={Page(MainLayout)}>
         <Route path="/home" element={Page(Home)} />
         <Route path="/explore" element={Page(Explore)} />
-        <Route path="/track" element={Page(Track)} />
+        <Route path="/life" element={Page(Life)} />
         <Route path="/community" element={Page(Community)} />
-        <Route path="/marketplace" element={Page(Marketplace)} />
+        <Route path="/market" element={Page(Market)} />
 
         <Route path="/profile/:username" element={Page(Profile)} />
         <Route path="/premium" element={Page(Premium)} />

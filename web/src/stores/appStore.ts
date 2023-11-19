@@ -4,9 +4,9 @@ import { immer } from "zustand/middleware/immer";
 export type Route =
   "home" |
   "explore" |
-  "track" |
+  "life" |
   "community" |
-  "marketplace" |
+  "market" |
   "premium" |
   "archive" |
   "settings" |

@@ -55,9 +55,9 @@ function App() {
 
     if (location.pathname.indexOf("/home") !== -1) route = "home";
     else if (location.pathname.indexOf("/explore") !== -1) route = "explore";
-    else if (location.pathname.indexOf("/track") !== -1) route = "track";
+    else if (location.pathname.indexOf("/life") !== -1) route = "life";
     else if (location.pathname.indexOf("/community") !== -1) route = "community";
-    else if (location.pathname.indexOf("/marketplace") !== -1) route = "marketplace";
+    else if (location.pathname.indexOf("/market") !== -1) route = "market";
 
     else if (location.pathname.indexOf("/premium") !== -1) route = "premium";
     else if (location.pathname.indexOf("/archive") !== -1) route = "archive";
