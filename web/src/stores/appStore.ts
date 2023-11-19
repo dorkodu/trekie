@@ -23,7 +23,13 @@ export interface AppStoreState {
       opened: boolean;
     }
 
-    create: {
+    createHabit: {
+      opened: boolean;
+    }
+    createGoal: {
+      opened: boolean;
+    }
+    createMemory: {
       opened: boolean;
     }
   }
@@ -47,7 +53,9 @@ const initialState: AppStoreState = {
   modals: {
     updateSW: { opened: false },
     editProfile: { opened: false },
-    create: { opened: false },
+    createHabit: { opened: false },
+    createGoal: { opened: false },
+    createMemory: { opened: false },
   },
 }
 

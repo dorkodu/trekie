@@ -1,11 +1,12 @@
 import { useAppStore } from "@/stores/appStore";
 import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Paper, Text, Title, px, useMantineTheme } from "@mantine/core";
-import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconPencilPlus, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
+import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChecklist, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
 import ColorToggle from "../ColorToggle";
 import { useApiStore } from "@/stores/apiStore";
 import TextParser from "../util/TextParser";
+import CreateMenu from "../menus/CreateMenu";
 
 function MainLayout() {
   const theme = useMantineTheme();
@@ -26,10 +27,6 @@ function MainLayout() {
   const preventNavigate = (ev: React.MouseEvent, route: string) => {
     ev.preventDefault();
     navigate(route);
-  }
-
-  const onCreate = () => {
-    useAppStore.setState(s => { s.modals.create.opened = true });
   }
 
   return (
@@ -92,9 +89,7 @@ function MainLayout() {
         </Paper>
 
         <Flex pos="absolute" right={theme.spacing.md} top={-48 - (px(theme.spacing.md) as number)}>
-          <ActionIcon radius="xl" size={48} onClick={onCreate}>
-            <IconPencilPlus />
-          </ActionIcon>
+          <CreateMenu />
         </Flex>
       </Flex>
 
