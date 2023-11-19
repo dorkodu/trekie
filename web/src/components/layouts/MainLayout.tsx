@@ -68,31 +68,31 @@ function MainLayout() {
         <Paper>
           <Divider w="100%" />
           <Button.Group h={64}>
-            <Button variant="subtle" p={0} w="20%" h="auto" radius={0}>
+            <Button variant="subtle" p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/home")}>
               <Flex direction="column" align="center">
                 <IconHome />
                 <Text fz={10}>Home</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto">
+            <Button variant="subtle" p={0} w="20%" h="auto" onClick={() => navigate("/explore")}>
               <Flex direction="column" align="center">
                 <IconSearch />
                 <Text fz={10}>Explore</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto">
+            <Button variant="subtle" p={0} w="20%" h="auto" onClick={() => navigate("/track")}>
               <Flex direction="column" align="center">
                 <IconChecklist />
                 <Text fz={10}>Track</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto">
+            <Button variant="subtle" p={0} w="20%" h="auto" onClick={() => navigate("/community")}>
               <Flex direction="column" align="center">
                 <IconUsers />
                 <Text fz={10}>Community</Text>
               </Flex>
             </Button>
-            <Button variant="subtle" p={0} w="20%" h="auto" radius={0}>
+            <Button variant="subtle" p={0} w="20%" h="auto" radius={0} onClick={() => navigate("/marketplace")}>
               <Flex direction="column" align="center">
                 <IconBuildingStore />
                 <Text fz={10}>Marketplace</Text>
@@ -119,7 +119,7 @@ function MainLayout() {
               onClick={() => closeNavigate(`/profile/${user.username}`)}
             >
               <Flex align="center" gap="xs" w="100%">
-                <Avatar src="/assets/avatar.webp" size={32} />
+                <Avatar src="/favicon.svg" size={32} />
                 <Flex direction="column" align="start" style={{ flex: 1 }}>
                   <Title order={5}><TextParser ids={["emoji"]} text={user.name} /></Title>
                   <Text>@{user.username}</Text>
