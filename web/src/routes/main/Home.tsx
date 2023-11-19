@@ -3,10 +3,11 @@ import ChevronTitle from "@/components/custom/ChevronTitle"
 import Goal from "@/components/custom/Goal"
 import Habit from "@/components/custom/Habit"
 import Memory from "@/components/custom/Memory"
+import { UserStats } from "@/components/custom/UserStats"
 import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
-import { Button, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
+import { Button, Divider, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
 import { IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
 
 function Home() {
@@ -39,30 +40,17 @@ function Home() {
             <Button variant="default">Secondary action</Button>
           </Flex>
 
-          <Flex direction="column" gap="xs">
-
-            <Paper withBorder p="xs">
-              <Flex justify="center" gap="xs">
-                <IconRocket />
-                <Text>80%</Text>
+          {user &&
+            <Paper withBorder p="md">
+              <Flex direction="column" justify="space-evenly" gap="xs">
+                <UserStats.Momentum user={user} />
+                <Divider />
+                <UserStats.Experience user={user} />
+                <Divider />
+                <UserStats.Streaks user={user} />
               </Flex>
             </Paper>
-
-            <Paper withBorder p="xs">
-              <Flex justify="center" gap="xs">
-                <IconStarFilled />
-                <Text>964</Text>
-              </Flex>
-            </Paper>
-
-            <Paper withBorder p="xs">
-              <Flex justify="center" gap="xs">
-                <IconFlame />
-                <Text>6 days</Text>
-              </Flex>
-            </Paper>
-
-          </Flex>
+          }
 
         </SimpleGrid>
 

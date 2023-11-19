@@ -2,13 +2,14 @@ import ChevronTitle from "@/components/custom/ChevronTitle"
 import Community from "@/components/custom/Community"
 import Goal from "@/components/custom/Goal"
 import Memory from "@/components/custom/Memory"
+import { UserStats } from "@/components/custom/UserStats"
 import ProfileMenu from "@/components/menus/ProfileMenu"
 import TextParser from "@/components/util/TextParser"
 import { util } from "@/lib/util"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
 import { Anchor, Avatar, Badge, Button, Card, Divider, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
-import { IconCalendarMonth, IconDiscountCheckFilled, IconFlame, IconRocket, IconStarFilled } from "@tabler/icons-react"
+import { IconCalendarMonth, IconDiscountCheckFilled } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 
 function Profile() {
@@ -102,41 +103,14 @@ function Profile() {
               <Text>Joined {util.formatDate(user.joinDate)}</Text>
             </Flex>
 
-
             <Paper withBorder p="md">
               <Flex justify="space-evenly">
-                <Flex direction="column" align="center">
-                  <Flex align="center">
-                    <IconRocket />
-                    &nbsp;
-                    <Text>{util.formatPercent(user.dailyXpCurrent / user.dailyXpTarget)}</Text>
-                  </Flex>
-                  <Text size="xs">Momentum</Text>
-                </Flex>
-
+                <UserStats.Momentum user={user} />
                 <Divider orientation="vertical" />
-
-                <Flex direction="column" align="center">
-                  <Flex align="center">
-                    <IconStarFilled />
-                    &nbsp;
-                    <Text title={util.formatNumber(user.totalXp, true)}>{util.formatNumber(user.totalXp)}</Text>
-                  </Flex>
-                  <Text size="xs">Experience</Text>
-                </Flex>
-
+                <UserStats.Experience user={user} />
                 <Divider orientation="vertical" />
-
-                <Flex direction="column" align="center">
-                  <Flex align="center">
-                    <IconFlame />
-                    &nbsp;
-                    <Text title={util.formatNumber(user.streaks, true)}>{util.formatNumber(user.streaks)}</Text>
-                  </Flex>
-                  <Text size="xs">Streaks</Text>
-                </Flex>
+                <UserStats.Streaks user={user} />
               </Flex>
-
             </Paper>
 
           </Flex>
