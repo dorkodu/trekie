@@ -1,3 +1,4 @@
+import NoGoalsCard from "@/components/cards/NoGoalsCard";
 import ChevronTitle from "@/components/custom/ChevronTitle";
 import Goal from "@/components/custom/Goal";
 import { useApiStore } from "@/stores/apiStore";
@@ -11,7 +12,11 @@ function Goals() {
 
       <ChevronTitle order={4}>Goals</ChevronTitle>
 
-      {goals.map((goal) => <Goal key={goal.id} goal={goal} />)}
+      {goals.length > 0 ?
+        goals.map((goal) => <Goal key={goal.id} goal={goal} />)
+        :
+        <NoGoalsCard />
+      }
 
     </Flex>
   )

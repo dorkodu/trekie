@@ -1,3 +1,6 @@
+import NoGoalsCard from "@/components/cards/NoGoalsCard"
+import NoMemoriesCard from "@/components/cards/NoMemoriesCard"
+import StatusCard from "@/components/cards/StatusCard"
 import ChevronTitle from "@/components/custom/ChevronTitle"
 import Community from "@/components/custom/Community"
 import Goal from "@/components/custom/Goal"
@@ -9,7 +12,7 @@ import { util } from "@/lib/util"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
 import { Anchor, Avatar, Badge, Button, Card, Divider, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
-import { IconCalendarMonth, IconDiscountCheckFilled } from "@tabler/icons-react"
+import { IconCalendarMonth, IconDiscountCheckFilled, IconExclamationCircle } from "@tabler/icons-react"
 import { useParams } from "react-router-dom"
 
 function Profile() {
@@ -27,7 +30,9 @@ function Profile() {
 
   if (!user) {
     return (
-      <>User not found.</>
+      <StatusCard icon={<IconExclamationCircle />} color="red" title={`User @${username} not found`}>
+        Try searching for another user.
+      </StatusCard>
     )
   }
 
@@ -124,7 +129,7 @@ function Profile() {
             {previewGoals.length > 0 ?
               <Goal goal={previewGoals[0]!} />
               :
-              <>No goals.</>
+              <NoGoalsCard />
             }
 
           </Flex>
@@ -138,7 +143,7 @@ function Profile() {
             {previewMemories.length > 0 ?
               <Memory memory={previewMemories[0]!} />
               :
-              <>No memories.</>
+              <NoMemoriesCard />
             }
 
           </Flex>

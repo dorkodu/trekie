@@ -1,3 +1,4 @@
+import NoHabitsCard from "@/components/cards/NoHabitsCard";
 import ChevronTitle from "@/components/custom/ChevronTitle";
 import Habit from "@/components/custom/Habit";
 import { useApiStore } from "@/stores/apiStore"
@@ -11,7 +12,11 @@ function Habits() {
 
       <ChevronTitle order={4}>Habits</ChevronTitle>
 
-      {habits.map((habit) => <Habit key={habit.id} habit={habit} showHeatmap />)}
+      {habits.length > 0 ?
+        habits.map((habit) => <Habit key={habit.id} habit={habit} showHeatmap />)
+        :
+        <NoHabitsCard />
+      }
 
     </Flex>
   )

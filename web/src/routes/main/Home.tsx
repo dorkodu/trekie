@@ -1,4 +1,7 @@
 import Emoji from "@/components/Emoji"
+import NoGoalsCard from "@/components/cards/NoGoalsCard"
+import NoHabitsCard from "@/components/cards/NoHabitsCard"
+import NoMemoriesCard from "@/components/cards/NoMemoriesCard"
 import ChevronTitle from "@/components/custom/ChevronTitle"
 import Goal from "@/components/custom/Goal"
 import Habit from "@/components/custom/Habit"
@@ -67,7 +70,7 @@ function Home() {
         {previewHabits.length > 0 ?
           <Habit habit={previewHabits[0]!} onClick={() => navigate(`/habits/${user?.username}`)} />
           :
-          <>No habits.</>
+          <NoHabitsCard />
         }
 
       </Flex>
@@ -78,17 +81,17 @@ function Home() {
           Memories
         </ChevronTitle>
 
-        <ScrollArea offsetScrollbars="x" mb="-xs">
-          <Flex direction="row" gap="xs">
-            {previewMemories.length > 0 ?
-              previewMemories.map(memory =>
+        {previewMemories.length > 0 ?
+          <ScrollArea offsetScrollbars="x" mb="-xs">
+            <Flex direction="row" gap="xs">
+              {previewMemories.map(memory =>
                 <Memory key={memory.id} memory={memory} onClick={() => navigate(`/memories/${user?.username}`)} />
-              )
-              :
-              <>No memories.</>
-            }
-          </Flex>
-        </ScrollArea>
+              )}
+            </Flex>
+          </ScrollArea>
+          :
+          <NoMemoriesCard />
+        }
 
       </Flex>
 
@@ -101,7 +104,7 @@ function Home() {
         {previewGoals.length > 0 ?
           <Goal goal={previewGoals[0]!} onClick={() => navigate(`/goals/${user?.username}`)} />
           :
-          <>No goals.</>
+          <NoGoalsCard />
         }
 
       </Flex>

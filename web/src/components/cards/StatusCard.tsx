@@ -1,0 +1,19 @@
+import { Alert, Card, DefaultMantineColor } from "@mantine/core"
+
+interface Props {
+  icon?: React.ReactNode;
+  title?: string;
+  color?: DefaultMantineColor;
+}
+
+function StatusCard({ icon, title, color, children }: React.PropsWithChildren<Props>) {
+  return (
+    <Card p="md" radius="md" withBorder>
+      <Alert icon={icon} title={title} color={color} variant="light">
+        {children}
+      </Alert>
+    </Card>
+  )
+}
+
+export default StatusCard
