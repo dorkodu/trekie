@@ -37,6 +37,7 @@ export interface AppStoreState {
       id?: string;
       title: string;
       description: string;
+      dailyTarget: number;
     }
     goalEditor: {
       opened: boolean;
@@ -70,7 +71,7 @@ const initialState: AppStoreState = {
   modals: {
     updateSW: { opened: false },
     editProfile: { opened: false },
-    habitEditor: { opened: false, title: "", description: "" },
+    habitEditor: { opened: false, title: "", description: "", dailyTarget: 0 },
     goalEditor: { opened: false, title: "", description: "" },
     memoryEditor: { opened: false, description: "" },
   },

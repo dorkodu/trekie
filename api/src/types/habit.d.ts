@@ -5,5 +5,6 @@ export interface IHabit {
   title: string;
   description: string;
   count: number;
+  dailyTarget: number;
   heatmap?: { [offset: number]: number };
 }
