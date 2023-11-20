@@ -125,8 +125,6 @@ export const useApiStore = create(
         const targetHabit = targetHabitId && state.habits[targetHabitId];
         if (!targetHabit) return;
 
-        targetHabit.count += count;
-
         if (!targetHabit.heatmap) targetHabit.heatmap = {};
 
         const habitDate = new Date(habit.date);
@@ -134,11 +132,17 @@ export const useApiStore = create(
         const diffMs = today.getTime() - habitDate.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        if (!targetHabit.heatmap[diffDays]) targetHabit.heatmap[diffDays] = 0;
+        let habitCount = targetHabit.heatmap[diffDays];
+        if (habitCount === undefined) habitCount = 0;
+
+        if (habitCount <= 0 && count <= 0) return;
+
+        habitCount += count;
+
+        targetHabit.count += count;
         targetHabit.heatmap[diffDays] += count;
 
         if (targetHabit.heatmap[diffDays]! <= 0) delete targetHabit.heatmap[diffDays];
-        console.log({ ...targetHabit.heatmap })
       });
     },
 

@@ -38,7 +38,6 @@ function Memory({ memory }: Props) {
           </Flex>
         </Flex>
 
-
         <Flex direction="column" pos="absolute" bottom={0} w="100%">
           <Text lineClamp={2} className={wrapContent}>
             <TextParser ids={["emoji", "url", "username"]} text={memory.description} />

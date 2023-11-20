@@ -7,15 +7,15 @@ import { IconMinus, IconPlus } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { MouseEvent } from "react";
 import Heatmap from "./Heatmap";
+import HabitMenu from "../menus/HabitMenu";
 
 interface Props {
   habit: IHabit;
-  heatmap?: boolean;
 
   onClick?: () => void;
 }
 
-function Habit({ habit, heatmap, onClick }: Props) {
+function Habit({ habit, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation();
     useApiStore.getState().countHabit(habit, count);
@@ -32,18 +32,15 @@ function Habit({ habit, heatmap, onClick }: Props) {
 
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
 
+          <Flex justify="space-between" align="center">
+            <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
+              <Title order={5} className={truncate}><TextParser ids={["emoji"]} text={habit.title} /></Title>
+            </Flex>
+            <HabitMenu habit={habit} />
+          </Flex>
           <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
-            <Title order={5} className={truncate}><TextParser ids={["emoji"]} text={habit.title} /></Title>
             <Text truncate><TextParser ids={["emoji", "url", "username"]} text={habit.description} /></Text>
           </Flex>
-
-          {heatmap && habit.heatmap &&
-            <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
-              <ScrollArea>
-                <Heatmap date={habit.date} values={habit.heatmap} />
-              </ScrollArea>
-            </Flex>
-          }
 
         </Flex>
 
@@ -52,6 +49,15 @@ function Habit({ habit, heatmap, onClick }: Props) {
         </Button>
 
       </Button.Group>
+
+
+      {habit && habit.heatmap &&
+        <Flex p="md" style={{ display: "grid", gridTemplateRows: "auto" }}>
+          <ScrollArea>
+            <Heatmap date={habit.date} values={habit.heatmap} />
+          </ScrollArea>
+        </Flex>
+      }
 
       <Paper
         withBorder px="md"

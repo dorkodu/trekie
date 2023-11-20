@@ -35,6 +35,11 @@ function App() {
     useApiStore.getState().addUser(user);
 
     useApiStore.getState().addHabit({ id: "0", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+    useApiStore.getState().addHabit({ id: "1", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+    useApiStore.getState().addHabit({ id: "2", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+    useApiStore.getState().addHabit({ id: "3", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+    useApiStore.getState().addHabit({ id: "4", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+
     useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test @testuser", description: "test @johndoe. awdaw johndoe@gmail.com test", tasksTodo: 10, tasksDone: 5 })
     useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test @testuser", favourites: 1234567 })
 

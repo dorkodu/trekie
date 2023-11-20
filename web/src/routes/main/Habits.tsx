@@ -11,7 +11,7 @@ function Habits() {
 
       <ChevronTitle order={4}>Habits</ChevronTitle>
 
-      {habits.map((habit) => <Habit key={habit.id} habit={habit} heatmap />)}
+      {habits.map((habit) => <Habit key={habit.id} habit={habit} />)}
 
     </Flex>
   )

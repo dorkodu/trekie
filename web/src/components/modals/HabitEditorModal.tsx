@@ -32,6 +32,7 @@ function HabitEditorModal() {
       title: habitEditor.title,
       description: habitEditor.description,
       count: 0,
+      heatmap: {},
     }
 
     useApiStore.getState().addHabit(habit);
