@@ -28,6 +28,7 @@ function HabitEditorModal() {
     const habit: IHabit = {
       id: Date.now().toString(),
       userId: currentUserId,
+      date: Date.now(),
       title: habitEditor.title,
       description: habitEditor.description,
       count: 0,
