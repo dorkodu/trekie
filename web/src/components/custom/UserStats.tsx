@@ -13,7 +13,9 @@ export function Momentum({ user }: Props) {
       <Flex align="center">
         <IconRocket />
         &nbsp;
-        <Text>{util.formatPercent(user.dailyXpCurrent / user.dailyXpTarget)}</Text>
+        <Text>
+          {util.formatPercent(user.dailyXpTarget > 0 ? (user.dailyXpCurrent / user.dailyXpTarget) : 0)}
+        </Text>
       </Flex>
       <Text size="xs">Momentum</Text>
     </Flex>
