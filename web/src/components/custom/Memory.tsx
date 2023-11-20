@@ -6,13 +6,21 @@ import TextParser from "../util/TextParser";
 import { wrapContent } from "@/styles/shared.css";
 import { util } from "@/lib/util";
 import MemoryMenu from "../menus/MemoryMenu";
+import { MouseEvent } from "react";
 
 interface Props {
   memory: IMemory;
+
+  onClick?: () => void;
 }
 
-function Memory({ memory }: Props) {
+function Memory({ memory, onClick }: Props) {
   const user = useApiStore(state => state.users[memory.userId]);
+
+  const onFavourite = (ev: MouseEvent) => {
+    ev.stopPropagation();
+    useApiStore.getState().favouriteMemory(memory);
+  }
 
   return (
     <Card withBorder
@@ -21,6 +29,7 @@ function Memory({ memory }: Props) {
         backgroundImage: "",
         backgroundColor: "var(--mantine-color-body)",
       }}
+      onClick={onClick}
     >
       <Overlay backgroundOpacity={0} m="xs" zIndex={99}>
 
@@ -45,7 +54,7 @@ function Memory({ memory }: Props) {
 
           <Flex align="center" gap="xs">
             <ActionIcon
-              onClick={() => useApiStore.getState().favouriteMemory(memory)}
+              onClick={onFavourite}
               c={!memory.favourited ? "var(--text-color)" : "green"}
               variant="subtle"
             >

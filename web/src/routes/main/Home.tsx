@@ -7,7 +7,7 @@ import { UserStats } from "@/components/custom/UserStats"
 import TextParser from "@/components/util/TextParser"
 import { useApiStore } from "@/stores/apiStore"
 import { wrapContent } from "@/styles/shared.css"
-import { Button, Divider, Flex, Paper, SimpleGrid, Text, Title } from "@mantine/core"
+import { Button, Divider, Flex, Paper, ScrollArea, SimpleGrid, Text, Title } from "@mantine/core"
 import { useNavigate } from "react-router-dom"
 
 function Home() {
@@ -19,7 +19,7 @@ function Home() {
 
   const previewHabits = useApiStore(state => state.getHabits(userId));
   const previewMemories = useApiStore(state => state.getMemories(userId));
-  const previewGoals = useApiStore(state => state.getGoals(userId));
+  const previewGoals = useApiStore(state => state.getGoals(userId).slice(0, 3));
 
   return (
     <Flex direction="column" m="md" gap="xl">
@@ -78,15 +78,17 @@ function Home() {
           Memories
         </ChevronTitle>
 
-        <Flex direction="row">
-
-          {previewMemories.length > 0 ?
-            <Memory memory={previewMemories[0]!} />
-            :
-            <>No memories.</>
-          }
-
-        </Flex>
+        <ScrollArea offsetScrollbars="x">
+          <Flex direction="row" gap="xs">
+            {previewMemories.length > 0 ?
+              previewMemories.map(memory =>
+                <Memory key={memory.id} memory={memory} onClick={() => navigate(`/memories/${user?.username}`)} />
+              )
+              :
+              <>No memories.</>
+            }
+          </Flex>
+        </ScrollArea>
 
       </Flex>
 
