@@ -3,6 +3,7 @@ import { useAppStore } from "@/stores/appStore"
 import { IHabit } from "@api/types/habit";
 import { ActionIcon, Menu } from "@mantine/core"
 import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react"
+import { MouseEvent } from "react";
 
 interface Props {
   habit: IHabit;
@@ -11,9 +12,10 @@ interface Props {
 function HabitMenu({ habit }: Props) {
   const currentUserId = useApiStore(state => state.userId);
 
-  const onShare = () => { }
-  const onClipboard = () => { }
-  const onEdit = () => {
+  const onShare = (ev: MouseEvent) => { ev.stopPropagation(); }
+  const onClipboard = (ev: MouseEvent) => { ev.stopPropagation(); }
+  const onEdit = (ev: MouseEvent) => {
+    ev.stopPropagation();
     useAppStore.setState(s => {
       s.modals.habitEditor.opened = true;
       s.modals.habitEditor.id = habit.id;
@@ -21,14 +23,19 @@ function HabitMenu({ habit }: Props) {
       s.modals.habitEditor.description = habit.description;
     });
   }
-  const onReport = () => { }
-  const onDelete = () => { useApiStore.getState().removeHabit(habit) }
+  const onReport = (ev: MouseEvent) => {
+    ev.stopPropagation();
+  }
+  const onDelete = (ev: MouseEvent) => {
+    ev.stopPropagation();
+    useApiStore.getState().removeHabit(habit)
+  }
 
   return (
     <Menu position="bottom-end">
 
       <Menu.Target>
-        <ActionIcon variant="subtle" c="var(--text-color)" radius="xl">
+        <ActionIcon variant="subtle" c="var(--text-color)" radius="xl" onClick={(ev) => ev.stopPropagation()}>
           <IconDots />
         </ActionIcon>
       </Menu.Target>

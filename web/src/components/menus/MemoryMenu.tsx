@@ -3,6 +3,7 @@ import { useAppStore } from "@/stores/appStore"
 import { IMemory } from "@api/types/memory";
 import { ActionIcon, Menu } from "@mantine/core"
 import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react"
+import { MouseEvent } from "react";
 
 interface Props {
   memory: IMemory;
@@ -11,9 +12,10 @@ interface Props {
 function MemoryMenu({ memory }: Props) {
   const currentUserId = useApiStore(state => state.userId);
 
-  const onShare = () => { }
-  const onClipboard = () => { }
-  const onEdit = () => {
+  const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onClipboard = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onEdit = (ev: MouseEvent) => {
+    ev.stopPropagation();
     useAppStore.setState(s => {
       s.modals.memoryEditor = {
         opened: true,
@@ -22,14 +24,16 @@ function MemoryMenu({ memory }: Props) {
       }
     });
   }
-  const onReport = () => { }
-  const onDelete = () => { useApiStore.getState().removeMemory(memory) }
+  const onReport = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onDelete = (ev: MouseEvent) => {
+    ev.stopPropagation(); useApiStore.getState().removeMemory(memory)
+  }
 
   return (
     <Menu position="bottom-end">
 
       <Menu.Target>
-        <ActionIcon variant="subtle" c="var(--text-color)" radius="xl">
+        <ActionIcon variant="subtle" c="var(--text-color)" radius="xl" onClick={(ev) => ev.stopPropagation()}>
           <IconDots />
         </ActionIcon>
       </Menu.Target>
@@ -67,7 +71,7 @@ function MemoryMenu({ memory }: Props) {
 
       </Menu.Dropdown>
 
-    </Menu>
+    </Menu >
   )
 }
 
