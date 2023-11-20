@@ -78,7 +78,7 @@ function Home() {
           Memories
         </ChevronTitle>
 
-        <ScrollArea offsetScrollbars="x">
+        <ScrollArea offsetScrollbars="x" mb="-xs">
           <Flex direction="row" gap="xs">
             {previewMemories.length > 0 ?
               previewMemories.map(memory =>
@@ -99,7 +99,7 @@ function Home() {
         </ChevronTitle>
 
         {previewGoals.length > 0 ?
-          <Goal goal={previewGoals[0]!} />
+          <Goal goal={previewGoals[0]!} onClick={() => navigate(`/goals/${user?.username}`)} />
           :
           <>No goals.</>
         }
