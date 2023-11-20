@@ -21,6 +21,7 @@ function HabitMenu({ habit }: Props) {
       s.modals.habitEditor.id = habit.id;
       s.modals.habitEditor.title = habit.title;
       s.modals.habitEditor.description = habit.description;
+      s.modals.habitEditor.dailyTarget = habit.dailyTarget;
     });
   }
   const onReport = (ev: MouseEvent) => {

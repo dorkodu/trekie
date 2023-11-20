@@ -2,7 +2,7 @@ import { util } from "@/lib/util";
 import { useApiStore } from "@/stores/apiStore";
 import { truncate } from "@/styles/shared.css";
 import { IHabit } from "@api/types/habit"
-import { Button, Card, Flex, Paper, ScrollArea, Text, Title } from "@mantine/core"
+import { Badge, Button, Card, Flex, Paper, ScrollArea, Text, Title } from "@mantine/core"
 import { IconMinus, IconPlus } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { MouseEvent } from "react";
@@ -21,6 +21,9 @@ function Habit({ habit, showHeatmap, onClick }: Props) {
     ev.stopPropagation();
     useApiStore.getState().countHabit(habit, count);
   }
+
+  const dailyDone = habit.heatmap?.[util.getDayDiff(habit.date, Date.now())] ?? 0;
+  const dailyTarget = habit.dailyTarget;
 
   return (
     <Card withBorder p={0} mb="xs" style={{ overflow: "visible" }} onClick={onClick}>
@@ -42,7 +45,9 @@ function Habit({ habit, showHeatmap, onClick }: Props) {
           <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
             <Text truncate><TextParser ids={["emoji", "url", "username"]} text={habit.description} /></Text>
           </Flex>
-
+          <Flex mt="xs" gap="xs">
+            <Badge>{dailyDone} / {dailyTarget} Daily Target</Badge>
+          </Flex>
         </Flex>
 
         <Button h="auto" onClick={(ev) => onChangeCount(ev, +1)}>

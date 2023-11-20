@@ -4,6 +4,7 @@ import type { IUser } from "@api/types/user";
 import type { IHabit } from "@api/types/habit";
 import type { IMemory } from "@api/types/memory";
 import type { IGoal } from "@api/types/goal";
+import { util } from "@/lib/util";
 
 export interface ApiStoreState {
   userId: string | undefined;
@@ -131,12 +132,9 @@ export const useApiStore = create(
 
         if (!targetHabit.heatmap) targetHabit.heatmap = {};
 
-        const habitDate = new Date(habit.date);
-        const today = new Date();
-        const diffMs = today.getTime() - habitDate.getTime();
-        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const dayDiff = util.getDayDiff(habit.date, Date.now())
 
-        let habitCount = targetHabit.heatmap[diffDays];
+        let habitCount = targetHabit.heatmap[dayDiff];
         if (habitCount === undefined) habitCount = 0;
 
         if (habitCount <= 0 && count <= 0) return;
@@ -144,9 +142,9 @@ export const useApiStore = create(
         habitCount += count;
 
         targetHabit.count += count;
-        targetHabit.heatmap[diffDays] = habitCount;
+        targetHabit.heatmap[dayDiff] = habitCount;
 
-        if (targetHabit.heatmap[diffDays]! <= 0) delete targetHabit.heatmap[diffDays];
+        if (targetHabit.heatmap[dayDiff]! <= 0) delete targetHabit.heatmap[dayDiff];
       });
     },
 

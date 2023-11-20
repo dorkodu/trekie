@@ -37,7 +37,7 @@ function HabitEditorModal() {
       title: habitEditor.title,
       description: habitEditor.description,
       count: 0,
-      dailyTarget: 0,
+      dailyTarget: habitEditor.dailyTarget,
       heatmap: {},
     }
 
@@ -57,6 +57,7 @@ function HabitEditorModal() {
 
       habit.title = habitEditor.title;
       habit.description = habitEditor.description;
+      habit.dailyTarget = habitEditor.dailyTarget;
     });
 
     close();
