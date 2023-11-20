@@ -10,11 +10,12 @@ import Heatmap from "./Heatmap";
 
 interface Props {
   habit: IHabit;
+  heatmap?: boolean;
 
   onClick?: () => void;
 }
 
-function Habit({ habit, onClick }: Props) {
+function Habit({ habit, heatmap, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation();
     useApiStore.setState(s => {
@@ -40,7 +41,7 @@ function Habit({ habit, onClick }: Props) {
             <Text truncate><TextParser ids={["emoji", "url", "username"]} text={habit.description} /></Text>
           </Flex>
 
-          {habit.heatmap &&
+          {heatmap && habit.heatmap &&
             <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
               <ScrollArea>
                 <Heatmap date={habit.date} values={habit.heatmap} />
