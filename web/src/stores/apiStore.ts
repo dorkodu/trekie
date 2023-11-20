@@ -253,17 +253,21 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             // If current xp was higher than/equal to target xp, but now will be lower
             if (
               currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
-              currentUser.dailyXpCurrent + amount < currentUser.dailyXpTarget
+              currentUser.dailyXpCurrent + amount < currentUser.dailyXpTarget &&
+              util.isSameDay(currentUser.lastStreakDate, Date.now())
             ) {
               currentUser.streaks--;
+              currentUser.lastStreakDate = undefined;
             }
 
             // If current xp was not higher than/equal to target xp, but now will be higher/equal
             if (
               currentUser.dailyXpCurrent < currentUser.dailyXpTarget &&
-              currentUser.dailyXpCurrent + amount >= currentUser.dailyXpTarget
+              currentUser.dailyXpCurrent + amount >= currentUser.dailyXpTarget &&
+              !util.isSameDay(currentUser.lastStreakDate, Date.now())
             ) {
               currentUser.streaks++;
+              currentUser.lastStreakDate = Date.now();
             }
 
             currentUser.totalXp += amount;

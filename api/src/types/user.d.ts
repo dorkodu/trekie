@@ -11,7 +11,9 @@ export interface IUser {
   dailyXpTarget: number;
   dailyXpCurrent: number;
   totalXp: number;
+
   streaks: number;
+  lastStreakDate?: number;
 
   followerCount: number;
   followingCount: number;
