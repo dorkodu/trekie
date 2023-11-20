@@ -34,7 +34,7 @@ function App() {
     useApiStore.setState(s => { s.userId = user.id });
     useApiStore.getState().addUser(user);
 
-    useApiStore.getState().addHabit({ id: "0", userId: user.id, date: Date.now(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: [12, 13, 14] })
+    useApiStore.getState().addHabit({ id: "0", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
     useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test @testuser", description: "test @johndoe. awdaw johndoe@gmail.com test", tasksTodo: 10, tasksDone: 5 })
     useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test @testuser", favourites: 1234567 })
 

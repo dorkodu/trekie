@@ -29,6 +29,8 @@ export interface ApiStoreAction {
   removeHabit: (habit: IHabit) => void;
   getHabits: (userId: string | undefined) => IHabit[];
 
+  countHabit: (habit: IHabit, count: number) => void;
+
   addMemory: (memory: IMemory) => void;
   removeMemory: (memory: IMemory) => void;
   getMemories: (userId: string | undefined) => IMemory[];
@@ -115,6 +117,29 @@ export const useApiStore = create(
       if (!habitIds) return [];
 
       return habitIds.map(habitId => habits[habitId]).filter(Boolean) as IHabit[];
+    },
+
+    countHabit(habit, count) {
+      set(state => {
+        const targetHabitId = habit.id;
+        const targetHabit = targetHabitId && state.habits[targetHabitId];
+        if (!targetHabit) return;
+
+        targetHabit.count += count;
+
+        if (!targetHabit.heatmap) targetHabit.heatmap = {};
+
+        const habitDate = new Date(habit.date);
+        const today = new Date();
+        const diffMs = today.getTime() - habitDate.getTime();
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        if (!targetHabit.heatmap[diffDays]) targetHabit.heatmap[diffDays] = 0;
+        targetHabit.heatmap[diffDays] += count;
+
+        if (targetHabit.heatmap[diffDays]! <= 0) delete targetHabit.heatmap[diffDays];
+        console.log({ ...targetHabit.heatmap })
+      });
     },
 
     addMemory(memory) {

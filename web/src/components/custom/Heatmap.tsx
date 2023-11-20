@@ -2,16 +2,16 @@ import ReactHeatMap from "@uiw/react-heat-map";
 
 interface Props {
   date: number;
-  values: number[];
+  values: { [offset: number]: number };
 }
 
 function Heatmap({ date, values }: Props) {
   return (
     <ReactHeatMap
-      value={values.map((v, i) => {
+      value={Object.entries(values).map(([key, value]) => {
         const _date = new Date(date);
-        _date.setDate(_date.getDate() + i);
-        return { date: heatmapDate(_date), count: v }
+        _date.setDate(_date.getDate() + Number(key));
+        return { date: heatmapDate(_date), count: value };
       })}
       startDate={heatmapStartDate(date)}
       width={heatmapWidth(date)}
@@ -19,10 +19,10 @@ function Heatmap({ date, values }: Props) {
       style={{ color: 'var(--text-color)' }}
       panelColors={{
         0: '#E6FCF5',
-        1: '#96F2D7',
-        2: '#38D9A9',
-        5: '#12B886',
-        10: '#087F5B',
+        2: '#96F2D7',
+        5: '#38D9A9',
+        10: '#12B886',
+        11: '#087F5B',
       }}
       rectProps={{ rx: 5 }}
     />

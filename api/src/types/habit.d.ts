@@ -5,5 +5,5 @@ export interface IHabit {
   title: string;
   description: string;
   count: number;
-  heatmap?: number[];
+  heatmap?: { [offset: number]: number };
 }

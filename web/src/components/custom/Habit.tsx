@@ -18,11 +18,7 @@ interface Props {
 function Habit({ habit, heatmap, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation();
-    useApiStore.setState(s => {
-      const h = s.habits[habit.id];
-      if (!h) return;
-      h.count += count;
-    });
+    useApiStore.getState().countHabit(habit, count);
   }
 
   return (
