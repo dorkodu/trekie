@@ -43,6 +43,8 @@ export interface ApiStoreAction {
   removeGoal: (goal: IGoal) => void;
   getGoals: (userId: string | undefined) => IGoal[];
 
+  changeXp: (amount: number) => void;
+
   reset: () => void;
 }
 
@@ -103,6 +105,13 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             s.habits[habit.id] = habit;
             if (!s.userIdToHabitIds[habit.userId]) s.userIdToHabitIds[habit.userId] = [];
             s.userIdToHabitIds[habit.userId]?.push(habit.id);
+
+            const currentUserId = s.userId;
+            const currentUser = currentUserId && s.users[currentUserId];
+            if (!currentUser) return;
+
+            if (currentUserId !== habit.userId) return;
+            currentUser.dailyXpTarget += habit.dailyTarget;
           });
         },
 
@@ -130,6 +139,8 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         countHabit(habit, count) {
+          let changeXp = false;
+
           set(state => {
             const targetHabitId = habit.id;
             const targetHabit = targetHabitId && state.habits[targetHabitId];
@@ -149,8 +160,12 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             targetHabit.count += count;
             targetHabit.heatmap[dayDiff] = habitCount;
 
+            changeXp = true;
+
             if (targetHabit.heatmap[dayDiff]! <= 0) delete targetHabit.heatmap[dayDiff];
           });
+
+          if (changeXp) get().changeXp(count);
         },
 
         addMemory(memory) {
@@ -227,6 +242,33 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
           return goalIds.map(goalId => goals[goalId]).filter(Boolean) as IGoal[];
 
+        },
+
+        changeXp(amount) {
+          set(state => {
+            const currentUserId = state.userId;
+            const currentUser = currentUserId && state.users[currentUserId];
+            if (!currentUser) return;
+
+            // If current xp was higher than/equal to target xp, but now will be lower
+            if (
+              currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
+              currentUser.dailyXpCurrent + amount < currentUser.dailyXpTarget
+            ) {
+              currentUser.streaks--;
+            }
+
+            // If current xp was not higher than/equal to target xp, but now will be higher/equal
+            if (
+              currentUser.dailyXpCurrent < currentUser.dailyXpTarget &&
+              currentUser.dailyXpCurrent + amount >= currentUser.dailyXpTarget
+            ) {
+              currentUser.streaks++;
+            }
+
+            currentUser.totalXp += amount;
+            currentUser.dailyXpCurrent += amount;
+          });
         },
 
         reset() {
