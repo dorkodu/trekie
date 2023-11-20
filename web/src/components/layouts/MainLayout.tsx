@@ -54,7 +54,7 @@ function MainLayout() {
               href="/home"
               onClick={(ev) => preventNavigate(ev, "/home")}
             >
-              <Image src={colorScheme === "dark" ? "/brand-light.svg" : "brand-dark.svg"} height={32} />
+              <Image src={colorScheme === "dark" ? "/brand-light.svg" : "/brand-dark.svg"} height={32} />
             </Anchor>
 
             <ActionIcon variant="subtle" size={32} onClick={() => open()} c="var(--text-color)">
