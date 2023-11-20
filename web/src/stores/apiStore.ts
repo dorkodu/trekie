@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { persist } from "zustand/middleware";
 import type { IUser } from "@api/types/user";
 import type { IHabit } from "@api/types/habit";
 import type { IMemory } from "@api/types/memory";
@@ -41,6 +42,8 @@ export interface ApiStoreAction {
   addGoal: (goal: IGoal) => void;
   removeGoal: (goal: IGoal) => void;
   getGoals: (userId: string | undefined) => IGoal[];
+
+  reset: () => void;
 }
 
 const initialState: ApiStoreState = {
@@ -57,171 +60,182 @@ const initialState: ApiStoreState = {
   userIdToGoalIds: {},
 }
 
-export const useApiStore = create(
-  immer<ApiStoreState & ApiStoreAction>((set, get) => ({
-    ...initialState,
+export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
+  immer(
+    persist(
+      (set, get) => ({
+        ...initialState,
 
-    addUser(user) {
-      set(s => {
-        s.users[user.id] = user;
-        s.usernameToUserId[user.username] = user.id;
-      });
-    },
+        addUser(user) {
+          set(s => {
+            s.users[user.id] = user;
+            s.usernameToUserId[user.username] = user.id;
+          });
+        },
 
-    removeUser(user) {
-      set(s => {
-        delete s.users[user.id];
-        delete s.usernameToUserId[user.username];
-      });
-    },
+        removeUser(user) {
+          set(s => {
+            delete s.users[user.id];
+            delete s.usernameToUserId[user.username];
+          });
+        },
 
-    followUser(user) {
-      set(state => {
-        const currentUserId = state.userId;
-        const currentUser = currentUserId && state.users[currentUserId];
-        if (!currentUser) return;
+        followUser(user) {
+          set(state => {
+            const currentUserId = state.userId;
+            const currentUser = currentUserId && state.users[currentUserId];
+            if (!currentUser) return;
 
-        const targetUserId = user.id;
-        const targetUser = targetUserId && state.users[targetUserId];
-        if (!targetUser) return;
+            const targetUserId = user.id;
+            const targetUser = targetUserId && state.users[targetUserId];
+            if (!targetUser) return;
 
-        const newState = !targetUser.following;
+            const newState = !targetUser.following;
 
-        targetUser.following = newState;
-        targetUser.followerCount += newState ? +1 : -1;
-        currentUser.followingCount += newState ? +1 : -1;
-      });
-    },
+            targetUser.following = newState;
+            targetUser.followerCount += newState ? +1 : -1;
+            currentUser.followingCount += newState ? +1 : -1;
+          });
+        },
 
-    addHabit(habit) {
-      set(s => {
-        s.habits[habit.id] = habit;
-        if (!s.userIdToHabitIds[habit.userId]) s.userIdToHabitIds[habit.userId] = [];
-        s.userIdToHabitIds[habit.userId]?.push(habit.id);
-      });
-    },
+        addHabit(habit) {
+          set(s => {
+            s.habits[habit.id] = habit;
+            if (!s.userIdToHabitIds[habit.userId]) s.userIdToHabitIds[habit.userId] = [];
+            s.userIdToHabitIds[habit.userId]?.push(habit.id);
+          });
+        },
 
-    removeHabit(habit) {
-      set(s => {
-        delete s.habits[habit.id];
+        removeHabit(habit) {
+          set(s => {
+            delete s.habits[habit.id];
 
-        let userIdToHabitIds = s.userIdToHabitIds[habit.userId];
-        if (!userIdToHabitIds) return;
+            let userIdToHabitIds = s.userIdToHabitIds[habit.userId];
+            if (!userIdToHabitIds) return;
 
-        s.userIdToHabitIds[habit.userId] = userIdToHabitIds.filter(habitId => habitId !== habit.id);
-      });
-    },
+            s.userIdToHabitIds[habit.userId] = userIdToHabitIds.filter(habitId => habitId !== habit.id);
+          });
+        },
 
-    getHabits(userId) {
-      if (!userId) return [];
+        getHabits(userId) {
+          if (!userId) return [];
 
-      const habits = get().habits;
-      const userIdToHabitIds = get().userIdToHabitIds;
+          const habits = get().habits;
+          const userIdToHabitIds = get().userIdToHabitIds;
 
-      const habitIds = userIdToHabitIds[userId];
-      if (!habitIds) return [];
+          const habitIds = userIdToHabitIds[userId];
+          if (!habitIds) return [];
 
-      return habitIds.map(habitId => habits[habitId]).filter(Boolean) as IHabit[];
-    },
+          return habitIds.map(habitId => habits[habitId]).filter(Boolean) as IHabit[];
+        },
 
-    countHabit(habit, count) {
-      set(state => {
-        const targetHabitId = habit.id;
-        const targetHabit = targetHabitId && state.habits[targetHabitId];
-        if (!targetHabit) return;
+        countHabit(habit, count) {
+          set(state => {
+            const targetHabitId = habit.id;
+            const targetHabit = targetHabitId && state.habits[targetHabitId];
+            if (!targetHabit) return;
 
-        if (!targetHabit.heatmap) targetHabit.heatmap = {};
+            if (!targetHabit.heatmap) targetHabit.heatmap = {};
 
-        const dayDiff = util.getDayDiff(habit.date, Date.now())
+            const dayDiff = util.getDayDiff(habit.date, Date.now())
 
-        let habitCount = targetHabit.heatmap[dayDiff];
-        if (habitCount === undefined) habitCount = 0;
+            let habitCount = targetHabit.heatmap[dayDiff];
+            if (habitCount === undefined) habitCount = 0;
 
-        if (habitCount <= 0 && count <= 0) return;
+            if (habitCount <= 0 && count <= 0) return;
 
-        habitCount += count;
+            habitCount += count;
 
-        targetHabit.count += count;
-        targetHabit.heatmap[dayDiff] = habitCount;
+            targetHabit.count += count;
+            targetHabit.heatmap[dayDiff] = habitCount;
 
-        if (targetHabit.heatmap[dayDiff]! <= 0) delete targetHabit.heatmap[dayDiff];
-      });
-    },
+            if (targetHabit.heatmap[dayDiff]! <= 0) delete targetHabit.heatmap[dayDiff];
+          });
+        },
 
-    addMemory(memory) {
-      set(s => {
-        s.memories[memory.id] = memory;
-        if (!s.userIdToMemoryIds[memory.userId]) s.userIdToMemoryIds[memory.userId] = [];
-        s.userIdToMemoryIds[memory.userId]?.push(memory.id);
-      });
-    },
+        addMemory(memory) {
+          set(s => {
+            s.memories[memory.id] = memory;
+            if (!s.userIdToMemoryIds[memory.userId]) s.userIdToMemoryIds[memory.userId] = [];
+            s.userIdToMemoryIds[memory.userId]?.push(memory.id);
+          });
+        },
 
-    removeMemory(memory) {
-      set(s => {
-        delete s.memories[memory.id];
+        removeMemory(memory) {
+          set(s => {
+            delete s.memories[memory.id];
 
-        let userIdToMemoryIds = s.userIdToMemoryIds[memory.userId];
-        if (!userIdToMemoryIds) return;
+            let userIdToMemoryIds = s.userIdToMemoryIds[memory.userId];
+            if (!userIdToMemoryIds) return;
 
-        s.userIdToMemoryIds[memory.userId] = userIdToMemoryIds.filter(memoryId => memoryId !== memory.id);
-      });
-    },
+            s.userIdToMemoryIds[memory.userId] = userIdToMemoryIds.filter(memoryId => memoryId !== memory.id);
+          });
+        },
 
-    getMemories(userId) {
-      if (!userId) return [];
+        getMemories(userId) {
+          if (!userId) return [];
 
-      const memories = get().memories;
-      const userIdToMemoryIds = get().userIdToMemoryIds;
+          const memories = get().memories;
+          const userIdToMemoryIds = get().userIdToMemoryIds;
 
-      const memoryIds = userIdToMemoryIds[userId];
-      if (!memoryIds) return [];
+          const memoryIds = userIdToMemoryIds[userId];
+          if (!memoryIds) return [];
 
-      return memoryIds.map(memoryId => memories[memoryId]).filter(Boolean) as IMemory[];
-    },
+          return memoryIds.map(memoryId => memories[memoryId]).filter(Boolean) as IMemory[];
+        },
 
-    favouriteMemory(memory) {
-      set(state => {
-        const targetMemoryId = memory.id;
-        const targetMemory = targetMemoryId && state.memories[targetMemoryId];
-        if (!targetMemory) return;
+        favouriteMemory(memory) {
+          set(state => {
+            const targetMemoryId = memory.id;
+            const targetMemory = targetMemoryId && state.memories[targetMemoryId];
+            if (!targetMemory) return;
 
-        const newState = !targetMemory.favourited;
+            const newState = !targetMemory.favourited;
 
-        targetMemory.favourited = newState;
-        targetMemory.favourites += newState ? +1 : -1;
-      });
-    },
+            targetMemory.favourited = newState;
+            targetMemory.favourites += newState ? +1 : -1;
+          });
+        },
 
-    addGoal(goal) {
-      set(s => {
-        s.goals[goal.id] = goal;
-        if (!s.userIdToGoalIds[goal.userId]) s.userIdToGoalIds[goal.userId] = [];
-        s.userIdToGoalIds[goal.userId]?.push(goal.id);
-      });
-    },
+        addGoal(goal) {
+          set(s => {
+            s.goals[goal.id] = goal;
+            if (!s.userIdToGoalIds[goal.userId]) s.userIdToGoalIds[goal.userId] = [];
+            s.userIdToGoalIds[goal.userId]?.push(goal.id);
+          });
+        },
 
-    removeGoal(goal) {
-      set(s => {
-        delete s.goals[goal.id];
+        removeGoal(goal) {
+          set(s => {
+            delete s.goals[goal.id];
 
-        let userIdToGoalIds = s.userIdToGoalIds[goal.userId];
-        if (!userIdToGoalIds) return;
+            let userIdToGoalIds = s.userIdToGoalIds[goal.userId];
+            if (!userIdToGoalIds) return;
 
-        s.userIdToGoalIds[goal.userId] = userIdToGoalIds.filter(goalId => goalId !== goal.id);
-      });
-    },
+            s.userIdToGoalIds[goal.userId] = userIdToGoalIds.filter(goalId => goalId !== goal.id);
+          });
+        },
 
-    getGoals(userId) {
-      if (!userId) return [];
+        getGoals(userId) {
+          if (!userId) return [];
 
-      const goals = get().goals;
-      const userIdToGoalIds = get().userIdToGoalIds;
+          const goals = get().goals;
+          const userIdToGoalIds = get().userIdToGoalIds;
 
-      const goalIds = userIdToGoalIds[userId];
-      if (!goalIds) return [];
+          const goalIds = userIdToGoalIds[userId];
+          if (!goalIds) return [];
 
-      return goalIds.map(goalId => goals[goalId]).filter(Boolean) as IGoal[];
+          return goalIds.map(goalId => goals[goalId]).filter(Boolean) as IGoal[];
 
-    },
-  }))
+        },
+
+        reset() {
+          set(initialState);
+        },
+      }),
+      {
+        name: "api-store"
+      }
+    )
+  )
 );

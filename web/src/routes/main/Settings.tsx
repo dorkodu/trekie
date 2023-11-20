@@ -1,10 +1,20 @@
-import { Flex } from "@mantine/core"
+import { useApiStore } from "@/stores/apiStore"
+import { Button, Flex } from "@mantine/core"
+import { IconTrash } from "@tabler/icons-react"
 
 function Settings() {
   return (
     <Flex direction="column" m="md">
 
-      Settings
+      <Button
+        onClick={() => useApiStore.getState().reset()}
+        leftSection={<IconTrash />}
+        variant="light"
+        color="red"
+        styles={{ label: { flex: 1 } }}
+      >
+        Delete Data
+      </Button>
 
     </Flex>
   )
