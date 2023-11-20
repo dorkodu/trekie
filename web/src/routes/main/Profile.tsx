@@ -30,9 +30,11 @@ function Profile() {
 
   if (!user) {
     return (
-      <StatusCard icon={<IconExclamationCircle />} color="red" title={`User @${username} not found`}>
-        Try searching for another user.
-      </StatusCard>
+      <Flex direction="column" m="md">
+        <StatusCard icon={<IconExclamationCircle />} color="red" title={`User @${username} not found`}>
+          Try searching for another user.
+        </StatusCard>
+      </Flex>
     )
   }
 
