@@ -1,3 +1,5 @@
+import { util } from "@/lib/util";
+import { Tooltip } from "@mantine/core";
 import ReactHeatMap from "@uiw/react-heat-map";
 
 interface Props {
@@ -25,6 +27,16 @@ function Heatmap({ date, values }: Props) {
         11: '#087F5B',
       }}
       rectProps={{ rx: 5 }}
+      rectRender={(props, data) => {
+        return (
+          <Tooltip
+            label={`${data.count ?? "None"} on ${util.formatDate(date + data.index * (60 * 60 * 24 * 1000))}`}
+            withinPortal={true}
+          >
+            <rect {...props} />
+          </Tooltip>
+        );
+      }}
     />
   )
 }
