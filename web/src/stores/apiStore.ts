@@ -144,7 +144,7 @@ export const useApiStore = create(
         habitCount += count;
 
         targetHabit.count += count;
-        targetHabit.heatmap[diffDays] += count;
+        targetHabit.heatmap[diffDays] = habitCount;
 
         if (targetHabit.heatmap[diffDays]! <= 0) delete targetHabit.heatmap[diffDays];
       });
