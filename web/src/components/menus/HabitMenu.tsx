@@ -2,7 +2,7 @@ import { useApiStore } from "@/stores/apiStore";
 import { useAppStore } from "@/stores/appStore"
 import { IHabit } from "@api/types/habit";
 import { ActionIcon, Menu } from "@mantine/core"
-import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare } from "@tabler/icons-react"
+import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react"
 
 interface Props {
   habit: IHabit;
@@ -22,6 +22,7 @@ function HabitMenu({ habit }: Props) {
     });
   }
   const onReport = () => { }
+  const onDelete = () => { useApiStore.getState().removeHabit(habit) }
 
   return (
     <Menu position="bottom-end">
@@ -47,9 +48,14 @@ function HabitMenu({ habit }: Props) {
             <Menu.Divider />
 
             {currentUserId === habit.userId ?
-              <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                Edit habit
-              </Menu.Item>
+              <>
+                <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
+                  Edit habit
+                </Menu.Item>
+                <Menu.Item onClick={onDelete} leftSection={<IconTrash />} c="red">
+                  Delete habit
+                </Menu.Item>
+              </>
               :
               <Menu.Item onClick={onReport} color="red" leftSection={<IconExclamationCircle />}>
                 Report habit

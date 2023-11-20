@@ -2,7 +2,7 @@ import { useApiStore } from "@/stores/apiStore";
 import { useAppStore } from "@/stores/appStore"
 import { IMemory } from "@api/types/memory";
 import { ActionIcon, Menu } from "@mantine/core"
-import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare } from "@tabler/icons-react"
+import { IconClipboardText, IconDots, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react"
 
 interface Props {
   memory: IMemory;
@@ -23,6 +23,7 @@ function MemoryMenu({ memory }: Props) {
     });
   }
   const onReport = () => { }
+  const onDelete = () => { useApiStore.getState().removeMemory(memory) }
 
   return (
     <Menu position="bottom-end">
@@ -48,9 +49,14 @@ function MemoryMenu({ memory }: Props) {
             <Menu.Divider />
 
             {currentUserId === memory.userId ?
-              <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                Edit memory
-              </Menu.Item>
+              <>
+                <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
+                  Edit memory
+                </Menu.Item>
+                <Menu.Item onClick={onDelete} leftSection={<IconTrash />} c="red">
+                  Delete memory
+                </Menu.Item>
+              </>
               :
               <Menu.Item onClick={onReport} color="red" leftSection={<IconExclamationCircle />}>
                 Report memory

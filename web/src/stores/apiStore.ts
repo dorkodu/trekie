@@ -103,7 +103,11 @@ export const useApiStore = create(
     removeHabit(habit) {
       set(s => {
         delete s.habits[habit.id];
-        delete s.userIdToHabitIds[habit.userId];
+
+        let userIdToHabitIds = s.userIdToHabitIds[habit.userId];
+        if (!userIdToHabitIds) return;
+
+        s.userIdToHabitIds[habit.userId] = userIdToHabitIds.filter(habitId => habitId !== habit.id);
       });
     },
 
@@ -157,7 +161,11 @@ export const useApiStore = create(
     removeMemory(memory) {
       set(s => {
         delete s.memories[memory.id];
-        delete s.userIdToMemoryIds[memory.userId];
+
+        let userIdToMemoryIds = s.userIdToMemoryIds[memory.userId];
+        if (!userIdToMemoryIds) return;
+
+        s.userIdToMemoryIds[memory.userId] = userIdToMemoryIds.filter(memoryId => memoryId !== memory.id);
       });
     },
 
@@ -197,7 +205,11 @@ export const useApiStore = create(
     removeGoal(goal) {
       set(s => {
         delete s.goals[goal.id];
-        delete s.userIdToGoalIds[goal.userId];
+
+        let userIdToGoalIds = s.userIdToGoalIds[goal.userId];
+        if (!userIdToGoalIds) return;
+
+        s.userIdToGoalIds[goal.userId] = userIdToGoalIds.filter(goalId => goalId !== goal.id);
       });
     },
 

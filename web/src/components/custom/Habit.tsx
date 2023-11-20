@@ -11,11 +11,12 @@ import HabitMenu from "../menus/HabitMenu";
 
 interface Props {
   habit: IHabit;
+  showHeatmap?: boolean;
 
   onClick?: () => void;
 }
 
-function Habit({ habit, onClick }: Props) {
+function Habit({ habit, showHeatmap, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation();
     useApiStore.getState().countHabit(habit, count);
@@ -51,7 +52,7 @@ function Habit({ habit, onClick }: Props) {
       </Button.Group>
 
 
-      {habit && habit.heatmap &&
+      {showHeatmap && habit.heatmap &&
         <Flex p="md" style={{ display: "grid", gridTemplateRows: "auto" }}>
           <ScrollArea>
             <Heatmap date={habit.date} values={habit.heatmap} />
