@@ -16,49 +16,70 @@ function App() {
   const loading = useAppStore(state => state.loading);
 
   useEffect(() => {
+    let user: IUser;
+
     // TODO: Perform authorization logic
-    const user: IUser = {
-      id: Date.now().toString(),
-      joinDate: Date.now(),
-      name: "John Doe 👑",
-      username: "johndoe",
-      bio: "Hello, world!\nThis is my biography. I am John Doe. 👋\nThis is my website https://dorkodu.com",
-      followerCount: 123,
-      followingCount: 123,
-      dailyXpCurrent: 100,
-      dailyXpTarget: 57,
-      totalXp: 3464,
-      streaks: 10,
+    if (!import.meta.env.DEV) {
+      user = {
+        id: Date.now().toString(),
+        joinDate: Date.now(),
+        name: "John Doe 👑",
+        username: "johndoe",
+        bio: "Hello, world!\nThis is my biography. I am John Doe. 👋\nThis is my website https://dorkodu.com",
+        followerCount: 123,
+        followingCount: 123,
+        dailyXpCurrent: 100,
+        dailyXpTarget: 57,
+        totalXp: 3464,
+        streaks: 10,
+      }
+
+      useApiStore.getState().addHabit({ id: "0", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+      useApiStore.getState().addHabit({ id: "1", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+      useApiStore.getState().addHabit({ id: "2", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+      useApiStore.getState().addHabit({ id: "3", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+      useApiStore.getState().addHabit({ id: "4", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
+
+      useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test @testuser", description: "test @johndoe. awdaw johndoe@gmail.com test", tasksTodo: 10, tasksDone: 5 })
+      useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test @testuser", favourites: 1234567 })
+
+      const testUser: IUser = {
+        id: (Date.now() + 1).toString(),
+        joinDate: Date.now(),
+        name: "Test User 🤖",
+        username: "testuser",
+        bio: "👋 Hey, I am a test user!",
+        followerCount: 1234,
+        followingCount: 1234567,
+        premium: true,
+        follower: true,
+        dailyXpCurrent: 99,
+        dailyXpTarget: 577,
+        totalXp: 346444,
+        streaks: 10123,
+      }
+      useApiStore.getState().addUser(testUser);
     }
+    else {
+      user = {
+        id: (Date.now() + 1).toString(),
+        joinDate: Date.now(),
+        name: "Your Name",
+        username: "your.username",
+        bio: "Your biography.",
+        followerCount: 0,
+        followingCount: 0,
+        dailyXpCurrent: 0,
+        dailyXpTarget: 0,
+        totalXp: 0,
+        streaks: 0,
+      }
+      useApiStore.getState().addUser(user);
+    }
+
     useAppStore.setState(s => { s.loading.auth = false });
     useApiStore.setState(s => { s.userId = user.id });
     useApiStore.getState().addUser(user);
-
-    useApiStore.getState().addHabit({ id: "0", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
-    useApiStore.getState().addHabit({ id: "1", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
-    useApiStore.getState().addHabit({ id: "2", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
-    useApiStore.getState().addHabit({ id: "3", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
-    useApiStore.getState().addHabit({ id: "4", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 1234, heatmap: {} })
-
-    useApiStore.getState().addGoal({ id: "0", userId: user.id, title: "test @testuser", description: "test @johndoe. awdaw johndoe@gmail.com test", tasksTodo: 10, tasksDone: 5 })
-    useApiStore.getState().addMemory({ id: "0", userId: user.id, date: Date.now(), description: "test @testuser", favourites: 1234567 })
-
-    const testUser: IUser = {
-      id: (Date.now() + 1).toString(),
-      joinDate: Date.now(),
-      name: "Test User 🤖",
-      username: "testuser",
-      bio: "👋 Hey, I am a test user!",
-      followerCount: 1234,
-      followingCount: 1234567,
-      premium: true,
-      follower: true,
-      dailyXpCurrent: 99,
-      dailyXpTarget: 577,
-      totalXp: 346444,
-      streaks: 10123,
-    }
-    useApiStore.getState().addUser(testUser);
   }, []);
 
   const location = useLocation();
