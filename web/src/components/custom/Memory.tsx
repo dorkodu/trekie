@@ -1,12 +1,13 @@
 import { useApiStore } from "@/stores/apiStore";
 import { IMemory } from "@api/types/memory"
-import { ActionIcon, Avatar, Card, Flex, Overlay, Text } from "@mantine/core"
+import { ActionIcon, Anchor, Avatar, Card, Flex, Overlay, Text } from "@mantine/core"
 import { IconStar, IconStarFilled } from "@tabler/icons-react"
 import TextParser from "../util/TextParser";
 import { wrapContent } from "@/styles/shared.css";
 import { util } from "@/lib/util";
 import MemoryMenu from "../menus/MemoryMenu";
 import { MouseEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   memory: IMemory;
@@ -15,7 +16,15 @@ interface Props {
 }
 
 function Memory({ memory, onClick }: Props) {
+  const navigate = useNavigate();
+
   const user = useApiStore(state => state.users[memory.userId]);
+
+  const onProfile = (ev: MouseEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    navigate(`/profile/${user?.username}`);
+  }
 
   const onFavourite = (ev: MouseEvent) => {
     ev.stopPropagation();
@@ -39,7 +48,9 @@ function Memory({ memory, onClick }: Props) {
           <Flex direction="column" style={{ flex: 1 }}>
             <Flex justify="space-between" align="center">
               <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
-                <Text truncate><TextParser ids={["emoji"]} text={user?.name ?? ""} /></Text>
+                <Anchor truncate c="var(--text-color)" onClick={onProfile} href={`/profile/${user?.username}`}>
+                  <TextParser ids={["emoji"]} text={user?.name ?? ""} />
+                </Anchor>
               </Flex>
               <MemoryMenu memory={memory} />
             </Flex>
