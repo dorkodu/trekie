@@ -1,8 +1,13 @@
+import WIPCard from "@/components/cards/WIPCard"
+import { Flex } from "@mantine/core"
+
 function TermsOfService() {
   return (
-    <>
-      TermsOfService
-    </>
+    <Flex direction="column" m="md">
+
+      <WIPCard />
+
+    </Flex>
   )
 }
 

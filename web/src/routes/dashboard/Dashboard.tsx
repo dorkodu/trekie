@@ -1,8 +1,13 @@
+import WIPCard from "@/components/cards/WIPCard"
+import { Flex } from "@mantine/core"
+
 function Dashboard() {
   return (
-    <>
-      Dashboard
-    </>
+    <Flex direction="column" m="md">
+
+      <WIPCard />
+
+    </Flex>
   )
 }
 
