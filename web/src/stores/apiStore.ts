@@ -43,7 +43,7 @@ export interface ApiStoreAction {
   removeGoal: (goal: IGoal) => void;
   getGoals: (userId: string | undefined) => IGoal[];
 
-  changeXp: (amount: number) => void;
+  changeXp: (amount: number, limit: number) => void;
 
   reset: () => void;
 }
@@ -142,10 +142,10 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
               currentUser.totalXp -= habit.count;
               currentUser.dailyXpTarget -= habit.dailyTarget;
-              currentUser.dailyXpCurrent -= dailyXpCurrent;
+              currentUser.dailyXpCurrent -= Math.min(dailyXpCurrent, habit.dailyTarget);
             });
 
-            get().changeXp(0);
+            get().changeXp(0, 0);
           }
         },
 
@@ -178,17 +178,15 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
             if (habitCount <= 0 && count <= 0) return;
 
-            habitCount += count;
-
             targetHabit.count += count;
-            targetHabit.heatmap[dayDiff] = habitCount;
+            targetHabit.heatmap[dayDiff] = habitCount + count;
 
             changeXp = true;
 
             if (targetHabit.heatmap[dayDiff]! <= 0) delete targetHabit.heatmap[dayDiff];
           });
 
-          if (changeXp) get().changeXp(count);
+          if (changeXp) get().changeXp(count, habit.dailyTarget);
         },
 
         addMemory(memory) {
@@ -267,19 +265,20 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
         },
 
-        changeXp(amount) {
+        changeXp(amount, limit) {
           set(state => {
             const currentUserId = state.userId;
             const currentUser = currentUserId && state.users[currentUserId];
             if (!currentUser) return;
 
             const didStreakToday = util.isSameDay(currentUser.lastStreakDate, Date.now());
+            const newDailyXpCurrent = Math.min(currentUser.dailyXpCurrent + amount, limit);
 
             // If current xp was higher than/equal to target xp, but now will be lower
             if (
               currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
               (
-                currentUser.dailyXpCurrent + amount < currentUser.dailyXpTarget ||
+                newDailyXpCurrent < currentUser.dailyXpTarget ||
                 currentUser.dailyXpCurrent === 0
               ) &&
               didStreakToday
@@ -291,7 +290,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             // If current xp was not higher than/equal to target xp, but now will be higher/equal
             if (
               currentUser.dailyXpCurrent < currentUser.dailyXpTarget &&
-              currentUser.dailyXpCurrent + amount >= currentUser.dailyXpTarget &&
+              newDailyXpCurrent >= currentUser.dailyXpTarget &&
               !didStreakToday
             ) {
               currentUser.streaks++;
@@ -299,7 +298,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             }
 
             currentUser.totalXp += amount;
-            currentUser.dailyXpCurrent += amount;
+            currentUser.dailyXpCurrent = newDailyXpCurrent;
           });
         },
 
