@@ -135,17 +135,17 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
           if (changeXp) {
             const dailyXpCurrent = (habit.heatmap?.[util.getDayDiff(habit.date, Date.now())] ?? 0);
 
-            get().changeXp(-dailyXpCurrent);
-
             set(s => {
               const currentUserId = s.userId;
               const currentUser = currentUserId && s.users[currentUserId];
               if (!currentUser) return;
 
-              currentUser.totalXp -= habit.count - dailyXpCurrent;
+              currentUser.totalXp -= habit.count;
               currentUser.dailyXpTarget -= habit.dailyTarget;
-              //currentUser.dailyXpCurrent -= dailyXpCurrent;
+              currentUser.dailyXpCurrent -= dailyXpCurrent;
             });
+
+            get().changeXp(0);
           }
         },
 
@@ -273,11 +273,16 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             const currentUser = currentUserId && state.users[currentUserId];
             if (!currentUser) return;
 
+            const didStreakToday = util.isSameDay(currentUser.lastStreakDate, Date.now());
+
             // If current xp was higher than/equal to target xp, but now will be lower
             if (
               currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
-              currentUser.dailyXpCurrent + amount < currentUser.dailyXpTarget &&
-              util.isSameDay(currentUser.lastStreakDate, Date.now())
+              (
+                currentUser.dailyXpCurrent + amount < currentUser.dailyXpTarget ||
+                currentUser.dailyXpCurrent === 0
+              ) &&
+              didStreakToday
             ) {
               currentUser.streaks--;
               currentUser.lastStreakDate = undefined;
@@ -287,7 +292,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             if (
               currentUser.dailyXpCurrent < currentUser.dailyXpTarget &&
               currentUser.dailyXpCurrent + amount >= currentUser.dailyXpTarget &&
-              !util.isSameDay(currentUser.lastStreakDate, Date.now())
+              !didStreakToday
             ) {
               currentUser.streaks++;
               currentUser.lastStreakDate = Date.now();
