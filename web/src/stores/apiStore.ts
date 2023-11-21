@@ -169,13 +169,15 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
             const habitDailyCurrent = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0;
             const habitDailyTarget = dailyTarget;
-            const overDoneDiff = Math.min(habitDailyCurrent - habitDailyTarget, 0);
+
+            const habitDailyTargetDiff = habitDailyTarget - habit.dailyTarget;
 
             habit.title = title;
             habit.description = description;
             habit.dailyTarget = dailyTarget;
 
-            user.dailyXpCurrent -= overDoneDiff;
+            user.dailyXpCurrent = Math.min(habitDailyTarget, habitDailyCurrent);
+            user.dailyXpTarget += habitDailyTargetDiff;
           });
 
           if (updateStreaks) get().updateStreaks();
