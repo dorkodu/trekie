@@ -36,10 +36,12 @@ export function Experience({ user }: Props) {
 }
 
 export function Streaks({ user }: Props) {
+  const didStreakToday = util.isSameDay(user.lastStreakDate, Date.now());
+
   return (
     <Flex direction="column" align="center">
       <Flex align="center">
-        <IconFlame color={util.isSameDay(user.lastStreakDate, Date.now()) ? "var(--mantine-color-red-filled)" : undefined} />
+        <IconFlame color={didStreakToday ? "var(--mantine-color-red-filled)" : undefined} />
         &nbsp;
         <Text title={util.formatNumber(user.streaks, true)}>{util.formatNumber(user.streaks)}</Text>
       </Flex>
