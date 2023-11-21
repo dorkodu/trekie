@@ -13,9 +13,13 @@ function HabitEditorModal() {
 
       // If created/edited a habit, perform cleanup
       if (s.modals.habitEditor.id) {
-        s.modals.habitEditor.id = undefined;
-        s.modals.habitEditor.title = "";
-        s.modals.habitEditor.description = "";
+        s.modals.habitEditor = {
+          opened: false,
+          id: undefined,
+          title: "",
+          description: "",
+          dailyTarget: 0,
+        }
       }
     });
   }
@@ -50,15 +54,14 @@ function HabitEditorModal() {
     const currentUserId = useApiStore.getState().userId;
     if (!currentUserId) return;
 
-    useApiStore.setState(s => {
-      if (!habitEditor.id) return;
-      const habit = s.habits[habitEditor.id];
-      if (!habit) return;
-
-      habit.title = habitEditor.title;
-      habit.description = habitEditor.description;
-      habit.dailyTarget = habitEditor.dailyTarget;
-    });
+    if (habitEditor.id) {
+      useApiStore.getState().updateHabit(
+        habitEditor.id,
+        habitEditor.title,
+        habitEditor.description,
+        habitEditor.dailyTarget,
+      );
+    }
 
     close();
   }

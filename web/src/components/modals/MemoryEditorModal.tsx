@@ -11,8 +11,11 @@ function MemoryEditorModal() {
 
       // If created/edited a memory, perform cleanup
       if (s.modals.memoryEditor.id) {
-        s.modals.memoryEditor.id = undefined;
-        s.modals.memoryEditor.description = "";
+        s.modals.memoryEditor = {
+          opened: false,
+          id: undefined,
+          description: "",
+        }
       }
     });
   }

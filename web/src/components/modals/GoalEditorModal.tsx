@@ -11,9 +11,12 @@ function GoalEditorModal() {
 
       // If created/edited a goal, perform cleanup
       if (s.modals.goalEditor.id) {
-        s.modals.goalEditor.id = undefined;
-        s.modals.goalEditor.title = "";
-        s.modals.goalEditor.description = "";
+        s.modals.goalEditor = {
+          opened: false,
+          id: undefined,
+          title: "",
+          description: "",
+        }
       }
     });
   }

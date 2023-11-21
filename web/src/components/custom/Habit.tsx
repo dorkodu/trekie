@@ -22,7 +22,7 @@ function Habit({ habit, showHeatmap, onClick }: Props) {
     useApiStore.getState().countHabit(habit, count);
   }
 
-  const dailyDone = habit.heatmap?.[util.getDayDiff(habit.date, Date.now())] ?? 0;
+  const dailyDone = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0;
   const dailyTarget = habit.dailyTarget;
 
   return (
@@ -57,7 +57,7 @@ function Habit({ habit, showHeatmap, onClick }: Props) {
       </Button.Group>
 
 
-      {showHeatmap && habit.heatmap &&
+      {showHeatmap &&
         <Flex p="md" style={{ display: "grid", gridTemplateRows: "auto" }}>
           <ScrollArea>
             <Heatmap date={habit.date} values={habit.heatmap} />

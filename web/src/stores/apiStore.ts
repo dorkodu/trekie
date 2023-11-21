@@ -6,6 +6,7 @@ import type { IHabit } from "@api/types/habit";
 import type { IMemory } from "@api/types/memory";
 import type { IGoal } from "@api/types/goal";
 import { util } from "@/lib/util";
+import { useAppStore } from "./appStore";
 
 export interface ApiStoreState {
   userId: string | undefined;
@@ -22,6 +23,8 @@ export interface ApiStoreState {
 }
 
 export interface ApiStoreAction {
+  auth: (user: IUser) => void;
+
   addUser: (user: IUser) => void;
   removeUser: (user: IUser) => void;
 
@@ -29,6 +32,7 @@ export interface ApiStoreAction {
 
   addHabit: (habit: IHabit) => void;
   removeHabit: (habit: IHabit) => void;
+  updateHabit: (id: string, title: string, description: string, dailyTarget: number) => void;
   getHabits: (userId: string | undefined) => IHabit[];
 
   countHabit: (habit: IHabit, count: number) => void;
@@ -43,7 +47,7 @@ export interface ApiStoreAction {
   removeGoal: (goal: IGoal) => void;
   getGoals: (userId: string | undefined) => IGoal[];
 
-  changeXp: (amount: number, limit: number) => void;
+  updateStreaks: () => void;
 
   reset: () => void;
 }
@@ -67,6 +71,13 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
     persist(
       (set, get) => ({
         ...initialState,
+
+        auth(user) {
+          set(s => { s.userId = user.id });
+          get().addUser(user);
+
+          useAppStore.setState(s => { s.loading.auth = false });
+        },
 
         addUser(user) {
           set(s => {
@@ -116,7 +127,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         removeHabit(habit) {
-          let changeXp = false;
+          let updateStreaks = false;
 
           set(s => {
             delete s.habits[habit.id];
@@ -127,26 +138,47 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             s.userIdToHabitIds[habit.userId] = userIdToHabitIds.filter(habitId => habitId !== habit.id);
 
             const currentUserId = s.userId;
-            if (!currentUserId || currentUserId !== habit.userId) return;
+            const currentUser = currentUserId && s.users[currentUserId];
+            if (!currentUser || currentUser.id !== habit.userId) return;
 
-            changeXp = true;
+            updateStreaks = true;
+
+            const habitDailyCurrent = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0;
+            const habitDailyTarget = habit.dailyTarget;
+            const habitCount = habit.count;
+
+            currentUser.totalXp -= habitCount;
+            currentUser.dailyXpCurrent -= Math.min(habitDailyCurrent, habitDailyTarget);
+            currentUser.dailyXpTarget -= habitDailyTarget;
           });
 
-          if (changeXp) {
-            const dailyXpCurrent = (habit.heatmap?.[util.getDayDiff(habit.date, Date.now())] ?? 0);
+          if (updateStreaks) get().updateStreaks();
+        },
 
-            set(s => {
-              const currentUserId = s.userId;
-              const currentUser = currentUserId && s.users[currentUserId];
-              if (!currentUser) return;
+        updateHabit(id, title, description, dailyTarget) {
+          let updateStreaks = false;
 
-              currentUser.totalXp -= habit.count;
-              currentUser.dailyXpTarget -= habit.dailyTarget;
-              currentUser.dailyXpCurrent -= Math.min(dailyXpCurrent, habit.dailyTarget);
-            });
+          set(s => {
+            const habit = s.habits[id];
+            if (!habit) return;
 
-            get().changeXp(0, 0);
-          }
+            const user = s.users[habit.userId];
+            if (!user) return;
+
+            updateStreaks = true;
+
+            const habitDailyCurrent = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0;
+            const habitDailyTarget = dailyTarget;
+            const overDoneDiff = Math.min(habitDailyCurrent - habitDailyTarget, 0);
+
+            habit.title = title;
+            habit.description = description;
+            habit.dailyTarget = dailyTarget;
+
+            user.dailyXpCurrent -= overDoneDiff;
+          });
+
+          if (updateStreaks) get().updateStreaks();
         },
 
         getHabits(userId) {
@@ -162,31 +194,34 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         countHabit(habit, count) {
-          let changeXp = false;
+          let updateStreaks = false;
 
           set(state => {
-            const targetHabitId = habit.id;
-            const targetHabit = targetHabitId && state.habits[targetHabitId];
+            const targetHabit = habit.id && state.habits[habit.id];
             if (!targetHabit) return;
 
-            if (!targetHabit.heatmap) targetHabit.heatmap = {};
+            const targetUser = state.users[habit.userId];
+            if (!targetUser) return;
 
-            const dayDiff = util.getDayDiff(habit.date, Date.now())
+            const dayDiff = util.getDayDiff(habit.date, Date.now());
+            const habitCount = (targetHabit.heatmap[dayDiff] ?? 0) + count;
 
-            let habitCount = targetHabit.heatmap[dayDiff];
-            if (habitCount === undefined) habitCount = 0;
+            // Habit count can not be negative
+            if (habitCount < 0) return;
 
-            if (habitCount <= 0 && count <= 0) return;
+            updateStreaks = true;
 
             targetHabit.count += count;
-            targetHabit.heatmap[dayDiff] = habitCount + count;
+            targetHabit.heatmap[dayDiff] = habitCount;
 
-            changeXp = true;
-
+            // If habit count has become 0, remove the property
             if (targetHabit.heatmap[dayDiff]! <= 0) delete targetHabit.heatmap[dayDiff];
+
+            targetUser.totalXp += count;
+            targetUser.dailyXpCurrent += Math.max(Math.min(habit.dailyTarget - (habitCount - count), count), count);
           });
 
-          if (changeXp) get().changeXp(count, habit.dailyTarget);
+          if (updateStreaks) get().updateStreaks();
         },
 
         addMemory(memory) {
@@ -265,45 +300,30 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
         },
 
-        changeXp(amount, limit) {
+        updateStreaks() {
           set(state => {
             const currentUserId = state.userId;
             const currentUser = currentUserId && state.users[currentUserId];
             if (!currentUser) return;
 
             const didStreakToday = util.isSameDay(currentUser.lastStreakDate, Date.now());
-            const newDailyXpCurrent = Math.min(currentUser.dailyXpCurrent + amount, limit);
 
-            // If current xp was higher than/equal to target xp, but now will be lower
-            if (
-              currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
-              (
-                newDailyXpCurrent < currentUser.dailyXpTarget ||
-                currentUser.dailyXpCurrent === 0
-              ) &&
-              didStreakToday
-            ) {
-              currentUser.streaks--;
-              currentUser.lastStreakDate = undefined;
-            }
-
-            // If current xp was not higher than/equal to target xp, but now will be higher/equal
-            if (
-              currentUser.dailyXpCurrent < currentUser.dailyXpTarget &&
-              newDailyXpCurrent >= currentUser.dailyXpTarget &&
-              !didStreakToday
-            ) {
+            // If user is now above/equal to target xp and didn't do a streak today
+            if (currentUser.dailyXpCurrent >= currentUser.dailyXpTarget && !didStreakToday) {
               currentUser.streaks++;
               currentUser.lastStreakDate = Date.now();
             }
-
-            currentUser.totalXp += amount;
-            currentUser.dailyXpCurrent = newDailyXpCurrent;
+            // If user is now below target xp and did a streak today
+            else if (currentUser.dailyXpCurrent < currentUser.dailyXpTarget && didStreakToday) {
+              currentUser.streaks--;
+              currentUser.lastStreakDate = undefined;
+            }
           });
         },
 
         reset() {
           set(initialState);
+          useAppStore.setState(s => { s.loading.auth = true });
         },
       }),
       {
