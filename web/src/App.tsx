@@ -53,7 +53,7 @@ function App() {
 
     useAppStore.setState(s => { s.loading.auth = false });
     useApiStore.setState(s => { s.userId = user.id });
-    useApiStore.getState().addUser(user);
+    if (!useApiStore.getState().users[user.id]) useApiStore.getState().addUser(user);
 
     if (import.meta.env.DEV) {
       useApiStore.getState().addHabit({ id: "0", userId: user.id, date: new Date("2023/11/19").getTime(), title: "test @johndoe", description: "test @testuser", count: 0, dailyTarget: 2, heatmap: {} })
