@@ -39,7 +39,7 @@ export function Streaks({ user }: Props) {
   return (
     <Flex direction="column" align="center">
       <Flex align="center">
-        <IconFlame />
+        <IconFlame color={util.isSameDay(user.lastStreakDate, Date.now()) ? "var(--mantine-color-red-filled)" : undefined} />
         &nbsp;
         <Text title={util.formatNumber(user.streaks, true)}>{util.formatNumber(user.streaks)}</Text>
       </Flex>
