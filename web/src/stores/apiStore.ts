@@ -116,6 +116,8 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         removeHabit(habit) {
+          let changeXp = false;
+
           set(s => {
             delete s.habits[habit.id];
 
@@ -123,7 +125,28 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             if (!userIdToHabitIds) return;
 
             s.userIdToHabitIds[habit.userId] = userIdToHabitIds.filter(habitId => habitId !== habit.id);
+
+            const currentUserId = s.userId;
+            if (!currentUserId || currentUserId !== habit.userId) return;
+
+            changeXp = true;
           });
+
+          if (changeXp) {
+            const dailyXpCurrent = (habit.heatmap?.[util.getDayDiff(habit.date, Date.now())] ?? 0);
+
+            get().changeXp(-dailyXpCurrent);
+
+            set(s => {
+              const currentUserId = s.userId;
+              const currentUser = currentUserId && s.users[currentUserId];
+              if (!currentUser) return;
+
+              currentUser.totalXp -= habit.count - dailyXpCurrent;
+              currentUser.dailyXpTarget -= habit.dailyTarget;
+              //currentUser.dailyXpCurrent -= dailyXpCurrent;
+            });
+          }
         },
 
         getHabits(userId) {
