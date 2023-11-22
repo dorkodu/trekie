@@ -4,7 +4,7 @@ import { truncate, wrapContent } from "@/styles/shared.css"
 import { Button, ButtonProps, Card, Divider, Flex, Text, TextInput, Title } from "@mantine/core"
 import { IconDotsCircleHorizontal, IconShield, IconTrash, IconUser } from "@tabler/icons-react"
 import { useState } from "react"
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 
 function Settings() {
 
@@ -20,6 +20,9 @@ function Settings() {
           <Route path="other" element={<OtherResources />} />
 
           <Route path="account/username" element={<Username />} />
+
+          {/* Catch-all route */}
+          <Route path="*" element={<Navigate to="/settings" />} />
         </Routes>
 
       </Flex>
@@ -34,7 +37,7 @@ export default Settings
 function Index() {
   const navigate = useNavigate();
 
-  const items = [
+  const items: SettingButtonProps[] = [
     {
       icon: <IconUser />,
       title: "Account Information",
@@ -57,15 +60,7 @@ function Index() {
 
   return (
     <>
-      {items.map(i =>
-        <SettingButton
-          key={i.title}
-          icon={i.icon}
-          onClick={i.onClick}
-          title={i.title}
-          description={i.description}
-        />
-      )}
+      {items.map(item => <SettingButton key={item.title}  {...item} />)}
     </>
   )
 }
@@ -77,7 +72,7 @@ function AccountInformation() {
 
   const deleteAccount = () => {
     useApiStore.getState().reset();
-    navigate("/home");
+    navigate("/join");
   }
 
   return (
