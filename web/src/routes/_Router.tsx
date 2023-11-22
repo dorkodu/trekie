@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from "
 import CenterLoader from "@/components/loaders/CenterLoader";
 import { util } from "@/lib/util";
 import App from "../App";
-import RequireAuth from "@/components/util/RequireAuth";
+import { RouteAuth } from "@/components/util/RouteAuth";
 
 // Lazy routes \\
 const Home = React.lazy(util.wait(() => import("./main/Home")));
@@ -52,7 +52,7 @@ export const router = createBrowserRouter(
       {/* Navigate to "/home" on path "/" */}
       <Route index element={<Navigate to="/home" />} />
 
-      <Route element={<RequireAuth />}>
+      <Route element={<RouteAuth.Require />}>
         <Route element={Page(MainLayout)}>
           <Route path="/home" element={Page(Home)} />
           <Route path="/explore" element={Page(Explore)} />
@@ -81,7 +81,7 @@ export const router = createBrowserRouter(
       <Route path="/terms-of-service" element={Page(TermsOfService)} />
       <Route path="/about" element={Page(About)} />
 
-      <Route element={<RequireAuth preventAuthorized />}>
+      <Route element={<RouteAuth.Prevent />}>
         <Route path="/join" element={Page(Join)} />
       </Route>
 
