@@ -2,7 +2,7 @@ import WIPCard from "@/components/cards/WIPCard"
 import { useApiStore } from "@/stores/apiStore"
 import { truncate, wrapContent } from "@/styles/shared.css"
 import { Button, ButtonProps, Card, Divider, Flex, Text, TextInput, Title } from "@mantine/core"
-import { IconDotsCircleHorizontal, IconShield, IconTrash, IconUser } from "@tabler/icons-react"
+import { IconDotsCircleHorizontal, IconLogout, IconShield, IconTrash, IconUser } from "@tabler/icons-react"
 import { useState } from "react"
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 
@@ -70,7 +70,11 @@ function AccountInformation() {
 
   const user = useApiStore(state => state.userId ? state.users[state.userId] : undefined);
 
-  const deleteAccount = () => {
+  const onLogout = () => {
+    useApiStore.getState().logout();
+  }
+
+  const onDelete = () => {
     useApiStore.getState().reset();
     navigate("/join");
   }
@@ -84,12 +88,20 @@ function AccountInformation() {
         onClick={() => navigate("username")}
       />
 
-      <Divider />
+      <SettingButton
+        icon={<IconLogout />}
+        onClick={onLogout}
+        title="Log Out"
+        variant="default"
+        py="xs"
+      />
+
+      <Divider label="Danger Zone" color="red" />
 
       <SettingButton
         icon={<IconTrash />}
-        onClick={deleteAccount}
-        title="Delete account"
+        onClick={onDelete}
+        title="Delete Data"
         color="red"
         py="xs"
       />

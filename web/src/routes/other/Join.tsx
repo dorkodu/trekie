@@ -126,7 +126,14 @@ function LoginModal(props: { opened: boolean, onClose: () => void }) {
   const [password, setPassword] = useInputState("");
 
   const login = () => {
-    // TODO: Implement login
+    // TODO: Implement login using API
+    const user = Object
+      .values(useApiStore.getState().users)
+      .filter(user => user.username === info || user.email === info)
+    [0];
+
+    if (!user) return;
+    useApiStore.getState().auth(user);
   }
 
   return (

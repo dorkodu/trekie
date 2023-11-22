@@ -24,6 +24,7 @@ export interface ApiStoreState {
 
 export interface ApiStoreAction {
   auth: (user: IUser | undefined) => void;
+  logout: () => void;
 
   addUser: (user: IUser) => void;
   removeUser: (user: IUser) => void;
@@ -87,6 +88,11 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
           }
 
           useAppStore.setState(s => { s.loading.auth = false });
+        },
+
+        logout() {
+          set(s => { s.userId = undefined });
+          useAppStore.setState(s => { s.loading.auth = true });
         },
 
         addUser(user) {
@@ -362,8 +368,8 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         reset() {
+          get().logout();
           set(initialState);
-          useAppStore.setState(s => { s.loading.auth = true });
         },
       }),
       {
