@@ -8,8 +8,15 @@ import viteCompression from "vite-plugin-compression";
 import { VitePWA as vitePWA } from "vite-plugin-pwa";
 import { createHtmlPlugin as html } from "vite-plugin-html";
 
+import postCSSPresetMantine from "postcss-preset-mantine";
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    postcss: {
+      plugins: [postCSSPresetMantine]
+    }
+  },
   plugins: [
     react(),
     vanillaExtractPlugin(),
