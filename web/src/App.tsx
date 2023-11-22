@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import UpdateSWModal from "./components/modals/UpdateSWModal";
 import EditProfileModal from "./components/modals/EditProfileModal";
 import { useApiStore } from "./stores/apiStore";
-import { IUser } from "@api/types/user";
 import HabitEditorModal from "./components/modals/HabitEditorModal";
 import GoalEditorModal from "./components/modals/GoalEditorModal";
 import MemoryEditorModal from "./components/modals/MemoryEditorModal";
@@ -16,28 +15,9 @@ function App() {
   const loading = useAppStore(state => state.loading);
 
   useEffect(() => {
+    // TODO: Perform authorization logic by sending a request to the API
     if (!loading.auth) return;
-
-    // TODO: Perform authorization logic
-
-    const user: IUser = {
-      id: "0",
-      joinDate: Date.now(),
-      name: "Your Name",
-      username: "your.username",
-      bio: "Your biography.",
-      followerCount: 0,
-      followingCount: 0,
-      dailyXpCurrent: 0,
-      dailyXpTarget: 0,
-      totalXp: 0,
-      lastXpDate: Date.now(),
-      streaks: 0,
-      lastStreakDate: undefined,
-    }
-
-    const authUser: IUser = useApiStore.getState().users[user.id] ?? user;
-    useApiStore.getState().auth(authUser);
+    useApiStore.getState().auth(undefined);
   }, [loading.auth]);
 
   const location = useLocation();

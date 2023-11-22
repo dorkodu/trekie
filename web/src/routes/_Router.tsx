@@ -3,6 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from "
 import CenterLoader from "@/components/loaders/CenterLoader";
 import { util } from "@/lib/util";
 import App from "../App";
+import RequireAuth from "@/components/util/RequireAuth";
 
 // Lazy routes \\
 const Home = React.lazy(util.wait(() => import("./main/Home")));
@@ -51,27 +52,29 @@ export const router = createBrowserRouter(
       {/* Navigate to "/home" on path "/" */}
       <Route index element={<Navigate to="/home" />} />
 
-      <Route element={Page(MainLayout)}>
-        <Route path="/home" element={Page(Home)} />
-        <Route path="/explore" element={Page(Explore)} />
-        <Route path="/life" element={Page(Life)} />
-        <Route path="/community" element={Page(Community)} />
-        <Route path="/market" element={Page(Market)} />
+      <Route element={<RequireAuth />}>
+        <Route element={Page(MainLayout)}>
+          <Route path="/home" element={Page(Home)} />
+          <Route path="/explore" element={Page(Explore)} />
+          <Route path="/life" element={Page(Life)} />
+          <Route path="/community" element={Page(Community)} />
+          <Route path="/market" element={Page(Market)} />
 
-        <Route path="/profile/:username" element={Page(Profile)} />
-        <Route path="/premium" element={Page(Premium)} />
-        <Route path="/archive" element={Page(Archive)} />
-        <Route path="/settings/*" element={Page(Settings)} />
+          <Route path="/profile/:username" element={Page(Profile)} />
+          <Route path="/premium" element={Page(Premium)} />
+          <Route path="/archive" element={Page(Archive)} />
+          <Route path="/settings/*" element={Page(Settings)} />
 
-        <Route path="/habits/:username" element={Page(Habits)} />
-        <Route path="/goals/:username" element={Page(Goals)} />
-        <Route path="/memories/:username" element={Page(Memories)} />
-        <Route path="/communities/:username" element={Page(Communities)} />
-        <Route path="/fun" element={Page(Fun)} />
-      </Route>
+          <Route path="/habits/:username" element={Page(Habits)} />
+          <Route path="/goals/:username" element={Page(Goals)} />
+          <Route path="/memories/:username" element={Page(Memories)} />
+          <Route path="/communities/:username" element={Page(Communities)} />
+          <Route path="/fun" element={Page(Fun)} />
+        </Route>
 
-      <Route element={Page(DashboardLayout)}>
-        <Route path="/dashboard" element={Page(Dashboard)} />
+        <Route element={Page(DashboardLayout)}>
+          <Route path="/dashboard" element={Page(Dashboard)} />
+        </Route>
       </Route>
 
       <Route path="/join" element={Page(Join)} />

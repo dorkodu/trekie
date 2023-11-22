@@ -3,11 +3,11 @@ import { ActionIcon, Anchor, Avatar, Button, Divider, Drawer, Flex, Image, Manti
 import { IconArchive, IconArrowLeft, IconBuildingStore, IconCashBanknote, IconChevronRight, IconExternalLink, IconHome, IconMenu2, IconRoad, IconSearch, IconSettings, IconUsers } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDisclosure } from '@mantine/hooks';
-import ColorToggle from "../ColorToggle";
 import { useApiStore } from "@/stores/apiStore";
 import TextParser from "../util/TextParser";
 import CreateMenu from "../menus/CreateMenu";
 import { truncate } from "@/styles/shared.css";
+import Footer from "../custom/Footer";
 
 function MainLayout() {
   const theme = useMantineTheme();
@@ -161,38 +161,9 @@ function MainLayout() {
             <Title order={5}>Dorkodu Account</Title>
           </Button>
 
-          <Flex direction="column" align="center">
-            <Flex gap="xs">
-              <Anchor
-                href="/privacy-policy"
-                onClick={(ev) => preventNavigate(ev, "/privacy-policy")}
-              >
-                Privacy Policy
-              </Anchor>
-              <Anchor
-                href="/terms-of-service"
-                onClick={(ev) => preventNavigate(ev, "/terms-of-service")}
-              >
-                Terms of Service
-              </Anchor>
-              <Anchor
-                href="/about"
-                onClick={(ev) => preventNavigate(ev, "/about")}
-              >
-                About
-              </Anchor>
-            </Flex>
+          <Footer />
 
-            <Anchor href="https://dorkodu.com" target="_blank">
-              Dorkodu © {new Date().getFullYear()}
-            </Anchor>
-          </Flex >
-
-          <Flex justify="center">
-            <ColorToggle />
-          </Flex>
-
-        </Flex >
+        </Flex>
       </Drawer>
     </>
   )

@@ -23,7 +23,7 @@ export interface ApiStoreState {
 }
 
 export interface ApiStoreAction {
-  auth: (user: IUser) => void;
+  auth: (user: IUser | undefined) => void;
 
   addUser: (user: IUser) => void;
   removeUser: (user: IUser) => void;
@@ -74,9 +74,17 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         ...initialState,
 
         auth(user) {
-          set(s => { s.userId = user.id });
-          get().addUser(user);
-          get().updateStats();
+          // If user has created an account before, they can use the app offline. 
+          // If they didn't, when provided user is undefined:
+          // - auth will fail
+          // - loader will be removed
+          // - browser will navigate to join
+
+          if (user) {
+            set(s => { s.userId = user.id });
+            get().addUser(user);
+            get().updateStats();
+          }
 
           useAppStore.setState(s => { s.loading.auth = false });
         },

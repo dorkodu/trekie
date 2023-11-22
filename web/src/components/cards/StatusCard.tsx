@@ -1,4 +1,4 @@
-import { Alert, Card, DefaultMantineColor } from "@mantine/core"
+import { Alert, DefaultMantineColor } from "@mantine/core"
 
 interface Props {
   icon?: React.ReactNode;
