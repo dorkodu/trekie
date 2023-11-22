@@ -1,54 +1,15 @@
 import Footer from "@/components/custom/Footer";
-import { Button, Card, DefaultMantineColor, Divider, Flex, Image, ScrollArea, Text, ThemeIcon, Title } from "@mantine/core";
+import { useApiStore } from "@/stores/apiStore";
+import { IUser } from "@api/types/user";
+import { Button, DefaultMantineColor, Divider, Flex, Image, Modal, PasswordInput, Text, TextInput, ThemeIcon, Title } from "@mantine/core";
+import { useDisclosure, useInputState } from "@mantine/hooks";
 import { IconBuildingStore, IconChecklist, IconNotebook, IconRoad, IconTargetArrow, IconUsers } from "@tabler/icons-react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Join() {
-  return (
-    <Flex
-      direction="column" justify="center" gap="md" p="md" mx="auto"
-      pos="absolute" top={0} bottom={0} left={0} right={0} maw={360}
-    >
+  const [signupOpened, { open: signupOpen, close: signupClose }] = useDisclosure(false);
+  const [loginOpened, { open: loginOpen, close: loginClose }] = useDisclosure(false);
 
-      <Flex justify="center">
-        <Image src="/trekie-mascot.svg" alt="the Mascot of Trekie" w={100} h={100} />
-      </Flex>
-
-      <Title ta="center" order={2}>
-        The Gamified Digital Life Companion
-      </Title>
-
-      <Card withBorder>
-
-        <ScrollArea offsetScrollbars="y" type="always" h={300}>
-
-          <Flex direction="column" gap="md">
-
-            <Routes>
-              <Route index element={<Index />} />
-
-              {/* Catch-all route */}
-              <Route path="*" element={<Navigate to="/join" />} />
-            </Routes>
-
-          </Flex>
-
-        </ScrollArea>
-
-      </Card>
-
-
-      <Divider />
-
-      <Footer />
-
-    </Flex>
-  )
-}
-
-export default Join
-
-function Index() {
   const items: JoinPointProps[] = [
     { icon: <IconRoad />, color: "green", text: "Momentum, xp, and streaks... Add a little fun to your life." },
     { icon: <IconUsers />, color: "indigo", text: "Join communities, and see what your friends are doing." },
@@ -60,16 +21,139 @@ function Index() {
 
   return (
     <>
-      <Button>
-        <Title order={5}>Join Trekie</Title>
-      </Button>
+      <Flex direction="column" justify="center" p="md" mx="auto" mih="100%" maw={360}>
+        <Flex direction="column" gap="md">
 
-      {items.map(item => <JoinPoint key={item.text} {...item} />)}
+          <Flex justify="center">
+            <Image src="/trekie-mascot.svg" alt="the Mascot of Trekie" w={100} h={100} />
+          </Flex>
 
-      <Button>
-        <Title order={5}>Let's Start</Title>
-      </Button>
+          <Title ta="center" order={2}>
+            The Gamified Digital Life Companion
+          </Title>
+
+          <Button onClick={signupOpen}>
+            <Title order={5}>Signup</Title>
+          </Button>
+
+          <Button onClick={loginOpen} variant="default">
+            <Title order={5}>Login</Title>
+          </Button>
+
+          {items.map(item => <JoinPoint key={item.text} {...item} />)}
+
+          <Divider />
+
+          <Footer />
+
+        </Flex>
+      </Flex>
+
+      <SignupModal opened={signupOpened} onClose={signupClose} />
+      <LoginModal opened={loginOpened} onClose={loginClose} />
     </>
+  )
+}
+
+export default Join
+
+function SignupModal(props: { opened: boolean, onClose: () => void }) {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useInputState("");
+  const [email, setEmail] = useInputState("");
+  const [password, setPassword] = useInputState("");
+
+  const signup = () => {
+    const user: IUser = {
+      id: Date.now().toString(),
+      username,
+      name: username,
+      email,
+      bio: "",
+      joinDate: Date.now(),
+      totalXp: 0,
+      dailyXpCurrent: 0,
+      dailyXpTarget: 0,
+      lastXpDate: 0,
+      streaks: 0,
+      lastStreakDate: 0,
+      followerCount: 0,
+      followingCount: 0,
+      premium: false,
+    }
+
+    useApiStore.getState().auth(user);
+    navigate("/home");
+  }
+
+  return (
+    <Modal
+      opened={props.opened}
+      onClose={props.onClose}
+      lockScroll={false}
+      centered
+      size={360}
+      title="Signup to Trekie"
+    >
+      <Flex direction="column" gap="md">
+
+        <TextInput
+          value={username} onChange={setUsername}
+          label="Username"
+        />
+
+        <TextInput
+          value={email} onChange={setEmail}
+          label="Email"
+          type="email"
+        />
+
+        <PasswordInput
+          value={password} onChange={setPassword}
+          label="Password"
+        />
+
+        <Button onClick={signup}>Let's Start!</Button>
+
+      </Flex>
+    </Modal>
+  )
+}
+
+function LoginModal(props: { opened: boolean, onClose: () => void }) {
+  const [info, setInfo] = useInputState("");
+  const [password, setPassword] = useInputState("");
+
+  const login = () => {
+    // TODO: Implement login
+  }
+
+  return (
+    <Modal
+      opened={props.opened}
+      onClose={props.onClose}
+      lockScroll={false}
+      centered
+      size={360}
+      title="Login to Trekie"
+    >
+      <Flex direction="column" gap="md">
+
+        <TextInput
+          value={info} onChange={setInfo}
+          label="Username or Email"
+        />
+
+        <PasswordInput
+          value={password} onChange={setPassword}
+          label="Password"
+        />
+
+        <Button onClick={login}>Login</Button>
+
+      </Flex>
+    </Modal>
   )
 }
 

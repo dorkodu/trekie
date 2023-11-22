@@ -77,10 +77,13 @@ export const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route path="/join" element={Page(Join)} />
       <Route path="/privacy-policy" element={Page(PrivacyPolicy)} />
       <Route path="/terms-of-service" element={Page(TermsOfService)} />
       <Route path="/about" element={Page(About)} />
+
+      <Route element={<RequireAuth preventAuthorized />}>
+        <Route path="/join" element={Page(Join)} />
+      </Route>
 
       {/* Error routes & catch all */}
       <Route path="/404" element={Page(NotFound)} />
