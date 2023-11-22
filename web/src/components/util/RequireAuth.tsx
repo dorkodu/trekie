@@ -1,8 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useApiStore } from "@/stores/apiStore";
 
-function RequireAuth() {
+interface Props {
+  preventAuthorized?: boolean;
+}
+
+function RequireAuth({ preventAuthorized }: Props) {
   const authorized = useApiStore(state => state.userId);
+
+  if (authorized && preventAuthorized) return <Navigate to="/home" replace />
   return authorized ? <Outlet /> : <Navigate to="/join" replace />
 }
 
