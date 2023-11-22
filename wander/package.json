@@ -1,0 +1,63 @@
+{
+  "name": "@dorkodu/wander",
+  "version": "1.0.0",
+  "description": "The Social & Decentralized Knowledge Protocol & SDK",
+  "author": "@dorukeray",
+  "keywords": [
+    "wander",
+    "decentralized",
+    "social",
+    "WebCrypto",
+    "auth",
+    "semantic",
+    "distributed",
+    "p2p",
+    "DAG",
+    "DID",
+    "IPFS",
+    "IPLD",
+    "UCAN"
+  ],
+  "license": "MIT",
+  "homepage": "https://wander.dorkodu.com",
+  "main": "src/index.ts", 
+  "type": "module",
+  "scripts": {
+    "build": "node build",
+    "format": "prettier --plugin-search-dir . --write .",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@ipld/dag-cbor": "^9.0.6",
+    "@ipld/dag-json": "^10.1.5",
+    "@noble/curves": "1.0.0",
+    "@noble/hashes": "1.3.0",
+    "@scure/base": "1.1.1",
+    "@scure/bip32": "1.3.0",
+    "@scure/bip39": "1.2.0",
+    "idb": "^7.1.1",
+    "keystore-idb": "^0.15.5",
+    "multiformats": "^12.1.3",
+    "uint8arrays": "^4.0.6",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "@types/node-fetch": "^2.6.3",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "esbuild": "0.16.9",
+    "esbuild-plugin-alias": "^0.2.1",
+    "eslint": "^8.40.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "esm-loader-typescript": "^1.0.3",
+    "events": "^3.3.0",
+    "node-fetch": "^2.6.9",
+    "prettier": "^2.8.4",
+    "tsd": "^0.22.0",
+    "typescript": "^5.1.0",
+    "vite": "^4.5.0",
+    "vitest": "^0.34.6",
+    "websocket-polyfill": "^0.0.3"
+  }
+}
