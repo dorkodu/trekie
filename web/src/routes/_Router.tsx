@@ -61,7 +61,7 @@ export const router = createBrowserRouter(
         <Route path="/profile/:username" element={Page(Profile)} />
         <Route path="/premium" element={Page(Premium)} />
         <Route path="/archive" element={Page(Archive)} />
-        <Route path="/settings" element={Page(Settings)} />
+        <Route path="/settings/*" element={Page(Settings)} />
 
         <Route path="/habits/:username" element={Page(Habits)} />
         <Route path="/goals/:username" element={Page(Goals)} />

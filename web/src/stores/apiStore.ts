@@ -27,6 +27,7 @@ export interface ApiStoreAction {
 
   addUser: (user: IUser) => void;
   removeUser: (user: IUser) => void;
+  updateUser: (userId: string, username: string) => void;
 
   followUser: (user: IUser) => void;
 
@@ -91,6 +92,18 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
           set(s => {
             delete s.users[user.id];
             delete s.usernameToUserId[user.username];
+          });
+        },
+
+        updateUser(userId, username) {
+          set(s => {
+            const user = s.users[userId];
+            if (!user) return;
+
+            delete s.usernameToUserId[user.username];
+            s.usernameToUserId[username] = user.id;
+
+            user.username = username;
           });
         },
 

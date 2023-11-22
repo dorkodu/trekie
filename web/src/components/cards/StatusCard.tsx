@@ -8,11 +8,9 @@ interface Props {
 
 function StatusCard({ icon, title, color, children }: React.PropsWithChildren<Props>) {
   return (
-    <Card p="md" radius="md" withBorder>
-      <Alert icon={icon} title={title} color={color} variant="light">
-        {children}
-      </Alert>
-    </Card>
+    <Alert icon={icon} title={title} color={color} variant="light" p="md">
+      {children}
+    </Alert>
   )
 }
 

@@ -1,23 +1,172 @@
+import WIPCard from "@/components/cards/WIPCard"
 import { useApiStore } from "@/stores/apiStore"
-import { Button, Flex } from "@mantine/core"
-import { IconTrash } from "@tabler/icons-react"
+import { truncate, wrapContent } from "@/styles/shared.css"
+import { Button, ButtonProps, Card, Divider, Flex, Text, TextInput, Title } from "@mantine/core"
+import { IconDotsCircleHorizontal, IconShield, IconTrash, IconUser } from "@tabler/icons-react"
+import { useState } from "react"
+import { Route, Routes, useNavigate } from "react-router-dom"
 
 function Settings() {
+
   return (
-    <Flex direction="column" m="md">
+    <Card withBorder m="md">
 
-      <Button
-        onClick={() => useApiStore.getState().reset()}
-        leftSection={<IconTrash />}
-        variant="light"
-        color="red"
-        styles={{ label: { flex: 1 } }}
-      >
-        Delete Data
-      </Button>
+      <Flex direction="column" gap="md">
 
-    </Flex>
+        <Routes>
+          <Route index element={<Index />} />
+          <Route path="account" element={<AccountInformation />} />
+          <Route path="security" element={<SecurityAndAccess />} />
+          <Route path="other" element={<OtherResources />} />
+
+          <Route path="account/username" element={<Username />} />
+        </Routes>
+
+      </Flex>
+
+    </Card>
+
   )
 }
 
 export default Settings
+
+function Index() {
+  const navigate = useNavigate();
+
+  const items = [
+    {
+      icon: <IconUser />,
+      title: "Account Information",
+      description: "View your account information.",
+      onClick: () => navigate("account"),
+    },
+    {
+      icon: <IconShield />,
+      title: "Security & Access",
+      description: "Manage the security of your account and control who accesses it.",
+      onClick: () => navigate("security"),
+    },
+    {
+      icon: <IconDotsCircleHorizontal />,
+      title: "Other Resources",
+      description: "Check out other resources for additional information about the product and our services.",
+      onClick: () => navigate("other"),
+    },
+  ]
+
+  return (
+    <>
+      {items.map(i =>
+        <SettingButton
+          key={i.title}
+          icon={i.icon}
+          onClick={i.onClick}
+          title={i.title}
+          description={i.description}
+        />
+      )}
+    </>
+  )
+}
+
+function AccountInformation() {
+  const navigate = useNavigate();
+
+  const user = useApiStore(state => state.userId ? state.users[state.userId] : undefined);
+
+  const deleteAccount = () => {
+    useApiStore.getState().reset();
+    navigate("/home");
+  }
+
+  return (
+    <>
+
+      <SettingButton
+        title="Username"
+        description={`@${user?.username}`}
+        onClick={() => navigate("username")}
+      />
+
+      <Divider />
+
+      <SettingButton
+        icon={<IconTrash />}
+        onClick={deleteAccount}
+        title="Delete account"
+        color="red"
+        py="xs"
+      />
+
+    </>
+  )
+}
+
+function SecurityAndAccess() {
+  return (
+    <WIPCard />
+  )
+}
+
+function OtherResources() {
+  return (
+    <WIPCard />
+  )
+}
+
+function Username() {
+  const navigate = useNavigate();
+
+  const user = useApiStore(state => state.userId ? state.users[state.userId] : undefined);
+
+  const [username, setUsername] = useState(user?.username ?? "");
+
+  const confirm = () => {
+    if (!user) return;
+    useApiStore.getState().updateUser(user.id, username);
+    navigate(-1);
+  }
+
+  return (
+    <>
+
+      <TextInput
+        label="Username"
+        value={username}
+        onChange={(ev) => setUsername(ev.currentTarget.value)}
+      />
+
+      <Flex>
+        <Button onClick={confirm}>Confirm</Button>
+      </Flex>
+
+    </>
+  )
+}
+
+interface SettingButtonProps {
+  icon?: React.ReactNode;
+  onClick?: () => void;
+  title: string;
+  description?: string;
+}
+
+function SettingButton({ icon, onClick, title, description, ...props }: SettingButtonProps & ButtonProps) {
+  return (
+    <Button variant="light" py="md" h="auto" onClick={onClick} styles={{ label: { flex: 1 } }} {...props}>
+      <Flex gap="md">
+
+        {icon && <Flex style={{ flexShrink: 0 }}>{icon}</Flex>}
+
+        <Flex direction="column">
+          <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
+            <Title ta="start" order={5} className={truncate}>{title}</Title>
+          </Flex>
+          <Text ta="start" size="sm" className={wrapContent}>{description}</Text>
+        </Flex>
+
+      </Flex>
+    </Button>
+  )
+}
