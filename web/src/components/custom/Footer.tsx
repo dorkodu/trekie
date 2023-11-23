@@ -1,6 +1,6 @@
 import { Anchor, Flex } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import ColorToggle from "../ColorToggle";
+import ColorToggle from "../util/ColorToggle";
 import LanguagePicker from "../util/LanguagePicker";
 
 function Footer() {
