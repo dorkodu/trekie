@@ -67,6 +67,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@api": path.resolve(__dirname, "../api/src"),
+      "@wander": path.resolve(__dirname, "../wander/src"),
       "@": path.resolve(__dirname, "./src"),
     },
   },

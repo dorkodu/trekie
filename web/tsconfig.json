@@ -29,8 +29,9 @@
 
     "paths": {
       "@api/*": ["../api/src/*"],
-      "@/*": ["./src/*"],
-    },
+      "@wander": ["../wander/src"],
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
