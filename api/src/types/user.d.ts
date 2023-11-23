@@ -8,11 +8,12 @@ export interface IUser {
 
   joinDate: number;
 
+  /** Includes habits over-done. */
+  totalXp: number;
   /** Excludes habits over-done (maximum amount of daily xp can be equal to daily xp target). */
   dailyXpCurrent: number;
   dailyXpTarget: number;
-  /** Includes habits over-done. */
-  totalXp: number;
+  lastXpDate: number;
 
   streaks: number;
   lastStreakDate?: number;

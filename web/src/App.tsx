@@ -31,7 +31,9 @@ function App() {
       dailyXpCurrent: 0,
       dailyXpTarget: 0,
       totalXp: 0,
+      lastXpDate: Date.now(),
       streaks: 0,
+      lastStreakDate: undefined,
     }
 
     const authUser: IUser = useApiStore.getState().users[user.id] ?? user;
@@ -55,6 +57,22 @@ function App() {
 
     useAppStore.setState(s => { s.route = route; });
   }, [location.pathname]);
+
+  useEffect(() => {
+    const task = () => { useApiStore.getState().updateStats() }
+
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setUTCHours(0, 0, 0, 0);
+
+    const timeout = setTimeout(task, tomorrow.getTime() - today.getTime());
+    const interval = setInterval(task, 24 * 60 * 60 * 1000);
+    () => {
+      clearTimeout(timeout);
+      clearTimeout(interval);
+    }
+  }, []);
 
   return (
     <>

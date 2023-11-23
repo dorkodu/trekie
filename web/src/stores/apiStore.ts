@@ -47,7 +47,7 @@ export interface ApiStoreAction {
   removeGoal: (goal: IGoal) => void;
   getGoals: (userId: string | undefined) => IGoal[];
 
-  updateStreaks: () => void;
+  updateStats: () => void;
 
   reset: () => void;
 }
@@ -75,6 +75,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         auth(user) {
           set(s => { s.userId = user.id });
           get().addUser(user);
+          get().updateStats();
 
           useAppStore.setState(s => { s.loading.auth = false });
         },
@@ -127,7 +128,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         removeHabit(habit) {
-          let updateStreaks = false;
+          let updateStats = false;
 
           set(s => {
             delete s.habits[habit.id];
@@ -141,7 +142,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             const currentUser = currentUserId && s.users[currentUserId];
             if (!currentUser || currentUser.id !== habit.userId) return;
 
-            updateStreaks = true;
+            updateStats = true;
 
             const habitDailyCurrent = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0;
             const habitDailyTarget = habit.dailyTarget;
@@ -152,11 +153,11 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             currentUser.dailyXpTarget -= habitDailyTarget;
           });
 
-          if (updateStreaks) get().updateStreaks();
+          if (updateStats) get().updateStats();
         },
 
         updateHabit(id, title, description, dailyTarget) {
-          let updateStreaks = false;
+          let updateStats = false;
 
           set(s => {
             const habit = s.habits[id];
@@ -165,7 +166,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             const user = s.users[habit.userId];
             if (!user) return;
 
-            updateStreaks = true;
+            updateStats = true;
 
             const habitDailyCurrent = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0;
             const habitDailyTarget = dailyTarget;
@@ -180,7 +181,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             user.dailyXpTarget += habitDailyTargetDiff;
           });
 
-          if (updateStreaks) get().updateStreaks();
+          if (updateStats) get().updateStats();
         },
 
         getHabits(userId) {
@@ -196,7 +197,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
         },
 
         countHabit(habit, count) {
-          let updateStreaks = false;
+          let updateStats = false;
 
           set(state => {
             const targetHabit = habit.id && state.habits[habit.id];
@@ -211,7 +212,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             // Habit count can not be negative
             if (habitCount < 0) return;
 
-            updateStreaks = true;
+            updateStats = true;
 
             targetHabit.count += count;
             targetHabit.heatmap[dayDiff] = habitCount;
@@ -223,7 +224,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             targetUser.dailyXpCurrent += Math.max(Math.min(habit.dailyTarget - (habitCount - count), count), count);
           });
 
-          if (updateStreaks) get().updateStreaks();
+          if (updateStats) get().updateStats();
         },
 
         addMemory(memory) {
@@ -302,7 +303,7 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
 
         },
 
-        updateStreaks() {
+        updateStats() {
           set(state => {
             const currentUserId = state.userId;
             const currentUser = currentUserId && state.users[currentUserId];
@@ -311,14 +312,30 @@ export const useApiStore = create<ApiStoreState & ApiStoreAction>()(
             const didStreakToday = util.isSameDay(currentUser.lastStreakDate, Date.now());
 
             // If user is now above/equal to target xp and didn't do a streak today
-            if (currentUser.dailyXpCurrent >= currentUser.dailyXpTarget && !didStreakToday) {
+            if (
+              currentUser.dailyXpCurrent > 0 &&
+              currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
+              !didStreakToday
+            ) {
               currentUser.streaks++;
               currentUser.lastStreakDate = Date.now();
             }
             // If user is now below target xp and did a streak today
-            else if (currentUser.dailyXpCurrent < currentUser.dailyXpTarget && didStreakToday) {
+            else if (
+              (
+                currentUser.dailyXpCurrent <= 0 ||
+                currentUser.dailyXpCurrent < currentUser.dailyXpTarget
+              ) &&
+              didStreakToday
+            ) {
               currentUser.streaks--;
               currentUser.lastStreakDate = undefined;
+            }
+
+            // Handle user's last xp date
+            if (!util.isSameDay(currentUser.lastXpDate, Date.now())) {
+              currentUser.dailyXpCurrent = 0;
+              currentUser.lastXpDate = Date.now();
             }
           });
         },

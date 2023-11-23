@@ -60,9 +60,13 @@ export function formatDate(date: number, time?: boolean) {
   return new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: time ? "short" : undefined }).format(date);
 }
 
-export function getDayDiff(from: number, to: number) {
+export function getDayDiff(from: number, to: number): number {
   const _from = new Date(from);
   const _to = new Date(to);
+
+  _from.setUTCHours(0, 0, 0, 0);
+  _to.setUTCHours(0, 0, 0, 0);
+
   const diffMs = _to.getTime() - _from.getTime();
   const dayDiff = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   return dayDiff;
