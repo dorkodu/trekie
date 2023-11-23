@@ -8,7 +8,8 @@ import { HashAlg, SymmAlg, SymmKeyLength } from "keystore-idb/types"
 import { RSAKeyStore } from "keystore-idb/rsa/index"
 import rsaOperations from "keystore-idb/rsa/index"
 
-import * as typeChecks from "@/commons/type-checks"
+import * as typeChecks from "@/commons/typeChecks"
+
 import { Implementation, ImplementationOptions, VerifyArgs } from "./implementation"
 
 // AES

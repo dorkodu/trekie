@@ -61,3 +61,7 @@ export function createEvent(eventTemplate: EventTemplate) {
   console.log(event);
   console.log("event status: ", ok, veryOk);
 }
+
+export async function Peer({}) {
+  let peer = new Peer({});
+}

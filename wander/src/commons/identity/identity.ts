@@ -1,4 +1,4 @@
-import { UserIdentifier } from "@/commons/name";
+import { UserIdentifier as Name } from "@/commons/name";
 
 export interface User {
   publicKey: string; // Default Identifier for a User

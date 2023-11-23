@@ -1,4 +1,4 @@
-import type { Event } from "./Event";
+import type { Event } from "./events";
 
 export const utf8Decoder = new TextDecoder("utf-8");
 export const utf8Encoder = new TextEncoder();

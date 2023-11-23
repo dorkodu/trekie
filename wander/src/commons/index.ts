@@ -4,7 +4,7 @@ import * as blob from "./blob.js"
 
 export * from "./cid.js"
 export * from "./types.js"
-export * from "./type-checks.js"
+export * from "./typeChecks.js"
 export * from "./util.js"
 export * from "./version.js"
 export * from "./browser.js"

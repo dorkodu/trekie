@@ -1,6 +1,6 @@
 import { PermissionInfo } from '@/Data';
-import { EventFeed } from "@/commons/Event";
-import { DataStore } from "@/pod/DataStore";
+import { EventFeed } from "@/commons/events";
+import { DataStore } from "./datastore";
 import { User } from '@/Identity';
 
 export class Pod implements PodInterface {

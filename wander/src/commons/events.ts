@@ -3,7 +3,7 @@ import { sha256 } from "@noble/hashes/sha256";
 import { bytesToHex } from "@noble/hashes/utils";
 
 import { getPublicKey } from "@/commons/crypto";
-import { utf8Encoder } from "./Utils";
+import { utf8Encoder } from "./util";
 
 export enum Kind {
   Metadata = 0,
