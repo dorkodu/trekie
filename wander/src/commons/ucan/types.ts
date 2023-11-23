@@ -9,13 +9,13 @@ export type Resource =
 
 export type Potency = string |  Record<string, unknown> | undefined | null
 
-export type JWTHeader = {
+export type UcanHeader = {
   alg: string
   typ: string
   uav: string
 }
 
-export type Ucan = {
+export type UcanPayload = {
   aud: string
   exp: number
   fct: Array<Fact>
@@ -26,9 +26,9 @@ export type Ucan = {
   rsc: Resource
 }
 
-export type JWT = {
-  header: JWTHeader
-  payload: Ucan
+export type Ucan = {
+  header: UcanHeader
+  payload: UcanPayload
   signature: string | null
 }
 

@@ -1,10 +1,10 @@
 import * as Uint8arrays from "uint8arrays"
 
-import * as Crypto from "../components/crypto/implementation.js"
+import * as Crypto from "@/commons/crypto/implementation"
 
-import { Potency, Fact, Resource, JWT, JWTHeader, JWT } from "./types.js"
-import { base64 } from "../common/index.js"
-import { didToPublicKey } from "../did/transformers.js"
+import { Potency, Fact, Resource, Ucan, UcanHeader, UcanPayload } from "./types"
+import { base64 } from "@/commons/index"
+import { didToPublicKey } from "../did/transformers"
 
 
 /**
@@ -48,9 +48,9 @@ export async function build({
   lifetimeInSeconds?: number
   expiration?: number
   potency?: Potency
-  proof?: string | JWT
+  proof?: string | Ucan
   resource?: Resource
-}): Promise<JWT> {
+}): Promise<Ucan> {
   const currentTimeInSeconds = Math.floor(Date.now() / 1000)
   const decodedProof = proof
     ? (typeof proof === "string" ? decode(proof) : proof)
@@ -101,7 +101,7 @@ export async function build({
  *
  * @param ucan The encoded UCAN to decode
  */
-export function decode(ucan: string): JWT {
+export function decode(ucan: string): Ucan {
   const split = ucan.split(".")
   const header = JSON.parse(base64.urlDecode(split[0]))
   const payload = JSON.parse(base64.urlDecode(split[1]))
@@ -118,7 +118,7 @@ export function decode(ucan: string): JWT {
  *
  * @param ucan The UCAN to encode
  */
-export function encode(ucan: JWT): string {
+export function encode(ucan: Ucan): string {
   const encodedHeader = encodeHeader(ucan.header)
   const encodedPayload = encodePayload(ucan.payload)
 
@@ -132,7 +132,7 @@ export function encode(ucan: JWT): string {
  *
  * @param header The UcanHeader to encode
  */
-export function encodeHeader(header: JWTHeader): string {
+export function encodeHeader(header: UcanHeader): string {
   return base64.urlEncode(JSON.stringify(header))
 }
 
@@ -141,7 +141,7 @@ export function encodeHeader(header: JWTHeader): string {
  *
  * @param payload The UcanPayload to encode
  */
-export function encodePayload(payload: JWT): string {
+export function encodePayload(payload: UcanPayload): string {
   return base64.urlEncode(JSON.stringify({
     ...payload
   }))
@@ -152,14 +152,14 @@ export function encodePayload(payload: JWT): string {
  *
  * @param ucan The UCAN to validate
  */
-export function isExpired(ucan: JWT): boolean {
+export function isExpired(ucan: Ucan): boolean {
   return ucan.payload.exp <= Math.floor(Date.now() / 1000)
 }
 
 /**
  * Check if a UCAN is self-signed.
  */
-export function isSelfSigned(ucan: JWT): boolean {
+export function isSelfSigned(ucan: Ucan): boolean {
   return ucan.payload.iss === ucan.payload.aud
 }
 
@@ -169,7 +169,7 @@ export function isSelfSigned(ucan: JWT): boolean {
  * @param ucan The decoded UCAN
  * @param did The DID associated with the signature of the UCAN
  */
-export async function isValid(crypto: Crypto.Implementation, ucan: JWT): Promise<boolean> {
+export async function isValid(crypto: Crypto.Implementation, ucan: Ucan): Promise<boolean> {
   try {
     const encodedHeader = encodeHeader(ucan.header)
     const encodedPayload = encodePayload(ucan.payload)
@@ -208,7 +208,7 @@ export async function isValid(crypto: Crypto.Implementation, ucan: JWT): Promise
  * @param ucan A UCAN.
  * @returns The root issuer.
  */
-export function rootIssuer(ucan: string | JWT, level = 0): string {
+export function rootIssuer(ucan: string | Ucan, level = 0): string {
   const p = typeof ucan === "string" ? extractPayload(ucan, level) : ucan.payload
   if (p.prf) return rootIssuer(p.prf, level + 1)
   return p.iss
@@ -219,8 +219,8 @@ export function rootIssuer(ucan: string | JWT, level = 0): string {
  */
 export async function sign(
   crypto: Crypto.Implementation,
-  header: JWTHeader,
-  payload: JWT
+  header: UcanHeader,
+  payload: UcanPayload
 ): Promise<string> {
   const encodedHeader = encodeHeader(header)
   const encodedPayload = encodePayload(payload)

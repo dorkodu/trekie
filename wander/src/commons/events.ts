@@ -2,7 +2,7 @@ import { schnorr } from "@noble/curves/secp256k1";
 import { sha256 } from "@noble/hashes/sha256";
 import { bytesToHex } from "@noble/hashes/utils";
 
-import { getPublicKey } from "./Crypto";
+import { getPublicKey } from "@/commons/crypto";
 import { utf8Encoder } from "./Utils";
 
 export enum Kind {

@@ -1,12 +1,5 @@
 import { UserIdentifier } from "@/commons/name";
 
-export type ID = string | number | DID | CID;
-
-export type DID = {
-  method: string;
-  key: string;
-};
-
 export interface User {
   publicKey: string; // Default Identifier for a User
   names: Name[];
