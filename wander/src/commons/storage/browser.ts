@@ -1,7 +1,7 @@
 import localforage from "localforage"
 
-import { KEYS } from "./keys/default.js"
-import { Implementation, ImplementationOptions } from "../implementation.js"
+import { KEYS } from "./implementation/keys/default.js"
+import { Implementation, ImplementationOptions } from "./implementation.js"
 import { assertBrowser } from "../../../common/browser.js"
 
 

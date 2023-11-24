@@ -1,5 +1,5 @@
-import { KEYS } from "./keys/default.js"
-import { Implementation, ImplementationOptions } from "../implementation.js"
+import { KEYS } from "./implementation/keys/default.js"
+import { Implementation, ImplementationOptions } from "./implementation.js"
 
 
 export async function getItem<T>(mem: Record<string, T>, key: string): Promise<T | null> {

@@ -1,16 +1,16 @@
-import { PermissionInfo } from '@/Data';
+import { PermissionInfo } from '@/commons/data';
 import { EventFeed } from "@/commons/events";
 import { DataStore } from "./datastore";
-import { User } from '@/Identity';
+import { User } from '@/commons/identity';
 
 export class Pod implements PodInterface {
-  public owner: User;
+  public user: User;
   public context: Record<string, any>;
   public store: DataStore;
   public feed: EventFeed;
 
-  constructor({ owner, context = {}, feed, store }: PodInterface) {
-    this.owner = owner;
+  constructor({ user, context = {}, feed, store }: PodInterface) {
+    this.user = user;
     this.context = context;
     this.store = store;
     this.feed = feed;
@@ -18,7 +18,7 @@ export class Pod implements PodInterface {
 }
 
 export interface PodInterface {
-  owner: User;
+  user: User;
   context: Record<string, any>;
   store: DataStore;
   feed: EventFeed;

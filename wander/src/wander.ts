@@ -1,11 +1,11 @@
 import { sha256 } from "@noble/hashes/sha256";
-import { Document, DocumentTemplate } from "./commons/Data";
-import { NewAccountInput, User } from "./commons/Identity";
-import { createKeyPair, generatePrivateKey, getPublicKey, passwordHash } from "./commons/Crypto";
-import { Event, EventTemplate, UnsignedEvent, getEventHash, getSignature, validateEvent, verifySignature } from "./commons/Event";
+import { Document, DocumentTemplate } from "@/commons/Data";
+import { NewAccountInput, User } from "@/commons/Identity";
+import { createKeyPair, generatePrivateKey, getPublicKey, passwordHash } from "@/commons/Crypto";
+import { Event, EventTemplate, UnsignedEvent, getEventHash, getSignature, validateEvent, verifySignature } from "@/commons/Event";
 import { randomBytes } from "@noble/hashes/utils";
-import { UserIdentifier } from "./name/Name";
-import { Pod } from "./pod/Pod";
+import { UserIdentifier } from "@/name/Name";
+import { Pod } from "@/commons/pod/Pod";
 
 export function createDocument({ meta, content, owner, pathName, attributes }: DocumentTemplate): Document {
   return { block: "", content: "", meta: {}, owner: "", pathName: "", attributes: {} }

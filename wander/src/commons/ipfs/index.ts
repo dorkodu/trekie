@@ -27,4 +27,3 @@ export async function createBlock(value: unknown) {
 export async function decodeBlock(value: unknown) {
   return await Block.decode({ bytes: block.bytes, codec, hasher })
 }
-export async function decodeBlock(value: unknown) {}
