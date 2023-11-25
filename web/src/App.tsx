@@ -10,6 +10,7 @@ import { useApiStore } from "./stores/apiStore";
 import HabitEditorModal from "./components/modals/HabitEditorModal";
 import GoalEditorModal from "./components/modals/GoalEditorModal";
 import MemoryEditorModal from "./components/modals/MemoryEditorModal";
+import * as Trekie from "./lib/trekie";
 
 function App() {
   const loading = useAppStore((state) => state.loading);
@@ -40,23 +41,8 @@ function App() {
     });
   }, [location.pathname]);
 
-  useEffect(() => {
-    const task = () => {
-      useApiStore.getState().updateStats();
-    };
-
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setUTCHours(0, 0, 0, 0);
-
-    const timeout = setTimeout(task, tomorrow.getTime() - today.getTime());
-    const interval = setInterval(task, 24 * 60 * 60 * 1000);
-    () => {
-      clearTimeout(timeout);
-      clearTimeout(interval);
-    };
-  }, []);
+  //? Refresh stats every day.
+  useEffect(Trekie.refreshDailyStats, []);
 
   return (
     <>
