@@ -11,7 +11,7 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { useRef } from "react";
+import { MouseEvent, useRef } from "react";
 
 function HabitEditorModal() {
   const habitEditor = useAppStore((state) => state.modals.habitEditor);
@@ -117,7 +117,9 @@ function HabitEditorModal() {
         <Flex gap="md" align="end">
           <Button
             variant="default"
-            onClick={() => dailyTargetRef.current?.decrement()}>
+            onClick={() => dailyTargetRef.current?.decrement()}
+            onMouseDown={(ev: MouseEvent) => ev.preventDefault()}
+          >
             <IconChevronLeft />
           </Button>
 
@@ -133,7 +135,9 @@ function HabitEditorModal() {
 
           <Button
             variant="default"
-            onClick={() => dailyTargetRef.current?.increment()}>
+            onClick={() => dailyTargetRef.current?.increment()}
+            onMouseDown={(ev: MouseEvent) => ev.preventDefault()}
+          >
             <IconChevronRight />
           </Button>
         </Flex>
