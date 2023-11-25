@@ -67,7 +67,7 @@ function Memory({ memory, onClick }: Props) {
               <MemoryMenu memory={memory} />
             </Flex>
             <Text size="sm" title={util.formatDate(memory.date, true)}>
-              {util.relativeDate(memory.date)}
+              {util.relativeDateString(memory.date)}
             </Text>
           </Flex>
         </Flex>
