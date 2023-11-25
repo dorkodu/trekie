@@ -1,6 +1,6 @@
 import { CID, Version } from "multiformats/cid"
 import { decode as decodeMultihash } from "multiformats/hashes/digest"
-import { hasProp, isNum, isObject } from "./typeChecks.js"
+import { hasProp, isNum, isObject } from "../typeChecks.js"
 
 
 export { CID }

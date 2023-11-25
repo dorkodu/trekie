@@ -2,13 +2,13 @@ import { SymmAlg } from "keystore-idb/types.js"
 
 export { SymmAlg }
 
-export type ImplementationOptions = {
+export type CryptoInterfaceOptions = {
   exchangeKeyName: string
   storeName: string
   writeKeyName: string
 }
 
-export type Implementation = {
+export type CryptoInterface = {
   aes: {
     // Related to AES-GCM, this should be able to decrypt both:
     // (a) with the `iv` prefixed in the cipher text (first 16 bytes), and (b) with a given `iv`

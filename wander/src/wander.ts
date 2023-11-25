@@ -1,26 +1,57 @@
 import { sha256 } from "@noble/hashes/sha256";
-import { Document, DocumentTemplate } from "@/commons/Data";
-import { NewAccountInput, User } from "@/commons/Identity";
-import { createKeyPair, generatePrivateKey, getPublicKey, passwordHash } from "@/commons/Crypto";
-import { Event, EventTemplate, UnsignedEvent, getEventHash, getSignature, validateEvent, verifySignature } from "@/commons/Event";
+
+import { Document, DocumentKind, DocumentTemplate } from "@/commons/data";
+
+import { NewAccountInput, User } from "@/commons/identity";
+
+import {
+  createKeyPair,
+  generatePrivateKey,
+  getPublicKey,
+  passwordHash,
+} from "@/commons/crypto";
+
+import {
+  Event,
+  EventTemplate,
+  UnsignedEvent,
+  getEventHash,
+  getSignature,
+  validateEvent,
+  verifySignature,
+} from "@/commons/events/events";
+
 import { randomBytes } from "@noble/hashes/utils";
-import { UserIdentifier } from "@/name/Name";
-import { Pod } from "@/commons/pod/Pod";
 
-export function createDocument({ meta, content, owner, pathName, attributes }: DocumentTemplate): Document {
-  return { block: "", content: "", meta: {}, owner: "", pathName: "", attributes: {} }
+import { Name, NameKind, UserIdentifier } from "@/commons/name";
+
+import { Pod } from "@/commons/pod";
+import { PeerConfig, Peer as Peer_ } from "./peer";
+
+export function createDocument({
+  meta,
+  content,
+  owner,
+  pathName,
+  attributes,
+}: DocumentTemplate): Document {
+  return {
+    meta,
+    content: CID;
+    parent?: CID;
+    hash: string;
+    kind: DocumentKind;
+    owner: string; // public key
+    timestamp: number;
+    permissions: DocumentPermissions;
+    event: Event
+  };
 }
 
-export function createEmptyDocument({ }: DocumentTemplate): Document {
-  return { block: "", content: "", meta: {}, owner: "", pathName: "" }
-}
+export function completeDocument() {}
 
-export function createPod({ user }: { user: User }): Pod {
-  const pod = new Pod({
-    
-  });
-
-  return pod;
+export function getUser({ publicKey }: { publicKey: string }): User {
+  
 }
 
 export function createUser({ email, password }: NewAccountInput): User {
@@ -28,40 +59,27 @@ export function createUser({ email, password }: NewAccountInput): User {
   let { privateKey, publicKey } = createKeyPair();
 
   const salt = randomBytes(16).toString();
-  
-  const hashedPassword = passwordHash(password, salt);
-  
-  const emailName: EmailName = email;
+
+  const hashedPassword = passwordHash(password, salt).toString();
+
+  const emailName: Name = { 
+    kind: NameKind.Email, 
+    value: email 
+  };
 
   return {
     privateKey,
     publicKey,
     password: hashedPassword,
-    names: [
-      email,
-    ]
-  }
+    names: [ emailName ],
+  } satisfies User;
 }
 
-export function createEvent(eventTemplate: EventTemplate) {
-  let sk = generatePrivateKey() // `sk` is a hex string
-  let userPubKey = getPublicKey(sk) // `pk` is a hex string
-  
-  let event: any = {
-    ...eventTemplate,
-    publicKey: getPublicKey(sk),
-  };
-  
-  event.id = getEventHash(event);
-  event.sig = getSignature(event, sk);
-  
-  let ok = validateEvent(event);
-  let veryOk = verifySignature(event);
+const secretKey = generatePrivateKey(); // `sk` is a hex string
+const publicKey = getPublicKey(secretKey); // `pk` is a hex string
 
-  console.log(event);
-  console.log("event status: ", ok, veryOk);
+export async function Peer(config: PeerConfig) {
+  return new Peer_(config);
 }
 
-export async function Peer({}) {
-  let peer = new Peer({});
-}
+export * as Event from "@/event"

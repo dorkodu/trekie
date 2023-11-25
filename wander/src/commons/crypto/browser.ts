@@ -10,7 +10,7 @@ import rsaOperations from "keystore-idb/rsa/index"
 
 import * as typeChecks from "@/commons/typeChecks"
 
-import { Implementation, ImplementationOptions, VerifyArgs } from "./implementation"
+import { CryptoInterface, CryptoInterfaceOptions, VerifyArgs } from "./interface"
 
 // AES
 

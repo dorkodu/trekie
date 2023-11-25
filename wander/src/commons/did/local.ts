@@ -1,4 +1,4 @@
-import * as Crypto from "@/commons/crypto/implementation"
+import * as Crypto from "@/commons/crypto/interface"
 
 import { publicKeyToDid } from "./transformers"
 

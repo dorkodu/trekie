@@ -1,40 +1,34 @@
-import { CID } from "@/commons/cid";
+import { CID } from "@/commons/misc/cid";
 import { Event } from "@/commons/events";
 
-export interface Document {
-  meta: Record<string, any>;
-  data: CID;
+export interface Document extends DocumentTemplate {
   parent?: CID;
   hash: string;
-  kind: DocumentKind;
-  owner: string; // public key
   timestamp: number;
-  permissions: DocumentPermissions;
   event: Event
+}
+
+export interface DocumentTemplate {
+  meta: Record<string, any>;
+  data: CID;
+  kind: DocumentKind;
+  owner: string;
+  permissions: DocumentPermissions;
 }
 
 export enum DocumentKind {
   Blank = 0,
-  Metadata = 2,
   Text = 1,
+  Metadata = 2,
   User = 3,
   Event = 4,
-  Index = 5,
-  Report = 1984,
-  ZapRequest = 9734,
-  Zap = 9735,
-  RelayList = 10002,
-  ClientAuth = 22242,
-  ProfileBadge = 30008,
-  BadgeDefinition = 30009,
-  Article = 30023,
+  Schema = 5,
+  Reshare = 10,
 }
-
 
 export interface DocumentPermissions {
   public: {} & BasicPermissions
-  owner: {} & BasicPermissions
-  app: {} & BasicPermissions
+  private: {} & BasicPermissions
 }
 
 export interface BasicPermissions {

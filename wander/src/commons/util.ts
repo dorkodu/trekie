@@ -1,4 +1,4 @@
-import type { Event } from "./events";
+import type { Event } from "./events/events.js";
 
 export const utf8Decoder = new TextDecoder("utf-8");
 export const utf8Encoder = new TextEncoder();
@@ -17,6 +17,20 @@ export const getGlobalContext = (): any => {
     ? self
     : global;
 };
+
+/**
+ * Is this browser supported?
+ */
+export async function isIndexedDBSupported(): Promise<boolean> {
+  return !('indexedDB' in window)
+    // Firefox in private mode can't use indexedDB properly,
+    // so we test if we can actually make a database.
+    && await (() => new Promise(resolve => {
+      const db = indexedDB.open("testDatabase")
+      db.onsuccess = () => resolve(true)
+      db.onerror = () => resolve(false)
+    }))() as boolean
+}
 
 export const isLocalStorageAvailable = (): boolean => {
   const context = getGlobalContext();

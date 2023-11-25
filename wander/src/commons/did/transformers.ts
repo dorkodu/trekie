@@ -1,5 +1,5 @@
 import * as uint8arrays from "uint8arrays"
-import * as Crypto from "@/commons/crypto/implementation"
+import * as Crypto from "@/commons/crypto/interface"
 
 import { BASE58_DID_PREFIX, hasPrefix } from "./util"
 
