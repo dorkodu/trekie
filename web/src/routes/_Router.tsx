@@ -1,5 +1,10 @@
 import React, { Suspense } from "react";
-import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Navigate,
+  Route,
+} from "react-router-dom";
 import CenterLoader from "@/components/loaders/CenterLoader";
 import { util } from "@/lib/util";
 import App from "../App";
@@ -24,8 +29,12 @@ const Communities = React.lazy(util.wait(() => import("./main/Communities")));
 const Fun = React.lazy(util.wait(() => import("./main/Fun")));
 
 const Join = React.lazy(util.wait(() => import("./other/Join")));
-const PrivacyPolicy = React.lazy(util.wait(() => import("./other/PrivacyPolicy")));
-const TermsOfService = React.lazy(util.wait(() => import("./other/TermsOfService")));
+const PrivacyPolicy = React.lazy(
+  util.wait(() => import("./other/PrivacyPolicy"))
+);
+const TermsOfService = React.lazy(
+  util.wait(() => import("./other/TermsOfService"))
+);
 const About = React.lazy(util.wait(() => import("./other/About")));
 
 const Dashboard = React.lazy(util.wait(() => import("./dashboard/Dashboard")));
@@ -34,8 +43,12 @@ const NotFound = React.lazy(util.wait(() => import("./NotFound")));
 // Lazy routes \\
 
 // Lazy layouts \\
-const MainLayout = React.lazy(util.wait(() => import("../components/layouts/MainLayout")));
-const DashboardLayout = React.lazy(util.wait(() => import("../components/layouts/DashboardLayout")));
+const MainLayout = React.lazy(
+  util.wait(() => import("../components/layouts/MainLayout"))
+);
+const DashboardLayout = React.lazy(
+  util.wait(() => import("../components/layouts/DashboardLayout"))
+);
 // Lazy layouts \\
 
 function Page(Component: React.LazyExoticComponent<React.ComponentType<any>>) {
@@ -43,7 +56,7 @@ function Page(Component: React.LazyExoticComponent<React.ComponentType<any>>) {
     <Suspense fallback={<CenterLoader />}>
       <Component />
     </Suspense>
-  )
+  );
 }
 
 export const router = createBrowserRouter(
@@ -90,4 +103,4 @@ export const router = createBrowserRouter(
       <Route path="*" element={<Navigate to="/404" />} />
     </Route>
   )
-)
+);

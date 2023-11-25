@@ -7,13 +7,18 @@ interface Props {
   size?: number;
 }
 
-function Emoji({ emoji, size, ...props }: React.ComponentPropsWithoutRef<"img"> & Props) {
+function Emoji({
+  emoji,
+  size,
+  ...props
+}: React.ComponentPropsWithoutRef<"img"> & Props) {
   const src = useMemo(() => {
     const element = document.createElement("div");
-    element.innerHTML = twemoji.parse(
-      emoji,
-      { ext: ".svg", folder: "svg", base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/" }
-    );
+    element.innerHTML = twemoji.parse(emoji, {
+      ext: ".svg",
+      folder: "svg",
+      base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/",
+    });
     return (element.firstChild as HTMLImageElement).src;
   }, [emoji]);
 
@@ -26,7 +31,7 @@ function Emoji({ emoji, size, ...props }: React.ComponentPropsWithoutRef<"img"> 
       style={{ width: size, height: size }}
       {...props}
     />
-  )
+  );
 }
 
-export default Emoji
+export default Emoji;

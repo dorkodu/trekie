@@ -1,18 +1,30 @@
-import WIPCard from "@/components/cards/WIPCard"
-import { useApiStore } from "@/stores/apiStore"
-import { truncate, wrapContent } from "@/styles/shared.css"
-import { Button, ButtonProps, Card, Divider, Flex, Text, TextInput, Title } from "@mantine/core"
-import { IconDotsCircleHorizontal, IconLogout, IconShield, IconTrash, IconUser } from "@tabler/icons-react"
-import { useState } from "react"
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
+import WIPCard from "@/components/cards/WIPCard";
+import { useApiStore } from "@/stores/apiStore";
+import { truncate, wrapContent } from "@/styles/shared.css";
+import {
+  Button,
+  ButtonProps,
+  Card,
+  Divider,
+  Flex,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import {
+  IconDotsCircleHorizontal,
+  IconLogout,
+  IconShield,
+  IconTrash,
+  IconUser,
+} from "@tabler/icons-react";
+import { useState } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 function Settings() {
-
   return (
     <Card withBorder m="md">
-
       <Flex direction="column" gap="md">
-
         <Routes>
           <Route index element={<Index />} />
           <Route path="account" element={<AccountInformation />} />
@@ -24,15 +36,12 @@ function Settings() {
           {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/settings" />} />
         </Routes>
-
       </Flex>
-
     </Card>
-
-  )
+  );
 }
 
-export default Settings
+export default Settings;
 
 function Index() {
   const navigate = useNavigate();
@@ -47,41 +56,46 @@ function Index() {
     {
       icon: <IconShield />,
       title: "Security & Access",
-      description: "Manage the security of your account and control who accesses it.",
+      description:
+        "Manage the security of your account and control who accesses it.",
       onClick: () => navigate("security"),
     },
     {
       icon: <IconDotsCircleHorizontal />,
       title: "Other Resources",
-      description: "Check out other resources for additional information about the product and our services.",
+      description:
+        "Check out other resources for additional information about the product and our services.",
       onClick: () => navigate("other"),
     },
-  ]
+  ];
 
   return (
     <>
-      {items.map(item => <SettingButton key={item.title}  {...item} />)}
+      {items.map((item) => (
+        <SettingButton key={item.title} {...item} />
+      ))}
     </>
-  )
+  );
 }
 
 function AccountInformation() {
   const navigate = useNavigate();
 
-  const user = useApiStore(state => state.userId ? state.users[state.userId] : undefined);
+  const user = useApiStore((state) =>
+    state.userId ? state.users[state.userId] : undefined
+  );
 
   const onLogout = () => {
     useApiStore.getState().logout();
-  }
+  };
 
   const onDelete = () => {
     useApiStore.getState().reset();
     navigate("/join");
-  }
+  };
 
   return (
     <>
-
       <SettingButton
         title="Username"
         description={`@${user?.username}`}
@@ -105,27 +119,24 @@ function AccountInformation() {
         color="red"
         py="xs"
       />
-
     </>
-  )
+  );
 }
 
 function SecurityAndAccess() {
-  return (
-    <WIPCard />
-  )
+  return <WIPCard />;
 }
 
 function OtherResources() {
-  return (
-    <WIPCard />
-  )
+  return <WIPCard />;
 }
 
 function Username() {
   const navigate = useNavigate();
 
-  const user = useApiStore(state => state.userId ? state.users[state.userId] : undefined);
+  const user = useApiStore((state) =>
+    state.userId ? state.users[state.userId] : undefined
+  );
 
   const [username, setUsername] = useState(user?.username ?? "");
 
@@ -133,11 +144,10 @@ function Username() {
     if (!user) return;
     useApiStore.getState().updateUser(user.id, username);
     navigate(-1);
-  }
+  };
 
   return (
     <>
-
       <TextInput
         label="Username"
         value={username}
@@ -147,9 +157,8 @@ function Username() {
       <Flex>
         <Button onClick={confirm}>Confirm</Button>
       </Flex>
-
     </>
-  )
+  );
 }
 
 interface SettingButtonProps {
@@ -159,21 +168,35 @@ interface SettingButtonProps {
   description?: string;
 }
 
-function SettingButton({ icon, onClick, title, description, ...props }: SettingButtonProps & ButtonProps) {
+function SettingButton({
+  icon,
+  onClick,
+  title,
+  description,
+  ...props
+}: SettingButtonProps & ButtonProps) {
   return (
-    <Button variant="light" py="md" h="auto" onClick={onClick} styles={{ label: { flex: 1 } }} {...props}>
+    <Button
+      variant="light"
+      py="md"
+      h="auto"
+      onClick={onClick}
+      styles={{ label: { flex: 1 } }}
+      {...props}>
       <Flex gap="md">
-
         {icon && <Flex style={{ flexShrink: 0 }}>{icon}</Flex>}
 
         <Flex direction="column">
           <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
-            <Title ta="start" order={5} className={truncate}>{title}</Title>
+            <Title ta="start" order={5} className={truncate}>
+              {title}
+            </Title>
           </Flex>
-          <Text ta="start" size="sm" className={wrapContent}>{description}</Text>
+          <Text ta="start" size="sm" className={wrapContent}>
+            {description}
+          </Text>
         </Flex>
-
       </Flex>
     </Button>
-  )
+  );
 }

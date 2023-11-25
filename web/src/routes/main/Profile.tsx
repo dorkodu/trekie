@@ -1,48 +1,69 @@
-import NoGoalsCard from "@/components/cards/NoGoalsCard"
-import NoMemoriesCard from "@/components/cards/NoMemoriesCard"
-import StatusCard from "@/components/cards/StatusCard"
-import ChevronTitle from "@/components/custom/ChevronTitle"
-import Community from "@/components/custom/Community"
-import Goal from "@/components/custom/Goal"
-import Memory from "@/components/custom/Memory"
-import { UserStats } from "@/components/custom/UserStats"
-import ProfileMenu from "@/components/menus/ProfileMenu"
-import TextParser from "@/components/util/TextParser"
-import { util } from "@/lib/util"
-import { useApiStore } from "@/stores/apiStore"
-import { wrapContent } from "@/styles/shared.css"
-import { Anchor, Avatar, Badge, Button, Card, Divider, Flex, Paper, Text, Title, px, rem, useMantineTheme } from "@mantine/core"
-import { IconCalendarMonth, IconDiscountCheckFilled, IconExclamationCircle } from "@tabler/icons-react"
-import { useParams } from "react-router-dom"
+import NoGoalsCard from "@/components/cards/NoGoalsCard";
+import NoMemoriesCard from "@/components/cards/NoMemoriesCard";
+import StatusCard from "@/components/cards/StatusCard";
+import ChevronTitle from "@/components/custom/ChevronTitle";
+import Community from "@/components/custom/Community";
+import Goal from "@/components/custom/Goal";
+import Memory from "@/components/custom/Memory";
+import { UserStats } from "@/components/custom/UserStats";
+import ProfileMenu from "@/components/menus/ProfileMenu";
+import TextParser from "@/components/util/TextParser";
+import { util } from "@/lib/util";
+import { useApiStore } from "@/stores/apiStore";
+import { wrapContent } from "@/styles/shared.css";
+import {
+  Anchor,
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Paper,
+  Text,
+  Title,
+  px,
+  rem,
+  useMantineTheme,
+} from "@mantine/core";
+import {
+  IconCalendarMonth,
+  IconDiscountCheckFilled,
+  IconExclamationCircle,
+} from "@tabler/icons-react";
+import { useParams } from "react-router-dom";
 
 function Profile() {
   const theme = useMantineTheme();
   const params = useParams();
 
   const username = params["username"];
-  const userId = useApiStore(state => username && state.usernameToUserId[username]);
-  const user = useApiStore(state => userId && state.users[userId]);
+  const userId = useApiStore(
+    (state) => username && state.usernameToUserId[username]
+  );
+  const user = useApiStore((state) => userId && state.users[userId]);
 
-  const currentUserId = useApiStore(state => state.userId);
+  const currentUserId = useApiStore((state) => state.userId);
 
-  const previewMemories = useApiStore(state => state.getMemories(userId));
-  const previewGoals = useApiStore(state => state.getGoals(userId));
+  const previewMemories = useApiStore((state) => state.getMemories(userId));
+  const previewGoals = useApiStore((state) => state.getGoals(userId));
 
   if (!user) {
     return (
       <Flex direction="column" m="md">
-        <StatusCard icon={<IconExclamationCircle />} color="red" title={`User @${username} not found`}>
+        <StatusCard
+          icon={<IconExclamationCircle />}
+          color="red"
+          title={`User @${username} not found`}>
           Try searching for another user.
         </StatusCard>
       </Flex>
-    )
+    );
   }
 
   return (
     <Flex direction="column" m="md">
-
       <Card withBorder padding="md">
-
         <Card.Section
           h={200}
           style={{
@@ -52,37 +73,52 @@ function Profile() {
         />
 
         <Flex direction="column" gap="md">
-
           <Avatar
             src="/assets/avatar.webp"
             radius={80}
             size={80}
             mt={-40 + (px(theme.spacing.xs) as number)}
-            style={{ border: `${rem(2)} solid var(--mantine-color-body)`, backgroundColor: "var(--mantine-color-body)" }}
+            style={{
+              border: `${rem(2)} solid var(--mantine-color-body)`,
+              backgroundColor: "var(--mantine-color-body)",
+            }}
             pos="absolute"
           />
 
           <Flex align="center" justify="end" gap="xs" mt="xs">
             <ProfileMenu user={user} />
-            {currentUserId !== user.id &&
+            {currentUserId !== user.id && (
               <Button
                 onClick={() => useApiStore.getState().followUser(user)}
                 variant={!user.following ? "filled" : "default"}
-                radius="xl"
-              >
+                radius="xl">
                 {!user.following ? "Follow" : "Unfollow"}
               </Button>
-            }
+            )}
           </Flex>
 
           <Flex direction="column" gap="xs">
-
             <Flex direction="column">
               <Flex align="start">
                 <Title order={5} className={wrapContent}>
-                  <Flex align="center" display="inline-flex" style={{ float: "right" }}>
-                    {user.premium && <>&nbsp;<IconDiscountCheckFilled style={{ flexShrink: 0 }} /></>}
-                    {user.follower && <>&nbsp;<Badge size="xs" style={{ flexShrink: 0 }} >Follows you</Badge></>}
+                  <Flex
+                    align="center"
+                    display="inline-flex"
+                    style={{ float: "right" }}>
+                    {user.premium && (
+                      <>
+                        &nbsp;
+                        <IconDiscountCheckFilled style={{ flexShrink: 0 }} />
+                      </>
+                    )}
+                    {user.follower && (
+                      <>
+                        &nbsp;
+                        <Badge size="xs" style={{ flexShrink: 0 }}>
+                          Follows you
+                        </Badge>
+                      </>
+                    )}
                   </Flex>
                   <TextParser ids={["emoji"]} text={user.name} />
                 </Title>
@@ -90,17 +126,28 @@ function Profile() {
               <Text className={wrapContent}>@{user.username}</Text>
             </Flex>
 
-            {user.bio &&
+            {user.bio && (
               <Text className={wrapContent}>
-                <TextParser ids={["emoji", "url", "username"]} text={user.bio} />
+                <TextParser
+                  ids={["emoji", "url", "username"]}
+                  text={user.bio}
+                />
               </Text>
-            }
+            )}
 
             <Flex gap="xs">
-              <Anchor title={`${util.formatNumber(user.followerCount, true)} Followers`}>
+              <Anchor
+                title={`${util.formatNumber(
+                  user.followerCount,
+                  true
+                )} Followers`}>
                 {util.formatNumber(user.followerCount)} Followers
               </Anchor>
-              <Anchor title={`${util.formatNumber(user.followingCount, true)} Following`}>
+              <Anchor
+                title={`${util.formatNumber(
+                  user.followingCount,
+                  true
+                )} Following`}>
                 {util.formatNumber(user.followingCount)} Following
               </Anchor>
             </Flex>
@@ -119,53 +166,43 @@ function Profile() {
                 <UserStats.Streaks user={user} />
               </Flex>
             </Paper>
-
           </Flex>
 
           <Flex direction="column" gap="xs">
-
             <ChevronTitle order={5} href={`/goals/${user.username}`}>
               Goals
             </ChevronTitle>
 
-            {previewGoals.length > 0 ?
+            {previewGoals.length > 0 ? (
               <Goal goal={previewGoals[0]!} />
-              :
+            ) : (
               <NoGoalsCard />
-            }
-
+            )}
           </Flex>
 
           <Flex direction="column" gap="xs">
-
             <ChevronTitle order={5} href={`/memories/${user.username}`}>
               Memories
             </ChevronTitle>
 
-            {previewMemories.length > 0 ?
+            {previewMemories.length > 0 ? (
               <Memory memory={previewMemories[0]!} />
-              :
+            ) : (
               <NoMemoriesCard />
-            }
-
+            )}
           </Flex>
 
           <Flex direction="column" gap="xs">
-
             <ChevronTitle order={5} href={`/communities/${user.username}`}>
               Communities
             </ChevronTitle>
 
             <Community />
-
           </Flex>
-
         </Flex>
-
       </Card>
-
     </Flex>
-  )
+  );
 }
 
-export default Profile
+export default Profile;

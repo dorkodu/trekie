@@ -1,4 +1,4 @@
-import { Alert, DefaultMantineColor } from "@mantine/core"
+import { Alert, DefaultMantineColor } from "@mantine/core";
 
 interface Props {
   icon?: React.ReactNode;
@@ -6,12 +6,17 @@ interface Props {
   color?: DefaultMantineColor;
 }
 
-function StatusCard({ icon, title, color, children }: React.PropsWithChildren<Props>) {
+function StatusCard({
+  icon,
+  title,
+  color,
+  children,
+}: React.PropsWithChildren<Props>) {
   return (
     <Alert icon={icon} title={title} color={color} variant="light" p="md">
       {children}
     </Alert>
-  )
+  );
 }
 
-export default StatusCard
+export default StatusCard;

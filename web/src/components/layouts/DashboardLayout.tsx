@@ -5,7 +5,7 @@ function DashboardLayout() {
     <>
       <Outlet />
     </>
-  )
+  );
 }
 
-export default DashboardLayout
+export default DashboardLayout;

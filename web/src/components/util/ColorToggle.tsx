@@ -1,4 +1,4 @@
-import { SegmentedControl, Center, useMantineColorScheme, } from "@mantine/core";
+import { SegmentedControl, Center, useMantineColorScheme } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 
 function ColorToggle() {
@@ -7,7 +7,7 @@ function ColorToggle() {
   const toggle = (value: string) => {
     if (value !== "light" && value !== "dark") return;
     setColorScheme(value);
-  }
+  };
 
   return (
     <SegmentedControl
@@ -33,7 +33,7 @@ function ColorToggle() {
         },
       ]}
     />
-  )
+  );
 }
 
-export default ColorToggle
+export default ColorToggle;

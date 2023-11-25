@@ -15,7 +15,7 @@ function OverlayLoader({ full }: Props) {
       pos={full ? "fixed" : undefined}
       loaderProps={{ type: "dots" }}
     />
-  )
+  );
 }
 
-export default OverlayLoader
+export default OverlayLoader;

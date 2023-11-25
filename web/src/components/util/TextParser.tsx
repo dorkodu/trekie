@@ -7,23 +7,30 @@ import { useNavigate } from "react-router-dom";
 
 const urlRegex = urlRegexp();
 const emojiRegex = emojiRegexp();
-const usernameRegex = new RegExp("(?<!\\S)(?:@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])", "g");
+const usernameRegex = new RegExp(
+  "(?<!\\S)(?:@)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])",
+  "g"
+);
 
 type ParseableId = keyof typeof parseables;
 const parseables = {
   url: {
     regex: urlRegex,
     component: ({ text }: { text: string }) => {
-      const onClick = (ev: MouseEvent) => { ev.stopPropagation() }
+      const onClick = (ev: MouseEvent) => {
+        ev.stopPropagation();
+      };
 
       return (
-        <Anchor href={text} target="_blank" onClick={onClick}>{text}</Anchor>
-      )
-    }
+        <Anchor href={text} target="_blank" onClick={onClick}>
+          {text}
+        </Anchor>
+      );
+    },
   },
   emoji: {
     regex: emojiRegex,
-    component: ({ text }: { text: string }) => <Emoji emoji={text} />
+    component: ({ text }: { text: string }) => <Emoji emoji={text} />,
   },
   username: {
     regex: usernameRegex,
@@ -33,12 +40,16 @@ const parseables = {
         ev.preventDefault();
         ev.stopPropagation();
         navigate(`/profile/${text.split("@")[1]}`);
-      }
+      };
 
-      return <Anchor href={text} onClick={onClick}>{text}</Anchor>
-    }
-  }
-}
+      return (
+        <Anchor href={text} onClick={onClick}>
+          {text}
+        </Anchor>
+      );
+    },
+  },
+};
 
 interface Props {
   text: string;
@@ -47,12 +58,16 @@ interface Props {
 
 function TextParser({ text, ids }: Props) {
   const parseableIds = useMemo(() => {
-    return ids?.filter(id => parseables[id]) || [];
+    return ids?.filter((id) => parseables[id]) || [];
   }, [ids]);
 
   const elements = useMemo(() => {
-    const matches = parseableIds.flatMap(id => {
-      return Array.from(text.matchAll(parseables[id].regex), match => ({ index: match.index || 0, text: match[0], id }));
+    const matches = parseableIds.flatMap((id) => {
+      return Array.from(text.matchAll(parseables[id].regex), (match) => ({
+        index: match.index || 0,
+        text: match[0],
+        id,
+      }));
     });
 
     const sortedMatches = matches.sort((a, b) => a.index - b.index);
@@ -60,7 +75,7 @@ function TextParser({ text, ids }: Props) {
     let currentIndex = 0;
     let key = 0;
 
-    const out = sortedMatches.flatMap(match => {
+    const out = sortedMatches.flatMap((match) => {
       const diff = match.index - currentIndex;
       const i = currentIndex;
       currentIndex += diff + match.text.length;
@@ -68,13 +83,21 @@ function TextParser({ text, ids }: Props) {
       const Component = parseables[match.id].component;
 
       return [
-        diff > 0 && <React.Fragment key={key++}>{text.substring(i, i + diff)}</React.Fragment>,
-        <Component key={key++} text={match.text} />
+        diff > 0 && (
+          <React.Fragment key={key++}>
+            {text.substring(i, i + diff)}
+          </React.Fragment>
+        ),
+        <Component key={key++} text={match.text} />,
       ];
     });
 
     if (currentIndex < text.length) {
-      out.push(<React.Fragment key={key++}>{text.substring(currentIndex)}</React.Fragment>);
+      out.push(
+        <React.Fragment key={key++}>
+          {text.substring(currentIndex)}
+        </React.Fragment>
+      );
     }
 
     return out;

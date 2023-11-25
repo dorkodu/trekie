@@ -9,7 +9,7 @@ function Footer() {
   const preventNavigate = (ev: React.MouseEvent, route: string) => {
     ev.preventDefault();
     navigate(route);
-  }
+  };
 
   return (
     <>
@@ -17,20 +17,15 @@ function Footer() {
         <Flex gap="xs">
           <Anchor
             href="/privacy-policy"
-            onClick={(ev) => preventNavigate(ev, "/privacy-policy")}
-          >
+            onClick={(ev) => preventNavigate(ev, "/privacy-policy")}>
             Privacy Policy
           </Anchor>
           <Anchor
             href="/terms-of-service"
-            onClick={(ev) => preventNavigate(ev, "/terms-of-service")}
-          >
+            onClick={(ev) => preventNavigate(ev, "/terms-of-service")}>
             Terms of Service
           </Anchor>
-          <Anchor
-            href="/about"
-            onClick={(ev) => preventNavigate(ev, "/about")}
-          >
+          <Anchor href="/about" onClick={(ev) => preventNavigate(ev, "/about")}>
             About
           </Anchor>
         </Flex>
@@ -48,7 +43,7 @@ function Footer() {
         <ColorToggle />
       </Flex>
     </>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

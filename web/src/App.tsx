@@ -12,7 +12,7 @@ import GoalEditorModal from "./components/modals/GoalEditorModal";
 import MemoryEditorModal from "./components/modals/MemoryEditorModal";
 
 function App() {
-  const loading = useAppStore(state => state.loading);
+  const loading = useAppStore((state) => state.loading);
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
@@ -28,18 +28,22 @@ function App() {
     if (location.pathname.indexOf("/home") !== -1) route = "home";
     else if (location.pathname.indexOf("/explore") !== -1) route = "explore";
     else if (location.pathname.indexOf("/life") !== -1) route = "life";
-    else if (location.pathname.indexOf("/community") !== -1) route = "community";
+    else if (location.pathname.indexOf("/community") !== -1)
+      route = "community";
     else if (location.pathname.indexOf("/market") !== -1) route = "market";
-
     else if (location.pathname.indexOf("/premium") !== -1) route = "premium";
     else if (location.pathname.indexOf("/archive") !== -1) route = "archive";
     else if (location.pathname.indexOf("/settings") !== -1) route = "settings";
 
-    useAppStore.setState(s => { s.route = route; });
+    useAppStore.setState((s) => {
+      s.route = route;
+    });
   }, [location.pathname]);
 
   useEffect(() => {
-    const task = () => { useApiStore.getState().updateStats() }
+    const task = () => {
+      useApiStore.getState().updateStats();
+    };
 
     const today = new Date();
     const tomorrow = new Date();
@@ -51,13 +55,13 @@ function App() {
     () => {
       clearTimeout(timeout);
       clearTimeout(interval);
-    }
+    };
   }, []);
 
   return (
     <>
       <MantineProvider theme={theme} defaultColorScheme="dark">
-        {(loading.auth) && <OverlayLoader full={true} />}
+        {loading.auth && <OverlayLoader full={true} />}
         {!loading.auth && <Outlet />}
 
         {/* Modals */}
@@ -71,7 +75,7 @@ function App() {
 
       <ScrollRestoration />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -16,20 +16,20 @@ function Heatmap({ date, values }: Props) {
       startDate={heatmapStartDate(date)}
       width={heatmapWidth(date)}
       weekLabels={["", "Mon", "", "Wed", "", "Fri", ""]}
-      style={{ color: 'var(--text-color)' }}
+      style={{ color: "var(--text-color)" }}
       panelColors={{
-        0: '#E6FCF5',
-        2: '#96F2D7',
-        5: '#38D9A9',
-        10: '#12B886',
-        11: '#087F5B',
+        0: "#E6FCF5",
+        2: "#96F2D7",
+        5: "#38D9A9",
+        10: "#12B886",
+        11: "#087F5B",
       }}
       rectProps={{ rx: 5 }}
     />
-  )
+  );
 }
 
-export default Heatmap
+export default Heatmap;
 
 function heatmapDate(date: Date) {
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
