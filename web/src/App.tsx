@@ -23,6 +23,7 @@ function App() {
   }, [loading.auth]);
 
   useRouteUpdater();
+  Trekie.useRefreshStatsDaily();
 
   return (
     <>
