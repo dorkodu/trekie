@@ -44,9 +44,6 @@ const NotFound = React.lazy(util.wait(() => import("./NotFound")));
 const MainLayout = React.lazy(
   util.wait(() => import("../components/layouts/MainLayout"))
 );
-const DashboardLayout = React.lazy(
-  util.wait(() => import("../components/layouts/DashboardLayout"))
-);
 // Lazy layouts \\
 
 function Page(Component: React.LazyExoticComponent<React.ComponentType<any>>) {
