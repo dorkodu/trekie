@@ -37,8 +37,6 @@ const TermsOfService = React.lazy(
 );
 const About = React.lazy(util.wait(() => import("./other/About")));
 
-const Dashboard = React.lazy(util.wait(() => import("./dashboard/Dashboard")));
-
 const NotFound = React.lazy(util.wait(() => import("./NotFound")));
 // Lazy routes \\
 
@@ -83,10 +81,6 @@ export const router = createBrowserRouter(
           <Route path="/memories/:username" element={Page(Memories)} />
           <Route path="/communities/:username" element={Page(Communities)} />
           <Route path="/fun" element={Page(Fun)} />
-        </Route>
-
-        <Route element={Page(DashboardLayout)}>
-          <Route path="/dashboard" element={Page(Dashboard)} />
         </Route>
       </Route>
 
