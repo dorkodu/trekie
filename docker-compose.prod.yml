@@ -19,9 +19,9 @@ services:
       - ./.env
     environment:
       - NODE_ENV=production
-      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.dorkodu.com}
+      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.io}
       - VIRTUAL_PORT=${API_PORT:-8015}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.dorkodu.com}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.io}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-hey@dorkodu.com}
       - VIRTUAL_PATH=/api
     expose:

@@ -10,9 +10,9 @@ services:
       - ./.env
     environment:
       - NODE_ENV=development
-      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.dorkodu.com}
+      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.io}
       - VIRTUAL_PORT=${WEB_PORT:-8014}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.dorkodu.com}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.io}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-hey@dorkodu.com}
       - VIRTUAL_PATH=/
     ports:
@@ -35,9 +35,9 @@ services:
       - ./.env
     environment:
       - NODE_ENV=development
-      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.dorkodu.com}
+      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.io}
       - VIRTUAL_PORT=${API_PORT:-8015}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.dorkodu.com}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.io}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-hey@dorkodu.com}
       - VIRTUAL_PATH=/api
     ports:
