@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "alwaysStrict": true,
+    "allowUnreachableCode": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "target": "ES2017",
+    "skipLibCheck": true,
+    "moduleResolution": "Node",
+
+    "paths": {
+      "#/*": ["./src/*"]
+    }
+  },
+  "include": ["./src/**/*"]
+}
