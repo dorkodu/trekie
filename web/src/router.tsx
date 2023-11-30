@@ -57,21 +57,22 @@ export const router = createBrowserRouter(
 
       <Route path="/about" element={view('website:About')} />
 
-      <Route element={<Auth.Prevent />}>
-        <Route path="/welcome" element={view('website:Welcome')} />
-      </Route>
+      <Route path="/welcome" element={view('website:Welcome')} />
 
       {/* User Flow */}
       <Route path="/join" element={view('flow:CreateAccount')} />
       <Route path="/connect" element={view('flow:Connect')} />
       <Route path="/login" element={view('flow:Login')} />
 
-      {/* Website & Custom Pages */}
-      <Route path="/about" element={view('website:About')} />
-      <Route path="/legal/:document" element={view('website:Legal')} />
+      <Route element={layout('WebsiteLayout')}>
+        {/* Website & Custom Pages */}
+        <Route path="/about" element={view('website:About')} />
+        <Route path="/legal/:document" element={view('website:Legal')} />
+
+        <Route path="/404" element={view('website:NotFound')} />
+      </Route>
 
       {/* Error routes & catch all */}
-      <Route path="/404" element={view('website:NotFound')} />
       <Route path="*" element={<Navigate to="/404" />} />
     </Route>
   )

@@ -1,10 +1,3 @@
-import ChevronTitle from "#/components/custom/ChevronTitle";
-import { UserStats } from "#/components/custom/UserStats";
-import ProfileMenu from "#/components/menus/ProfileMenu";
-import TextParser from "#/components/util/TextParser";
-import { util } from "#/lib/util";
-import { useTrekie } from "#/stores/trekieStore";
-import { wrapContent } from "#/styles/shared.css";
 import {
   Anchor,
   Avatar,
@@ -19,28 +12,42 @@ import {
   px,
   rem,
   useMantineTheme,
-} from "@mantine/core";
+} from '@mantine/core'
 import {
   IconCalendarMonth,
   IconDiscountCheckFilled,
   IconExclamationCircle,
-} from "@tabler/icons-react";
-import { useParams } from "react-router-dom";
+} from '@tabler/icons-react'
+import { useParams } from 'react-router-dom'
+
+import ChevronTitle from '#/components/custom/ChevronTitle'
+import { UserStats } from '#/components/custom/UserStats'
+import ProfileMenu from '#/components/menus/ProfileMenu'
+import TextParser from '#/components/util/TextParser'
+import { util } from '#/lib/util'
+import { useTrekieStore } from '#/stores/trekieStore'
+import { wrapContent } from '#/styles/shared.css'
+import StatusCard from '#/components/cards/StatusCard'
+import Goal from '#/components/custom/Goal'
+import NoGoalsCard from '#/components/cards/NoGoalsCard'
+import NoMemoriesCard from '#/components/cards/NoMemoriesCard'
+import Memory from '#/components/custom/Memory'
+import Community from '#/components/custom/Community'
 
 function Profile() {
-  const theme = useMantineTheme();
-  const params = useParams();
+  const theme = useMantineTheme()
+  const params = useParams()
 
-  const username = params["username"];
-  const userId = useTrekie(
-    (state) => username && state.usernameToUserId[username]
-  );
-  const user = useTrekie((state) => userId && state.users[userId]);
+  const username = params['username']
+  const userId = useTrekieStore(
+    state => username && state.index.usernameToUserId[username]
+  )
+  const user = useTrekieStore(state => userId && state.users[userId])
 
-  const currentUserId = useTrekie((state) => state.userId);
+  const currentUserId = useTrekieStore(state => state.userId)
 
-  const previewMemories = useTrekie((state) => state.getMemories(userId));
-  const previewGoals = useTrekie((state) => state.getGoals(userId));
+  const previewMemories = useTrekieStore(state => state.getMemories(userId))
+  const previewGoals = useTrekieStore(state => state.getGoals(userId))
 
   if (!user) {
     return (
@@ -48,11 +55,12 @@ function Profile() {
         <StatusCard
           icon={<IconExclamationCircle />}
           color="red"
-          title={`User @${username} not found`}>
+          title={`User @${username} not found`}
+        >
           Try searching for another user.
         </StatusCard>
       </Flex>
-    );
+    )
   }
 
   return (
@@ -61,8 +69,8 @@ function Profile() {
         <Card.Section
           h={200}
           style={{
-            backgroundImage: "",
-            backgroundColor: "var(--mantine-color-body)",
+            backgroundImage: '',
+            backgroundColor: 'var(--mantine-color-body)',
           }}
         />
 
@@ -74,7 +82,7 @@ function Profile() {
             mt={-40 + (px(theme.spacing.xs) as number)}
             style={{
               border: `${rem(2)} solid var(--mantine-color-body)`,
-              backgroundColor: "var(--mantine-color-body)",
+              backgroundColor: 'var(--mantine-color-body)',
             }}
             pos="absolute"
           />
@@ -83,10 +91,11 @@ function Profile() {
             <ProfileMenu user={user} />
             {currentUserId !== user.id && (
               <Button
-                onClick={() => useTrekie.getState().followUser(user)}
-                variant={!user.following ? "filled" : "default"}
-                radius="xl">
-                {!user.following ? "Follow" : "Unfollow"}
+                onClick={() => useTrekieStore.getState().followUser(user)}
+                variant={!user.following ? 'filled' : 'default'}
+                radius="xl"
+              >
+                {!user.following ? 'Follow' : 'Unfollow'}
               </Button>
             )}
           </Flex>
@@ -98,7 +107,8 @@ function Profile() {
                   <Flex
                     align="center"
                     display="inline-flex"
-                    style={{ float: "right" }}>
+                    style={{ float: 'right' }}
+                  >
                     {user.premium && (
                       <>
                         &nbsp;
@@ -114,7 +124,7 @@ function Profile() {
                       </>
                     )}
                   </Flex>
-                  <TextParser ids={["emoji"]} text={user.name} />
+                  <TextParser ids={['emoji']} text={user.name} />
                 </Title>
               </Flex>
               <Text className={wrapContent}>@{user.username}</Text>
@@ -123,7 +133,7 @@ function Profile() {
             {user.bio && (
               <Text className={wrapContent}>
                 <TextParser
-                  ids={["emoji", "url", "username"]}
+                  ids={['emoji', 'url', 'username']}
                   text={user.bio}
                 />
               </Text>
@@ -134,14 +144,16 @@ function Profile() {
                 title={`${util.formatNumber(
                   user.followerCount,
                   true
-                )} Followers`}>
+                )} Followers`}
+              >
                 {util.formatNumber(user.followerCount)} Followers
               </Anchor>
               <Anchor
                 title={`${util.formatNumber(
                   user.followingCount,
                   true
-                )} Following`}>
+                )} Following`}
+              >
                 {util.formatNumber(user.followingCount)} Following
               </Anchor>
             </Flex>
@@ -196,7 +208,7 @@ function Profile() {
         </Flex>
       </Card>
     </Flex>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

@@ -1,7 +1,3 @@
-import Emoji from "#/components/custom/Emoji";
-import TextParser from "#/components/util/TextParser";
-import { useTrekie } from "#/stores/trekieStore";
-import { wrapContent } from "#/styles/shared.css";
 import {
   Box,
   Button,
@@ -12,23 +8,28 @@ import {
   Stack,
   Text,
   Title,
-} from "@mantine/core";
-import { IconBuildingStore, IconSettings } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+} from '@mantine/core'
+import { IconBuildingStore, IconSettings } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
+
+import Emoji from '#/components/custom/Emoji'
+import TextParser from '#/components/util/TextParser'
+import { useTrekieStore } from '#/stores/trekieStore'
+import { wrapContent } from '#/styles/shared.css'
 
 function Home() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const userId = useTrekie((state) => state.userId);
-  const users = useTrekie((state) => state.users);
-  const user = userId ? users[userId] : undefined;
+  const userId = useTrekieStore(state => state.userId)
+  const users = useTrekieStore(state => state.users)
+  const user = userId ? users[userId] : undefined
 
   return (
     <Stack m="md" gap="xl">
       <Stack gap="xs">
         <Title order={4} className={wrapContent}>
           <Emoji emoji="👋" /> Welcome,&nbsp;
-          <TextParser ids={["emoji"]} text={user?.name ?? ""} />
+          <TextParser ids={['emoji']} text={user?.name ?? ''} />
         </Title>
 
         <Flex></Flex>
@@ -60,10 +61,10 @@ function Home() {
         </SimpleGrid>
       </Stack>
     </Stack>
-  );
+  )
 }
 
-export default Home;
+export default Home
 
 function Sidebar() {
   return (
@@ -76,5 +77,5 @@ function Sidebar() {
         <Button leftSection={<IconSettings />}>Settings</Button>
       </Stack>
     </Box>
-  );
+  )
 }

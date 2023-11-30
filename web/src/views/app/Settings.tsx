@@ -1,6 +1,3 @@
-import WIPCard from "#/components/cards/WIPCard";
-import { useTrekie } from "#/stores/trekieStore";
-import { truncate, wrapContent } from "#/styles/shared.css";
 import {
   Button,
   ButtonProps,
@@ -10,16 +7,20 @@ import {
   Text,
   TextInput,
   Title,
-} from "@mantine/core";
+} from '@mantine/core'
 import {
   IconDotsCircleHorizontal,
   IconLogout,
   IconShield,
   IconTrash,
   IconUser,
-} from "@tabler/icons-react";
-import { useState } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+} from '@tabler/icons-react'
+import { useState } from 'react'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+
+import WIPCard from '#/components/cards/WIPCard'
+import { useTrekieStore } from '#/stores/trekieStore'
+import { truncate, wrapContent } from '#/styles/shared.css'
 
 function Settings() {
   return (
@@ -38,68 +39,68 @@ function Settings() {
         </Routes>
       </Flex>
     </Card>
-  );
+  )
 }
 
-export default Settings;
+export default Settings
 
 function Index() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const items: SettingButtonProps[] = [
     {
       icon: <IconUser />,
-      title: "Account Information",
-      description: "View your account information.",
-      onClick: () => navigate("account"),
+      title: 'Account Information',
+      description: 'View your account information.',
+      onClick: () => navigate('account'),
     },
     {
       icon: <IconShield />,
-      title: "Security & Access",
+      title: 'Security & Access',
       description:
-        "Manage the security of your account and control who accesses it.",
-      onClick: () => navigate("security"),
+        'Manage the security of your account and control who accesses it.',
+      onClick: () => navigate('security'),
     },
     {
       icon: <IconDotsCircleHorizontal />,
-      title: "Other Resources",
+      title: 'Other Resources',
       description:
-        "Check out other resources for additional information about the product and our services.",
-      onClick: () => navigate("other"),
+        'Check out other resources for additional information about the product and our services.',
+      onClick: () => navigate('other'),
     },
-  ];
+  ]
 
   return (
     <>
-      {items.map((item) => (
+      {items.map(item => (
         <SettingButton key={item.title} {...item} />
       ))}
     </>
-  );
+  )
 }
 
 function AccountInformation() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const user = useTrekie((state) =>
+  const user = useTrekieStore(state =>
     state.userId ? state.users[state.userId] : undefined
-  );
+  )
 
   const onLogout = () => {
-    useTrekie.getState().logout();
-  };
+    useTrekieStore.getState().logout()
+  }
 
   const onDelete = () => {
-    useTrekie.getState().reset();
-    navigate("/join");
-  };
+    useTrekieStore.getState().reset()
+    navigate('/join')
+  }
 
   return (
     <>
       <SettingButton
         title="Username"
         description={`@${user?.username}`}
-        onClick={() => navigate("username")}
+        onClick={() => navigate('username')}
       />
 
       <SettingButton
@@ -120,52 +121,52 @@ function AccountInformation() {
         py="xs"
       />
     </>
-  );
+  )
 }
 
 function SecurityAndAccess() {
-  return <WIPCard />;
+  return <WIPCard />
 }
 
 function OtherResources() {
-  return <WIPCard />;
+  return <WIPCard />
 }
 
 function Username() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const user = useTrekie((state) =>
+  const user = useTrekieStore(state =>
     state.userId ? state.users[state.userId] : undefined
-  );
+  )
 
-  const [username, setUsername] = useState(user?.username ?? "");
+  const [username, setUsername] = useState(user?.username ?? '')
 
   const confirm = () => {
-    if (!user) return;
-    useTrekie.getState().updateUser(user.id, username);
-    navigate(-1);
-  };
+    if (!user) return
+    useTrekieStore.getState().updateUser(user.id, username)
+    navigate(-1)
+  }
 
   return (
     <>
       <TextInput
         label="Username"
         value={username}
-        onChange={(ev) => setUsername(ev.currentTarget.value)}
+        onChange={ev => setUsername(ev.currentTarget.value)}
       />
 
       <Flex>
         <Button onClick={confirm}>Confirm</Button>
       </Flex>
     </>
-  );
+  )
 }
 
 interface SettingButtonProps {
-  icon?: React.ReactNode;
-  onClick?: () => void;
-  title: string;
-  description?: string;
+  icon?: React.ReactNode
+  onClick?: () => void
+  title: string
+  description?: string
 }
 
 function SettingButton({
@@ -182,12 +183,13 @@ function SettingButton({
       h="auto"
       onClick={onClick}
       styles={{ label: { flex: 1 } }}
-      {...props}>
+      {...props}
+    >
       <Flex gap="md">
         {icon && <Flex style={{ flexShrink: 0 }}>{icon}</Flex>}
 
         <Flex direction="column">
-          <Flex style={{ display: "grid", gridTemplateColumns: "auto" }}>
+          <Flex style={{ display: 'grid', gridTemplateColumns: 'auto' }}>
             <Title ta="start" order={5} className={truncate}>
               {title}
             </Title>
@@ -198,5 +200,5 @@ function SettingButton({
         </Flex>
       </Flex>
     </Button>
-  );
+  )
 }
