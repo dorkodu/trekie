@@ -10,8 +10,7 @@ import { useApiStore } from "./stores/apiStore";
 import HabitEditorModal from "./components/modals/HabitEditorModal";
 import GoalEditorModal from "./components/modals/GoalEditorModal";
 import MemoryEditorModal from "./components/modals/MemoryEditorModal";
-import * as Trekie from "./lib/trekie";
-import { useRouteUpdater } from "./components/hooks";
+import { useRefreshStatsDaily, useRouteUpdater } from "./components/hooks";
 
 function App() {
   const loading = useAppStore((state) => state.loading);
@@ -23,7 +22,7 @@ function App() {
   }, [loading.auth]);
 
   useRouteUpdater();
-  Trekie.useRefreshStatsDaily();
+  useRefreshStatsDaily();
 
   return (
     <>

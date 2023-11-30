@@ -1,3 +1,4 @@
+import { useApiStore } from "@/stores/apiStore";
 import { Route, useAppStore } from "@/stores/appStore";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -31,3 +32,28 @@ export function useRouteUpdater() {
     useAppStore.setState((s) => { s.route = route });
   }, [location.pathname])
 }
+
+export function useRefreshStatsDaily() {
+  useEffect(() => {
+    const task = () => useApiStore.getState().updateStats();
+
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setUTCHours(0, 0, 0, 0);
+
+    let interval: NodeJS.Timeout | undefined = undefined;
+    let timeout = setTimeout(
+      () => {
+        task();
+        interval = setInterval(task, 24 * 60 * 60 * 1000);
+      },
+      tomorrow.getTime() - today.getTime()
+    );
+
+    return () => {
+      clearTimeout(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
+};
