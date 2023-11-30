@@ -7,7 +7,7 @@ import "./lib/socketio";
 async function main() {
   express.use("/api", async (req, res, next) => {
     try {
-      res.status(200).send(await schema.execute(() => ({ req, res, next }), req.body));
+      res.status(200).send(await schema.execute(() => ({ req, res, next, shared: {} }), req.body));
     } catch {
       res.status(500).send();
     }

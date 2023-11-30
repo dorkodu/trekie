@@ -6,9 +6,11 @@ export interface SchemaContext {
   readonly res: Response;
   readonly next: NextFunction;
 
-  triedAuth?: boolean;
-  userId?: string;
-  sessionId?: string;
+  shared: {
+    triedAuth?: boolean;
+    userId?: string;
+    sessionId?: string;
+  }
 }
 
 export type Schema = typeof schema
