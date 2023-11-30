@@ -1,30 +1,30 @@
-import { useApiStore } from "@/stores/apiStore";
-import { useAppStore } from "@/stores/appStore";
-import { IUser } from "@api/types/user";
-import { ActionIcon, Menu } from "@mantine/core";
+import { useApiStore } from '#/stores/apiStore'
+import { useAppStore } from '#/stores/appStore'
+import { IUser } from '@sdk/types/user'
+import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
   IconDots,
   IconEdit,
   IconExclamationCircle,
   IconShare,
-} from "@tabler/icons-react";
+} from '@tabler/icons-react'
 
 interface Props {
-  user: IUser;
+  user: IUser
 }
 
 function ProfileMenu({ user }: Props) {
-  const currentUserId = useApiStore((state) => state.userId);
+  const currentUserId = useApiStore(state => state.userId)
 
-  const onShare = () => {};
-  const onClipboard = () => {};
+  const onShare = () => {}
+  const onClipboard = () => {}
   const onEdit = () => {
-    useAppStore.setState((s) => {
-      s.modals.editProfile.opened = true;
-    });
-  };
-  const onReport = () => {};
+    useAppStore.setState(s => {
+      s.modals.editProfile.opened = true
+    })
+  }
+  const onReport = () => {}
 
   return (
     <Menu position="bottom-end">
@@ -55,7 +55,8 @@ function ProfileMenu({ user }: Props) {
               <Menu.Item
                 onClick={onReport}
                 color="red"
-                leftSection={<IconExclamationCircle />}>
+                leftSection={<IconExclamationCircle />}
+              >
                 Report User
               </Menu.Item>
             )}
@@ -63,7 +64,7 @@ function ProfileMenu({ user }: Props) {
         )}
       </Menu.Dropdown>
     </Menu>
-  );
+  )
 }
 
-export default ProfileMenu;
+export default ProfileMenu

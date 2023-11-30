@@ -1,14 +1,14 @@
-import { Badge, Flex, Paper, Text, Title } from "@mantine/core";
-import Emoji from "../Emoji";
-import { IGoal } from "@api/types/goal";
-import TextParser from "../util/TextParser";
-import { truncate } from "@/styles/shared.css";
-import GoalMenu from "../menus/GoalMenu";
+import { Badge, Flex, Paper, Text, Title } from '@mantine/core'
+import Emoji from '../Emoji'
+import { IGoal } from '@sdk/types/goal'
+import TextParser from '../util/TextParser'
+import { truncate } from '#/styles/shared.css'
+import GoalMenu from '../menus/GoalMenu'
 
 interface Props {
-  goal: IGoal;
+  goal: IGoal
 
-  onClick?: () => void;
+  onClick?: () => void
 }
 
 function Goal({ goal, onClick }: Props) {
@@ -19,18 +19,18 @@ function Goal({ goal, onClick }: Props) {
 
         <Flex direction="column" style={{ flex: 1 }}>
           <Flex align="center" justify="space-between">
-            <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
+            <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
               <Title order={5} className={truncate}>
-                <TextParser ids={["emoji"]} text={goal.title} />
+                <TextParser ids={['emoji']} text={goal.title} />
               </Title>
             </Flex>
             <GoalMenu goal={goal} />
           </Flex>
 
-          <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
+          <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
             <Text truncate>
               <TextParser
-                ids={["emoji", "url", "username"]}
+                ids={['emoji', 'url', 'username']}
                 text={goal.description}
               />
             </Text>
@@ -44,7 +44,7 @@ function Goal({ goal, onClick }: Props) {
         </Flex>
       </Flex>
     </Paper>
-  );
+  )
 }
 
-export default Goal;
+export default Goal

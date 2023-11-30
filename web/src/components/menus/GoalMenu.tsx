@@ -1,7 +1,7 @@
-import { useApiStore } from "@/stores/apiStore";
-import { useAppStore } from "@/stores/appStore";
-import { IGoal } from "@api/types/goal";
-import { ActionIcon, Menu } from "@mantine/core";
+import { useApiStore } from '#/stores/apiStore'
+import { useAppStore } from '#/stores/appStore'
+import { IGoal } from '@sdk/types/goal'
+import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
   IconDots,
@@ -9,38 +9,38 @@ import {
   IconExclamationCircle,
   IconShare,
   IconTrash,
-} from "@tabler/icons-react";
-import { MouseEvent } from "react";
+} from '@tabler/icons-react'
+import { MouseEvent } from 'react'
 
 interface Props {
-  goal: IGoal;
+  goal: IGoal
 }
 
 function GoalMenu({ goal }: Props) {
-  const currentUserId = useApiStore((state) => state.userId);
+  const currentUserId = useApiStore(state => state.userId)
 
   const onShare = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onClipboard = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onEdit = (ev: MouseEvent) => {
-    ev.stopPropagation();
-    useAppStore.setState((s) => {
-      s.modals.goalEditor.opened = true;
-      s.modals.goalEditor.id = goal.id;
-      s.modals.goalEditor.title = goal.title;
-      s.modals.goalEditor.description = goal.description;
-    });
-  };
+    ev.stopPropagation()
+    useAppStore.setState(s => {
+      s.modals.goalEditor.opened = true
+      s.modals.goalEditor.id = goal.id
+      s.modals.goalEditor.title = goal.title
+      s.modals.goalEditor.description = goal.description
+    })
+  }
   const onReport = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onDelete = (ev: MouseEvent) => {
-    ev.stopPropagation();
-    useApiStore.getState().removeGoal(goal);
-  };
+    ev.stopPropagation()
+    useApiStore.getState().removeGoal(goal)
+  }
 
   return (
     <Menu position="bottom-end">
@@ -49,7 +49,8 @@ function GoalMenu({ goal }: Props) {
           variant="subtle"
           c="var(--text-color)"
           radius="xl"
-          onClick={(ev) => ev.stopPropagation()}>
+          onClick={ev => ev.stopPropagation()}
+        >
           <IconDots />
         </ActionIcon>
       </Menu.Target>
@@ -75,7 +76,8 @@ function GoalMenu({ goal }: Props) {
                 <Menu.Item
                   onClick={onDelete}
                   leftSection={<IconTrash />}
-                  c="red">
+                  c="red"
+                >
                   Delete goal
                 </Menu.Item>
               </>
@@ -83,7 +85,8 @@ function GoalMenu({ goal }: Props) {
               <Menu.Item
                 onClick={onReport}
                 color="red"
-                leftSection={<IconExclamationCircle />}>
+                leftSection={<IconExclamationCircle />}
+              >
                 Report goal
               </Menu.Item>
             )}
@@ -91,7 +94,7 @@ function GoalMenu({ goal }: Props) {
         )}
       </Menu.Dropdown>
     </Menu>
-  );
+  )
 }
 
-export default GoalMenu;
+export default GoalMenu

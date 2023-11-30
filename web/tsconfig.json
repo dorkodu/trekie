@@ -29,8 +29,8 @@
 
     "paths": {
       "@api/*": ["../api/src/*"],
-      "@wander": ["../wander/src"],
-      "@/*": ["./src/*"]
+      "@sdk/*": ["../sdk/src/*"],
+      "#/*": ["./src/*"]
     }
   },
   "include": ["src"],

@@ -1,13 +1,22 @@
-import { createTheme } from "@mantine/core";
-import { themeToVars } from "@mantine/vanilla-extract";
+import { Anchor, createTheme } from '@mantine/core'
+import { themeToVars } from '@mantine/vanilla-extract'
 
 export const theme = createTheme({
-  primaryColor: "green",
-  defaultRadius: "md",
-  cursorType: "pointer",
+  primaryColor: 'green',
+  defaultRadius: 'md',
+  cursorType: 'pointer',
 
-  fontFamily: "Rubik, Roboto, sans-serif",
-  fontFamilyMonospace: "JetBrains Mono, Fira Code, monospace",
-});
+  fontFamily: 'Rubik, Roboto, sans-serif',
+  fontFamilyMonospace: 'JetBrains Mono, Fira Code, monospace',
 
-export const vars = themeToVars(theme);
+  components: {
+    Anchor: Anchor.extend({
+      defaultProps: {
+        c: 'blue',
+        fw: 450,
+      },
+    }),
+  },
+})
+
+export const vanilla = themeToVars(theme)
