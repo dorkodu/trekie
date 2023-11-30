@@ -1,7 +1,7 @@
-import { useApiStore } from "@/stores/apiStore";
-import { useAppStore } from "@/stores/appStore";
-import { IHabit } from "@api/types/habit";
-import { ActionIcon, Menu } from "@mantine/core";
+import { useApiStore } from '#/stores/apiStore'
+import { useAppStore } from '#/stores/appStore'
+import { IHabit } from '@sdk/types/habit'
+import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
   IconDots,
@@ -9,39 +9,39 @@ import {
   IconExclamationCircle,
   IconShare,
   IconTrash,
-} from "@tabler/icons-react";
-import { MouseEvent } from "react";
+} from '@tabler/icons-react'
+import { MouseEvent } from 'react'
 
 interface Props {
-  habit: IHabit;
+  habit: IHabit
 }
 
 function HabitMenu({ habit }: Props) {
-  const currentUserId = useApiStore((state) => state.userId);
+  const currentUserId = useApiStore(state => state.userId)
 
   const onShare = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onClipboard = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onEdit = (ev: MouseEvent) => {
-    ev.stopPropagation();
-    useAppStore.setState((s) => {
-      s.modals.habitEditor.opened = true;
-      s.modals.habitEditor.id = habit.id;
-      s.modals.habitEditor.title = habit.title;
-      s.modals.habitEditor.description = habit.description;
-      s.modals.habitEditor.dailyTarget = habit.dailyTarget;
-    });
-  };
+    ev.stopPropagation()
+    useAppStore.setState(s => {
+      s.modals.habitEditor.opened = true
+      s.modals.habitEditor.id = habit.id
+      s.modals.habitEditor.title = habit.title
+      s.modals.habitEditor.description = habit.description
+      s.modals.habitEditor.dailyTarget = habit.dailyTarget
+    })
+  }
   const onReport = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onDelete = (ev: MouseEvent) => {
-    ev.stopPropagation();
-    useApiStore.getState().removeHabit(habit);
-  };
+    ev.stopPropagation()
+    useApiStore.getState().removeHabit(habit)
+  }
 
   return (
     <Menu position="bottom-end">
@@ -50,7 +50,8 @@ function HabitMenu({ habit }: Props) {
           variant="subtle"
           c="var(--text-color)"
           radius="xl"
-          onClick={(ev) => ev.stopPropagation()}>
+          onClick={ev => ev.stopPropagation()}
+        >
           <IconDots />
         </ActionIcon>
       </Menu.Target>
@@ -76,7 +77,8 @@ function HabitMenu({ habit }: Props) {
                 <Menu.Item
                   onClick={onDelete}
                   leftSection={<IconTrash />}
-                  c="red">
+                  c="red"
+                >
                   Delete habit
                 </Menu.Item>
               </>
@@ -84,7 +86,8 @@ function HabitMenu({ habit }: Props) {
               <Menu.Item
                 onClick={onReport}
                 color="red"
-                leftSection={<IconExclamationCircle />}>
+                leftSection={<IconExclamationCircle />}
+              >
                 Report habit
               </Menu.Item>
             )}
@@ -92,7 +95,7 @@ function HabitMenu({ habit }: Props) {
         )}
       </Menu.Dropdown>
     </Menu>
-  );
+  )
 }
 
-export default HabitMenu;
+export default HabitMenu

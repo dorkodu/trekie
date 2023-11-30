@@ -1,4 +1,4 @@
-import { Route, useAppStore } from "@/stores/appStore";
+import { Route, useAppStore } from '#/stores/appStore'
 import {
   ActionIcon,
   Anchor,
@@ -15,7 +15,7 @@ import {
   px,
   useMantineColorScheme,
   useMantineTheme,
-} from "@mantine/core";
+} from '@mantine/core'
 import {
   IconArchive,
   IconArrowLeft,
@@ -29,40 +29,40 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
-} from "@tabler/icons-react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useDisclosure } from "@mantine/hooks";
-import { useApiStore } from "@/stores/apiStore";
-import TextParser from "../util/TextParser";
-import CreateMenu from "../menus/CreateMenu";
-import { truncate } from "@/styles/shared.css";
-import Footer from "../custom/Footer";
+} from '@tabler/icons-react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useDisclosure } from '@mantine/hooks'
+import { useApiStore } from '#/stores/apiStore'
+import TextParser from '../util/TextParser'
+import CreateMenu from '../menus/CreateMenu'
+import { truncate } from '#/styles/shared.css'
+import Footer from '../custom/Footer'
 
 function MainLayout() {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const navigate = useNavigate();
+  const theme = useMantineTheme()
+  const { colorScheme } = useMantineColorScheme()
+  const navigate = useNavigate()
 
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false)
 
-  const route = useAppStore((state) => state.route);
+  const route = useAppStore(state => state.route)
 
-  const userId = useApiStore((state) => state.userId);
-  const users = useApiStore((state) => state.users);
-  const user = userId ? users[userId] : undefined;
+  const userId = useApiStore(state => state.userId)
+  const users = useApiStore(state => state.users)
+  const user = userId ? users[userId] : undefined
 
   const closeNavigate = (route: string) => {
-    close();
-    navigate(route);
-  };
+    close()
+    navigate(route)
+  }
   const preventNavigate = (ev: React.MouseEvent, route: string) => {
-    ev.preventDefault();
-    navigate(route);
-  };
+    ev.preventDefault()
+    navigate(route)
+  }
 
   const getRouteColor = (_route: Route): MantineColor | undefined => {
-    return _route === route ? undefined : "var(--text-color)";
-  };
+    return _route === route ? undefined : 'var(--text-color)'
+  }
 
   return (
     <>
@@ -74,27 +74,30 @@ function MainLayout() {
         right={0}
         maw={theme.breakpoints.xs}
         mx="auto"
-        style={{ zIndex: 99 }}>
+        style={{ zIndex: 99 }}
+      >
         <Paper>
           <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
             <ActionIcon
               variant="subtle"
               size={32}
               onClick={() => navigate(-1)}
-              style={{ visibility: route === "home" ? "hidden" : "visible" }}
-              c="var(--text-color)">
+              style={{ visibility: route === 'home' ? 'hidden' : 'visible' }}
+              c="var(--text-color)"
+            >
               <IconArrowLeft />
             </ActionIcon>
 
             <Anchor
               underline="never"
               href="/home"
-              onClick={(ev) => preventNavigate(ev, "/home")}>
+              onClick={ev => preventNavigate(ev, '/home')}
+            >
               <Image
                 src={
-                  colorScheme === "dark"
-                    ? "/brand-light.svg"
-                    : "/brand-dark.svg"
+                  colorScheme === 'dark'
+                    ? '/brand-light.svg'
+                    : '/brand-dark.svg'
                 }
                 height={32}
               />
@@ -104,7 +107,8 @@ function MainLayout() {
               variant="subtle"
               size={32}
               onClick={() => open()}
-              c="var(--text-color)">
+              c="var(--text-color)"
+            >
               <IconMenu2 />
             </ActionIcon>
           </Flex>
@@ -118,7 +122,8 @@ function MainLayout() {
         left={0}
         right={0}
         maw={theme.breakpoints.xs}
-        mx="auto">
+        mx="auto"
+      >
         <Outlet />
       </Flex>
 
@@ -130,18 +135,20 @@ function MainLayout() {
         right={0}
         maw={theme.breakpoints.xs}
         mx="auto"
-        style={{ zIndex: 99 }}>
+        style={{ zIndex: 99 }}
+      >
         <Paper>
           <Divider w="100%" />
           <Button.Group h={64}>
             <Button
               variant="subtle"
-              c={getRouteColor("home")}
+              c={getRouteColor('home')}
               p={0}
               w="20%"
               h="auto"
               radius={0}
-              onClick={() => navigate("/home")}>
+              onClick={() => navigate('/home')}
+            >
               <Flex direction="column" align="center">
                 <IconHome />
                 <Text fz={10}>Home</Text>
@@ -149,11 +156,12 @@ function MainLayout() {
             </Button>
             <Button
               variant="subtle"
-              c={getRouteColor("explore")}
+              c={getRouteColor('explore')}
               p={0}
               w="20%"
               h="auto"
-              onClick={() => navigate("/explore")}>
+              onClick={() => navigate('/explore')}
+            >
               <Flex direction="column" align="center">
                 <IconSearch />
                 <Text fz={10}>Explore</Text>
@@ -161,11 +169,12 @@ function MainLayout() {
             </Button>
             <Button
               variant="subtle"
-              c={getRouteColor("life")}
+              c={getRouteColor('life')}
               p={0}
               w="20%"
               h="auto"
-              onClick={() => navigate("/life")}>
+              onClick={() => navigate('/life')}
+            >
               <Flex direction="column" align="center">
                 <IconRoad />
                 <Text fz={10}>Life</Text>
@@ -173,11 +182,12 @@ function MainLayout() {
             </Button>
             <Button
               variant="subtle"
-              c={getRouteColor("community")}
+              c={getRouteColor('community')}
               p={0}
               w="20%"
               h="auto"
-              onClick={() => navigate("/community")}>
+              onClick={() => navigate('/community')}
+            >
               <Flex direction="column" align="center">
                 <IconUsers />
                 <Text fz={10}>Community</Text>
@@ -185,12 +195,13 @@ function MainLayout() {
             </Button>
             <Button
               variant="subtle"
-              c={getRouteColor("market")}
+              c={getRouteColor('market')}
               p={0}
               w="20%"
               h="auto"
               radius={0}
-              onClick={() => navigate("/market")}>
+              onClick={() => navigate('/market')}
+            >
               <Flex direction="column" align="center">
                 <IconBuildingStore />
                 <Text fz={10}>Market</Text>
@@ -202,7 +213,8 @@ function MainLayout() {
         <Flex
           pos="absolute"
           right={theme.spacing.md}
-          top={-48 - (px(theme.spacing.md) as number)}>
+          top={-48 - (px(theme.spacing.md) as number)}
+        >
           <CreateMenu />
         </Flex>
       </Flex>
@@ -212,7 +224,8 @@ function MainLayout() {
         onClose={close}
         lockScroll={false}
         position="right"
-        title="Trekie - The gamified digital life companion">
+        title="Trekie - The gamified digital life companion"
+      >
         <Flex direction="column" gap="md">
           {user && (
             <Button
@@ -220,14 +233,16 @@ function MainLayout() {
               p="md"
               h="auto"
               styles={{ label: { flex: 1 } }}
-              onClick={() => closeNavigate(`/profile/${user.username}`)}>
+              onClick={() => closeNavigate(`/profile/${user.username}`)}
+            >
               <Flex align="center" gap="xs" w="100%">
                 <Avatar src="/assets/avatar.webp" size={32} />
                 <Flex direction="column" align="start" style={{ flex: 1 }}>
                   <Flex
-                    style={{ display: "grid", gridTemplateColumns: "auto" }}>
+                    style={{ display: 'grid', gridTemplateColumns: 'auto' }}
+                  >
                     <Title ta="start" order={5} className={truncate}>
-                      <TextParser ids={["emoji"]} text={user.name} />
+                      <TextParser ids={['emoji']} text={user.name} />
                     </Title>
                     <Text ta="start" truncate>
                       @{user.username}
@@ -241,9 +256,10 @@ function MainLayout() {
 
           <Button
             variant="subtle"
-            c={getRouteColor("premium")}
+            c={getRouteColor('premium')}
             p={0}
-            onClick={() => closeNavigate("/premium")}>
+            onClick={() => closeNavigate('/premium')}
+          >
             <IconCashBanknote />
             &nbsp;
             <Title order={5}>Premium</Title>
@@ -251,9 +267,10 @@ function MainLayout() {
 
           <Button
             variant="subtle"
-            c={getRouteColor("archive")}
+            c={getRouteColor('archive')}
             p={0}
-            onClick={() => closeNavigate("/archive")}>
+            onClick={() => closeNavigate('/archive')}
+          >
             <IconArchive />
             &nbsp;
             <Title order={5}>Archive</Title>
@@ -261,9 +278,10 @@ function MainLayout() {
 
           <Button
             variant="subtle"
-            c={getRouteColor("settings")}
+            c={getRouteColor('settings')}
             p={0}
-            onClick={() => closeNavigate("/settings")}>
+            onClick={() => closeNavigate('/settings')}
+          >
             <IconSettings />
             &nbsp;
             <Title order={5}>Settings</Title>
@@ -279,7 +297,7 @@ function MainLayout() {
         </Flex>
       </Drawer>
     </>
-  );
+  )
 }
 
-export default MainLayout;
+export default MainLayout

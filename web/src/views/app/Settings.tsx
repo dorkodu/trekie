@@ -1,6 +1,6 @@
-import WIPCard from "@/components/cards/WIPCard";
-import { useApiStore } from "@/stores/apiStore";
-import { truncate, wrapContent } from "@/styles/shared.css";
+import WIPCard from "#/components/cards/WIPCard";
+import { useTrekie } from "#/stores/trekieStore";
+import { truncate, wrapContent } from "#/styles/shared.css";
 import {
   Button,
   ButtonProps,
@@ -81,16 +81,16 @@ function Index() {
 function AccountInformation() {
   const navigate = useNavigate();
 
-  const user = useApiStore((state) =>
+  const user = useTrekie((state) =>
     state.userId ? state.users[state.userId] : undefined
   );
 
   const onLogout = () => {
-    useApiStore.getState().logout();
+    useTrekie.getState().logout();
   };
 
   const onDelete = () => {
-    useApiStore.getState().reset();
+    useTrekie.getState().reset();
     navigate("/join");
   };
 
@@ -134,7 +134,7 @@ function OtherResources() {
 function Username() {
   const navigate = useNavigate();
 
-  const user = useApiStore((state) =>
+  const user = useTrekie((state) =>
     state.userId ? state.users[state.userId] : undefined
   );
 
@@ -142,7 +142,7 @@ function Username() {
 
   const confirm = () => {
     if (!user) return;
-    useApiStore.getState().updateUser(user.id, username);
+    useTrekie.getState().updateUser(user.id, username);
     navigate(-1);
   };
 

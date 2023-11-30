@@ -1,16 +1,10 @@
-import NoGoalsCard from "@/components/cards/NoGoalsCard";
-import NoMemoriesCard from "@/components/cards/NoMemoriesCard";
-import StatusCard from "@/components/cards/StatusCard";
-import ChevronTitle from "@/components/custom/ChevronTitle";
-import Community from "@/components/custom/Community";
-import Goal from "@/components/custom/Goal";
-import Memory from "@/components/custom/Memory";
-import { UserStats } from "@/components/custom/UserStats";
-import ProfileMenu from "@/components/menus/ProfileMenu";
-import TextParser from "@/components/util/TextParser";
-import { util } from "@/lib/util";
-import { useApiStore } from "@/stores/apiStore";
-import { wrapContent } from "@/styles/shared.css";
+import ChevronTitle from "#/components/custom/ChevronTitle";
+import { UserStats } from "#/components/custom/UserStats";
+import ProfileMenu from "#/components/menus/ProfileMenu";
+import TextParser from "#/components/util/TextParser";
+import { util } from "#/lib/util";
+import { useTrekie } from "#/stores/trekieStore";
+import { wrapContent } from "#/styles/shared.css";
 import {
   Anchor,
   Avatar,
@@ -38,15 +32,15 @@ function Profile() {
   const params = useParams();
 
   const username = params["username"];
-  const userId = useApiStore(
+  const userId = useTrekie(
     (state) => username && state.usernameToUserId[username]
   );
-  const user = useApiStore((state) => userId && state.users[userId]);
+  const user = useTrekie((state) => userId && state.users[userId]);
 
-  const currentUserId = useApiStore((state) => state.userId);
+  const currentUserId = useTrekie((state) => state.userId);
 
-  const previewMemories = useApiStore((state) => state.getMemories(userId));
-  const previewGoals = useApiStore((state) => state.getGoals(userId));
+  const previewMemories = useTrekie((state) => state.getMemories(userId));
+  const previewGoals = useTrekie((state) => state.getGoals(userId));
 
   if (!user) {
     return (
@@ -89,7 +83,7 @@ function Profile() {
             <ProfileMenu user={user} />
             {currentUserId !== user.id && (
               <Button
-                onClick={() => useApiStore.getState().followUser(user)}
+                onClick={() => useTrekie.getState().followUser(user)}
                 variant={!user.following ? "filled" : "default"}
                 radius="xl">
                 {!user.following ? "Follow" : "Unfollow"}

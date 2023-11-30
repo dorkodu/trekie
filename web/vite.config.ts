@@ -35,7 +35,7 @@ export default defineConfig({
       manifest: {
         name: "Trekie",
         short_name: "Trekie",
-        description: "The gamified digital life companion.",
+        description: "Your social and gamified digital life companion.",
         categories: [],
         start_url: "/",
         display: "standalone",
@@ -67,8 +67,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@api": path.resolve(__dirname, "../api/src"),
-      "@wander": path.resolve(__dirname, "../wander/src"),
-      "@": path.resolve(__dirname, "./src"),
+      "@sdk": path.resolve(__dirname, "../sdk/src"),
+      "#": path.resolve(__dirname, "./src"),
     },
   },
   build: {

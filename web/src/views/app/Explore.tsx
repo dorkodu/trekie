@@ -1,7 +1,7 @@
-import WIPCard from "@/components/cards/WIPCard";
+import WIPCard from "#/components/cards/WIPCard";
 import { Flex } from "@mantine/core";
 
-function Premium() {
+function Explore() {
   return (
     <Flex direction="column" m="md">
       <WIPCard />
@@ -9,4 +9,4 @@ function Premium() {
   );
 }
 
-export default Premium;
+export default Explore;

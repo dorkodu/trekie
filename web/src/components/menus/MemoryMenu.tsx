@@ -1,7 +1,7 @@
-import { useApiStore } from "@/stores/apiStore";
-import { useAppStore } from "@/stores/appStore";
-import { IMemory } from "@api/types/memory";
-import { ActionIcon, Menu } from "@mantine/core";
+import { useApiStore } from '#/stores/apiStore'
+import { useAppStore } from '#/stores/appStore'
+import { IMemory } from '@sdk/types/memory'
+import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
   IconDots,
@@ -9,39 +9,39 @@ import {
   IconExclamationCircle,
   IconShare,
   IconTrash,
-} from "@tabler/icons-react";
-import { MouseEvent } from "react";
+} from '@tabler/icons-react'
+import { MouseEvent } from 'react'
 
 interface Props {
-  memory: IMemory;
+  memory: IMemory
 }
 
 function MemoryMenu({ memory }: Props) {
-  const currentUserId = useApiStore((state) => state.userId);
+  const currentUserId = useApiStore(state => state.userId)
 
   const onShare = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onClipboard = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onEdit = (ev: MouseEvent) => {
-    ev.stopPropagation();
-    useAppStore.setState((s) => {
+    ev.stopPropagation()
+    useAppStore.setState(s => {
       s.modals.memoryEditor = {
         opened: true,
         id: memory.id,
         description: memory.description,
-      };
-    });
-  };
+      }
+    })
+  }
   const onReport = (ev: MouseEvent) => {
-    ev.stopPropagation();
-  };
+    ev.stopPropagation()
+  }
   const onDelete = (ev: MouseEvent) => {
-    ev.stopPropagation();
-    useApiStore.getState().removeMemory(memory);
-  };
+    ev.stopPropagation()
+    useApiStore.getState().removeMemory(memory)
+  }
 
   return (
     <Menu position="bottom-end">
@@ -50,7 +50,8 @@ function MemoryMenu({ memory }: Props) {
           variant="subtle"
           c="var(--text-color)"
           radius="xl"
-          onClick={(ev) => ev.stopPropagation()}>
+          onClick={ev => ev.stopPropagation()}
+        >
           <IconDots />
         </ActionIcon>
       </Menu.Target>
@@ -76,7 +77,8 @@ function MemoryMenu({ memory }: Props) {
                 <Menu.Item
                   onClick={onDelete}
                   leftSection={<IconTrash />}
-                  c="red">
+                  c="red"
+                >
                   Delete memory
                 </Menu.Item>
               </>
@@ -84,7 +86,8 @@ function MemoryMenu({ memory }: Props) {
               <Menu.Item
                 onClick={onReport}
                 color="red"
-                leftSection={<IconExclamationCircle />}>
+                leftSection={<IconExclamationCircle />}
+              >
                 Report memory
               </Menu.Item>
             )}
@@ -92,7 +95,7 @@ function MemoryMenu({ memory }: Props) {
         )}
       </Menu.Dropdown>
     </Menu>
-  );
+  )
 }
 
-export default MemoryMenu;
+export default MemoryMenu
