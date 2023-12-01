@@ -29,14 +29,14 @@ export default {
     display: 'inline-block',
 
     selectors: {
-      [`&:hover`]: {
-        backgroundColor: vanilla.colors.green[1],
+      [`&:hover & ${vanilla.lightSelector}`]: {
+        backgroundColor: vanilla.colors.green.light,
         color: vanilla.colors.green[9],
       },
 
       [`&:hover & ${vanilla.darkSelector}`]: {
         backgroundColor: vanilla.colors.green.light,
-        color: vanilla.colors.gray[0],
+        color: vanilla.colors.blue[0],
       },
     },
 

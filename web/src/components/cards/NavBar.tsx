@@ -54,7 +54,7 @@ const PageLink = ({
     <div>
       <UnstyledButton
         onClick={() => navigate(path)}
-        className={styles.PageLink}
+        className={styles.LinkButton}
       >
         <Group gap={12} align="center">
           <ThemeIcon variant="light" size={36} radius={12}>

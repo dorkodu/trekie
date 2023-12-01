@@ -2,44 +2,36 @@ import { Route, useAppStore } from '#/stores/appStore'
 import {
   ActionIcon,
   Anchor,
-  Avatar,
   Button,
   Divider,
-  Drawer,
   Flex,
   Image,
   MantineColor,
   Modal,
   Paper,
   Text,
-  TextInput,
-  Title,
   px,
   useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core'
 import {
-  IconArchive,
   IconArrowLeft,
   IconBuildingStore,
-  IconCashBanknote,
-  IconChevronRight,
-  IconExternalLink,
   IconHome,
   IconMenu2,
   IconRoad,
   IconSearch,
-  IconSettings,
   IconUsers,
 } from '@tabler/icons-react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
-import { useTrekieStore } from '#/stores/trekieStore'
 import CreateMenu from '#/components/menus/CreateMenu'
 import Footer from '#/components/custom/Footer'
 import { NavBar } from '#/components/cards/NavBar'
 import { AppMenu } from '#/components/cards/Menu'
+
+import { useTrekieStore } from '#/stores/trekieStore'
 
 import * as styles from '#/styles/Layout.css'
 
@@ -79,6 +71,7 @@ function AppLayout() {
       maw={theme.breakpoints.xs}
       mx="auto"
       style={{ zIndex: 99 }}
+      hiddenFrom="sm"
     >
       <Paper>
         <Divider w="100%" />
@@ -173,6 +166,7 @@ function AppLayout() {
       maw={theme.breakpoints.xs}
       mx="auto"
       style={{ zIndex: 99 }}
+      hiddenFrom="sm"
     >
       <Paper>
         <Flex align="center" justify="space-between" gap="md" px="md" h={64}>

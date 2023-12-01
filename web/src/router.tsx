@@ -40,7 +40,7 @@ function suspenseLoader(
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="/" element={<App />} errorElement={view('flow:Error')}>
       {/* Navigate to "/home" on path "/" */}
       <Route index element={<Navigate to="/home" />} />
 
@@ -55,14 +55,11 @@ export const router = createBrowserRouter(
         <Route path="/settings/*" element={view('app:Settings')} />
       </Route>
 
-      <Route path="/about" element={view('website:About')} />
-
-      <Route path="/welcome" element={view('website:Welcome')} />
-
       {/* User Flow */}
       <Route path="/join" element={view('flow:CreateAccount')} />
       <Route path="/connect" element={view('flow:Connect')} />
       <Route path="/login" element={view('flow:Login')} />
+      <Route path="/error" element={view('flow:Error')} />
 
       <Route element={layout('WebsiteLayout')}>
         {/* Website & Custom Pages */}
@@ -73,7 +70,7 @@ export const router = createBrowserRouter(
       </Route>
 
       {/* Error routes & catch all */}
-      <Route path="*" element={<Navigate to="/404" />} />
+      <Route path="*" element={view('website:NotFound')} />
     </Route>
   )
 )
