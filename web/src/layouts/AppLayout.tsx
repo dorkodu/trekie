@@ -23,7 +23,7 @@ import {
   IconSearch,
   IconUsers,
 } from '@tabler/icons-react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
 import CreateMenu from '#/components/menus/CreateMenu'
@@ -34,6 +34,7 @@ import { AppMenu } from '#/components/cards/Menu'
 import { useTrekieStore } from '#/stores/trekieStore'
 
 import * as styles from '#/styles/Layout.css'
+import { vanilla } from '#/styles/theme'
 
 function AppLayout() {
   const theme = useMantineTheme()
@@ -47,15 +48,6 @@ function AppLayout() {
   const userId = useTrekieStore(state => state.userId)
   const users = useTrekieStore(state => state.users)
   const user = userId ? users[userId] : undefined
-
-  const closeNavigate = (route: string) => {
-    close()
-    navigate(route)
-  }
-  const preventNavigate = (ev: React.MouseEvent, route: string) => {
-    ev.preventDefault()
-    navigate(route)
-  }
 
   const getRouteColor = (_route: Route): MantineColor | undefined => {
     return _route === route ? undefined : 'var(--text-color)'
@@ -72,10 +64,18 @@ function AppLayout() {
       mx="auto"
       style={{ zIndex: 99 }}
       hiddenFrom="sm"
+      h={styles.BARHEIGHT}
     >
-      <Paper>
-        <Divider w="100%" />
-        <Button.Group h={64}>
+      <Paper
+        style={{
+          borderWidth: 0,
+          borderTopWidth: 1,
+          borderStyle: 'solid',
+          borderColor: vanilla.colors.defaultBorder,
+          borderRadius: 0,
+        }}
+      >
+        <Button.Group h={styles.BARHEIGHT}>
           <Button
             variant="subtle"
             c={getRouteColor('home')}
@@ -83,11 +83,12 @@ function AppLayout() {
             w="20%"
             h="auto"
             radius={0}
-            onClick={() => navigate('/home')}
+            component={Link}
+            to="/home"
           >
             <Flex direction="column" align="center">
               <IconHome />
-              <Text fz={10}>Home</Text>
+              <Text size="xs">Home</Text>
             </Flex>
           </Button>
           <Button
@@ -156,20 +157,27 @@ function AppLayout() {
     </Flex>
   )
 
-  const Header = (
+  const TopBar = (
     <Flex
       direction="column"
       pos="fixed"
       top={0}
       left={0}
       right={0}
-      maw={theme.breakpoints.xs}
       mx="auto"
       style={{ zIndex: 99 }}
       hiddenFrom="sm"
     >
-      <Paper>
-        <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
+      <Paper
+        style={{
+          borderWidth: 0,
+          borderBottomWidth: 1,
+          borderStyle: 'solid',
+          borderColor: vanilla.colors.defaultBorder,
+          borderRadius: 0,
+        }}
+      >
+        <Flex align="center" justify="space-between" gap="md" px="md" h={56}>
           <ActionIcon
             variant="subtle"
             size={32}
@@ -180,16 +188,13 @@ function AppLayout() {
             <IconArrowLeft />
           </ActionIcon>
 
-          <Anchor
-            underline="never"
-            href="/home"
-            onClick={ev => preventNavigate(ev, '/home')}
-          >
+          <Anchor underline="never" to="/home" component={Link}>
             <Image
               src={
                 colorScheme === 'dark' ? '/brand-light.svg' : '/brand-dark.svg'
               }
-              height={32}
+              height={36}
+              p={1}
             />
           </Anchor>
 
@@ -202,7 +207,6 @@ function AppLayout() {
             <IconMenu2 />
           </ActionIcon>
         </Flex>
-        <Divider w="100%" />
       </Paper>
     </Flex>
   )
@@ -233,11 +237,11 @@ function AppLayout() {
             <Image
               src={
                 colorScheme == 'dark'
-                  ? '/images/superapp_Brand-Cool-White.svg'
-                  : '/images/superapp_Brand-Cool.svg'
+                  ? '/images/trekie_Brand_White.svg'
+                  : '/images/trekie_Brand.svg'
               }
-              h="auto"
-              w={160}
+              h={40}
+              w="auto"
             />
           </Modal.Title>
           <Modal.CloseButton variant="default" />
@@ -251,7 +255,7 @@ function AppLayout() {
 
   return (
     <>
-      {Header}
+      {TopBar}
 
       <div className={styles.Layout.Body}>
         {Menu}

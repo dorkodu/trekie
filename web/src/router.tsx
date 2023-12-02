@@ -12,8 +12,6 @@ import CenterLoader from '#/components/loaders/CenterLoader'
 import { util } from '#/lib/util'
 import App from './App'
 
-import Auth from '#/components/util/AuthRoute'
-
 function view(path: string) {
   const [folder, file] = path.split(':')
 

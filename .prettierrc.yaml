@@ -2,7 +2,6 @@ semi: false
 singleQuote: true
 tabs: false
 tabWidth: 2
-quoteProps: 'consistent'
 jsxSingleQuote: false
 trailingComma: 'es5'
 bracketSpacing: true

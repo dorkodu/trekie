@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import { vanilla } from './theme'
 
-export const BARHEIGHT = 64
+export const BARHEIGHT = 60
 
 export const WIDESCREEN_MIN = 760
 export const WIDESCREEN_MAX = 1200
@@ -13,13 +13,13 @@ const isExtraWide = vanilla.largerThan(WIDESCREEN_MAX)
 
 export const Layout = {
   Root: style({
-    'display': 'flex',
-    'flexDirection': 'column',
+    display: 'flex',
+    flexDirection: 'column',
 
-    'width': '100%',
-    'maxWidth': 1200,
-    'minHeight': '100vh',
-    'margin': '0 auto',
+    width: '100%',
+    maxWidth: 1200,
+    minHeight: '100vh',
+    margin: '0 auto',
 
     '@media': {
       [isExtraWide]: {
@@ -27,13 +27,13 @@ export const Layout = {
       },
     },
 
-    'selectors': {},
+    selectors: {},
   }),
 
   SideBar: style({
-    'width': '35%',
-    'maxWidth': '340px',
-    'display': 'none',
+    width: '35%',
+    maxWidth: '340px',
+    display: 'none',
 
     '@media': {
       [isWideScreen]: {
@@ -43,8 +43,8 @@ export const Layout = {
   }),
 
   Main: style({
-    'width': '100%',
-    'flexGrow': 1,
+    width: '100%',
+    flexGrow: 1,
 
     '@media': {
       [isWideScreen]: {
@@ -59,12 +59,13 @@ export const Layout = {
 
   Body: style({
     display: 'flex',
+    marginTop: BARHEIGHT
   }),
 
   Footer: style({
-    'display': 'block',
-    'maxWidth': WIDESCREEN_MAX,
-    'height': BARHEIGHT,
+    display: 'block',
+    maxWidth: WIDESCREEN_MAX,
+    height: BARHEIGHT,
 
     '@media': {
       [vanilla.largerThan(640)]: {
@@ -153,12 +154,10 @@ export const SearchInput = style({
   },
 })
 
-
-
 export const Menu = {
   Item: style({
-    'borderRadius': 10,
-    'padding': 4,
+    borderRadius: 10,
+    padding: 4,
 
     ':hover': {
       backgroundColor: vanilla.colors.gray.light,

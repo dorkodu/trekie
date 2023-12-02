@@ -3,7 +3,10 @@ import { UnstyledButton, Menu, Image, Group } from '@mantine/core'
 import { IconChevronDown } from '@tabler/icons-react'
 import classes from '#/styles/components/LanguagePicker.module.css'
 
-const data = [{ label: 'English', image: '/assets/locale/en.svg' }]
+const data = [
+  { label: 'English', image: '/assets/locale/en.svg' },
+  { label: 'Turkish', image: '/assets/locale/en.svg' },
+]
 
 function LanguagePicker() {
   const [opened, setOpened] = useState(false)
