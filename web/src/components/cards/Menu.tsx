@@ -52,7 +52,6 @@ export function AppMenu() {
             name: 'Doruk Eray',
             username: '@doruk',
           }}
-          compact
         />
       </UnstyledButton>
 
@@ -126,7 +125,9 @@ const MenuItem = ({
           <ThemeIcon variant="default" size={32}>
             {icon}
           </ThemeIcon>
-          <Text fz={16}>{children}</Text>
+          <Text fz={16} lh={1}>
+            {children}
+          </Text>
         </Group>
         <Box mx={8}>{right}</Box>
       </Group>

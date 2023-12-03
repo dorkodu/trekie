@@ -12,6 +12,7 @@ import {
   MantineColor,
   Modal,
   Paper,
+  Stack,
   Text,
   px,
   useMantineColorScheme,
@@ -37,6 +38,7 @@ import { useTrekieStore } from '#/stores/trekieStore'
 
 import * as styles from '#/styles/Layout.css'
 import { vanilla } from '#/styles/theme'
+import { UserButton } from '#/components/buttons/UserButton'
 
 function AppLayout() {
   const theme = useMantineTheme()
@@ -279,6 +281,14 @@ function AppLayout() {
             </div>
             <div>Command</div>
             <Group>
+              <UserButton
+                user={{
+                  avatar: '/assets/avatar.webp',
+                  name: 'Doruk Eray',
+                  username: '@doruk',
+                }}
+                compact
+              />
               <ActionIcon
                 variant="default"
                 size={32}
@@ -303,7 +313,6 @@ function AppLayout() {
           <div>
             <Outlet />
           </div>
-          <footer className={styles.Layout.Footer}>{Footer}</footer>
         </main>
 
         <aside className={styles.Layout.SideBar}>
@@ -316,6 +325,8 @@ function AppLayout() {
           <Card withBorder m={10}>
             Ad
           </Card>
+
+          <footer className={styles.Layout.Footer}>{Footer}</footer>
         </aside>
       </div>
 
@@ -327,10 +338,11 @@ function AppLayout() {
 export default AppLayout
 
 const Footer = (
-  <Box m={16}>
-    <Divider mt={20} />
-    <Group justify="space-between" p={10}>
-      <Flex gap="xs">
+  <>
+    <Divider m={16} mb={0} />
+
+    <Stack gap={0} px={10} align="center">
+      <Group justify="center" gap="xs" p={10}>
         {[
           ['About', '/about'],
           ['Terms', '/legal/terms'],
@@ -350,10 +362,14 @@ const Footer = (
             {link[0]}
           </Anchor>
         ))}
-      </Flex>
-      <Anchor href="https://dorkodu.com" target="_blank">
-        <Image src="/images/dorkodu_Logo_Colorful.svg" w={100} h="auto" />
+      </Group>
+      <Anchor display="block" href="https://dorkodu.com" target="_blank">
+        <Image
+          src="/images/dorkodu_Logo_Colorful.svg"
+          w={120}
+          display="block"
+        />
       </Anchor>
-    </Group>
-  </Box>
+    </Stack>
+  </>
 )

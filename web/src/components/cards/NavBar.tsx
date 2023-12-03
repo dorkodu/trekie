@@ -26,15 +26,15 @@ import Emoji from '../custom/Emoji'
 
 export function NavBar() {
   const navigation = [
-    { icon: <Emoji emoji="🏡" size={28} />, text: 'Home', path: '/home' },
-    { icon: <Emoji emoji="🌎" size={28} />, text: 'Explore', path: '/explore' },
-    { icon: <Emoji emoji="✅" size={28} />, text: 'Life', path: '/life' },
+    { icon: <Emoji emoji="🏡" size={26} />, text: 'Home', path: '/home' },
+    { icon: <Emoji emoji="🌎" size={26} />, text: 'Explore', path: '/explore' },
+    { icon: <Emoji emoji="✅" size={26} />, text: 'Life', path: '/life' },
     {
-      icon: <Emoji emoji="👥" size={28} />,
+      icon: <Emoji emoji="👥" size={26} />,
       text: 'Community',
       path: '/social',
     },
-    { icon: <Emoji emoji="🏪" size={28} />, text: 'Market', path: '/market' },
+    { icon: <Emoji emoji="🏪" size={26} />, text: 'Market', path: '/market' },
   ].map($ => (
     <PageLink icon={$.icon} key={$.text} path={$.path}>
       {$.text}
@@ -73,10 +73,9 @@ const PageLink = ({
       >
         <Group gap={12} align="center">
           {icon}
-          <Text fz={16} fw={500}>
+          <Text fz={16} fw={500} lh={1}>
             {children}
           </Text>
-          <Box w={16} h={10} p={0}></Box>
         </Group>
       </UnstyledButton>
     </div>
