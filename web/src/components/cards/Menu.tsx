@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  Card,
   Divider,
   Flex,
   Group,
@@ -27,15 +28,33 @@ import {
   IconAlignRight,
   IconChevronRight,
 } from '@tabler/icons-react'
+import { useMediaQuery } from '@mantine/hooks'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Menu as styles } from '#/styles/Layout.css'
 import ColorToggle from '../util/ColorToggle'
-import { Link } from 'react-router-dom'
+import { UserButton } from '../buttons/UserButton'
 
 export function AppMenu() {
+  const isWideScreen = useMediaQuery('(min-width: 768px)')
+  const navigate = useNavigate()
+
   return (
-    <Stack miw={250} gap={2}>
-      <UserButton />
+    <Stack w={isWideScreen ? 300 : 260} gap={2}>
+      <UnstyledButton
+        onClick={e => {
+          navigate('/me')
+        }}
+      >
+        <UserButton
+          user={{
+            avatar: '/assets/avatar.webp',
+            name: 'Doruk Eray',
+            username: '@doruk',
+          }}
+          compact
+        />
+      </UnstyledButton>
 
       <div style={{ marginTop: 10 }}></div>
 
@@ -50,42 +69,6 @@ export function AppMenu() {
 
       {Footer}
     </Stack>
-  )
-}
-
-const UserButton = () => {
-  let avatar = '/assets/avatar.webp'
-  let name = 'Doruk Eray'
-  let username = '@doruk'
-
-  return (
-    <Paper
-      component={Link}
-      to="/profile"
-      variant="light"
-      color="white"
-      p={8}
-      withBorder
-      mx={4}
-    >
-      <Group justify="space-between" gap={10}>
-        <Group gap={10}>
-          <Avatar src={avatar} radius="md" size={44} />
-          <Stack gap={0} ta="left">
-            <Text fw={700} lh={1.1}>
-              {name}
-            </Text>
-            <Text fw={500} lh={1.1} c="dimmed">
-              {username}
-            </Text>
-          </Stack>
-        </Group>
-
-        <ThemeIcon variant="transparent" color="dark">
-          <IconChevronRight />
-        </ThemeIcon>
-      </Group>
-    </Paper>
   )
 }
 

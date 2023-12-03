@@ -2,9 +2,12 @@ import { Route, useAppStore } from '#/stores/appStore'
 import {
   ActionIcon,
   Anchor,
+  Box,
   Button,
+  Card,
   Divider,
   Flex,
+  Group,
   Image,
   MantineColor,
   Modal,
@@ -27,7 +30,6 @@ import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
 import CreateMenu from '#/components/menus/CreateMenu'
-import Footer from '#/components/custom/Footer'
 import { NavBar } from '#/components/cards/NavBar'
 import { AppMenu } from '#/components/cards/Menu'
 
@@ -39,8 +41,11 @@ import { vanilla } from '#/styles/theme'
 function AppLayout() {
   const theme = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
+
   const navigate = useNavigate()
+
   const [opened, { open, close }] = useDisclosure(false)
+
   const isWideScreen = useMediaQuery('(min-width: 768px)')
 
   const route = useAppStore(state => state.route)
@@ -191,7 +196,9 @@ function AppLayout() {
           <Anchor underline="never" to="/home" component={Link}>
             <Image
               src={
-                colorScheme === 'dark' ? '/brand-light.svg' : '/brand-dark.svg'
+                colorScheme == 'light'
+                  ? '/images/trekie_Brand.svg'
+                  : '/images/trekie_Brand_White.svg'
               }
               height={36}
               p={1}
@@ -227,7 +234,7 @@ function AppLayout() {
       }}
       keepMounted
       centered
-      maw={isWideScreen ? 360 : 280}
+      w={isWideScreen ? 400 : 280}
       zIndex={9999}
     >
       <Modal.Overlay blur={2.5} />
@@ -254,30 +261,99 @@ function AppLayout() {
   )
 
   return (
-    <>
+    <div className={styles.Layout.Root}>
       {TopBar}
 
+      <header className={styles.Layout.Header}>
+        <Box m={10} mx={16}>
+          <Group justify="space-between">
+            <div>
+              <Image
+                src={
+                  colorScheme == 'light'
+                    ? '/images/trekie_Brand.svg'
+                    : '/images/trekie_Brand_White.svg'
+                }
+                h={50}
+              />
+            </div>
+            <div>Command</div>
+            <Group>
+              <ActionIcon
+                variant="default"
+                size={32}
+                onClick={() => open()}
+                c="var(--text-color)"
+              >
+                <IconMenu2 />
+              </ActionIcon>
+            </Group>
+          </Group>
+        </Box>
+      </header>
       <div className={styles.Layout.Body}>
         {Menu}
 
-        <aside className={styles.Layout.SideBar}>
+        <nav className={styles.Layout.SideBar}>
           <NavBar />
-        </aside>
+        </nav>
 
         <main className={styles.Layout.Main}>
           {/* Paper can be a different element, but not likely */}
           <div>
             <Outlet />
           </div>
+          <footer className={styles.Layout.Footer}>{Footer}</footer>
         </main>
-      </div>
-      <div className={styles.Layout.Footer}>
-        <Footer />
+
+        <aside className={styles.Layout.SideBar}>
+          <Card withBorder m={10}>
+            Daily Stats
+          </Card>
+          <Card withBorder m={10}>
+            News
+          </Card>
+          <Card withBorder m={10}>
+            Ad
+          </Card>
+        </aside>
       </div>
 
       {BottomBar}
-    </>
+    </div>
   )
 }
 
 export default AppLayout
+
+const Footer = (
+  <Box m={16}>
+    <Divider mt={20} />
+    <Group justify="space-between" p={10}>
+      <Flex gap="xs">
+        {[
+          ['About', '/about'],
+          ['Terms', '/legal/terms'],
+          ['Privacy', '/legal/privacy'],
+          ['Careers', 'https://dorkodu.com/jobs'],
+          ['Blog', 'https://dorkodu.substack.com'],
+        ].map(link => (
+          <Anchor
+            component={Link}
+            //@ts-ignore
+            to={link[1]}
+            key={link[1]}
+            c="dimmed"
+            fw={400}
+            size="sm"
+          >
+            {link[0]}
+          </Anchor>
+        ))}
+      </Flex>
+      <Anchor href="https://dorkodu.com" target="_blank">
+        <Image src="/images/dorkodu_Logo_Colorful.svg" w={100} h="auto" />
+      </Anchor>
+    </Group>
+  </Box>
+)

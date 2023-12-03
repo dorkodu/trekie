@@ -1,4 +1,4 @@
-import { Anchor, createTheme } from '@mantine/core'
+import { Anchor, Button, createTheme } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
 
 export const theme = createTheme({
@@ -15,6 +15,11 @@ export const theme = createTheme({
         c: 'blue',
         fw: 450,
       },
+    }),
+    Button: Button.extend({
+      defaultProps: {
+        radius: "lg"
+      }
     }),
   },
 })

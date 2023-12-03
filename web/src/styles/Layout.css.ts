@@ -3,7 +3,7 @@ import { vanilla } from './theme'
 
 export const BARHEIGHT = 60
 
-export const WIDESCREEN_MIN = 760
+export const WIDESCREEN_MIN = 768
 export const WIDESCREEN_MAX = 1200
 
 // Screen breakpoints
@@ -54,12 +54,24 @@ export const Layout = {
   }),
 
   Header: style({
-    backgroundColor: '#333',
+    display: 'none',
+
+    '@media': {
+      [isWideScreen]: {
+        display: 'block',
+      },
+    },
   }),
 
   Body: style({
     display: 'flex',
-    marginTop: BARHEIGHT
+    marginTop: BARHEIGHT,
+
+    '@media': {
+      [isWideScreen]: {
+        marginTop: 0,
+      },
+    },
   }),
 
   Footer: style({
@@ -68,7 +80,7 @@ export const Layout = {
     height: BARHEIGHT,
 
     '@media': {
-      [vanilla.largerThan(640)]: {
+      [isMobile]: {
         display: 'none',
       },
     },
