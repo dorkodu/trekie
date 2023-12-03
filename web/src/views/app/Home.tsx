@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Group,
   Image,
   Paper,
   SimpleGrid,
@@ -16,6 +17,8 @@ import Emoji from '#/components/custom/Emoji'
 import TextParser from '#/components/util/TextParser'
 import { useTrekieStore } from '#/stores/trekieStore'
 import { wrapContent } from '#/styles/shared.css'
+import Heatmap from '#/components/custom/Heatmap'
+import NoHabitsCard from '#/components/cards/NoHabitsCard'
 
 function Home() {
   const navigate = useNavigate()
@@ -28,37 +31,32 @@ function Home() {
     <Stack m="md" gap="xl">
       <Stack gap="xs">
         <Title order={4} className={wrapContent}>
-          <Emoji emoji="👋" /> Welcome,&nbsp;
+          <Emoji emoji="👋" /> Welcome, Doruk
           <TextParser ids={['emoji']} text={user?.name ?? ''} />
         </Title>
 
-        <Flex></Flex>
+        <Flex direction="column" align="start" gap="xs">
+          <Text>
+            Hey! Welcome to <b>your social & gamified life companion.</b>
+          </Text>
 
-        <SimpleGrid cols={2} spacing="md">
-          <Flex direction="column" align="start" gap="xs">
-            <Text>
-              Hey! Welcome <b>The gamified digital life companion.</b>
-            </Text>
-
-            <Paper>
-              <Image />
-              <Text>Welcome, Doruk.</Text>
-              <Text>
-                Manage your information, privacy, and security to make Dorkodu
-                work better for you.
-              </Text>
-            </Paper>
-
+          <Group>
             <Button variant="filled">Primary action</Button>
             <Button variant="default">Secondary action</Button>
-          </Flex>
+          </Group>
 
-          {user && (
-            <Paper withBorder p="md">
-              <Flex direction="column" justify="space-evenly" gap="xs"></Flex>
-            </Paper>
-          )}
-        </SimpleGrid>
+          <Text>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta
+            autem optio veniam est atque natus quisquam culpa ipsum iste,
+            placeat cumque vero, fugit, tenetur explicabo.
+          </Text>
+
+          <div>
+            <NoHabitsCard />
+          </div>
+        </Flex>
+
+        <SimpleGrid cols={2} spacing="md"></SimpleGrid>
       </Stack>
     </Stack>
   )
