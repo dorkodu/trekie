@@ -39,6 +39,7 @@ import { useTrekieStore } from '#/stores/trekieStore'
 import * as styles from '#/styles/Layout.css'
 import { vanilla } from '#/styles/theme'
 import { UserButton } from '#/components/buttons/UserButton'
+import { CommandCenter } from '#/components/custom/CommandCenter'
 
 function AppLayout() {
   const theme = useMantineTheme()
@@ -262,45 +263,47 @@ function AppLayout() {
     </Modal.Root>
   )
 
+  const Header = (
+    <Box m={10} mx={16}>
+      <Group justify="space-between">
+        <div>
+          <Image
+            src={
+              colorScheme == 'light'
+                ? '/images/trekie_Brand.svg'
+                : '/images/trekie_Brand_White.svg'
+            }
+            h={50}
+          />
+        </div>
+        <CommandCenter></CommandCenter>
+        <Group gap={4}>
+          <UserButton
+            user={{
+              avatar: '/assets/avatar.webp',
+              name: 'Doruk Eray',
+              username: '@doruk',
+            }}
+            compact
+          />
+          <ActionIcon
+            variant="default"
+            size={32}
+            onClick={() => open()}
+            c="var(--text-color)"
+          >
+            <IconMenu2 />
+          </ActionIcon>
+        </Group>
+      </Group>
+    </Box>
+  )
+
   return (
     <div className={styles.Layout.Root}>
       {TopBar}
 
-      <header className={styles.Layout.Header}>
-        <Box m={10} mx={16}>
-          <Group justify="space-between">
-            <div>
-              <Image
-                src={
-                  colorScheme == 'light'
-                    ? '/images/trekie_Brand.svg'
-                    : '/images/trekie_Brand_White.svg'
-                }
-                h={50}
-              />
-            </div>
-            <div>Command</div>
-            <Group>
-              <UserButton
-                user={{
-                  avatar: '/assets/avatar.webp',
-                  name: 'Doruk Eray',
-                  username: '@doruk',
-                }}
-                compact
-              />
-              <ActionIcon
-                variant="default"
-                size={32}
-                onClick={() => open()}
-                c="var(--text-color)"
-              >
-                <IconMenu2 />
-              </ActionIcon>
-            </Group>
-          </Group>
-        </Box>
-      </header>
+      <header className={styles.Layout.Header}>{Header}</header>
       <div className={styles.Layout.Body}>
         {Menu}
 
