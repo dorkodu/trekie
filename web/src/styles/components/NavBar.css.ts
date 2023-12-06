@@ -3,7 +3,7 @@ import { vanilla } from '../theme'
 
 export default {
   Paper: style({
-    'marginLeft': 7,
+    marginLeft: 7,
 
     '@media': {
       [vanilla.largerThan('sm')]: {
@@ -25,21 +25,15 @@ export default {
   }),
   LinkButton: style({
     borderRadius: 16,
-    padding: 4,
+    padding: '8px 10px',
+    paddingRight: '12px',
     display: 'inline-block',
 
-    selectors: {
-      [`&:hover & ${vanilla.lightSelector}`]: {
-        backgroundColor: vanilla.colors.green.light,
-        color: vanilla.colors.green[9],
-      },
-
-      [`&:hover & ${vanilla.darkSelector}`]: {
-        backgroundColor: vanilla.colors.green.light,
-        color: vanilla.colors.blue[0],
-      },
-    },
-
     transitionDuration: '0.1s',
+
+    ':hover': {
+      backgroundColor: vanilla.colors.green.light,
+      color: vanilla.colors.green.lightColor,
+    },
   }),
 }

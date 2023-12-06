@@ -19,6 +19,7 @@ import { useTrekieStore } from '#/stores/trekieStore'
 import { wrapContent } from '#/styles/shared.css'
 import Heatmap from '#/components/custom/Heatmap'
 import NoHabitsCard from '#/components/cards/NoHabitsCard'
+import HabitCounter from '#/components/custom/Habit'
 
 function Home() {
   const navigate = useNavigate()
@@ -40,20 +41,8 @@ function Home() {
             Hey! Welcome to <b>your social & gamified life companion.</b>
           </Text>
 
-          <Group>
-            <Button variant="filled">Primary action</Button>
-            <Button variant="default">Secondary action</Button>
-          </Group>
-
-          <Text>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta
-            autem optio veniam est atque natus quisquam culpa ipsum iste,
-            placeat cumque vero, fugit, tenetur explicabo.
-          </Text>
-
-          <div>
-            <NoHabitsCard />
-          </div>
+          {Habits}
+          {Goals}
         </Flex>
 
         <SimpleGrid cols={2} spacing="md"></SimpleGrid>
@@ -64,16 +53,27 @@ function Home() {
 
 export default Home
 
-function Sidebar() {
-  return (
-    <Box>
-      <Stack>
-        <Button leftSection={<IconBuildingStore />}>Home</Button>
-        <Button leftSection={<IconBuildingStore />}>Your Page</Button>
-        <Button leftSection={<IconBuildingStore />}></Button>
-        <Button leftSection={<IconBuildingStore />}>Market</Button>
-        <Button leftSection={<IconSettings />}>Settings</Button>
-      </Stack>
-    </Box>
-  )
-}
+const Habits = (
+  <section>
+    <Title order={3}>Habits</Title>
+    <HabitCounter
+      habit={{
+        id: '1',
+        title: 'Read 50 pages everyday.',
+        count: 1,
+        dailyTarget: 5,
+        description: 'YOu should read something each day.',
+        userId: '1',
+        date: 1000000000000,
+        heatmap: { 1: 1, 2: 1 },
+      }}
+      showHeatmap
+    />
+  </section>
+)
+
+const Goals = (
+  <section>
+    <Title order={3}>Life Goals</Title>
+  </section>
+)

@@ -1,5 +1,5 @@
 import { util } from '#/lib/util'
-import { useApiStore } from '#/stores/apiStore'
+import { useTrekieStore } from '#/stores/trekieStore'
 import { truncate } from '#/styles/shared.css'
 import { IHabit } from '@sdk/types/habit'
 import {
@@ -25,10 +25,10 @@ interface Props {
   onClick?: () => void
 }
 
-function Habit({ habit, showHeatmap, onClick }: Props) {
+function HabitCounter({ habit, showHeatmap, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
-    useApiStore.getState().countHabit(habit, count)
+    useTrekieStore.getState().countHabit(habit, count)
   }
 
   const dailyDone = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0
@@ -100,4 +100,4 @@ function Habit({ habit, showHeatmap, onClick }: Props) {
   )
 }
 
-export default Habit
+export default HabitCounter
