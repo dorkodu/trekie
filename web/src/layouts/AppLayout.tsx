@@ -40,6 +40,7 @@ import * as styles from '#/styles/Layout.css'
 import { vanilla } from '#/styles/theme'
 import { UserButton } from '#/components/buttons/UserButton'
 import { CommandCenter } from '#/components/custom/CommandCenter'
+import { DailyStats } from '#/components/cards/DailyStats'
 
 function AppLayout() {
   const theme = useMantineTheme()
@@ -320,7 +321,7 @@ function AppLayout() {
 
         <aside className={styles.Layout.SideBar}>
           <Card withBorder m={10}>
-            Daily Stats
+            <DailyStats />
           </Card>
           <Card withBorder m={10}>
             News
