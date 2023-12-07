@@ -1,8 +1,8 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { vanilla } from '../theme'
 
-export default {
-  Paper: style({
+
+const Paper = style({
     marginLeft: 7,
 
     '@media': {
@@ -22,18 +22,41 @@ export default {
         },
       },
     },
-  }),
-  LinkButton: style({
+  })
+
+
+
+  const LinkButtonBase = style({
     borderRadius: 16,
     padding: '8px 10px',
-    paddingRight: '12px',
+    paddingRight: 18,
     display: 'inline-block',
 
-    transitionDuration: '0.1s',
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'rgba(255,255,255, 0)',
+
+
+    transitionDuration: '0.2s',
 
     ':hover': {
-      backgroundColor: vanilla.colors.green.light,
-      color: vanilla.colors.green.lightColor,
+      backgroundColor: vanilla.colors.blue.light,
+      color: vanilla.colors.blue.lightColor,
     },
-  }),
+  })
+  
+
+  const LinkButton = styleVariants({
+    plain : [LinkButtonBase],
+    active: [LinkButtonBase, {
+      backgroundColor: vanilla.colors.blue.light,
+      color: vanilla.colors.blue.lightColor,
+
+      borderColor: vanilla.colors.blue.light,
+    }]
+  })
+
+export default {
+  Paper, 
+  LinkButton,
 }

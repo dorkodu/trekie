@@ -1,41 +1,38 @@
 import {
-  Badge,
-  Box,
-  Card,
-  DefaultMantineColor,
+  Divider,
   Group,
   MantineColor,
-  MantineThemeColors,
   Paper,
   Progress,
   SimpleGrid,
   Stack,
   Text,
   Tooltip,
+  useMantineColorScheme,
 } from '@mantine/core'
 import Emoji from '../custom/Emoji'
 import { vanilla } from '#/styles/theme'
 
 export function DailyStats({}: {}) {
   return (
-    <Stack>
-      <SimpleGrid cols={2}>
-        <StreakStatus days={8} />
-        <XPStatus value={32649} />
-        <CoinStatus value={600} />
-      </SimpleGrid>
-      <MomentumStatus value={60} />
+    <Paper p={10}>
+      <Stack>
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xs">
+          <MomentumStatus value={60} />
+          <StreakStatus days={8} />
+          <XPStatus value={32649} />
+          <CoinStatus value={600} />
+        </SimpleGrid>
 
-      <DailyProgress value={60} />
-    </Stack>
+        <DailyProgress value={60} />
+      </Stack>
+    </Paper>
   )
 }
 
 export function DailyProgress({ value }: { value: number }) {
   let color: MantineColor
   let message: string
-
-  value = 100
 
   if (value < 30) {
     message = 'Bad'
@@ -51,20 +48,34 @@ export function DailyProgress({ value }: { value: number }) {
     color = 'lime'
   } else if (value >= 80 && value < 95) {
     message = 'Great.'
-    color = 'lime'
+    color = 'green'
   } else {
     message = 'Perfect :)'
     color = 'green'
   }
 
   return (
-    <Progress.Root color={color} radius="lg" size={20}>
-      <Tooltip label={`Daily Progress: ${value}%`}>
-        <Progress.Section color={color} striped value={value}>
-          <Progress.Label>{message}</Progress.Label>
-        </Progress.Section>
-      </Tooltip>
-    </Progress.Root>
+    <Stack gap={2}>
+      <Divider label="Your Daily Progress" labelPosition="left" />
+      <Progress.Root
+        color={color}
+        radius="lg"
+        size={20}
+        styles={{ section: { transition: 'width 100ms linear 0s' } }}
+      >
+        <Tooltip
+          label={`${value}%`}
+          arrowOffset={5}
+          arrowSize={6}
+          arrowRadius={2}
+          withArrow
+        >
+          <Progress.Section color={color} striped value={value} animated>
+            <Progress.Label>{message}</Progress.Label>
+          </Progress.Section>
+        </Tooltip>
+      </Progress.Root>
+    </Stack>
   )
 }
 
@@ -81,8 +92,10 @@ export function SumCard({
   color: string
   text?: string
 }) {
+  const { colorScheme } = useMantineColorScheme()
+
   return (
-    <Paper p={10} bg={vanilla.colors[color]?.lightHover} variant="light">
+    <Paper p={8} bg={vanilla.colors[color]?.lightHover}>
       <Group wrap="nowrap" gap={10}>
         {icon}
         <Stack gap={0}>
@@ -90,17 +103,26 @@ export function SumCard({
             tt="uppercase"
             c={vanilla.colors[color]?.filled}
             fw={700}
-            size="sm"
+            size="12.5"
             lh={1}
           >
             {kind}
           </Text>
           <Text>
-            <Text span lh={1.25} fw={800}>
+            <Text
+              span
+              lh={1.25}
+              fw={800}
+              c={
+                colorScheme == 'dark'
+                  ? vanilla.colors.white
+                  : vanilla.colors.black
+              }
+            >
               {value}
             </Text>
             {text && (
-              <Text span lh={1.25} size="sm" fw={500}>
+              <Text span lh={1.25} size="sm" fw={500} c={vanilla.colors.dimmed}>
                 {text}
               </Text>
             )}

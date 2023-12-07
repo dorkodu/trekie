@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { vanilla } from './theme'
 
 export const BARHEIGHT = 60
@@ -30,8 +30,8 @@ export const Layout = {
     selectors: {},
   }),
 
-  SideBar: style({
-    width: '35%',
+  Aside: style({
+    width: '36%',
     maxWidth: '340px',
     display: 'none',
 
@@ -41,6 +41,20 @@ export const Layout = {
       },
     },
   }),
+
+  Nav: style({
+    width: '30%',
+    maxWidth: '340px',
+    display: 'none',
+
+    '@media': {
+      [isWideScreen]: {
+        display: 'block',
+      },
+    },
+  }),
+
+
 
   Main: style({
     width: '100%',
