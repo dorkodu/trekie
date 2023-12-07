@@ -31,7 +31,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
 import CreateMenu from '#/components/menus/CreateMenu'
-import { NavBar } from '#/components/cards/NavBar'
+import * as Nav from '#/components/custom/Nav'
 import { AppMenu } from '#/components/cards/Menu'
 
 import { useTrekieStore } from '#/stores/trekieStore'
@@ -41,6 +41,19 @@ import { vanilla } from '#/styles/theme'
 import { UserButton } from '#/components/buttons/UserButton'
 import { CommandCenter } from '#/components/custom/CommandCenter'
 import { DailyStats } from '#/components/cards/DailyStats'
+import Emoji from '#/components/custom/Emoji'
+
+const navLinks = [
+  { icon: <Emoji emoji="🏡" size={26} />, text: 'Home', path: '/home' },
+  { icon: <Emoji emoji="🌎" size={26} />, text: 'Explore', path: '/explore' },
+  { icon: <Emoji emoji="✅" size={26} />, text: 'Life', path: '/life' },
+  {
+    icon: <Emoji emoji="👥" size={26} />,
+    text: 'Social',
+    path: '/social',
+  },
+  { icon: <Emoji emoji="🏪" size={26} />, text: 'Market', path: '/market' },
+]
 
 function AppLayout() {
   const theme = useMantineTheme()
@@ -69,7 +82,6 @@ function AppLayout() {
       bottom={0}
       left={0}
       right={0}
-      maw={theme.breakpoints.xs}
       mx="auto"
       style={{ zIndex: 99 }}
       hiddenFrom="sm"
@@ -308,8 +320,8 @@ function AppLayout() {
       <div className={styles.Layout.Body}>
         {Menu}
 
-        <nav className={styles.Layout.SideBar}>
-          <NavBar />
+        <nav className={styles.Layout.Nav}>
+          <Nav.Bar links={navLinks} />
         </nav>
 
         <main className={styles.Layout.Main}>
@@ -319,10 +331,8 @@ function AppLayout() {
           </div>
         </main>
 
-        <aside className={styles.Layout.SideBar}>
-          <Card withBorder m={10}>
-            <DailyStats />
-          </Card>
+        <aside className={styles.Layout.Aside}>
+          <DailyStats />
           <Card withBorder m={10}>
             News
           </Card>
