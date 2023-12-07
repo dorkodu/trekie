@@ -6,7 +6,7 @@ import { theme } from '#/styles/theme'
 
 import OverlayLoader from '#/components/loaders/OverlayLoader'
 import UpdateSWModal from '#/components/modals/UpdateSWModal'
-import { useRefreshStatsDaily, useRouteUpdater } from '#/components/hooks'
+import { useRefreshStatsDaily } from '#/components/hooks'
 
 import { useAppStore } from '#/stores/appStore'
 import { useTrekieStore } from '#/stores/trekieStore'
@@ -21,7 +21,6 @@ function App() {
   }, [loading.auth])
 
   // app hooks
-  useRouteUpdater()
 
   // trekie hooks
   useRefreshStatsDaily()
