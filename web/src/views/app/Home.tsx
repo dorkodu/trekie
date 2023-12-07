@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   Flex,
   Group,
   Image,
@@ -10,16 +11,16 @@ import {
   Text,
   Title,
 } from '@mantine/core'
-import { IconBuildingStore, IconSettings } from '@tabler/icons-react'
+
 import { useNavigate } from 'react-router-dom'
 
 import Emoji from '#/components/custom/Emoji'
 import TextParser from '#/components/util/TextParser'
 import { useTrekieStore } from '#/stores/trekieStore'
 import { wrapContent } from '#/styles/shared.css'
-import Heatmap from '#/components/custom/Heatmap'
-import NoHabitsCard from '#/components/cards/NoHabitsCard'
 import HabitCounter from '#/components/custom/Habit'
+import NoHabitsCard from '#/components/cards/NoHabitsCard'
+import NoGoalsCard from '#/components/cards/NoGoalsCard'
 
 function Home() {
   const navigate = useNavigate()
@@ -36,16 +37,12 @@ function Home() {
           <TextParser ids={['emoji']} text={user?.name ?? ''} />
         </Title>
 
-        <Flex direction="column" align="start" gap="xs">
-          <Text>
-            Hey! Welcome to <b>your social & gamified life companion.</b>
-          </Text>
+        <Text>
+          Hey! Welcome to <b>your social & gamified life companion.</b>
+        </Text>
 
-          {Habits}
-          {Goals}
-        </Flex>
-
-        <SimpleGrid cols={2} spacing="md"></SimpleGrid>
+        {Habits}
+        {Goals}
       </Stack>
     </Stack>
   )
@@ -55,25 +52,16 @@ export default Home
 
 const Habits = (
   <section>
-    <Title order={3}>Habits</Title>
-    <HabitCounter
-      habit={{
-        id: '1',
-        title: 'Read 50 pages everyday.',
-        count: 1,
-        dailyTarget: 5,
-        description: 'YOu should read something each day.',
-        userId: '1',
-        date: 1000000000000,
-        heatmap: { 1: 1, 2: 1 },
-      }}
-      showHeatmap
-    />
+    <Title order={4}>Habits</Title>
+    <Divider mb={8} />
+    <NoHabitsCard />
   </section>
 )
 
 const Goals = (
   <section>
-    <Title order={3}>Life Goals</Title>
+    <Title order={4}>Life Goals</Title>
+    <Divider mb={8} />
+    <NoGoalsCard />
   </section>
 )
