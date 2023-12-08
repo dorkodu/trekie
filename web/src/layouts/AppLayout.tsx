@@ -1,4 +1,4 @@
-import { Route, useAppStore } from '#/stores/appStore'
+import { useAppStore } from '#/stores/appStore'
 import {
   ActionIcon,
   Anchor,
@@ -27,7 +27,7 @@ import {
   IconSearch,
   IconUsers,
 } from '@tabler/icons-react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
 import CreateMenu from '#/components/menus/CreateMenu'
@@ -65,14 +65,14 @@ function AppLayout() {
 
   const isWideScreen = useMediaQuery('(min-width: 768px)')
 
-  const route = useAppStore(state => state.route)
+  const location = useLocation()
 
   const userId = useTrekieStore(state => state.userId)
   const users = useTrekieStore(state => state.users)
   const user = userId ? users[userId] : undefined
 
-  const getRouteColor = (_route: Route): MantineColor | undefined => {
-    return _route === route ? undefined : 'var(--text-color)'
+  const getRouteColor = (_route: string): MantineColor | undefined => {
+    return _route === location.pathname ? undefined : 'var(--text-color)'
   }
 
   const BottomBar = (
@@ -203,7 +203,9 @@ function AppLayout() {
             variant="subtle"
             size={32}
             onClick={() => navigate(-1)}
-            style={{ visibility: route === 'home' ? 'hidden' : 'visible' }}
+            style={{
+              visibility: location.pathname === '/home' ? 'hidden' : 'visible',
+            }}
             c="var(--text-color)"
           >
             <IconArrowLeft />

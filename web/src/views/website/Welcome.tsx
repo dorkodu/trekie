@@ -1,9 +1,14 @@
 import Footer from '#/components/custom/Footer'
 import {
+  Box,
   Button,
+  Card,
   Divider,
   Flex,
   Image,
+  Paper,
+  SimpleGrid,
+  Stack,
   Text,
   Title,
   useMantineColorScheme,
@@ -13,47 +18,76 @@ export default function Welcome() {
   const { colorScheme } = useMantineColorScheme()
 
   return (
-    <Flex
-      direction="column"
-      justify="center"
-      p="md"
-      mx="auto"
-      mih="100%"
-      maw={360}
-    >
-      <Flex direction="column" gap="md">
-        <Flex justify="center" mb={40}>
-          <Image
-            src={
-              colorScheme == 'dark'
-                ? '/images/superapp_Brand-Cool-White.svg'
-                : '/images/superapp_Brand-Cool.svg'
-            }
-            alt="Dorkodu Superapp Logo"
-            w={250}
-            h={'auto'}
-          />
-        </Flex>
-
-        <Title order={1} lh={1.15} fw={800}>
-          Your Digital Life,
-          <br />
-          In One Place.
-        </Title>
-
-        <Text>
-          Connect your account to get the best experience from Dorkodu apps you
-          use.
-        </Text>
-
-        <Button size="lg" fw={800}>
-          GET STARTED
-        </Button>
-
-        <Button variant="default">I ALREADY HAVE AN ACCOUNT</Button>
-
-        <Footer />
-      </Flex>
-    </Flex>
+    <Stack>
+      <SimpleGrid cols={{ base: 1, sm: 2 }}></SimpleGrid>
+      <div>It works</div>
+      <div>features</div>
+      <div>call to action</div>
+      <div>premium</div>
+      <div>why</div>
+      <div>other products / dorkodu</div>
+      <div>last call</div>
+    </Stack>
   )
 }
+
+const Header = () => {
+  const { colorScheme } = useMantineColorScheme()
+
+  return (
+    <Paper withBorder>
+      <Flex justify="center">
+        <Image
+          src={
+            colorScheme == 'light'
+              ? '/images/trekie_Brand.svg'
+              : '/images/trekie_Brand_White.svg'
+          }
+          h={100}
+          w="auto"
+        />
+      </Flex>
+    </Paper>
+  )
+}
+
+const Hero = (
+  <Paper withBorder>
+    <Title>Hero</Title>
+    <Text>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
+      distinctio.
+    </Text>
+  </Paper>
+)
+
+const ItWorks = (
+  <Paper withBorder>
+    <Title>It Works!</Title>
+    <Text>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nulla ullam
+      voluptas nemo voluptatibus tempora facere nobis architecto, id harum,
+      adipisci eaque provident corrupti molestias?
+    </Text>
+  </Paper>
+)
+
+const Features = (
+  <Paper withBorder>
+    <Title>Features</Title>
+    <Text>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nulla ullam
+      voluptas nemo voluptatibus tempora facere nobis architecto, id harum,
+      adipisci eaque provident corrupti molestias?
+    </Text>
+
+    <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+    </SimpleGrid>
+  </Paper>
+)

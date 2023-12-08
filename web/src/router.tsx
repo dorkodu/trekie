@@ -51,7 +51,6 @@ export const router = createBrowserRouter(
         <Route path="/me" element={view('app:Me')} />
         <Route path="/social" element={view('app:Social')} />
         <Route path="/commmunity/:name" element={view('app:CommunityPage')} />
-        <Route path="/commmunity" element={view('app:Community')} />
 
         {/* trekie.io/@doruk */}
         <Route path="/@:username" element={view('app:Profile')} />
@@ -70,7 +69,9 @@ export const router = createBrowserRouter(
 
       <Route element={layout('WebsiteLayout')}>
         {/* Website & Custom Pages */}
+        <Route path="/welcome" element={view('website:Welcome')} />
         <Route path="/about" element={view('website:About')} />
+
         <Route path="/legal/:document" element={view('website:Legal')} />
 
         <Route path="/404" element={view('website:NotFound')} />
