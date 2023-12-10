@@ -1,22 +1,28 @@
-import { SegmentedControl, Center, useMantineColorScheme } from "@mantine/core";
-import { IconSun, IconMoon } from "@tabler/icons-react";
+import {
+  SegmentedControl,
+  Center,
+  useMantineColorScheme,
+  MantineSize,
+} from '@mantine/core'
+import { IconSun, IconMoon } from '@tabler/icons-react'
 
-function ColorToggle() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
+function ColorToggle({ size = 'md' }: { size: MantineSize }) {
+  const { colorScheme, setColorScheme } = useMantineColorScheme()
 
   const toggle = (value: string) => {
-    if (value !== "light" && value !== "dark") return;
-    setColorScheme(value);
-  };
+    if (value !== 'light' && value !== 'dark') return
+    setColorScheme(value)
+  }
 
   return (
     <SegmentedControl
       radius="md"
       value={colorScheme}
+      size={size}
       onChange={toggle}
       data={[
         {
-          value: "light",
+          value: 'light',
           label: (
             <Center>
               <IconSun size={18} stroke={3} />
@@ -24,7 +30,7 @@ function ColorToggle() {
           ),
         },
         {
-          value: "dark",
+          value: 'dark',
           label: (
             <Center>
               <IconMoon size={18} stroke={3} />
@@ -33,7 +39,7 @@ function ColorToggle() {
         },
       ]}
     />
-  );
+  )
 }
 
-export default ColorToggle;
+export default ColorToggle
