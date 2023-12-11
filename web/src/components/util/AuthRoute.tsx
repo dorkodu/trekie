@@ -4,7 +4,7 @@ import { useTrekieStore } from '#/stores/trekieStore'
 export default {
   Require() {
     const authorized = useTrekieStore(state => state.userId)
-    return authorized ? <Outlet /> : <Navigate to="/welcome" replace />
+    return authorized ? <Outlet /> : <Navigate to="/" replace />
   },
   Prevent() {
     const authorized = useTrekieStore(state => state.userId)

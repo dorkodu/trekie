@@ -25,21 +25,15 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function Welcome() {
   return (
     <Stack p={10} mt="4vw">
-      <SimpleGrid my={10} cols={{ base: 1, sm: 2 }}>
-        <Header />
-        <Hero />
-      </SimpleGrid>
+      <Hero />
 
       {ItWorks}
-
       {Features}
-
-      <div>features</div>
-      <div>call to action</div>
-      <div>premium</div>
-      <div>why</div>
-      <div>other products / dorkodu</div>
-      <div>last call</div>
+      {Join}
+      {Premium}
+      {WhyMeWhyNot}
+      {DorkoduShilling}
+      {CallToAction}
     </Stack>
   )
 }
@@ -78,46 +72,32 @@ const Header = () => {
             I ALREADY HAVE ACCOUNT
           </Button>
         </Stack>
+
+        <SimpleGrid>
+          {[
+            ['🎯', 'Add Your Goals', 'Design your new life.'],
+            ['✅', 'Track Your Habits & To-Dos', 'Never been more enjoyable.'],
+            [
+              '🫂',
+              'Share Memories From Your Journey',
+              'Connect with close friends.',
+            ],
+          ].map(x => (
+            <Card withBorder shadow="xs" py="xs" px="md" radius="lg">
+              <Group wrap="nowrap">
+                {/* @ts-ignore */}
+                <Emoji emoji={x[0]} size={30} />
+                <Stack gap={0} pr={8}>
+                  <Text fw={700}>{x[1]}</Text>
+                  <Text fw={500} c="dimmed">
+                    {x[2]}
+                  </Text>
+                </Stack>
+              </Group>
+            </Card>
+          ))}
+        </SimpleGrid>
       </Stack>
-    </Paper>
-  )
-}
-
-const Hero = () => {
-  const { colorScheme } = useMantineColorScheme()
-
-  return (
-    <Paper p={10}>
-      <Flex align="center" w="100%" h="100%">
-        <List
-          w="90%"
-          mx="auto"
-          maw={320}
-          size="lg"
-          type="ordered"
-          listStyleType="none"
-          spacing="md"
-        >
-          <List.Item icon={<Emoji emoji="🎯" size={30} />}>
-            <Text fw={700}>Add Your Life Goals</Text>
-            <Text fw={500} c="dimmed">
-              Design the new you.
-            </Text>
-          </List.Item>
-          <List.Item icon={<Emoji emoji="✅" size={30} />}>
-            <Text fw={700}>Track Your Habits & To-Dos</Text>
-            <Text fw={500} c="dimmed">
-              Never been more enjoyable.
-            </Text>
-          </List.Item>
-          <List.Item icon={<Emoji emoji="🫂" size={30} />}>
-            <Text fw={700}>Memories From Your Journey</Text>
-            <Text fw={500} c="dimmed">
-              Share moments with close friends.
-            </Text>
-          </List.Item>
-        </List>
-      </Flex>
     </Paper>
   )
 }
@@ -137,7 +117,7 @@ const ItWorks = (
       journey with close friends.
     </Text>
 
-    <Text size="lg" fw={600} ta="center" tt="uppercase">
+    <Text size="lg" fw={600} ta="center" maw={400}>
       Trekie helps you achieve your goals to become happier, healthier and
       wiser.
     </Text>
@@ -271,5 +251,39 @@ const Premium = (
     <Button size="lg" variant="gradient">
       Try 1 Week For Free
     </Button>
+  </Paper>
+)
+
+const Join = (
+  <Paper>
+    <Title></Title>
+  </Paper>
+)
+
+const WhyMeWhyNot = (
+  <Paper>
+    <Title>Why?</Title>
+    <Text>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, at magni!
+      Voluptatem veniam molestiae hic praesentium, et maxime sit, unde
+      inventore, dolorem ad eveniet ut!
+    </Text>
+  </Paper>
+)
+
+const CallToAction = (
+  <Paper>
+    <Title>Call to Action</Title>
+    <Text>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto,
+      aliquam?
+    </Text>
+  </Paper>
+)
+
+const DorkoduShilling = (
+  <Paper>
+    <Title>Dorkodu Shilling</Title>
+    <Text>Lorem ipsum dolor sit amet.</Text>
   </Paper>
 )
