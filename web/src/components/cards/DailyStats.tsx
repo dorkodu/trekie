@@ -24,7 +24,7 @@ export function DailyStats({}: {}) {
           <CoinStatus value={600} />
         </SimpleGrid>
 
-        <DailyProgress value={60} />
+        <DailyProgress value={20} />
       </Stack>
     </Paper>
   )

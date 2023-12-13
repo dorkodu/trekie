@@ -9,7 +9,7 @@ interface Props {
 
 export default function Emoji({
   emoji,
-  size,
+  size = 32,
   ...props
 }: React.ComponentPropsWithoutRef<'img'> & Props) {
   const src = useMemo(() => {

@@ -2,6 +2,9 @@ import Emoji from '#/components/custom/Emoji'
 import Footer from '#/components/custom/Footer'
 import ColorToggle from '#/components/util/ColorToggle'
 import { vanilla } from '#/styles/theme'
+
+import * as PremiumStyles from '#/styles/views/Premium.css'
+
 import {
   Box,
   Button,
@@ -38,52 +41,51 @@ export default function Welcome() {
   )
 }
 
-const Header = () => {
+const Hero = () => {
   const { colorScheme } = useMantineColorScheme()
 
   return (
     <Paper p={10}>
-      <Stack align="center">
-        <div>
-          <Image src={'/images/trekie_Icon.svg'} w={100} mx="auto" />
-        </div>
+      <SimpleGrid cols={{ base: 1, sm: 2 }}>
+        <Stack gap="sm">
+          <div>
+            <Image src={'/images/trekie_Icon.svg'} w={100} mx="auto" />
+          </div>
 
-        <Title
-          size={32}
-          fw={800}
-          lh={1.15}
-          style={{ letterSpacing: -0.5 }}
-          c={
-            colorScheme == 'dark' ? vanilla.colors.white : vanilla.colors.black
-          }
-          w="90%"
-          mx="auto"
-          ta="center"
-          my={10}
-        >
-          Your Social & Gamified <br /> Life Growth Companion
-        </Title>
+          <Title
+            size={32}
+            fw={800}
+            lh={1.15}
+            style={{ letterSpacing: -0.5 }}
+            c={
+              colorScheme == 'dark'
+                ? vanilla.colors.white
+                : vanilla.colors.black
+            }
+            w="90%"
+            mx="auto"
+            ta="center"
+            my={10}
+          >
+            Your Social & Gamified <br /> Life Growth Companion
+          </Title>
 
-        <Stack w="90%" maw={320} gap={12} mx="auto">
-          <Button size="md" fw={700}>
-            GET STARTED
-          </Button>
-          <Button size="md" fw={700} variant="light">
-            I ALREADY HAVE ACCOUNT
-          </Button>
+          <Stack w="90%" maw={320} gap={12} mx="auto">
+            <Button size="md" fw={700}>
+              GET STARTED
+            </Button>
+            <Button size="md" fw={700} variant="light">
+              I ALREADY HAVE ACCOUNT
+            </Button>
+          </Stack>
         </Stack>
-
-        <SimpleGrid>
+        <Stack gap="sm" style={{ alignSelf: 'center' }} maw={380}>
           {[
-            ['🎯', 'Add Your Goals', 'Design your new life.'],
-            ['✅', 'Track Your Habits & To-Dos', 'Never been more enjoyable.'],
-            [
-              '🫂',
-              'Share Memories From Your Journey',
-              'Connect with close friends.',
-            ],
+            ['🎯', 'Add Life Goals', 'Design your new life.'],
+            ['✅', 'Track Habits & To-Dos', 'Never been more enjoyable.'],
+            ['🫂', 'Share Memories', 'Connect with close friends.'],
           ].map(x => (
-            <Card withBorder shadow="xs" py="xs" px="md" radius="lg">
+            <Card withBorder shadow="xs" py="xs" px="md" radius="lg" key={x[0]}>
               <Group wrap="nowrap">
                 {/* @ts-ignore */}
                 <Emoji emoji={x[0]} size={30} />
@@ -96,26 +98,32 @@ const Header = () => {
               </Group>
             </Card>
           ))}
-        </SimpleGrid>
-      </Stack>
+        </Stack>
+      </SimpleGrid>
     </Paper>
   )
 }
 
 const ItWorks = (
   <Paper component="section" p="lg" my="xl">
-    <Title order={2} fw={800} ta="center">
-      Gamify your life.
-    </Title>
-    <Title order={3} fw={600} ta="center" c="dimmed">
-      It works, backed by science.
-    </Title>
+    <Group>
+      <Stack gap={0}>
+        <Emoji emoji="🎮" size={40} />
+        <Title order={2} fw={800}>
+          Gamify your life.
+        </Title>
+        <Title order={3} fw={600} c="dimmed">
+          It works, backed by science.
+        </Title>
 
-    <Text my="md" maw={500} mx="auto" size="lg">
-      Trekie is a gamified productivity app that treats your real life like a
-      game. With rewards to motivate you and a social features to share your
-      journey with close friends.
-    </Text>
+        <Text my="xs" maw={500} mx="auto" size="lg">
+          Trekie is a gamified productivity app that treats your real life like
+          a game. With rewards to motivate you and a social features to share
+          your journey with close friends.
+        </Text>
+      </Stack>
+      <Image />
+    </Group>
 
     <Text size="lg" fw={600} ta="center" maw={400}>
       Trekie helps you achieve your goals to become happier, healthier and
@@ -123,9 +131,9 @@ const ItWorks = (
     </Text>
 
     <Text>
-      Learning with Duolingo is fun, and research shows that it works! With
-      quick, bite-sized lessons, you’ll earn points and unlock new levels while
-      gaining real-world communication skills.
+      Working with Trekie is fun, and it works! With quick, bite-sized , you’ll
+      earn points and unlock new levels while gaining real-world communication
+      skills.
     </Text>
 
     <Text>
@@ -246,9 +254,9 @@ const Features = (
 )
 
 const Premium = (
-  <Paper>
+  <Paper withBorder className={PremiumStyles.Banner.Root}>
     <Title>Super Trekie</Title>
-    <Button size="lg" variant="gradient">
+    <Button size="lg" variant="light" color="white">
       Try 1 Week For Free
     </Button>
   </Paper>
@@ -264,16 +272,46 @@ const WhyMeWhyNot = (
   <Paper>
     <Title>Why?</Title>
     <Text>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, at magni!
-      Voluptatem veniam molestiae hic praesentium, et maxime sit, unde
-      inventore, dolorem ad eveniet ut!
+      We need to create the next generation human. <br />
+      This is a civilizational moment in human history. <br />
+      We will go extinct, or will adapt to our new digital-native reality.
     </Text>
+    <Text>
+      Your life fulfillment companion. Know who you are and where you want to
+      go. We will assist in that way.
+    </Text>
+    <Text>
+      {[
+        'original',
+        'authentic',
+        'self-aware',
+        'idealist',
+        'high-grit',
+        'optimist',
+        'emphatetic',
+        'belonged',
+        'humane',
+      ]}
+    </Text>
+    <Text>
+      Connect with your real close friends, people you love, work on yourself
+      while seeing yourself get better every day.
+    </Text>
+    <Text>
+      Relax and be your true authentic self. Get to know yourself better, find
+      your purpose and passion for life. Set goals, add habits and todos.
+    </Text>
+    <Text>
+      Be motivated, commit to your goals, track your actions and see yourself
+      making progress.
+    </Text>
+    <Text>Be optimist, happy and enjoy a peace of mind.</Text>
   </Paper>
 )
 
 const CallToAction = (
   <Paper>
-    <Title>Call to Action</Title>
+    <Title ta="center">Call to Action</Title>
     <Text>
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto,
       aliquam?
@@ -282,8 +320,8 @@ const CallToAction = (
 )
 
 const DorkoduShilling = (
-  <Paper>
-    <Title>Dorkodu Shilling</Title>
-    <Text>Lorem ipsum dolor sit amet.</Text>
+  <Paper maw={1000} radius="lg" withBorder p="md">
+    <Title ta="center">Dorkodu Shilling</Title>
+    <Text ta="center">Lorem ipsum dolor sit amet.</Text>
   </Paper>
 )
