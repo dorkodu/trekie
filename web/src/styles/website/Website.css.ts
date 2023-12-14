@@ -1,13 +1,29 @@
-import { style } from "@vanilla-extract/css";
-import { vanilla } from "../theme";
+import { style } from '@vanilla-extract/css'
+import { vanilla } from '../theme'
 
 export const Header = {
-  Root: style({
+  Root: style({}),
 
+  Link: style({}),
+}
+
+export const Hero = {
+  Title: style({
+    fontSize: 32,
+    fontWeight: 800,
+    lineHeight: 1.15,
+    letterSpacing: -0.5,
+    color: vanilla.colors.white,
+    width: '90%',
+    margin: `12px auto`,
+    textAlign: 'center',
+
+    selectors: {
+      [vanilla.darkSelector]: {
+        color: vanilla.colors.black,
+      },
+    },
   }),
-
-  Link: style({
-  })
 }
 
 export const Footer = {
@@ -20,8 +36,8 @@ export const Footer = {
 
   Link: style({
     color: vanilla.colors.green.filled,
-    fontWeight: 450
-  })
+    fontWeight: 450,
+  }),
 }
 
 export const Features = {}

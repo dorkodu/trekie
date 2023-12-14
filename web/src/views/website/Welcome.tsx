@@ -1,11 +1,14 @@
+import GlassCard from '#/components/cards/GlassCard'
 import Emoji from '#/components/custom/Emoji'
 import Footer from '#/components/custom/Footer'
 import ColorToggle from '#/components/util/ColorToggle'
 import { vanilla } from '#/styles/theme'
 
 import * as PremiumStyles from '#/styles/views/Premium.css'
+import * as WebsiteStyles from '#/styles/website/Website.css'
 
 import {
+  BackgroundImage,
   Box,
   Button,
   Card,
@@ -22,6 +25,18 @@ import {
   Title,
   useMantineColorScheme,
 } from '@mantine/core'
+import {
+  IconAdFilled,
+  IconAdOff,
+  IconArrowRight,
+  IconAsterisk,
+  IconCheck,
+  IconCheckbox,
+  IconEqualDouble,
+  IconMultiplier2x,
+  IconUserCircle,
+  IconUsersGroup,
+} from '@tabler/icons-react'
 import { IconAbacus } from '@tabler/icons-react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -52,21 +67,7 @@ const Hero = () => {
             <Image src={'/images/trekie_Icon.svg'} w={100} mx="auto" />
           </div>
 
-          <Title
-            size={32}
-            fw={800}
-            lh={1.15}
-            style={{ letterSpacing: -0.5 }}
-            c={
-              colorScheme == 'dark'
-                ? vanilla.colors.white
-                : vanilla.colors.black
-            }
-            w="90%"
-            mx="auto"
-            ta="center"
-            my={10}
-          >
+          <Title className={WebsiteStyles.Hero.Title}>
             Your Social & Gamified <br /> Life Growth Companion
           </Title>
 
@@ -79,26 +80,40 @@ const Hero = () => {
             </Button>
           </Stack>
         </Stack>
-        <Stack gap="sm" style={{ alignSelf: 'center' }} maw={380}>
-          {[
-            ['🎯', 'Add Life Goals', 'Design your new life.'],
-            ['✅', 'Track Habits & To-Dos', 'Never been more enjoyable.'],
-            ['🫂', 'Share Memories', 'Connect with close friends.'],
-          ].map(x => (
-            <Card withBorder shadow="xs" py="xs" px="md" radius="lg" key={x[0]}>
-              <Group wrap="nowrap">
-                {/* @ts-ignore */}
-                <Emoji emoji={x[0]} size={30} />
-                <Stack gap={0} pr={8}>
-                  <Text fw={700}>{x[1]}</Text>
-                  <Text fw={500} c="dimmed">
-                    {x[2]}
-                  </Text>
-                </Stack>
-              </Group>
-            </Card>
-          ))}
-        </Stack>
+
+        <BackgroundImage
+          src="/images/liam.jpg"
+          maw={500}
+          mx="auto"
+          my="lg"
+          p="lg"
+          radius="lg"
+        >
+          <Stack
+            gap="sm"
+            maw={380}
+            style={{ alignSelf: 'center', justifySelf: 'center' }}
+          >
+            {[
+              ['🎯', 'Add Life Goals', 'Design your new life.'],
+              ['✅', 'Track Habits & To-Dos', 'Never been more enjoyable.'],
+              ['🫂', 'Share Memories', 'Connect with close friends.'],
+            ].map(x => (
+              <GlassCard key={x[0]}>
+                <Group wrap="nowrap">
+                  {/* @ts-ignore */}
+                  <Emoji emoji={x[0]} size={30} />
+                  <Stack gap={0} pr={8}>
+                    <Text fw={700}>{x[1]}</Text>
+                    <Text fw={500} c="dimmed">
+                      {x[2]}
+                    </Text>
+                  </Stack>
+                </Group>
+              </GlassCard>
+            ))}
+          </Stack>
+        </BackgroundImage>
       </SimpleGrid>
     </Paper>
   )
@@ -190,8 +205,8 @@ const ItWorks = (
 
 const Features = (
   <Paper withBorder p="md">
-    <Title>Features</Title>
-    <Text>
+    <Title ta="center">Features</Title>
+    <Text maw={600} mx="auto" my="md">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nulla ullam
       voluptas nemo voluptatibus tempora facere nobis architecto, id harum,
       adipisci eaque provident corrupti molestias?
@@ -254,12 +269,66 @@ const Features = (
 )
 
 const Premium = (
-  <Paper withBorder className={PremiumStyles.Banner.Root}>
-    <Title>Super Trekie</Title>
-    <Button size="lg" variant="light" color="white">
-      Try 1 Week For Free
-    </Button>
-  </Paper>
+  <>
+    <Divider
+      label={<Image src="/images/trekie_SUPER_Badge.svg" h={40} w="auto" />}
+    />
+    <Paper shadow="sm" className={PremiumStyles.Banner.Root}>
+      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+        <Stack gap="xs">
+          <Title className={PremiumStyles.Banner.Title} c="white">
+            Supercharge Your <br /> Gamified Productivity.
+          </Title>
+          <Text className={PremiumStyles.Banner.Text}>
+            Reach your life goals never been more fun. <br />
+            Your first super-week is on us.
+          </Text>
+          <Button
+            size="lg"
+            className={PremiumStyles.Banner.Button}
+            rightSection={<IconArrowRight stroke={2.5} />}
+          >
+            Try For Free
+          </Button>
+        </Stack>
+        <Box style={{ alignSelf: 'center', maxWidth: 380 }}>
+          <List spacing="sm">
+            {[
+              [
+                <IconAdOff />,
+                'Ad-free',
+                'No interruptions, full productivity.',
+              ],
+              [
+                <IconMultiplier2x />,
+                'Doubled Gains',
+                'More coins, XP and items available.',
+              ],
+              [
+                <IconUsersGroup />,
+                'Groups',
+                'Share common goals & habits with friends. Say hello to social productivity boost!',
+              ],
+            ].map(x => (
+              <List.Item
+                key={x[1]}
+                icon={
+                  <ThemeIcon variant="light" c="white" size={36}>
+                    {x[0]}
+                  </ThemeIcon>
+                }
+              >
+                <Text fw={700} c="white" lh={1.1}>
+                  {x[1]}
+                </Text>
+                <Text c="white">{x[2]}</Text>
+              </List.Item>
+            ))}
+          </List>
+        </Box>
+      </SimpleGrid>
+    </Paper>
+  </>
 )
 
 const Join = (
