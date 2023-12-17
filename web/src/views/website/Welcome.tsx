@@ -117,8 +117,8 @@ const Hero = () => {
 
 const ItWorks = (
   <Paper component="section" p="lg" my="xl">
-    <Group>
-      <Stack gap={0}>
+    <SimpleGrid cols={{ base: 1, sm: 2 }} my={50}>
+      <Stack gap={0} style={{ alignSelf: 'center' }}>
         <Emoji emoji="🎮" size={40} />
         <Title order={2} fw={800}>
           Gamify your life.
@@ -127,30 +127,28 @@ const ItWorks = (
           It works, backed by science.
         </Title>
 
-        <Text my="xs" maw={500} mx="auto" size="lg">
-          Trekie is a gamified productivity app that treats your real life like
-          a game. With rewards to motivate you and a social features to share
-          your journey with close friends.
+        <Text my="xs" maw={500} size="lg">
+          Trekie is a <b>gamified productivity app</b> that treats your real
+          life like a game. With rewards to motivate you and social features to
+          share your journey with close friends.
         </Text>
       </Stack>
 
-      <Image src="/images/oasis.webp" w="auto" h={300} radius="lg" />
-    </Group>
-
-    <Text mx="auto" size="xl" fw={600} ta="center" maw={400} lh={1.25} my={20}>
-      Trekie helps you achieve your goals to become happier, healthier and
-      wiser.
-    </Text>
+      <Flex justify="center" style={{ alignSelf: 'center' }}>
+        <Image src="/images/oasis.webp" w="auto" h={300} radius="lg" />
+      </Flex>
+    </SimpleGrid>
   </Paper>
 )
 
 const Features = (
   <Paper p="md" my={50}>
-    <Title ta="center">Features</Title>
-    <Text maw={600} mx="auto" my="md" mb={40}>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nulla ullam
-      voluptas nemo voluptatibus tempora facere nobis architecto, id harum,
-      adipisci eaque provident corrupti molestias?
+    <Title ta="center" order={2} size={32} fw={800}>
+      Features
+    </Title>
+    <Text mx="auto" size="xl" fw={600} ta="center" maw={400} lh={1.25} my={20}>
+      Trekie helps you achieve your goals to become happier, healthier and
+      wiser.
     </Text>
 
     <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
