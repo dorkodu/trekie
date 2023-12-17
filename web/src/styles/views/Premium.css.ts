@@ -7,13 +7,13 @@ export const Banner = {
     borderRadius: vanilla.radius.lg,
     padding: `${vanilla.spacing.lg} ${vanilla.spacing.lg}`,
     maxWidth: 1000,
-    backgroundImage: `radial-gradient( circle farthest-corner at 10% 20%,  rgba(37,145,251,0.98) 0.1%, rgba(0,7,128,1) 99.8% )`,
+    backgroundImage: `linear-gradient(to top, #00BFFA 0%, #220CA1 100%)`,
     margin: `0 auto`
-  }),
+  }), 
 
   Title: style({
     color: "white",
-    textShadow: `1px 1px 5px ${vanilla.colors.blue[4]}`,
+    textShadow: `1px 1px 5px ${vanilla.colors.indigo[6]}`,
     letterSpacing: -0.75,
     lineHeight: 1.1,
     fontWeight: 800,
@@ -38,3 +38,7 @@ export const Banner = {
     borderBottom: `5px solid ${vanilla.colors.blue[2]}`,
   })
 }
+
+// linear-gradient(to right, #1c92d2, #f2fcfe)
+// linear-gradient(to right, #9cecfb, #65c7f7, #0052d4)
+// 

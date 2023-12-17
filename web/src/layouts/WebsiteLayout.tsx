@@ -57,7 +57,7 @@ function WebsiteLayout() {
         </div>
 
         <Paper py={4} px={10}>
-          <Group>
+          <Group gap={2}>
             {[
               ['Features', '/#features'],
               ['Premium', '/#premium'],
@@ -69,7 +69,7 @@ function WebsiteLayout() {
                 //@ts-ignore
                 to={link[1]}
                 key={link[1]}
-                fw={450}
+                className={WebsiteStyle.Header.Link}
               >
                 {link[0]}
               </Anchor>
@@ -86,14 +86,14 @@ function WebsiteLayout() {
   )
 
   const Footer = (
-    <Paper className={WebsiteStyle.Footer.Root}>
+    <Paper className={WebsiteStyle.Footer.Root} withBorder shadow="xs">
       <SimpleGrid cols={{ base: 1, xs: 2, sm: 4, md: 5 }}>
         <Stack>
           <Image src="/images/trekie_Icon.svg" h={64} w={64} display="block" />
         </Stack>
 
         <Stack gap={4} p={10}>
-          <Text fw={700}>Product</Text>
+          <Text className={WebsiteStyle.Footer.ListTitle}>Product</Text>
           {[
             ['About', '/about'],
             ['Features', '/#features'],
@@ -115,7 +115,7 @@ function WebsiteLayout() {
         </Stack>
 
         <Stack gap={4} p={10}>
-          <Text fw={800}>Resources</Text>
+          <Text className={WebsiteStyle.Footer.ListTitle}>Resources</Text>
           {[
             ['Careers', 'https://dorkodu.com/jobs'],
             ['Press', '/press'],
@@ -128,8 +128,7 @@ function WebsiteLayout() {
               //@ts-ignore
               to={link[1]}
               key={link[1]}
-              c="dimmed"
-              fw={450}
+              className={WebsiteStyle.Footer.Link}
             >
               {link[0]}
             </Anchor>
@@ -137,7 +136,7 @@ function WebsiteLayout() {
         </Stack>
 
         <Stack gap={4} p={10}>
-          <Text fw={800}>Legal</Text>
+          <Text className={WebsiteStyle.Footer.ListTitle}>Legal</Text>
           {[
             ['Terms', '/legal/terms'],
             ['Privacy', '/legal/privacy'],
@@ -148,8 +147,9 @@ function WebsiteLayout() {
               //@ts-ignore
               to={link[1]}
               key={link[1]}
-              c="dimmed"
-              fw={450}
+              classNames={{
+                root: WebsiteStyle.Footer.Link,
+              }}
             >
               {link[0]}
             </Anchor>
@@ -166,7 +166,12 @@ function WebsiteLayout() {
               display="block"
             />
           </Anchor>
-          <Text c="dimmed">Dorkodu &copy; {new Date().getFullYear()}</Text>
+          <Text className={WebsiteStyle.Footer.DorkoduMotto} my={4} size="sm">
+            Your Life Fulfillment Technology Company.
+          </Text>
+          <Text c="dimmed" fw={500}>
+            Dorkodu &copy; {new Date().getFullYear()}
+          </Text>
         </Stack>
       </SimpleGrid>
     </Paper>

@@ -49,9 +49,6 @@ export default function Welcome() {
       {Features}
       {Join}
       {Premium}
-      {WhyMeWhyNot}
-      {DorkoduShilling}
-      {CallToAction}
     </Stack>
   )
 }
@@ -93,6 +90,7 @@ const Hero = () => {
             gap="sm"
             maw={380}
             style={{ alignSelf: 'center', justifySelf: 'center' }}
+            mx="auto"
           >
             {[
               ['🎯', 'Add Life Goals', 'Design your new life.'],
@@ -105,9 +103,7 @@ const Hero = () => {
                   <Emoji emoji={x[0]} size={30} />
                   <Stack gap={0} pr={8}>
                     <Text fw={700}>{x[1]}</Text>
-                    <Text fw={500} c="dimmed">
-                      {x[2]}
-                    </Text>
+                    <Text>{x[2]}</Text>
                   </Stack>
                 </Group>
               </GlassCard>
@@ -137,76 +133,21 @@ const ItWorks = (
           your journey with close friends.
         </Text>
       </Stack>
-      <Image />
+
+      <Image src="/images/oasis.webp" w="auto" h={300} radius="lg" />
     </Group>
 
-    <Text size="lg" fw={600} ta="center" maw={400}>
+    <Text mx="auto" size="xl" fw={600} ta="center" maw={400} lh={1.25} my={20}>
       Trekie helps you achieve your goals to become happier, healthier and
       wiser.
     </Text>
-
-    <Text>
-      Working with Trekie is fun, and it works! With quick, bite-sized , you’ll
-      earn points and unlock new levels while gaining real-world communication
-      skills.
-    </Text>
-
-    <Text>
-      <b>backed by science </b>
-      We use a combination of research-backed teaching methods and delightful
-      content to create courses that effectively teach reading, writing,
-      listening, and speaking skills!
-    </Text>
-
-    <Text>
-      stay motivated We make it easy to form a habit of language learning with
-      game-like features, fun challenges, and reminders from our friendly
-      mascot, Duo the owl.
-    </Text>
-
-    <Text>
-      personalized learning Combining the best of AI and language science,
-      lessons are tailored to help you learn at just the right level and pace.
-    </Text>
-
-    <Text>learn anytime, anywhere</Text>
-
-    <SimpleGrid cols={{ base: 1, sm: 2 }} maw={800}>
-      {[
-        {
-          icon: <IconAbacus />,
-          title: 'Effective and efficient',
-          description:
-            'Stay accountable by tracking and managing your Habits, Daily goals, and To Do list with Habitica’s easy-to-use mobile apps and web interface.',
-        },
-        {
-          icon: <IconAbacus />,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
-        },
-      ].map($ => (
-        <Card withBorder>
-          <Group gap={10} wrap="nowrap" mb={10}>
-            <ThemeIcon variant="light" size={36}>
-              {$.icon}
-            </ThemeIcon>
-            <Text fw={700} lh={1.25}>
-              {$.title}
-            </Text>
-          </Group>
-
-          <Text size="sm">{$.description}</Text>
-        </Card>
-      ))}
-    </SimpleGrid>
   </Paper>
 )
 
 const Features = (
-  <Paper withBorder p="md">
+  <Paper p="md" my={50}>
     <Title ta="center">Features</Title>
-    <Text maw={600} mx="auto" my="md">
+    <Text maw={600} mx="auto" my="md" mb={40}>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio nulla ullam
       voluptas nemo voluptatibus tempora facere nobis architecto, id harum,
       adipisci eaque provident corrupti molestias?
@@ -215,53 +156,53 @@ const Features = (
     <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
       {[
         {
-          icon: <IconAbacus />,
+          icon: IconAbacus,
+          title: 'Lorem ipsum dolor sit amet consectetur.',
+          description:
+            'Working with Trekie is fun, and it works! With quick, bite-sized actions you can track your habits, earn XP and coins while getting better at real-world.',
+        },
+        {
+          icon: IconAbacus,
+          title: 'Lorem ipsum dolor sit amet consectetur.',
+          description:
+            'We use a combination of science-backed methods and delightful game mechanics to create this effective productivity experience!',
+        },
+        {
+          icon: IconAbacus,
+          title: 'Lorem ipsum dolor sit amet consectetur.',
+          description:
+            'We make it easy to form a habit of language learning with game-like features, fun challenges, and reminders from our friendly mascot, Duo the owl.',
+        },
+        {
+          icon: IconAbacus,
           title: 'Lorem ipsum dolor sit amet consectetur.',
           description:
             'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
         },
         {
-          icon: <IconAbacus />,
+          icon: IconAbacus,
           title: 'Lorem ipsum dolor sit amet consectetur.',
           description:
             'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
         },
         {
-          icon: <IconAbacus />,
+          icon: IconAbacus,
           title: 'Lorem ipsum dolor sit amet consectetur.',
           description:
             'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
         },
-        {
-          icon: <IconAbacus />,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
-        },
-        {
-          icon: <IconAbacus />,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
-        },
-        {
-          icon: <IconAbacus />,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
-        },
-      ].map($ => (
+      ].map(Feature => (
         <Card withBorder>
           <Group gap={10} wrap="nowrap" mb={10}>
-            <ThemeIcon variant="light" size={36}>
-              {$.icon}
+            <ThemeIcon variant="light" size={40}>
+              <Feature.icon size={26} />
             </ThemeIcon>
-            <Text fw={700} lh={1.25}>
-              {$.title}
+            <Text fw={700} lh={1.15}>
+              {Feature.title}
             </Text>
           </Group>
 
-          <Text size="sm">{$.description}</Text>
+          <Text size="sm">{Feature.description}</Text>
         </Card>
       ))}
     </SimpleGrid>
@@ -271,7 +212,7 @@ const Features = (
 const Premium = (
   <>
     <Divider
-      label={<Image src="/images/trekie_SUPER_Badge.svg" h={40} w="auto" />}
+      label={<Image src="/images/trekie_SUPER_Badge.svg" h={48} w="auto" />}
     />
     <Paper shadow="sm" className={PremiumStyles.Banner.Root}>
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
@@ -280,7 +221,7 @@ const Premium = (
             Supercharge Your <br /> Gamified Productivity.
           </Title>
           <Text className={PremiumStyles.Banner.Text}>
-            Reach your life goals never been more fun. <br />
+            Reaching your life goals never been more fun. <br />
             Your first super-week is on us.
           </Text>
           <Button
@@ -389,8 +330,27 @@ const CallToAction = (
 )
 
 const DorkoduShilling = (
-  <Paper maw={1000} radius="lg" withBorder p="md">
-    <Title ta="center">Dorkodu Shilling</Title>
-    <Text ta="center">Lorem ipsum dolor sit amet.</Text>
+  <Paper className={WebsiteStyles.DorkoduBanner.Root}>
+    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+      <Stack gap="xs">
+        <Title className={WebsiteStyles.DorkoduBanner.Title} c="white">
+          We are bringing meaning <br /> back to technology again.
+        </Title>
+        <Text className={WebsiteStyles.DorkoduBanner.Text}>
+          Reaching your life goals never been more fun. <br />
+          Your first super-week is on us.
+        </Text>
+        <Button
+          size="lg"
+          className={WebsiteStyles.DorkoduBanner.Button}
+          rightSection={<IconArrowRight stroke={2.5} />}
+        >
+          Join
+        </Button>
+      </Stack>
+      <Box style={{ alignSelf: 'center', maxWidth: 380 }}>
+        <Image src="https://dorkodu.com/images/dorkodu-ecosystem.svg" />
+      </Box>
+    </SimpleGrid>
   </Paper>
 )
