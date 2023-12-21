@@ -1,72 +1,78 @@
-import { Route, useAppStore } from '#/stores/appStore'
+import { useAppStore } from '#/stores/appStore'
 import {
   ActionIcon,
   Anchor,
-  Avatar,
+  Box,
   Button,
+  Card,
   Divider,
-  Drawer,
   Flex,
+  Group,
   Image,
   MantineColor,
   Modal,
   Paper,
+  Stack,
   Text,
-  TextInput,
-  Title,
   px,
   useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core'
 import {
-  IconArchive,
   IconArrowLeft,
   IconBuildingStore,
-  IconCashBanknote,
-  IconChevronRight,
-  IconExternalLink,
   IconHome,
   IconMenu2,
   IconRoad,
   IconSearch,
-  IconSettings,
   IconUsers,
 } from '@tabler/icons-react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
-import { useTrekieStore } from '#/stores/trekieStore'
 import CreateMenu from '#/components/menus/CreateMenu'
-import Footer from '#/components/custom/Footer'
-import { NavBar } from '#/components/cards/NavBar'
+import * as Nav from '#/components/custom/Nav'
 import { AppMenu } from '#/components/cards/Menu'
 
+import { useTrekieStore } from '#/stores/trekieStore'
+
 import * as styles from '#/styles/Layout.css'
+import { vanilla } from '#/styles/theme'
+import { UserButton } from '#/components/buttons/UserButton'
+import { CommandCenter } from '#/components/custom/CommandCenter'
+import { DailyStats } from '#/components/cards/DailyStats'
+import Emoji from '#/components/custom/Emoji'
+
+const navLinks = [
+  { icon: <Emoji emoji="🏡" size={26} />, text: 'Home', path: '/home' },
+  { icon: <Emoji emoji="🌎" size={26} />, text: 'Explore', path: '/explore' },
+  { icon: <Emoji emoji="✅" size={26} />, text: 'Life', path: '/life' },
+  {
+    icon: <Emoji emoji="👥" size={26} />,
+    text: 'Social',
+    path: '/social',
+  },
+  { icon: <Emoji emoji="🏪" size={26} />, text: 'Market', path: '/market' },
+]
 
 function AppLayout() {
   const theme = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
+
   const navigate = useNavigate()
+
   const [opened, { open, close }] = useDisclosure(false)
+
   const isWideScreen = useMediaQuery('(min-width: 768px)')
 
-  const route = useAppStore(state => state.route)
+  const location = useLocation()
 
   const userId = useTrekieStore(state => state.userId)
   const users = useTrekieStore(state => state.users)
   const user = userId ? users[userId] : undefined
 
-  const closeNavigate = (route: string) => {
-    close()
-    navigate(route)
-  }
-  const preventNavigate = (ev: React.MouseEvent, route: string) => {
-    ev.preventDefault()
-    navigate(route)
-  }
-
-  const getRouteColor = (_route: Route): MantineColor | undefined => {
-    return _route === route ? undefined : 'var(--text-color)'
+  const getRouteColor = (_route: string): MantineColor | undefined => {
+    return _route === location.pathname ? undefined : 'var(--text-color)'
   }
 
   const BottomBar = (
@@ -76,13 +82,21 @@ function AppLayout() {
       bottom={0}
       left={0}
       right={0}
-      maw={theme.breakpoints.xs}
       mx="auto"
       style={{ zIndex: 99 }}
+      hiddenFrom="sm"
+      h={styles.BARHEIGHT}
     >
-      <Paper>
-        <Divider w="100%" />
-        <Button.Group h={64}>
+      <Paper
+        style={{
+          borderWidth: 0,
+          borderTopWidth: 1,
+          borderStyle: 'solid',
+          borderColor: vanilla.colors.defaultBorder,
+          borderRadius: 0,
+        }}
+      >
+        <Button.Group h={styles.BARHEIGHT}>
           <Button
             variant="subtle"
             c={getRouteColor('home')}
@@ -90,11 +104,12 @@ function AppLayout() {
             w="20%"
             h="auto"
             radius={0}
-            onClick={() => navigate('/home')}
+            component={Link}
+            to="/home"
           >
             <Flex direction="column" align="center">
               <IconHome />
-              <Text fz={10}>Home</Text>
+              <Text size="xs">Home</Text>
             </Flex>
           </Button>
           <Button
@@ -163,39 +178,48 @@ function AppLayout() {
     </Flex>
   )
 
-  const Header = (
+  const TopBar = (
     <Flex
       direction="column"
       pos="fixed"
       top={0}
       left={0}
       right={0}
-      maw={theme.breakpoints.xs}
       mx="auto"
       style={{ zIndex: 99 }}
+      hiddenFrom="sm"
     >
-      <Paper>
-        <Flex align="center" justify="space-between" gap="md" px="md" h={64}>
+      <Paper
+        style={{
+          borderWidth: 0,
+          borderBottomWidth: 1,
+          borderStyle: 'solid',
+          borderColor: vanilla.colors.defaultBorder,
+          borderRadius: 0,
+        }}
+      >
+        <Flex align="center" justify="space-between" gap="md" px="md" h={56}>
           <ActionIcon
             variant="subtle"
             size={32}
             onClick={() => navigate(-1)}
-            style={{ visibility: route === 'home' ? 'hidden' : 'visible' }}
+            style={{
+              visibility: location.pathname === '/home' ? 'hidden' : 'visible',
+            }}
             c="var(--text-color)"
           >
             <IconArrowLeft />
           </ActionIcon>
 
-          <Anchor
-            underline="never"
-            href="/home"
-            onClick={ev => preventNavigate(ev, '/home')}
-          >
+          <Anchor underline="never" to="/home" component={Link}>
             <Image
               src={
-                colorScheme === 'dark' ? '/brand-light.svg' : '/brand-dark.svg'
+                colorScheme == 'light'
+                  ? '/images/trekie_Brand.svg'
+                  : '/images/trekie_Brand_White.svg'
               }
-              height={32}
+              height={36}
+              p={1}
             />
           </Anchor>
 
@@ -208,7 +232,6 @@ function AppLayout() {
             <IconMenu2 />
           </ActionIcon>
         </Flex>
-        <Divider w="100%" />
       </Paper>
     </Flex>
   )
@@ -229,7 +252,7 @@ function AppLayout() {
       }}
       keepMounted
       centered
-      maw={isWideScreen ? 360 : 280}
+      w={isWideScreen ? 400 : 280}
       zIndex={9999}
     >
       <Modal.Overlay blur={2.5} />
@@ -239,11 +262,11 @@ function AppLayout() {
             <Image
               src={
                 colorScheme == 'dark'
-                  ? '/images/superapp_Brand-Cool-White.svg'
-                  : '/images/superapp_Brand-Cool.svg'
+                  ? '/images/trekie_Brand_White.svg'
+                  : '/images/trekie_Brand.svg'
               }
-              h="auto"
-              w={160}
+              h={40}
+              w="auto"
             />
           </Modal.Title>
           <Modal.CloseButton variant="default" />
@@ -255,16 +278,53 @@ function AppLayout() {
     </Modal.Root>
   )
 
-  return (
-    <>
-      {Header}
+  const Header = (
+    <Box m={10} mx={16}>
+      <Group justify="space-between">
+        <div>
+          <Image
+            src={
+              colorScheme == 'light'
+                ? '/images/trekie_Brand.svg'
+                : '/images/trekie_Brand_White.svg'
+            }
+            h={50}
+          />
+        </div>
+        <CommandCenter></CommandCenter>
+        <Group gap={4}>
+          <UserButton
+            user={{
+              avatar: '/assets/avatar.webp',
+              name: 'Doruk Eray',
+              username: '@doruk',
+            }}
+            compact
+          />
+          <ActionIcon
+            variant="default"
+            size={32}
+            onClick={() => open()}
+            c="var(--text-color)"
+          >
+            <IconMenu2 />
+          </ActionIcon>
+        </Group>
+      </Group>
+    </Box>
+  )
 
+  return (
+    <div className={styles.Layout.Root}>
+      {TopBar}
+
+      <header className={styles.Layout.Header}>{Header}</header>
       <div className={styles.Layout.Body}>
         {Menu}
 
-        <aside className={styles.Layout.SideBar}>
-          <NavBar />
-        </aside>
+        <nav className={styles.Layout.Nav}>
+          <Nav.Bar links={navLinks} />
+        </nav>
 
         <main className={styles.Layout.Main}>
           {/* Paper can be a different element, but not likely */}
@@ -272,14 +332,60 @@ function AppLayout() {
             <Outlet />
           </div>
         </main>
-      </div>
-      <div className={styles.Layout.Footer}>
-        <Footer />
+
+        <aside className={styles.Layout.Aside}>
+          <DailyStats />
+          <Card withBorder m={10}>
+            News
+          </Card>
+          <Card withBorder m={10}>
+            Ad
+          </Card>
+
+          <footer className={styles.Layout.Footer}>{Footer}</footer>
+        </aside>
       </div>
 
       {BottomBar}
-    </>
+    </div>
   )
 }
 
 export default AppLayout
+
+const Footer = (
+  <>
+    <Divider m={16} mb={0} />
+
+    <Stack gap={0} px={10} align="center">
+      <Group justify="center" gap="xs" p={10}>
+        {[
+          ['About', '/about'],
+          ['Terms', '/legal/terms'],
+          ['Privacy', '/legal/privacy'],
+          ['Careers', 'https://dorkodu.com/jobs'],
+          ['Blog', 'https://dorkodu.substack.com'],
+        ].map(link => (
+          <Anchor
+            component={Link}
+            //@ts-ignore
+            to={link[1]}
+            key={link[1]}
+            c="dimmed"
+            fw={400}
+            size="sm"
+          >
+            {link[0]}
+          </Anchor>
+        ))}
+      </Group>
+      <Anchor display="block" href="https://dorkodu.com" target="_blank">
+        <Image
+          src="/images/dorkodu_Logo_Colorful.svg"
+          w={120}
+          display="block"
+        />
+      </Anchor>
+    </Stack>
+  </>
+)

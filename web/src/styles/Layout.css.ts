@@ -1,9 +1,9 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { vanilla } from './theme'
 
-export const BARHEIGHT = 64
+export const BARHEIGHT = 60
 
-export const WIDESCREEN_MIN = 760
+export const WIDESCREEN_MIN = 768
 export const WIDESCREEN_MAX = 1200
 
 // Screen breakpoints
@@ -13,13 +13,13 @@ const isExtraWide = vanilla.largerThan(WIDESCREEN_MAX)
 
 export const Layout = {
   Root: style({
-    'display': 'flex',
-    'flexDirection': 'column',
+    display: 'flex',
+    flexDirection: 'column',
 
-    'width': '100%',
-    'maxWidth': 1200,
-    'minHeight': '100vh',
-    'margin': '0 auto',
+    width: '100%',
+    maxWidth: 1200,
+    minHeight: '100vh',
+    margin: '0 auto',
 
     '@media': {
       [isExtraWide]: {
@@ -27,13 +27,13 @@ export const Layout = {
       },
     },
 
-    'selectors': {},
+    selectors: {},
   }),
 
-  SideBar: style({
-    'width': '35%',
-    'maxWidth': '340px',
-    'display': 'none',
+  Aside: style({
+    width: '36%',
+    maxWidth: '340px',
+    display: 'none',
 
     '@media': {
       [isWideScreen]: {
@@ -42,9 +42,23 @@ export const Layout = {
     },
   }),
 
+  Nav: style({
+    width: '30%',
+    maxWidth: '340px',
+    display: 'none',
+
+    '@media': {
+      [isWideScreen]: {
+        display: 'block',
+      },
+    },
+  }),
+
+
+
   Main: style({
-    'width': '100%',
-    'flexGrow': 1,
+    width: '100%',
+    flexGrow: 1,
 
     '@media': {
       [isWideScreen]: {
@@ -54,20 +68,33 @@ export const Layout = {
   }),
 
   Header: style({
-    backgroundColor: '#333',
+    display: 'none',
+
+    '@media': {
+      [isWideScreen]: {
+        display: 'block',
+      },
+    },
   }),
 
   Body: style({
     display: 'flex',
+    marginTop: BARHEIGHT,
+
+    '@media': {
+      [isWideScreen]: {
+        marginTop: 0,
+      },
+    },
   }),
 
   Footer: style({
-    'display': 'block',
-    'maxWidth': WIDESCREEN_MAX,
-    'height': BARHEIGHT,
+    display: 'block',
+    maxWidth: WIDESCREEN_MAX,
+    height: BARHEIGHT,
 
     '@media': {
-      [vanilla.largerThan(640)]: {
+      [isMobile]: {
         display: 'none',
       },
     },
@@ -153,12 +180,10 @@ export const SearchInput = style({
   },
 })
 
-
-
 export const Menu = {
   Item: style({
-    'borderRadius': 10,
-    'padding': 4,
+    borderRadius: 10,
+    padding: 4,
 
     ':hover': {
       backgroundColor: vanilla.colors.gray.light,

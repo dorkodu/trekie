@@ -1,21 +1,8 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-export type Route =
-  "home" |
-  "explore" |
-  "life" |
-  "community" |
-  "market" |
-  "premium" |
-  "archive" |
-  "settings" |
-  "any";
-
 export interface AppStoreState {
   online: boolean;
-
-  route: Route;
 
   loading: {
     auth: boolean;
@@ -59,8 +46,6 @@ export interface AppStoreAction {
 
 const initialState: AppStoreState = {
   online: false,
-
-  route: "any",
 
   loading: {
     auth: true,

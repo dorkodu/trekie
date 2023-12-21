@@ -1,5 +1,5 @@
-import { Badge, Flex, Paper, Text, Title } from "@mantine/core";
-import Emoji from "../Emoji";
+import { Badge, Flex, Paper, Text, Title } from '@mantine/core'
+import Emoji from './Emoji'
 
 interface Props {}
 
@@ -21,7 +21,7 @@ function Community({}: Props) {
         </Flex>
       </Flex>
     </Paper>
-  );
+  )
 }
 
-export default Community;
+export default Community

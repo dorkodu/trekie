@@ -1,45 +1,60 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { vanilla } from '../theme'
 
-export default {
-  Paper: style({
-    'marginLeft': 7,
+const Paper = style({
+  marginLeft: 7,
 
-    '@media': {
-      [vanilla.largerThan('sm')]: {
-        padding: vanilla.spacing.sm,
-        margin: vanilla.spacing.sm,
-        border: `1px solid ${vanilla.colors.gray[4]}`,
-        background: vanilla.colors.gray[0],
-        boxShadow: `0px 1px 4px 1px ${vanilla.colors.gray[3]}`,
+  '@media': {
+    [vanilla.largerThan('sm')]: {
+      padding: vanilla.spacing.sm,
+      margin: vanilla.spacing.sm,
+      border: `1px solid ${vanilla.colors.gray[4]}`,
+      background: vanilla.colors.gray[0],
+      boxShadow: `0px 1px 4px 1px ${vanilla.colors.gray[3]}`,
 
-        selectors: {
-          [vanilla.darkSelector]: {
-            border: `1px solid ${vanilla.colors.dark[4]}`,
-            background: vanilla.colors.dark[6],
-            boxShadow: `0px 1px 4px 1px ${vanilla.colors.dark[9]}`,
-          },
+      selectors: {
+        [vanilla.darkSelector]: {
+          border: `1px solid ${vanilla.colors.dark[4]}`,
+          background: vanilla.colors.dark[6],
+          boxShadow: `0px 1px 4px 1px ${vanilla.colors.dark[9]}`,
         },
       },
     },
-  }),
-  LinkButton: style({
-    borderRadius: 16,
-    padding: 4,
-    display: 'inline-block',
+  },
+})
 
-    selectors: {
-      [`&:hover`]: {
-        backgroundColor: vanilla.colors.green[1],
-        color: vanilla.colors.green[9],
-      },
+const LinkButtonBase = style({
+  borderRadius: 16,
+  padding: '8px 10px',
+  paddingRight: 18,
+  display: 'inline-block',
 
-      [`&:hover & ${vanilla.darkSelector}`]: {
-        backgroundColor: vanilla.colors.green.light,
-        color: vanilla.colors.gray[0],
-      },
+  borderWidth: 2,
+  borderStyle: 'solid',
+  borderColor: 'rgba(255,255,255, 0)',
+
+  transitionDuration: '0.2s',
+
+  ':hover': {
+    backgroundColor: vanilla.colors.blue.light,
+    color: vanilla.colors.blue.lightColor,
+  },
+})
+
+const LinkButton = styleVariants({
+  plain: [LinkButtonBase],
+  active: [
+    LinkButtonBase,
+    {
+      backgroundColor: vanilla.colors.blue.light,
+      color: vanilla.colors.blue.lightColor,
+
+      borderColor: vanilla.colors.blue.light,
     },
+  ],
+})
 
-    transitionDuration: '0.1s',
-  }),
+export default {
+  Paper,
+  LinkButton,
 }

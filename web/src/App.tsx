@@ -1,12 +1,15 @@
-import { MantineProvider } from '@mantine/core'
-import { theme } from './styles/theme'
-import { Outlet, ScrollRestoration } from 'react-router-dom'
-import { useAppStore } from './stores/appStore'
-import OverlayLoader from './components/loaders/OverlayLoader'
 import { useEffect } from 'react'
-import UpdateSWModal from './components/modals/UpdateSWModal'
-import { useTrekieStore } from './stores/trekieStore'
-import { useRefreshStatsDaily, useRouteUpdater } from './components/hooks'
+import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { MantineProvider } from '@mantine/core'
+
+import { theme } from '#/styles/theme'
+
+import OverlayLoader from '#/components/loaders/OverlayLoader'
+import UpdateSWModal from '#/components/modals/UpdateSWModal'
+import { useRefreshStatsDaily } from '#/components/hooks'
+
+import { useAppStore } from '#/stores/appStore'
+import { useTrekieStore } from '#/stores/trekieStore'
 
 function App() {
   const loading = useAppStore(state => state.loading)
@@ -18,7 +21,6 @@ function App() {
   }, [loading.auth])
 
   // app hooks
-  useRouteUpdater()
 
   // trekie hooks
   useRefreshStatsDaily()
