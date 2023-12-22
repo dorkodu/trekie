@@ -2,12 +2,14 @@ import { style } from '@vanilla-extract/css'
 import { theme, vanilla } from '../theme'
 import { darken, rgba } from '@mantine/core'
 
+const BackgroundGradient = `linear-gradient(to top, #00BFFA 0%, #220CA1 100%)` 
+
 export const Banner = {
   Root: style({
     borderRadius: vanilla.radius.lg,
     padding: `${vanilla.spacing.lg} ${vanilla.spacing.lg}`,
     maxWidth: 1000,
-    backgroundImage: `linear-gradient(to top, #00BFFA 0%, #220CA1 100%)`,
+    backgroundImage: BackgroundGradient,
     margin: `0 auto`
   }), 
 
@@ -23,7 +25,7 @@ export const Banner = {
   Text: style({
     color: vanilla.colors.blue[0],
     lineHeight: 1.25,
-    fontSize: 18,
+    fontSize: 20,
     textShadow: `1px 1px 2px ${vanilla.colors.blue[9]}`,
   }),
 

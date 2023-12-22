@@ -4,6 +4,7 @@ import { truncate } from '#/styles/shared.css'
 import { IHabit } from '@sdk/types/habit'
 import {
   Badge,
+  Box,
   Button,
   Card,
   Flex,
@@ -44,7 +45,15 @@ function HabitCounter({ habit, showHeatmap, onClick }: Props) {
     >
       <Button.Group mih={80}>
         <Button h="auto" onClick={ev => onChangeCount(ev, -1)}>
-          <IconMinus />
+          <Box
+            style={{
+              background: 'rgba(255,255,255,0.25)',
+              width: 32,
+              height: 32,
+            }}
+          >
+            <IconPlus stroke={2.5} />
+          </Box>
         </Button>
 
         <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>

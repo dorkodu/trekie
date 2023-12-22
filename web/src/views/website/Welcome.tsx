@@ -49,6 +49,8 @@ export default function Welcome() {
       {Features}
       {Join}
       {Premium}
+      {Pricing}
+      {FAQ}
     </Stack>
   )
 }
@@ -350,5 +352,50 @@ const DorkoduShilling = (
         <Image src="https://dorkodu.com/images/dorkodu-ecosystem.svg" />
       </Box>
     </SimpleGrid>
+  </Paper>
+)
+
+const FAQ = (
+  <Paper>
+    <Title>FAQs</Title>
+    <Text>
+      We need to create the next generation human. <br />
+      This is a civilizational moment in human history. <br />
+      We will go extinct, or will adapt to our new digital-native reality.
+    </Text>
+  </Paper>
+)
+
+const Pricing = (
+  <Paper>
+    <Title>Pricing</Title>
+    <Text>
+      We need to create the next generation human. <br />
+      This is a civilizational moment in human history. <br />
+      We will go extinct, or will adapt to our new digital-native reality.
+    </Text>
+
+    <SimpleGrid my={20} cols={{ base: 1, sm: 2 }}>
+      <Card withBorder shadow="sm">
+        <Text>Free</Text>
+        <Text></Text>
+        <Text></Text>
+      </Card>
+
+      <Card withBorder shadow="sm">
+        <Text>Premium</Text>
+        <Text></Text>
+        <Text></Text>
+      </Card>
+    </SimpleGrid>
+
+    <Card withBorder shadow="sm">
+      <Text>Business</Text>
+      <Text>
+        Do you need more? Contact us, we can offer a solution that suit your
+        needs.
+      </Text>
+      <Text></Text>
+    </Card>
   </Paper>
 )

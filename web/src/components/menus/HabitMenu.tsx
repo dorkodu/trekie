@@ -1,4 +1,4 @@
-import { useApiStore } from '#/stores/apiStore'
+import { useTrekieStore } from '#/stores/trekieStore'
 import { useAppStore } from '#/stores/appStore'
 import { IHabit } from '@sdk/types/habit'
 import { ActionIcon, Menu } from '@mantine/core'
@@ -17,7 +17,7 @@ interface Props {
 }
 
 function HabitMenu({ habit }: Props) {
-  const currentUserId = useApiStore(state => state.userId)
+  const currentUserId = useTrekieStore(state => state.userId)
 
   const onShare = (ev: MouseEvent) => {
     ev.stopPropagation()
@@ -40,7 +40,7 @@ function HabitMenu({ habit }: Props) {
   }
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
-    useApiStore.getState().removeHabit(habit)
+    useTrekieStore.getState().removeHabit(habit)
   }
 
   return (

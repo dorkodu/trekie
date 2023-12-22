@@ -1,12 +1,15 @@
-import WIPCard from '#/components/cards/WIPCard'
-import { Flex } from '@mantine/core'
+import OnlyPremium from '#/components/cards/OnlyPremium'
+import { Flex, Image } from '@mantine/core'
 
-function Premium() {
+function Social() {
   return (
     <Flex direction="column" m="md">
-      <WIPCard />
+      <div>
+        <Image src="/images/trekie_SUPER_Badge.svg" h={50} w="auto" />
+      </div>
+      <OnlyPremium />
     </Flex>
   )
 }
 
-export default Premium
+export default Social
