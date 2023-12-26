@@ -5,12 +5,14 @@ import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
   IconDots,
+  IconDotsVertical,
   IconEdit,
   IconExclamationCircle,
   IconShare,
   IconTrash,
 } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
+import { vanilla } from '#/styles/theme'
 
 interface Props {
   habit: IHabit
@@ -52,7 +54,7 @@ function HabitMenu({ habit }: Props) {
           radius="xl"
           onClick={ev => ev.stopPropagation()}
         >
-          <IconDots />
+          <IconDotsVertical color={vanilla.colors.gray.lightColor} />
         </ActionIcon>
       </Menu.Target>
 

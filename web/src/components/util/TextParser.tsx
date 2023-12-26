@@ -30,7 +30,13 @@ const parseables = {
   },
   emoji: {
     regex: emojiRegex,
-    component: ({ text }: { text: string }) => <Emoji emoji={text} />,
+    component: ({
+      text,
+      emojiSize = 20,
+    }: {
+      text: string
+      emojiSize?: number
+    }) => <Emoji emoji={text} size={emojiSize} />,
   },
   username: {
     regex: usernameRegex,

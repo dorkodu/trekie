@@ -8,16 +8,20 @@ import {
   Button,
   Card,
   Flex,
+  Group,
   Paper,
   ScrollArea,
   Text,
   Title,
 } from '@mantine/core'
-import { IconMinus, IconPlus } from '@tabler/icons-react'
+import { IconMinus, IconPlus, IconTargetArrow } from '@tabler/icons-react'
 import TextParser from '../util/TextParser'
 import { MouseEvent } from 'react'
 import Heatmap from './Heatmap'
 import HabitMenu from '../menus/HabitMenu'
+import Emoji from './Emoji'
+import { count } from 'console'
+import { vanilla } from '#/styles/theme'
 
 interface Props {
   habit: IHabit
@@ -26,37 +30,53 @@ interface Props {
   onClick?: () => void
 }
 
-function HabitCounter({ habit, showHeatmap, onClick }: Props) {
+function HabitCounter({ habit, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
     useTrekieStore.getState().countHabit(habit, count)
   }
 
-  const dailyDone = habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0
-  const dailyTarget = habit.dailyTarget
-
   return (
     <Card
-      withBorder
       p={0}
       mb="xs"
       style={{ overflow: 'visible' }}
       onClick={onClick}
+      radius="lg"
+      shadow="sm"
     >
       <Button.Group mih={80}>
-        <Button h="auto" onClick={ev => onChangeCount(ev, -1)}>
-          <Box
+        <Button
+          color="green"
+          h="auto"
+          onClick={ev => onChangeCount(ev, +1)}
+          px="sm"
+        >
+          <Flex
             style={{
               background: 'rgba(255,255,255,0.25)',
               width: 32,
               height: 32,
+              display: 'flex',
+              justifyItems: 'center',
+              alignItems: 'center',
+              borderRadius: 8,
+              padding: 2,
             }}
           >
-            <IconPlus stroke={2.5} />
-          </Box>
+            <IconPlus stroke={2.5} size={28} />
+          </Flex>
         </Button>
 
-        <Flex direction="column" justify="center" p="md" style={{ flex: 1 }}>
+        <Flex
+          direction="column"
+          justify="center"
+          px="sm"
+          py="xs"
+          style={{
+            flex: 1,
+          }}
+        >
           <Flex justify="space-between" align="center">
             <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
               <Title order={5} className={truncate}>
@@ -65,46 +85,45 @@ function HabitCounter({ habit, showHeatmap, onClick }: Props) {
             </Flex>
             <HabitMenu habit={habit} />
           </Flex>
+
           <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
-            <Text truncate>
+            <Text truncate size="sm">
               <TextParser
                 ids={['emoji', 'url', 'username']}
                 text={habit.description}
               />
             </Text>
           </Flex>
-          <Flex mt="xs" gap="xs">
-            <Badge>
-              {dailyDone} / {dailyTarget} Daily Target
+
+          <Group gap={8} mt="4">
+            <Badge display="block" variant="light" size="lg" color="blue">
+              <Text fw={700}>{habit.count}</Text>
             </Badge>
-          </Flex>
+          </Group>
         </Flex>
 
-        <Button h="auto" onClick={ev => onChangeCount(ev, +1)}>
-          <IconPlus />
+        <Button
+          color="red"
+          h="auto"
+          onClick={ev => onChangeCount(ev, -1)}
+          px="sm"
+        >
+          <Flex
+            style={{
+              background: 'rgba(255,255,255,0.25)',
+              width: 32,
+              height: 32,
+              display: 'flex',
+              justifyItems: 'center',
+              alignItems: 'center',
+              borderRadius: 8,
+              padding: 2,
+            }}
+          >
+            <IconMinus stroke={2.5} size={28} />
+          </Flex>
         </Button>
       </Button.Group>
-
-      {showHeatmap && (
-        <Flex p="md" style={{ display: 'grid', gridTemplateRows: 'auto' }}>
-          <ScrollArea>
-            <Heatmap date={habit.date} values={habit.heatmap} />
-          </ScrollArea>
-        </Flex>
-      )}
-
-      <Paper
-        withBorder
-        px="md"
-        pos="absolute"
-        bottom="0"
-        left="50%"
-        style={{ transform: 'translate(-50%,50%)' }}
-      >
-        <Title order={5} title={util.formatNumber(habit.count, true)}>
-          {util.formatNumber(habit.count)}
-        </Title>
-      </Paper>
     </Card>
   )
 }

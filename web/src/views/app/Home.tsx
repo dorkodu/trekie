@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Card,
@@ -25,6 +26,7 @@ import NoGoalsCard from '#/components/cards/NoGoalsCard'
 import { IconPin, IconPinned } from '@tabler/icons-react'
 import { IconPinnedFilled } from '@tabler/icons-react'
 import { IHabit } from '@sdk/types'
+import { vanilla } from '#/styles/theme'
 
 function Home() {
   const navigate = useNavigate()
@@ -34,21 +36,19 @@ function Home() {
   const user = userId ? users[userId] : undefined
 
   return (
-    <Stack m="md" gap="xl">
-      <Stack gap="xs">
-        <Title order={4} className={wrapContent}>
-          <Emoji emoji="👋" /> Welcome, Doruk
-          <TextParser ids={['emoji']} text={user?.name ?? ''} />
-        </Title>
+    <Stack gap="xs" m="xs">
+      <Title order={4} className={wrapContent}>
+        <Emoji emoji="👋" /> Welcome, Doruk
+        <TextParser ids={['emoji']} text={user?.name ?? ''} />
+      </Title>
 
-        <Text>
-          Hey! Welcome to <b>your social & gamified life companion.</b>
-        </Text>
+      <Text>
+        Hey! Welcome to <b>your social & gamified life companion.</b>
+      </Text>
 
-        {Goals}
-        {PinnedHabits}
-        {Habits}
-      </Stack>
+      {Goals}
+      {PinnedHabits}
+      {Habits}
     </Stack>
   )
 }
@@ -76,37 +76,64 @@ const PinnedHabits = (
       labelPosition="left"
       styles={{ label: { fontSize: 14, fontWeight: 600 } }}
     />
-    <Card>
-      <Text>Not any pinned habits.</Text>
+    <Card
+      style={{
+        background: vanilla.colors.gray.light,
+      }}
+    >
+      <Text c="dimmed">Not any pinned habits.</Text>
     </Card>
   </section>
 )
 
 function UserHabitSummary() {
-  const hasAnyHabits = true
+  const hasAnyHabits = useTrekieStore.getState().userId
 
   if (!hasAnyHabits) return <NoHabitsCard />
 
-  const habits: IHabit[] = [
+  const XXX: IHabit[] = [
     {
-      id: '',
-      title: '',
-      userId: '',
+      id: '1',
+      title: 'Read 50 Pages Daily',
+      userId: '1',
       count: 5,
       dailyTarget: 0,
       date: 99999999999,
-      description: '',
+      description: 'Get addicted to reading every day.',
+      heatmap: [0],
+    },
+    {
+      id: '2',
+      title: 'Work out',
+      userId: '1',
+      count: 196,
+      dailyTarget: 0,
+      date: 9999999998,
+      description: 'I should look hot 🔥',
       heatmap: [0],
     },
   ]
 
+  const habits = useTrekieStore($ => $.getHabits($.userId))
+  bi
   return (
-    <Box>
-      <p>Check off your daily habits!</p>
-
-      <Stack>
-        <HabitCounter habit={habits[0]} key={'trekie:habit:' + habits[0]?.id} />
+    <Box
+      style={{
+        background: vanilla.colors.gray.light,
+        padding: 6,
+        borderRadius: 20,
+      }}
+    >
+      <Stack gap={0}>
+        {habits.map(x => (
+          <HabitCounter habit={x} key={'trekie:habit:' + x.id} />
+        ))}
       </Stack>
+      <Flex>
+        <Badge variant="light" color="gray" mx="auto">
+          Check your daily habits!
+        </Badge>
+      </Flex>
     </Box>
   )
 }
