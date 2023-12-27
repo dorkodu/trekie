@@ -12,6 +12,8 @@ import { useAppStore } from '#/stores/appStore'
 import { useTrekieStore } from '#/stores/trekieStore'
 
 function App() {
+  console.log('knk: ' + useTrekieStore($ => JSON.stringify($.users, null, 4)))
+
   const loading = useAppStore(state => state.loading)
 
   useEffect(() => {

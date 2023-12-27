@@ -62,24 +62,55 @@ export interface TrekieStoreAction {
 }
 
 const initialState: TrekieStoreState = {
-  userId: undefined,
+  userId: "0",
 
-  users: {},
-  habits: {},
+  users: {
+    "0": {
+      id: "0",
+      username: "dorukeray",
+      name: "Doruk Eray",
+      bio: "Founder, Polymath, Craftsman.",
+      email: "doruk@dorkodu.com",
+      premium: true,
+    }
+  },
+
+  habits: {
+    "1": {
+      id: "0",
+      title: "Check Trekie Every Day!",
+      description: "See your life goals, check your habits and stay on track. Never lose your momentum.",
+      count: 0,
+      date: 1703685605,
+      heatmap: [0, 1, 4, 5, 0, 2],
+      dailyTarget: 5,
+      userId: "0",
+    }
+  },
+  
   memories: {},
+  
   goals: {},
 
   index: {
-    usernameToUserId: {},
-    userIdToHabitIds: {},
+    usernameToUserId: {
+      "dorukeray": "0"
+    },
+  
+    userIdToHabitIds: {
+      "0": [
+        "1"
+      ]
+    },
+  
     userIdToMemoryIds: {},
+  
     userIdToGoalIds: {},
   },
 }
 
 export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
   immer(
-    persist(
       (set, get) => ({
         ...initialState,
 
@@ -412,9 +443,5 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
           set(initialState)
         },
       }),
-      {
-        name: 'trekie-store',
-      }
-    )
   )
 )

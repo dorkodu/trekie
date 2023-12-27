@@ -87,35 +87,12 @@ const PinnedHabits = (
 )
 
 function UserHabitSummary() {
-  const hasAnyHabits = useTrekieStore.getState().userId
+  const habits = useTrekieStore($ => $.getHabits($.userId))
+  const habitCount = useTrekieStore($ => $.getHabits($.userId).length)
+  const hasAnyHabits = habitCount > 0
 
   if (!hasAnyHabits) return <NoHabitsCard />
 
-  const XXX: IHabit[] = [
-    {
-      id: '1',
-      title: 'Read 50 Pages Daily',
-      userId: '1',
-      count: 5,
-      dailyTarget: 0,
-      date: 99999999999,
-      description: 'Get addicted to reading every day.',
-      heatmap: [0],
-    },
-    {
-      id: '2',
-      title: 'Work out',
-      userId: '1',
-      count: 196,
-      dailyTarget: 0,
-      date: 9999999998,
-      description: 'I should look hot 🔥',
-      heatmap: [0],
-    },
-  ]
-
-  const habits = useTrekieStore($ => $.getHabits($.userId))
-  bi
   return (
     <Box
       style={{
