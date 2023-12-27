@@ -16,6 +16,11 @@ export interface TrekieStoreState {
   memories: Record<string, IMemory>
   goals: Record<string, IGoal>
 
+  xp: number,
+  coins: number,
+  
+  momentum: number,
+
   index: {
     usernameToUserId: Record<string, string>
     userIdToHabitIds: Record<string, string[]>
@@ -42,9 +47,12 @@ export interface TrekieStoreAction {
     description: string,
     dailyTarget: number
   ) => void
-  getHabits: (userId: string | undefined) => IHabit[]
 
-  countHabit: (habit: IHabit, count: number) => void
+  getHabits: (userId: string | undefined) => IHabit[]
+  
+  habitCount: () => number
+
+  trackHabit: (habit: IHabit, count: number) => void
 
   addMemory: (memory: IMemory) => void
   removeMemory: (memory: IMemory) => void
@@ -61,9 +69,67 @@ export interface TrekieStoreAction {
   reset: () => void
 }
 
+const defaultState: TrekieStoreState = {
+   userId: "0",
+
+  // stats, points
+  xp: 500,
+  coins: 10,
+
+  // database
+  users: {
+    "0": {
+      id: "0",
+      username: "dorukeray",
+      name: "Doruk Eray",
+      bio: "Founder, Polymath, Craftsman.",
+      email: "doruk@dorkodu.com",
+      premium: true,
+    }
+  },
+
+  habits: {
+    "1": {
+      id: "0",
+      title: "Check Trekie Every Day!",
+      description: "See your life goals, check your habits and stay on track. Never lose your momentum.",
+      count: 0,
+      date: 1703685605,
+      heatmap: [0, 1, 4, 5, 0, 2],
+      dailyTarget: 5,
+      userId: "0",
+    }
+  },
+  
+  memories: {},
+  
+  goals: {},
+
+  index: {
+    usernameToUserId: {
+      "dorukeray": "0"
+    },
+  
+    userIdToHabitIds: {
+      "0": [
+        "1"
+      ]
+    },
+  
+    userIdToMemoryIds: {},
+  
+    userIdToGoalIds: {},
+  },
+}
+
 const initialState: TrekieStoreState = {
   userId: "0",
 
+  // stats, points
+  xp: 500,
+  coins: 10,
+
+  // database
   users: {
     "0": {
       id: "0",
@@ -132,6 +198,10 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
           useAppStore.setState(s => {
             s.loading.auth = false
           })
+        },
+
+        habitCount() {
+          return 5
         },
 
         logout() {
@@ -281,7 +351,7 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
             .filter(Boolean) as IHabit[]
         },
 
-        countHabit(habit, count) {
+        trackHabit(habit, count) {
           let updateStats = false
 
           set(state => {

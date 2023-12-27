@@ -24,16 +24,16 @@ import { count } from 'console'
 import { vanilla } from '#/styles/theme'
 
 interface Props {
-  habit: IHabit
-  showHeatmap?: boolean
-
+  habitId: number
   onClick?: () => void
 }
 
-function HabitCounter({ habit, onClick }: Props) {
+function HabitCounter({ habitId, onClick }: Props) {
+  const habit = useTrekieStore($ => $.getHabits($.userId)[habitId])
+
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
-    useTrekieStore.getState().countHabit(habit, count)
+    useTrekieStore.getState().trackHabit(habit, count)
   }
 
   return (

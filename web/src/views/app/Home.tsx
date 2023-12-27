@@ -24,8 +24,10 @@ import HabitCounter from '#/components/custom/HabitCounter'
 import NoHabitsCard from '#/components/cards/NoHabitsCard'
 import NoGoalsCard from '#/components/cards/NoGoalsCard'
 import { IconPin, IconPinned } from '@tabler/icons-react'
+
 import { IconPinnedFilled } from '@tabler/icons-react'
 import { IHabit } from '@sdk/types'
+
 import { vanilla } from '#/styles/theme'
 
 function Home() {
@@ -38,7 +40,7 @@ function Home() {
   return (
     <Stack gap="xs" m="xs">
       <Title order={4} className={wrapContent}>
-        <Emoji emoji="👋" /> Welcome, Doruk
+        <Emoji emoji="👋" /> Welcome,{' '}
         <TextParser ids={['emoji']} text={user?.name ?? ''} />
       </Title>
 
@@ -76,13 +78,20 @@ const PinnedHabits = (
       labelPosition="left"
       styles={{ label: { fontSize: 14, fontWeight: 600 } }}
     />
-    <Card
+    <Box
       style={{
         background: vanilla.colors.gray.light,
+        padding: 6,
+        borderRadius: 20,
       }}
     >
-      <Text c="dimmed">Not any pinned habits.</Text>
-    </Card>
+      <Stack gap={0}></Stack>
+      <Flex>
+        <Badge variant="light" color="gray" mx="auto">
+          {false ? 'Your favorite habits' : 'No pinned habits'}
+        </Badge>
+      </Flex>
+    </Box>
   </section>
 )
 
