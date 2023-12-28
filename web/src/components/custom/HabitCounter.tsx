@@ -24,18 +24,20 @@ import { count } from 'console'
 import { vanilla } from '#/styles/theme'
 
 interface Props {
-  habitId: number
+  habitId: string
   onClick?: () => void
 }
 
 function HabitCounter({ habitId, onClick }: Props) {
-  const habit = useTrekieStore($ => $.getHabits($.userId)[habitId])
+  const habit = useTrekieStore($ => $.habits[habitId])
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
+    if (!habit) return;
     useTrekieStore.getState().trackHabit(habit, count)
   }
 
+  if (!habit) return null;
   return (
     <Card
       p={0}

@@ -1,18 +1,4 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Card,
-  Divider,
-  Flex,
-  Group,
-  Image,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core'
+import { Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -112,7 +98,7 @@ function UserHabitSummary() {
     >
       <Stack gap={0}>
         {habits.map(x => (
-          <HabitCounter habit={x} key={'trekie:habit:' + x.id} />
+          <HabitCounter habitId={x.id} key={x.id} />
         ))}
       </Stack>
       <Flex>

@@ -8,10 +8,12 @@ import * as PremiumStyles from '#/styles/views/Premium.css'
 import * as WebsiteStyles from '#/styles/website/Website.css'
 
 import {
+  Accordion,
   BackgroundImage,
   Box,
   Button,
   Card,
+  Container,
   Divider,
   Flex,
   Group,
@@ -23,6 +25,7 @@ import {
   Text,
   ThemeIcon,
   Title,
+  rem,
   useMantineColorScheme,
 } from '@mantine/core'
 import {
@@ -34,6 +37,7 @@ import {
   IconCheckbox,
   IconEqualDouble,
   IconMultiplier2x,
+  IconPlus,
   IconUserCircle,
   IconUsersGroup,
 } from '@tabler/icons-react'
@@ -50,7 +54,7 @@ export default function Welcome() {
       {Join}
       {Premium}
       {Pricing}
-      {FAQ}
+      <FAQ />
     </Stack>
   )
 }
@@ -192,7 +196,7 @@ const Features = (
             'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
         },
       ].map(Feature => (
-        <Card withBorder>
+        <Card withBorder key={randomId()}>
           <Group gap={10} wrap="nowrap" mb={10}>
             <ThemeIcon variant="light" size={40}>
               <Feature.icon size={26} />
@@ -224,6 +228,7 @@ const Premium = (
             Reaching your life goals never been more fun. <br />
             Your first super-week is on us.
           </Text>
+
           <Button
             size="lg"
             className={PremiumStyles.Banner.Button}
@@ -355,16 +360,59 @@ const DorkoduShilling = (
   </Paper>
 )
 
-const FAQ = (
-  <Paper>
-    <Title>FAQs</Title>
-    <Text>
-      We need to create the next generation human. <br />
-      This is a civilizational moment in human history. <br />
-      We will go extinct, or will adapt to our new digital-native reality.
-    </Text>
-  </Paper>
-)
+import { randomId } from '@mantine/hooks'
+
+const placeholder =
+  'It can’t help but hear a pin drop from over half a mile away, so it lives deep in the mountains where there aren’t many people or Pokémon.It was born from sludge on the ocean floor. In a sterile environment, the germs within its body can’t multiply, and it dies.It has no eyeballs, so it can’t see. It checks its surroundings via the ultrasonic waves it emits from its mouth.'
+
+function FAQ() {
+  const questions = [
+    [
+      'Apples',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+    [
+      'Apples',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+    [
+      'Apples',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+    [
+      'Apples',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+    [
+      'Apples',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+    [
+      'Apples',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+  ]
+
+  return (
+    <Paper my={50}>
+      <Title ta="center">FAQs</Title>
+      <Text ta="center">Frequently Asked Questions</Text>
+
+      <SimpleGrid my="lg" cols={{ base: 1, sm: 2, md: 3 }}>
+        {questions.map(faq => (
+          <Card key={randomId()} withBorder shadow="sm" radius="lg">
+            <Text fw={600} lh={1.15}>
+              {faq[0]}
+            </Text>
+            <Text mt={10} size="sm">
+              {faq[1]}
+            </Text>
+          </Card>
+        ))}
+      </SimpleGrid>
+    </Paper>
+  )
+}
 
 const Pricing = (
   <Paper>
