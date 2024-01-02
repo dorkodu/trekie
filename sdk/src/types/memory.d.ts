@@ -1,8 +1,18 @@
-export interface IMemory {
-  id: string;
-  userId: string;
-  date: number;
-  description: string;
-  favourites: number;
-  favourited?: boolean;
+export interface IStory {
+  id: string
+  kind: IStoryKind
+  userId: string
+  date: Date
+  
+  text: string
+  mediaURL: string
+
+  likes: number
+  likedByMe?: boolean
+}
+
+export enum IStoryKind {
+  Photo,
+  Text,
+  Mixed,
 }

@@ -7,25 +7,22 @@ export interface IUser {
 
   bio?: string;
 
-  joinDate: number;
+  joinedAt: Date;
 
   /** Includes habits over-done. */
-  totalXp: number;
+  xp: number;
+  
   /** Excludes habits over-done (maximum amount of daily xp can be equal to daily xp target). */
   dailyXpCurrent: number;
   dailyXpTarget: number;
-  lastXpDate: number;
+
+  lastXpDate: Date;
 
   streaks: number;
-  lastStreakDate?: number;
+  lastStreakDate?: Date;
 
   followerCount: number;
   followingCount: number;
-
-  /** Target user subscribing to the current user. */
-  follower?: boolean;
-  /** Current user subscribing to the target user. */
-  following?: boolean;
-
+  
   premium?: boolean;
 }
