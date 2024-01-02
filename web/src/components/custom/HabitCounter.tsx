@@ -2,18 +2,7 @@ import { util } from '#/lib/util'
 import { useTrekieStore } from '#/stores/trekieStore'
 import { truncate } from '#/styles/shared.css'
 import { IHabit } from '@sdk/types/habit'
-import {
-  Badge,
-  Box,
-  Button,
-  Card,
-  Flex,
-  Group,
-  Paper,
-  ScrollArea,
-  Text,
-  Title,
-} from '@mantine/core'
+import { Badge, Box, Button, Card, Flex, Group, Paper, ScrollArea, Text, Title } from '@mantine/core'
 import { IconMinus, IconPlus, IconTargetArrow } from '@tabler/icons-react'
 import TextParser from '../util/TextParser'
 import { MouseEvent } from 'react'

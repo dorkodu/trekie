@@ -1,5 +1,5 @@
 import { useApiStore } from '#/stores/apiStore'
-import { IMemory } from '@sdk/types/memory'
+import { IStory } from '@sdk/types/memory'
 import {
   ActionIcon,
   Anchor,
@@ -18,7 +18,7 @@ import { MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface Props {
-  memory: IMemory
+  memory: IStory
 
   onClick?: () => void
 }
@@ -85,13 +85,13 @@ function Memory({ memory, onClick }: Props) {
           <Flex align="center" gap="xs">
             <ActionIcon
               onClick={onFavourite}
-              c={!memory.favourited ? 'var(--text-color)' : 'green'}
+              c={!memory.likedByMe ? 'var(--text-color)' : 'green'}
               variant="subtle"
             >
-              {!memory.favourited ? <IconStar /> : <IconStarFilled />}
+              {!memory.likedByMe ? <IconStar /> : <IconStarFilled />}
             </ActionIcon>
-            <Text title={util.formatNumber(memory.favourites, true)}>
-              {util.formatNumber(memory.favourites)}
+            <Text title={util.formatNumber(memory.likes, true)}>
+              {util.formatNumber(memory.likes)}
             </Text>
           </Flex>
         </Flex>

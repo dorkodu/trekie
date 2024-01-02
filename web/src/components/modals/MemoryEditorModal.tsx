@@ -1,6 +1,6 @@
 import { useApiStore } from '#/stores/apiStore'
 import { useAppStore } from '#/stores/appStore'
-import { IMemory } from '@sdk/types/memory'
+import { IStory } from '@sdk/types/memory'
 import { Button, Flex, Modal, Textarea } from '@mantine/core'
 
 function MemoryEditorModal() {
@@ -30,12 +30,12 @@ function MemoryEditorModal() {
     const currentUserId = useApiStore.getState().userId
     if (!currentUserId) return
 
-    const memory: IMemory = {
+    const memory: IStory = {
       id: Date.now().toString(),
       userId: currentUserId,
       date: Date.now(),
       description: memoryEditor.description,
-      favourites: 0,
+      likes: 0,
     }
 
     useApiStore.getState().addMemory(memory)

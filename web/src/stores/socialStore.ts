@@ -2,124 +2,103 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { persist } from 'zustand/middleware'
 
-import type { IUser, IHabit, IStory, IGoal } from '@sdk/types'
+import type { IUser, IHabit, IStory as IStory, IGoal } from '@sdk/types'
 
 import { util } from '#/lib/util'
 
 import { useAppStore } from './appStore'
-import { useDorkoduStore } from './dorkoduStore'
-import { useSocialStore } from './socialStore'
 
-export interface TrekieStoreState {
+export interface SocialStoreState {
   userId: string | undefined
-  user: IUser
 
+  users: Record<string, IUser>
   habits: Record<string, IHabit>
-  memories: Record<string, IStory>
+  stories: Record<string, IStory>
   goals: Record<string, IGoal>
 
-  xp: number
-  coins: number
-
-  momentum: number
+  index: {
+    usernameToUserId: Record<string, string>
+    userIdToHabitIds: Record<string, string[]>
+    userIdToStoryIds: Record<string, string[]>
+    userIdToGoalIds: Record<string, string[]>
+  }
 }
 
-export interface TrekieStoreAction {
-  addHabit: (habit: IHabit) => void
-  removeHabit: (habit: IHabit) => void
+export interface SocialStoreAction {
+  // User
+  addUser: (user: IUser) => void
+  removeUser: (user: IUser) => void
+  updateUser: (userId: string, username: string) => void
 
-  updateHabit: (id: string, title: string, description: string, dailyTarget: number) => void
+  // Social
+  followUser: (user: IUser) => void
+  blockUser: (user: IUser) => void
+  unfollowUser: (user: IUser) => void
 
-  getHabits: (userId: string | undefined) => IHabit[]
+  // Story
+  addStory: (story: IStory) => void
+  removeStory: (story: IStory) => void
+  getStories: (user: IUser) => IStory[]
+  getStory: (storyId: string) => IStory | undefined
+  likeStory: (story: IStory) => void
 
-  habitCount: () => number
-
-  trackHabit: (habit: IHabit, count: number) => void
-
-  addMemory: (memory: IStory) => void
-  removeMemory: (memory: IStory) => void
-
-  getMemories: () => IStory[]
-  getMemory: (id: string) => IMemo
-
-  favouriteMemory: (memory: IStory) => void
-
-  addGoal: (goal: IGoal) => void
-  removeGoal: (goal: IGoal) => void
-  getGoals: (userId: string | undefined) => IGoal[]
-
+  // Stats
   updateStats: () => void
 
   reset: () => void
 }
 
-const defaultState: TrekieStoreState = {
+const defaultState: SocialStoreState = {
   userId: undefined,
-
-  // stats, points
-  xp: 0,
-  coins: 0,
 
   // database
   users: {},
 
   habits: {},
 
-  memories: {},
+  stories: {},
 
   goals: {},
 
   index: {
     usernameToUserId: {},
     userIdToHabitIds: {},
-    userIdToMemoryIds: {},
+    userIdToStoryIds: {},
     userIdToGoalIds: {},
   },
 }
 
-const initialState: TrekieStoreState = {
-  userId: '0',
+const initialState: SocialStoreState = {
+  userId: undefined,
 
-  // stats, points
-  xp: 500,
-  coins: 10,
+  // database
+  users: {},
 
-  user: {
-    id: '0',
-    username: 'dorukeray',
-    name: 'Doruk Eray',
-    bio: 'Founder, Polymath, Craftsman.',
-    email: 'doruk@dorkodu.com',
-    premium: true,
-    joinedAt: new Date(1703846675432),
-  },
+  habits: {},
 
-  habits: {
-    '1': {
-      id: '0',
-      title: 'Check Trekie Every Day!',
-      description:
-        'See your life goals, check your habits and stay on track. Never lose your momentum.',
-      count: 0,
-      date: 1703685605,
-      heatmap: [0, 1, 4, 5, 0, 2],
-      dailyTarget: 5,
-      userId: '0',
-    },
-  },
-
-  memories: {},
+  stories: {},
 
   goals: {},
+
+  index: {
+    usernameToUserId: {
+      dorukeray: '0',
+    },
+
+    userIdToHabitIds: {
+      '0': ['1'],
+    },
+
+    userIdToStoryIds: {},
+
+    userIdToGoalIds: {},
+  },
 }
 
-export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
+
+export const useSocialStore = create<SocialStoreState & SocialStoreAction>()(
   immer((set, get) => ({
     ...initialState,
-
-    habitCount() {
-      return 5
-    },
 
     addUser(user) {
       set(s => {
@@ -296,21 +275,21 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
 
     addMemory(memory) {
       set(s => {
-        s.memories[memory.id] = memory
-        if (!s.index.userIdToMemoryIds[memory.userId])
-          s.index.userIdToMemoryIds[memory.userId] = []
-        s.index.userIdToMemoryIds[memory.userId]?.push(memory.id)
+        s.stories[memory.id] = memory
+        if (!s.index.userIdToStoryIds[memory.userId])
+          s.index.userIdToStoryIds[memory.userId] = []
+        s.index.userIdToStoryIds[memory.userId]?.push(memory.id)
       })
     },
 
     removeMemory(memory) {
       set(s => {
-        delete s.memories[memory.id]
+        delete s.stories[memory.id]
 
-        let userIdToMemoryIds = s.index.userIdToMemoryIds[memory.userId]
+        let userIdToMemoryIds = s.index.userIdToStoryIds[memory.userId]
         if (!userIdToMemoryIds) return
 
-        s.index.userIdToMemoryIds[memory.userId] = userIdToMemoryIds.filter(
+        s.index.userIdToStoryIds[memory.userId] = userIdToMemoryIds.filter(
           memoryId => memoryId !== memory.id
         )
       })
@@ -319,8 +298,8 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
     getMemories(userId) {
       if (!userId) return []
 
-      const memories = get().memories
-      const userIdToMemoryIds = get().index.userIdToMemoryIds
+      const memories = get().stories
+      const userIdToMemoryIds = get().index.userIdToStoryIds
 
       const memoryIds = userIdToMemoryIds[userId]
       if (!memoryIds) return []
@@ -333,13 +312,13 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
     favouriteMemory(memory) {
       set(state => {
         const targetMemoryId = memory.id
-        const targetMemory = targetMemoryId && state.memories[targetMemoryId]
+        const targetMemory = targetMemoryId && state.stories[targetMemoryId]
         if (!targetMemory) return
 
-        const newState = !targetMemory.likedByMe
+        const newState = !targetMemory.favourited
 
-        targetMemory.likedByMe = newState
-        targetMemory.likes += newState ? +1 : -1
+        targetMemory.favourited = newState
+        targetMemory.favourites += newState ? +1 : -1
       })
     },
 

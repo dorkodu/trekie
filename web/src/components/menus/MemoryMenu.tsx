@@ -1,6 +1,6 @@
 import { useApiStore } from '#/stores/apiStore'
 import { useAppStore } from '#/stores/appStore'
-import { IMemory } from '@sdk/types/memory'
+import { IStory } from '@sdk/types/memory'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
@@ -13,7 +13,7 @@ import {
 import { MouseEvent } from 'react'
 
 interface Props {
-  memory: IMemory
+  memory: IStory
 }
 
 function MemoryMenu({ memory }: Props) {
