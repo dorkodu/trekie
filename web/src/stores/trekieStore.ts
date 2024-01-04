@@ -4,15 +4,15 @@ import { persist } from 'zustand/middleware'
 
 import type { IUser, IHabit, IStory, IGoal } from '@sdk/types'
 
-import { util } from '#/lib/util'
+import { Maybe, util } from '#/lib/util'
 
 import { useAppStore } from './appStore'
 import { useDorkoduStore } from './dorkoduStore'
 import { useSocialStore } from './socialStore'
 
 export interface TrekieStoreState {
-  userId: string | undefined
-  user: IUser
+  userId: Maybe<string>
+  user: Maybe<IUser>
 
   habits: Record<string, IHabit>
   memories: Record<string, IStory>
@@ -39,14 +39,13 @@ export interface TrekieStoreAction {
   addMemory: (memory: IStory) => void
   removeMemory: (memory: IStory) => void
 
-  getMemories: () => IStory[]
-  getMemory: (id: string) => IMemo
-
-  favouriteMemory: (memory: IStory) => void
+  getStories: () => IStory[]
+  getStory: (id: string) => IStory
 
   addGoal: (goal: IGoal) => void
   removeGoal: (goal: IGoal) => void
   getGoals: (userId: string | undefined) => IGoal[]
+  getGoal: (id: string) => IGoal | null
 
   updateStats: () => void
 
@@ -55,13 +54,14 @@ export interface TrekieStoreAction {
 
 const defaultState: TrekieStoreState = {
   userId: undefined,
+  user: undefined,
 
   // stats, points
   xp: 0,
   coins: 0,
 
   // database
-  users: {},
+  user: undefined,
 
   habits: {},
 
@@ -316,7 +316,7 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
       })
     },
 
-    getMemories(userId) {
+    getStories(userId) {
       if (!userId) return []
 
       const memories = get().memories

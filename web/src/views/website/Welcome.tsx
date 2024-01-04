@@ -71,7 +71,7 @@ const Hero = () => {
           </div>
 
           <Title className={WebsiteStyles.Hero.Title}>
-            Your Social & Gamified <br /> Life Growth Companion
+            Your Social & Gamified <br /> Productivity Companion
           </Title>
 
           <Stack w="90%" maw={320} gap={12} mx="auto">

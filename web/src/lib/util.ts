@@ -121,4 +121,6 @@ export function isSameDay(
   )
 }
 
+export type Maybe<T> = NonNullable<T> | undefined;
+
 export * as util from './util'

@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { useAppStore } from './appStore'
+import { useSocialStore } from './socialStore'
 
 export interface DorkoduAction {
   auth: (user: IUser | undefined) => void
@@ -13,16 +14,15 @@ export interface DorkoduAction {
 export interface DorkoduState {
   userId: string | undefined
   accountId: string | undefined
-  
-  deviceId: string | undefined
-  deviceId: string | undefined
 
-  users: Record<string, IUser>
+  deviceId: string | undefined
 }
 
 const initialState: DorkoduState = {
   userId: undefined,
-  users: {},
+  accountId: undefined,
+
+  deviceId: "0xDoruksPod"
 }
 
 export type DorkoduStoreInterface = DorkoduState & DorkoduAction
@@ -39,28 +39,29 @@ export const useDorkoduStore = create<DorkoduStoreInterface>()(
           // - auth will fail
           // - loader will be removed
           // - browser will navigate to join
-    
+
           if (user) {
             set(s => {
               s.userId = user.id
             })
-            get().addUser(user)
-            get().updateStats()
+
+            useSocialStore.getState().addUser(user)
+            useSocialStore.getState().updateStats()
           }
-    
+
           useAppStore.setState(s => {
             s.loading.auth = false
           })
         },
 
-    logout() {
-      set(s => {
-        s.userId = undefined
-      })
-      useAppStore.setState(s => {
-        s.loading.auth = true
-      })
-    },
+        logout() {
+          set(s => {
+            s.userId = undefined
+          })
+          useAppStore.setState(s => {
+            s.loading.auth = true
+          })
+        },
       }),
       {
         name: 'dorkodu-store',

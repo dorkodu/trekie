@@ -15,12 +15,13 @@ import { IconPinnedFilled } from '@tabler/icons-react'
 import { IHabit } from '@sdk/types'
 
 import { vanilla } from '#/styles/theme'
+import { useSocialStore } from '#/stores/socialStore'
 
 function Home() {
   const navigate = useNavigate()
 
   const userId = useTrekieStore(state => state.userId)
-  const users = useTrekieStore(state => state.users)
+  const users = useSocialStore(state => state.users)
   const user = userId ? users[userId] : undefined
 
   return (

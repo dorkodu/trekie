@@ -67,10 +67,6 @@ function AppLayout() {
 
   const location = useLocation()
 
-  const userId = useTrekieStore(state => state.userId)
-  const users = useTrekieStore(state => state.users)
-  const user = userId ? users[userId] : undefined
-
   const getRouteColor = (_route: string): MantineColor | undefined => {
     return _route === location.pathname ? undefined : 'var(--text-color)'
   }

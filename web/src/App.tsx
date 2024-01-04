@@ -10,16 +10,16 @@ import { useRefreshStatsDaily } from '#/components/hooks'
 
 import { useAppStore } from '#/stores/appStore'
 import { useTrekieStore } from '#/stores/trekieStore'
+import { useDorkoduStore } from './stores/dorkoduStore'
 
 function App() {
-  console.log('knk: ' + useTrekieStore($ => JSON.stringify($.users, null, 4)))
 
   const loading = useAppStore(state => state.loading)
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
     if (!loading.auth) return
-    useTrekieStore.getState().auth(undefined)
+    useDorkoduStore.getState().auth(undefined)
   }, [loading.auth])
 
   // app hooks
