@@ -1,48 +1,13 @@
+import { BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title, useMantineColorScheme }
+  from '@mantine/core'
+import { IconAbacus, IconAdOff, IconArrowRight, IconBuildingStore, IconCheckbox, IconCopyCheck, IconMultiplier2x, IconPhoto, IconPhotoStar, IconPolaroid, IconPolaroidFilled, IconRocket, IconShare, IconTargetArrow, IconUsersGroup, }
+  from '@tabler/icons-react'
+
 import GlassCard from '#/components/cards/GlassCard'
 import Emoji from '#/components/custom/Emoji'
-import Footer from '#/components/custom/Footer'
-import ColorToggle from '#/components/util/ColorToggle'
-import { vanilla } from '#/styles/theme'
 
 import * as PremiumStyles from '#/styles/views/Premium.css'
 import * as WebsiteStyles from '#/styles/website/Website.css'
-
-import {
-  Accordion,
-  BackgroundImage,
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Flex,
-  Group,
-  Image,
-  List,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-  rem,
-  useMantineColorScheme,
-} from '@mantine/core'
-import {
-  IconAdFilled,
-  IconAdOff,
-  IconArrowRight,
-  IconAsterisk,
-  IconCheck,
-  IconCheckbox,
-  IconEqualDouble,
-  IconMultiplier2x,
-  IconPlus,
-  IconUserCircle,
-  IconUsersGroup,
-} from '@tabler/icons-react'
-import { IconAbacus } from '@tabler/icons-react'
-import { Link, useNavigate } from 'react-router-dom'
 
 export default function Welcome() {
   return (
@@ -67,7 +32,7 @@ const Hero = () => {
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
         <Stack gap="sm">
           <div>
-            <Image src={'/images/trekie_Icon.svg'} w={100} mx="auto" />
+            <Image src={'/images/Hero.svg'} w="80%" mx="auto" />
           </div>
 
           <Title className={WebsiteStyles.Hero.Title}>
@@ -85,36 +50,38 @@ const Hero = () => {
         </Stack>
 
         <BackgroundImage
-          src="/images/liam.jpg"
-          maw={500}
+          src="/images/hero-Gamify.png"
+          maw={540}
           mx="auto"
           my="lg"
-          p="lg"
           radius="lg"
+          style={{ padding: "40px 0" }}
         >
-          <Stack
-            gap="sm"
-            maw={380}
-            style={{ alignSelf: 'center', justifySelf: 'center' }}
-            mx="auto"
-          >
-            {[
-              ['🎯', 'Add Life Goals', 'Design your new life.'],
-              ['✅', 'Track Habits & To-Dos', 'Never been more enjoyable.'],
-              ['🫂', 'Share Memories', 'Connect with close friends.'],
-            ].map(x => (
-              <GlassCard key={x[0]}>
-                <Group wrap="nowrap">
-                  {/* @ts-ignore */}
-                  <Emoji emoji={x[0]} size={30} />
-                  <Stack gap={0} pr={8}>
-                    <Text fw={700}>{x[1]}</Text>
-                    <Text>{x[2]}</Text>
-                  </Stack>
-                </Group>
-              </GlassCard>
-            ))}
-          </Stack>
+          <div>
+            <Stack
+              gap="sm"
+              maw={380}
+              style={{ alignSelf: 'center', justifySelf: 'center' }}
+              mx="auto"
+            >
+              {[
+                ['🎯', 'Add Life Goals', 'Design your new life.'],
+                ['✅', 'Track Habits & To-Dos', 'Never been more enjoyable.'],
+                ['🫂', 'Share Stories', 'Connect with close friends.'],
+              ].map(x => (
+                <GlassCard key={x[0]}>
+                  <Group wrap="nowrap">
+                    {/* @ts-ignore */}
+                    <Emoji emoji={x[0]} size={30} />
+                    <Stack gap={0} pr={8}>
+                      <Text fw={700}>{x[1]}</Text>
+                      <Text>{x[2]}</Text>
+                    </Stack>
+                  </Group>
+                </GlassCard>
+              ))}
+            </Stack>
+          </div>
         </BackgroundImage>
       </SimpleGrid>
     </Paper>
@@ -141,7 +108,7 @@ const ItWorks = (
       </Stack>
 
       <Flex justify="center" style={{ alignSelf: 'center' }}>
-        <Image src="/images/oasis.webp" w="auto" h={300} radius="lg" />
+        <Image src="/images/Gamify.webp" w="80%" h="auto" mx="auto" radius="lg" />
       </Flex>
     </SimpleGrid>
   </Paper>
@@ -152,54 +119,62 @@ const Features = (
     <Title ta="center" order={2} size={32} fw={800}>
       Features
     </Title>
-    <Text mx="auto" size="xl" fw={600} ta="center" maw={400} lh={1.25} my={20}>
+    <Text mx="auto" size="xl" ta="center" maw={400} lh={1.25} my={20}>
       Trekie helps you achieve your goals to become happier, healthier and
       wiser.
+    </Text>
+
+    <Text mx="auto" ta="center" maw={600} lh={1.25} my={20}>
+      Working with Trekie is fun, and it works! With quick, bite-sized actions you can track your habits, earn XP and coins while getting better at real-world.
+    </Text>
+
+    <Text mx="auto" ta="center" maw={600} lh={1.25} my={20}>
+      We use a combination of science-backed methods and delightful game mechanics to create this effective productivity experience!
     </Text>
 
     <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
       {[
         {
-          icon: IconAbacus,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
+          icon: IconTargetArrow,
+          title: 'Life Goals',
           description:
-            'Working with Trekie is fun, and it works! With quick, bite-sized actions you can track your habits, earn XP and coins while getting better at real-world.',
+            '',
         },
         {
-          icon: IconAbacus,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
+          icon: IconCopyCheck,
+          title: 'Habits',
           description:
-            'We use a combination of science-backed methods and delightful game mechanics to create this effective productivity experience!',
+            '',
         },
         {
-          icon: IconAbacus,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
+          icon: IconRocket,
+          title: 'Momentum, XP, Coins',
           description:
-            'We make it easy to form a habit of language learning with game-like features, fun challenges, and reminders from our friendly mascot, Duo the owl.',
+            '',
         },
         {
-          icon: IconAbacus,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
+          icon: IconPhoto,
+          title: 'Stories',
           description:
             'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
         },
         {
-          icon: IconAbacus,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
+          icon: IconUsersGroup,
+          title: 'Community & Social',
           description:
             'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
         },
         {
-          icon: IconAbacus,
-          title: 'Lorem ipsum dolor sit amet consectetur.',
+          icon: IconBuildingStore,
+          title: 'Marketplace',
           description:
-            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis aspernatur dolore doloremque itaque enim. Delectus, possimus.',
+            'Buy items, features.',
         },
       ].map(Feature => (
         <Card withBorder key={randomId()}>
           <Group gap={10} wrap="nowrap" mb={10}>
-            <ThemeIcon variant="light" size={40}>
-              <Feature.icon size={26} />
+            <ThemeIcon variant="gradient" gradient={{ from: "green", to: "teal" }} size={40}>
+              <Feature.icon stroke={2.25} size={26} />
             </ThemeIcon>
             <Text fw={700} lh={1.15}>
               {Feature.title}
@@ -362,9 +337,6 @@ const DorkoduShilling = (
 
 import { randomId } from '@mantine/hooks'
 
-const placeholder =
-  'It can’t help but hear a pin drop from over half a mile away, so it lives deep in the mountains where there aren’t many people or Pokémon.It was born from sludge on the ocean floor. In a sterile environment, the germs within its body can’t multiply, and it dies.It has no eyeballs, so it can’t see. It checks its surroundings via the ultrasonic waves it emits from its mouth.'
-
 function FAQ() {
   const questions = [
     [
@@ -423,18 +395,55 @@ const Pricing = (
       We will go extinct, or will adapt to our new digital-native reality.
     </Text>
 
-    <SimpleGrid my={20} cols={{ base: 1, sm: 2 }}>
+    <SimpleGrid my={20} cols={{ base: 1, xs: 2, }}>
       <Card withBorder shadow="sm">
-        <Text>Free</Text>
-        <Text></Text>
-        <Text></Text>
+
+        <Card.Section p="md">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g fill="none"><path fill="#00A6ED" d="M2 6a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6Z" /><path fill="#fff" d="M10.281 12.752a.75.75 0 0 1 .75-.75h2.363a2.407 2.407 0 0 1 .562 4.747c-.103.025-.145.158-.068.23l1.786 1.677a.75.75 0 1 1-1.027 1.094l-2.655-2.494a.125.125 0 0 0-.21.091v1.965a.75.75 0 1 1-1.5 0v-6.56Zm1.5 2.438c0 .07.056.125.125.125h1.488a.907.907 0 1 0 0-1.813h-1.488a.125.125 0 0 0-.125.125v1.563Zm-6.913-3.103a.75.75 0 0 0-.75.75v6.43a.75.75 0 0 0 1.5 0v-2.228c0-.069.056-.125.125-.125h2.709a.75.75 0 0 0 0-1.5H5.743a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125h2.758a.75.75 0 0 0 0-1.5H4.868Zm12.7 0a.75.75 0 0 0-.75.75v6.43c0 .414.335.75.75.75H21.2a.75.75 0 0 0 0-1.5h-2.757a.125.125 0 0 1-.125-.126V17.04c0-.069.056-.125.125-.125h2.708a.75.75 0 0 0 0-1.5h-2.708a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125H21.2a.75.75 0 0 0 0-1.5h-3.632Zm5.429.75a.75.75 0 0 1 .75-.75h3.633a.75.75 0 0 1 0 1.5h-2.758a.125.125 0 0 0-.125.125v1.577c0 .07.056.125.125.125h2.709a.75.75 0 0 1 0 1.5h-2.709a.125.125 0 0 0-.125.125v1.352c0 .07.056.125.125.125h2.758a.75.75 0 1 1 0 1.5h-3.633a.75.75 0 0 1-.75-.75v-6.43Z" /></g></svg>
+          <Group gap={8}>
+            <Text span fw={800} fz={32} ff="monospace" >$0</Text>
+            <Text fw={600} fz={26} span> FREE</Text>
+          </Group>
+          <Text>Starter Pack</Text>
+        </Card.Section>
+
+        <Card.Section p="md">
+          <List icon={<IconCheckbox />}>
+            <List.Item></List.Item>
+            <List.Item></List.Item>
+            <List.Item></List.Item>
+          </List>
+        </Card.Section>
+
+        <Button size="md" fw={700}>
+          GET STARTED
+        </Button>
       </Card>
 
       <Card withBorder shadow="sm">
-        <Text>Premium</Text>
-        <Text></Text>
-        <Text></Text>
+
+        <Card.Section p="md">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g fill="none"><path fill="#00A6ED" d="M2 6a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6Z" /><path fill="#fff" d="M10.281 12.752a.75.75 0 0 1 .75-.75h2.363a2.407 2.407 0 0 1 .562 4.747c-.103.025-.145.158-.068.23l1.786 1.677a.75.75 0 1 1-1.027 1.094l-2.655-2.494a.125.125 0 0 0-.21.091v1.965a.75.75 0 1 1-1.5 0v-6.56Zm1.5 2.438c0 .07.056.125.125.125h1.488a.907.907 0 1 0 0-1.813h-1.488a.125.125 0 0 0-.125.125v1.563Zm-6.913-3.103a.75.75 0 0 0-.75.75v6.43a.75.75 0 0 0 1.5 0v-2.228c0-.069.056-.125.125-.125h2.709a.75.75 0 0 0 0-1.5H5.743a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125h2.758a.75.75 0 0 0 0-1.5H4.868Zm12.7 0a.75.75 0 0 0-.75.75v6.43c0 .414.335.75.75.75H21.2a.75.75 0 0 0 0-1.5h-2.757a.125.125 0 0 1-.125-.126V17.04c0-.069.056-.125.125-.125h2.708a.75.75 0 0 0 0-1.5h-2.708a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125H21.2a.75.75 0 0 0 0-1.5h-3.632Zm5.429.75a.75.75 0 0 1 .75-.75h3.633a.75.75 0 0 1 0 1.5h-2.758a.125.125 0 0 0-.125.125v1.577c0 .07.056.125.125.125h2.709a.75.75 0 0 1 0 1.5h-2.709a.125.125 0 0 0-.125.125v1.352c0 .07.056.125.125.125h2.758a.75.75 0 1 1 0 1.5h-3.633a.75.75 0 0 1-.75-.75v-6.43Z" /></g></svg>
+          <Group gap={8}>
+            <Text span fw={800} fz={32} ff="monospace" >$0</Text>
+            <Text fw={600} fz={26} span> FREE</Text>
+          </Group>
+          <Text>Starter Pack</Text>
+        </Card.Section>
+
+        <Card.Section p="md">
+          <List icon={<IconCheckbox />}>
+            <List.Item></List.Item>
+            <List.Item></List.Item>
+            <List.Item></List.Item>
+          </List>
+        </Card.Section>
+
+        <Button size="md" fw={700}>
+          GET STARTED
+        </Button>
       </Card>
+
     </SimpleGrid>
 
     <Card withBorder shadow="sm">

@@ -15,13 +15,13 @@ export const truncate = style({
 
 export const glassBackground =
   style({
-    background: rgba('#FFFFFF', 0.75),
-
-    backdropFilter: `blur(5px)`,
+    background: rgba('#FFFFFF', 0.5),
+    backdropFilter: `blur(2px)`,
 
     selectors: {
       [vanilla.darkSelector]: {
-        background: rgba(vanilla.colors.black, 0.6),
+        backdropFilter: `blur(4px)`,
+        background: rgba(vanilla.colors.black, 0.5),
       },
     },
   })
