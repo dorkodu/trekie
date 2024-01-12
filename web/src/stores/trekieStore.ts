@@ -68,13 +68,6 @@ const defaultState: TrekieStoreState = {
   memories: {},
 
   goals: {},
-
-  index: {
-    usernameToUserId: {},
-    userIdToHabitIds: {},
-    userIdToMemoryIds: {},
-    userIdToGoalIds: {},
-  },
 }
 
 const initialState: TrekieStoreState = {

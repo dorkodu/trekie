@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css'
 import { theme, vanilla } from '../theme'
 import { darken, rgba } from '@mantine/core'
 
-const BackgroundGradient = `linear-gradient(to top, #00BFFA 0%, #220CA1 100%)` 
+export const BackgroundGradient = `linear-gradient(to top, #00BFFA 0%, #220CA1 100%)`
 
 export const Banner = {
   Root: style({
@@ -11,7 +11,7 @@ export const Banner = {
     maxWidth: 1000,
     backgroundImage: BackgroundGradient,
     margin: `0 auto`
-  }), 
+  }),
 
   Title: style({
     color: "white",

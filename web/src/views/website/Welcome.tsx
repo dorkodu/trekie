@@ -1,6 +1,6 @@
-import { BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title, useMantineColorScheme }
+import { BackgroundImage, Badge, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title, useMantineColorScheme }
   from '@mantine/core'
-import { IconAbacus, IconAdOff, IconArrowRight, IconBuildingStore, IconCheckbox, IconCopyCheck, IconMultiplier2x, IconPhoto, IconPhotoStar, IconPolaroid, IconPolaroidFilled, IconRocket, IconShare, IconTargetArrow, IconUsersGroup, }
+import { IconAbacus, IconAdOff, IconArrowRight, IconBuildingStore, IconCheckbox, IconCircleCheckFilled, IconCopyCheck, IconMultiplier2x, IconPhoto, IconPhotoStar, IconPolaroid, IconPolaroidFilled, IconRocket, IconShare, IconSquareCheckFilled, IconSquareRoundedCheck, IconTargetArrow, IconUsersGroup, }
   from '@tabler/icons-react'
 
 import GlassCard from '#/components/cards/GlassCard'
@@ -336,6 +336,7 @@ const DorkoduShilling = (
 )
 
 import { randomId } from '@mantine/hooks'
+import { IconSquareRoundedCheckFilled } from '@tabler/icons-react'
 
 function FAQ() {
   const questions = [
@@ -399,12 +400,17 @@ const Pricing = (
       <Card withBorder shadow="sm">
 
         <Card.Section p="md">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g fill="none"><path fill="#00A6ED" d="M2 6a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6Z" /><path fill="#fff" d="M10.281 12.752a.75.75 0 0 1 .75-.75h2.363a2.407 2.407 0 0 1 .562 4.747c-.103.025-.145.158-.068.23l1.786 1.677a.75.75 0 1 1-1.027 1.094l-2.655-2.494a.125.125 0 0 0-.21.091v1.965a.75.75 0 1 1-1.5 0v-6.56Zm1.5 2.438c0 .07.056.125.125.125h1.488a.907.907 0 1 0 0-1.813h-1.488a.125.125 0 0 0-.125.125v1.563Zm-6.913-3.103a.75.75 0 0 0-.75.75v6.43a.75.75 0 0 0 1.5 0v-2.228c0-.069.056-.125.125-.125h2.709a.75.75 0 0 0 0-1.5H5.743a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125h2.758a.75.75 0 0 0 0-1.5H4.868Zm12.7 0a.75.75 0 0 0-.75.75v6.43c0 .414.335.75.75.75H21.2a.75.75 0 0 0 0-1.5h-2.757a.125.125 0 0 1-.125-.126V17.04c0-.069.056-.125.125-.125h2.708a.75.75 0 0 0 0-1.5h-2.708a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125H21.2a.75.75 0 0 0 0-1.5h-3.632Zm5.429.75a.75.75 0 0 1 .75-.75h3.633a.75.75 0 0 1 0 1.5h-2.758a.125.125 0 0 0-.125.125v1.577c0 .07.056.125.125.125h2.709a.75.75 0 0 1 0 1.5h-2.709a.125.125 0 0 0-.125.125v1.352c0 .07.056.125.125.125h2.758a.75.75 0 1 1 0 1.5h-3.633a.75.75 0 0 1-.75-.75v-6.43Z" /></g></svg>
           <Group gap={8}>
-            <Text span fw={800} fz={32} ff="monospace" >$0</Text>
-            <Text fw={600} fz={26} span> FREE</Text>
+            <Text span fw={800} fz={32} ff="monospace" >
+              $0
+            </Text>
+            <Badge variant='filled' color="red" size="xl">FREE</Badge>
           </Group>
           <Text>Starter Pack</Text>
+        </Card.Section>
+
+        <Card.Section>
+          <Divider />
         </Card.Section>
 
         <Card.Section p="md">
@@ -415,32 +421,33 @@ const Pricing = (
           </List>
         </Card.Section>
 
-        <Button size="md" fw={700}>
+        <Button color="dark" size="md" fw={700}>
           GET STARTED
         </Button>
       </Card>
 
-      <Card withBorder shadow="sm">
-
+      <Card shadow="sm" style={{ backgroundImage: PremiumStyles.BackgroundGradient }}>
         <Card.Section p="md">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g fill="none"><path fill="#00A6ED" d="M2 6a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6Z" /><path fill="#fff" d="M10.281 12.752a.75.75 0 0 1 .75-.75h2.363a2.407 2.407 0 0 1 .562 4.747c-.103.025-.145.158-.068.23l1.786 1.677a.75.75 0 1 1-1.027 1.094l-2.655-2.494a.125.125 0 0 0-.21.091v1.965a.75.75 0 1 1-1.5 0v-6.56Zm1.5 2.438c0 .07.056.125.125.125h1.488a.907.907 0 1 0 0-1.813h-1.488a.125.125 0 0 0-.125.125v1.563Zm-6.913-3.103a.75.75 0 0 0-.75.75v6.43a.75.75 0 0 0 1.5 0v-2.228c0-.069.056-.125.125-.125h2.709a.75.75 0 0 0 0-1.5H5.743a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125h2.758a.75.75 0 0 0 0-1.5H4.868Zm12.7 0a.75.75 0 0 0-.75.75v6.43c0 .414.335.75.75.75H21.2a.75.75 0 0 0 0-1.5h-2.757a.125.125 0 0 1-.125-.126V17.04c0-.069.056-.125.125-.125h2.708a.75.75 0 0 0 0-1.5h-2.708a.125.125 0 0 1-.125-.125v-1.577c0-.07.056-.125.125-.125H21.2a.75.75 0 0 0 0-1.5h-3.632Zm5.429.75a.75.75 0 0 1 .75-.75h3.633a.75.75 0 0 1 0 1.5h-2.758a.125.125 0 0 0-.125.125v1.577c0 .07.056.125.125.125h2.709a.75.75 0 0 1 0 1.5h-2.709a.125.125 0 0 0-.125.125v1.352c0 .07.056.125.125.125h2.758a.75.75 0 1 1 0 1.5h-3.633a.75.75 0 0 1-.75-.75v-6.43Z" /></g></svg>
+          <Image src="/images/trekie_SUPER_Badge.svg" w={128} h="auto"></Image>
           <Group gap={8}>
-            <Text span fw={800} fz={32} ff="monospace" >$0</Text>
-            <Text fw={600} fz={26} span> FREE</Text>
+            <Title fw={800} fz={36} ff="monospace" c="white">
+              $6
+              <Text span c="blue.2" fz={20}>/month</Text>
+            </Title>
           </Group>
-          <Text>Starter Pack</Text>
+          <Text c="white">Say hello to your new <b>supercharged life</b>!</Text>
         </Card.Section>
 
         <Card.Section p="md">
-          <List icon={<IconCheckbox />}>
+          <List icon={<ThemeIcon variant="light" color="white" size={32}><IconCircleCheckFilled /></ThemeIcon>}>
             <List.Item></List.Item>
             <List.Item></List.Item>
             <List.Item></List.Item>
           </List>
         </Card.Section>
 
-        <Button size="md" fw={700}>
-          GET STARTED
+        <Button className={PremiumStyles.Banner.Button} size="lg">
+          TRY FOR FREE
         </Button>
       </Card>
 
@@ -454,5 +461,5 @@ const Pricing = (
       </Text>
       <Text></Text>
     </Card>
-  </Paper>
+  </Paper >
 )
