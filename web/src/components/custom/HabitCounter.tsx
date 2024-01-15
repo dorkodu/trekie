@@ -12,15 +12,18 @@ interface Props {
 }
 
 function HabitCounter({ habitId, onClick }: Props) {
+  // get the habit yourself, fresh!
   const habit = useTrekieStore($ => $.habits[habitId])
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
     if (!habit) return;
+    console.log("Habit Count: " + useTrekieStore.getState().getHabit(habitId)?.count)
     useTrekieStore.getState().trackHabit(habit, count)
   }
 
   if (!habit) return null;
+
   return (
     <Card
       p={0}

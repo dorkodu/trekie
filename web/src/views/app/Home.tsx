@@ -20,9 +20,7 @@ import { useSocialStore } from '#/stores/socialStore'
 function Home() {
   const navigate = useNavigate()
 
-  const userId = useTrekieStore(state => state.userId)
-  const users = useSocialStore(state => state.users)
-  const user = userId ? users[userId] : undefined
+  const user = useTrekieStore($ => $.user)
 
   return (
     <Stack gap="xs" m="xs">
@@ -83,8 +81,8 @@ const PinnedHabits = (
 )
 
 function UserHabitSummary() {
-  const habits = useTrekieStore($ => $.getHabits($.userId))
-  const habitCount = useTrekieStore($ => $.getHabits($.userId).length)
+  const habits = useTrekieStore($ => $.habits)
+  const habitCount = useTrekieStore($ => $.habitCount())
   const hasAnyHabits = habitCount > 0
 
   if (!hasAnyHabits) return <NoHabitsCard />
@@ -98,8 +96,8 @@ function UserHabitSummary() {
       }}
     >
       <Stack gap={0}>
-        {habits.map(x => (
-          <HabitCounter habitId={x.id} key={x.id} />
+        {Object.keys(habits).map(habitId => (
+          <HabitCounter habitId={habitId} key={habitId} />
         ))}
       </Stack>
       <Flex>

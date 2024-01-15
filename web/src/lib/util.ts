@@ -106,18 +106,15 @@ export function getDayDiff(from: number, to: number): number {
 }
 
 export function isSameDay(
-  date1: number | undefined,
-  date2: number | undefined
+  date1: Date | undefined,
+  date2: Date | undefined
 ): boolean {
   if (date1 === undefined || date2 === undefined) return false
 
-  const _date1 = new Date(date1)
-  const _date2 = new Date(date2)
-
   return (
-    _date1.getDate() === _date2.getDate() &&
-    _date1.getMonth() === _date2.getMonth() &&
-    _date1.getFullYear() === _date2.getFullYear()
+    date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
   )
 }
 
