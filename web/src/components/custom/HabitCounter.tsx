@@ -18,7 +18,6 @@ function HabitCounter({ habitId, onClick }: Props) {
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
     if (!habit) return;
-    console.log("Habit Count: " + useTrekieStore.getState().getHabit(habitId)?.count)
     useTrekieStore.getState().trackHabit(habit, count)
   }
 

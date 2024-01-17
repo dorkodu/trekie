@@ -19,13 +19,22 @@ export interface TrekieStoreState {
   xp: number
   coins: number
   momentum: number
+  streak: number
+
+  dailyProgress: number
+
+  /** Excludes habits over-done (maximum amount of daily xp can be equal to daily xp target). */
+  dailyXpCurrent: number
+  dailyXpTarget: number
+  lastXpDate: Date
+  lastStreakDate?: Date
 }
 
 export interface TrekieStoreAction {
   // HABIT
   addHabit: (habit: IHabit) => void
   getHabit: (id: string) => Maybe<IHabit>
-  removeHabit: (habit: IHabit) => void
+  removeHabit: (id: string) => void
   updateHabit: (id: string, title: string, description: string, dailyTarget: number) => void
   trackHabit: (habit: IHabit, count: number) => void
   habitCount: () => number
@@ -53,6 +62,13 @@ const defaultState: TrekieStoreState = {
   xp: 0,
   coins: 0,
   momentum: 0,
+  streak: 0,
+
+  dailyXpTarget: 0,
+  lastXpDate: new Date(),
+  dailyXpCurrent: 0,
+  lastStreakDate: new Date(),
+  dailyProgress: 20,
 
   habits: {},
   stories: {},
@@ -61,38 +77,40 @@ const defaultState: TrekieStoreState = {
 
 const initialState: TrekieStoreState = {
   // stats, points
-  xp: 500,
-  coins: 10,
+  xp: 0,
+  coins: 3,
   momentum: 0,
+  streak: 0,
+
+  dailyXpTarget: 5,
+  lastXpDate: new Date(1703846675440),
+  dailyXpCurrent: 0,
+  lastStreakDate: new Date(1703846675432),
+  dailyProgress: 20,
 
   user: {
-    id: '0',
+    id: '1',
     username: 'dorukeray',
     name: 'Doruk Eray',
     bio: 'Founder, Polymath, Craftsman.',
     email: 'doruk@dorkodu.com',
+    pictureUrl: '/images/doruk--green.png',
     premium: true,
     joinedAt: new Date(1703846675432),
-    xp: 100,
-    dailyXpTarget: 5,
-    streaks: 0,
-    lastXpDate: new Date(1703846675440),
-    dailyXpCurrent: 0,
     followerCount: 0,
     followingCount: 0,
-    lastStreakDate: new Date(1703846675432),
   },
 
   habits: {
     '1': {
-      id: '0',
+      id: '1',
+      userId: '1',
       title: 'Check Trekie Every Day!',
       description: 'See your life goals, check your habits and stay on track. Never lose your momentum.',
       count: 0,
-      date: 1703685605,
+      date: 1703846675436,
       heatmap: [0, 1, 4, 5, 0, 2],
       dailyTarget: 5,
-      userId: '0',
     },
   },
 
@@ -118,7 +136,7 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
 
         if (currentUserId !== habit.userId) return
 
-        currentUser.dailyXpTarget += habit.dailyTarget
+        $.dailyXpTarget += habit.dailyTarget
       })
     },
 
@@ -126,29 +144,29 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
       return get().habits[id]
     },
 
-    removeHabit(habit) {
+    removeHabit(id) {
       let updateStats = false
+      let removedHabit = get().getHabit(id)
 
       set($ => {
-        delete $.habits[habit.id]
+        delete $.habits[id]
 
         const currentUser = $.user
-        if (!currentUser || currentUser.id !== habit.userId)
+        if (!currentUser || !removedHabit)
           return
 
         updateStats = true
 
-        const habitDailyCurrent =
-          habit.heatmap[util.getDayDiff(habit.date, Date.now())] ?? 0
-        const habitDailyTarget = habit.dailyTarget
-        const habitCount = habit.count
+        const habitDailyCurrent = removedHabit.heatmap[util.getDayDiff(removedHabit.date, Date.now())] ?? 0
+        const habitDailyTarget = removedHabit.dailyTarget
+        const habitCount = removedHabit.count
 
-        currentUser.xp -= habitCount
-        currentUser.dailyXpCurrent -= Math.min(
+        $.xp -= habitCount
+        $.dailyXpCurrent -= Math.min(
           habitDailyCurrent,
           habitDailyTarget
         )
-        currentUser.dailyXpTarget -= habitDailyTarget
+        $.dailyXpTarget -= habitDailyTarget
       })
 
       if (updateStats) get().updateStats()
@@ -178,8 +196,8 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
         habit.description = description
         habit.dailyTarget = dailyTarget
 
-        user.dailyXpCurrent = Math.min(habitDailyTarget, habitDailyCurrent)
-        user.dailyXpTarget += habitDailyTargetDiff
+        $.dailyXpCurrent = Math.min(habitDailyTarget, habitDailyCurrent)
+        $.dailyXpTarget += habitDailyTargetDiff
       })
 
       if (updateStats) get().updateStats()
@@ -189,7 +207,8 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
       let updateStats = false
 
       set($ => {
-        const targetHabit = habit.id && $.habits[habit.id]
+        const targetHabit = $.habits[habit.id]
+
         if (!targetHabit) return
 
         const user = $.user
@@ -210,8 +229,8 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
         if (targetHabit.heatmap[dayDiff]! <= 0)
           delete targetHabit.heatmap[dayDiff]
 
-        user.xp += count
-        user.dailyXpCurrent += Math.max(
+        $.xp += count
+        $.dailyXpCurrent += Math.max(
           Math.min(habit.dailyTarget - (habitCount - count), count),
           count
         )
@@ -257,37 +276,42 @@ export const useTrekieStore = create<TrekieStoreState & TrekieStoreAction>()(
         const currentUser = $.user
         if (!currentUser) return
 
-        const didStreakToday = util.isSameDay(currentUser.lastStreakDate, new Date())
+        // update daily progress
+        let progressRatio = $.dailyXpCurrent / $.dailyXpTarget * 100
+        if (progressRatio >= 100)
+          $.dailyProgress = 100
+        else if (progressRatio < 20)
+          $.dailyProgress = 20
+        else
+          $.dailyProgress = progressRatio
+
+        const didStreakToday = util.isSameDay($.lastStreakDate, new Date())
 
         // If user is now above/equal to target xp and didn't do a streak today
         if (
-          currentUser.dailyXpCurrent > 0 &&
-          currentUser.dailyXpCurrent >= currentUser.dailyXpTarget &&
-          !didStreakToday
+          $.dailyXpCurrent > 0 &&
+          $.dailyXpCurrent >= $.dailyXpTarget && !didStreakToday
         ) {
-          currentUser.streaks++
-          currentUser.lastStreakDate = new Date()
+          $.streak++
+          $.lastStreakDate = new Date()
         }
         // If user is now below target xp and did a streak today
         else if (
-          (currentUser.dailyXpCurrent <= 0 ||
-            currentUser.dailyXpCurrent < currentUser.dailyXpTarget) &&
-          didStreakToday
+          ($.dailyXpCurrent <= 0 ||
+            $.dailyXpCurrent < $.dailyXpTarget) && didStreakToday
         ) {
-          currentUser.streaks--
-          currentUser.lastStreakDate = undefined
+          $.streak--
+          $.lastStreakDate = undefined
         }
 
         // Handle user's last xp date
-        if (!util.isSameDay(currentUser.lastXpDate, new Date())) {
-          currentUser.dailyXpCurrent = 0
-          currentUser.lastXpDate = new Date()
+        if (!util.isSameDay($.lastXpDate, new Date())) {
+          $.dailyXpCurrent = 0
+          $.lastXpDate = new Date()
         }
       })
     },
 
-    reset() {
-      set(defaultState)
-    },
+    reset() { set(defaultState) },
   }))
 )

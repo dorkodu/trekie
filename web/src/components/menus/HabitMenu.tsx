@@ -19,30 +19,31 @@ interface Props {
 }
 
 function HabitMenu({ habit }: Props) {
-  const currentUserId = useTrekieStore(state => state.userId)
+  const currentUserId = useTrekieStore($ => $.user?.id)
 
-  const onShare = (ev: MouseEvent) => {
-    ev.stopPropagation()
-  }
-  const onClipboard = (ev: MouseEvent) => {
-    ev.stopPropagation()
-  }
+  const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onClipboard = (ev: MouseEvent) => { ev.stopPropagation() }
+
   const onEdit = (ev: MouseEvent) => {
     ev.stopPropagation()
-    useAppStore.setState(s => {
-      s.modals.habitEditor.opened = true
-      s.modals.habitEditor.id = habit.id
-      s.modals.habitEditor.title = habit.title
-      s.modals.habitEditor.description = habit.description
-      s.modals.habitEditor.dailyTarget = habit.dailyTarget
+
+    useAppStore.setState($ => {
+      $.modals.habitEditor.opened = true
+      $.modals.habitEditor.id = habit.id
+      $.modals.habitEditor.title = habit.title
+      $.modals.habitEditor.description = habit.description
+      $.modals.habitEditor.dailyTarget = habit.dailyTarget
     })
   }
+
   const onReport = (ev: MouseEvent) => {
     ev.stopPropagation()
   }
+
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
-    useTrekieStore.getState().removeHabit(habit)
+
+    useTrekieStore.getState().removeHabit(habit.id)
   }
 
   return (

@@ -12,19 +12,29 @@ import {
 } from '@mantine/core'
 import Emoji from '../custom/Emoji'
 import { vanilla } from '#/styles/theme'
+import { useTrekieStore } from '#/stores/trekieStore'
 
-export function DailyStats({}: {}) {
+export function DailyStats() {
+
+  const momentum = useTrekieStore($ => $.momentum)
+  const xp = useTrekieStore($ => $.xp)
+  const coins = useTrekieStore($ => $.coins)
+  const streak = useTrekieStore($ => $.streak)
+  const progress = useTrekieStore($ => $.dailyProgress)
+
+  console.table({ momentum, xp, coins, streak, progress })
+
   return (
     <Paper p={10}>
       <Stack>
-        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xs">
-          <MomentumStatus value={60} />
-          <StreakStatus days={8} />
-          <XPStatus value={32649} />
-          <CoinStatus value={600} />
+        <SimpleGrid cols={{ base: 2 }} spacing="xs">
+          <MomentumStatus value={momentum} />
+          <StreakStatus days={streak} />
+          <XPStatus value={xp} />
+          <CoinStatus value={coins} />
         </SimpleGrid>
 
-        <DailyProgress value={20} />
+        <DailyProgress value={progress} />
       </Stack>
     </Paper>
   )
@@ -38,7 +48,7 @@ export function DailyProgress({ value }: { value: number }) {
     message = 'Bad'
     color = 'red'
   } else if (value >= 30 && value < 45) {
-    message = ''
+    message = 'Meh'
     color = 'orange'
   } else if (value >= 45 && value < 60) {
     message = 'OK'
@@ -47,11 +57,14 @@ export function DailyProgress({ value }: { value: number }) {
     message = 'Good'
     color = 'lime'
   } else if (value >= 80 && value < 95) {
-    message = 'Great.'
+    message = 'Great'
+    color = 'green'
+  } else if (value >= 95) {
+    message = 'Awesome!'
     color = 'green'
   } else {
-    message = 'Perfect :)'
-    color = 'green'
+    message = ''
+    color = 'red'
   }
 
   return (
@@ -99,19 +112,10 @@ export function SumCard({
       <Group wrap="nowrap" gap={10}>
         {icon}
         <Stack gap={0}>
-          <Text
-            tt="uppercase"
-            c={vanilla.colors[color]?.filled}
-            fw={700}
-            size="12.5"
-            lh={1}
-          >
-            {kind}
-          </Text>
           <Text>
             <Text
               span
-              lh={1.25}
+              lh={0.75}
               fw={800}
               c={
                 colorScheme == 'dark'
@@ -122,10 +126,19 @@ export function SumCard({
               {value}
             </Text>
             {text && (
-              <Text span lh={1.25} size="sm" fw={500} c={vanilla.colors.dimmed}>
+              <Text span lh={1.25} size="14" fw={400}>
                 {text}
               </Text>
             )}
+          </Text>
+          <Text
+            tt="uppercase"
+            c={vanilla.colors[color]?.filled}
+            fw={700}
+            size="12.5"
+            lh={1}
+          >
+            {kind}
           </Text>
         </Stack>
       </Group>
@@ -178,6 +191,6 @@ export function MomentumStatus({ value }: { value: number }) {
   )
 }
 
-export function CoinStats({}: {}) {
+export function CoinStats({ }: {}) {
   return <Stack></Stack>
 }
