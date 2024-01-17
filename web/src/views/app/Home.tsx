@@ -16,9 +16,12 @@ import { IHabit } from '@sdk/types'
 
 import { vanilla } from '#/styles/theme'
 import { useSocialStore } from '#/stores/socialStore'
+import { useMediaQuery } from '@mantine/hooks'
+import { DailyStats } from '#/components/cards/DailyStats'
 
 function Home() {
   const navigate = useNavigate()
+  const isMobile = useMediaQuery(vanilla.smallerThan("sm"))
 
   const user = useTrekieStore($ => $.user)
 
@@ -32,6 +35,8 @@ function Home() {
       <Text>
         Hey! Welcome to <b>your social & gamified life companion.</b>
       </Text>
+
+      {isMobile && <DailyStats />}
 
       {Goals}
       {PinnedHabits}

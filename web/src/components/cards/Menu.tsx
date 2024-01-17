@@ -1,15 +1,10 @@
 import {
-  ActionIcon,
   Anchor,
-  Avatar,
   Box,
-  Button,
-  Card,
   Divider,
   Flex,
   Group,
   Image,
-  Paper,
   Stack,
   Text,
   ThemeIcon,
@@ -17,16 +12,8 @@ import {
 } from '@mantine/core'
 import {
   IconSettings,
-  IconLogout,
-  IconUserCircle,
   IconHelp,
-  IconPigMoney,
-  IconCoin,
-  IconDiamond,
   IconCoinFilled,
-  IconArrowRight,
-  IconAlignRight,
-  IconChevronRight,
 } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
 import { Link, useNavigate } from 'react-router-dom'
@@ -62,7 +49,7 @@ export function AppMenu() {
       <MenuItem icon={<IconSettings />}>Settings</MenuItem>
 
       <div style={{ marginTop: 10 }}></div>
-      <ColorToggle />
+      <ColorToggle size='xs' />
 
       <Divider my={8} />
 

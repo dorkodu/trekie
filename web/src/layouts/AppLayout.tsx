@@ -44,15 +44,15 @@ import { DailyStats } from '#/components/cards/DailyStats'
 import Emoji from '#/components/custom/Emoji'
 
 const navLinks = [
-  { icon: <Emoji emoji="🏡" size={26} />, text: 'Home', path: '/home' },
-  { icon: <Emoji emoji="🌎" size={26} />, text: 'Explore', path: '/explore' },
-  { icon: <Emoji emoji="✅" size={26} />, text: 'Life', path: '/life' },
+  { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
+  { icon: <Emoji emoji="🌎" size={24} />, text: 'Explore', path: '/explore' },
+  { icon: <Emoji emoji="✅" size={24} />, text: 'Life', path: '/life' },
   {
-    icon: <Emoji emoji="👥" size={26} />,
+    icon: <Emoji emoji="👥" size={24} />,
     text: 'Social',
     path: '/social',
   },
-  { icon: <Emoji emoji="🏪" size={26} />, text: 'Market', path: '/market' },
+  { icon: <Emoji emoji="🏪" size={24} />, text: 'Market', path: '/market' },
 ]
 
 function AppLayout() {
@@ -66,6 +66,8 @@ function AppLayout() {
   const isWideScreen = useMediaQuery('(min-width: 768px)')
 
   const location = useLocation()
+
+  const user = useTrekieStore($ => $.user)
 
   const getRouteColor = (_route: string): MantineColor | undefined => {
     return _route === location.pathname ? undefined : 'var(--text-color)'
@@ -93,74 +95,24 @@ function AppLayout() {
         }}
       >
         <Button.Group h={styles.BARHEIGHT}>
-          <Button
-            variant="subtle"
-            c={getRouteColor('home')}
-            p={0}
-            w="20%"
-            h="auto"
-            radius={0}
-            component={Link}
-            to="/home"
-          >
-            <Flex direction="column" align="center">
-              <IconHome />
-              <Text size="xs">Home</Text>
-            </Flex>
-          </Button>
-          <Button
-            variant="subtle"
-            c={getRouteColor('explore')}
-            p={0}
-            w="20%"
-            h="auto"
-            onClick={() => navigate('/explore')}
-          >
-            <Flex direction="column" align="center">
-              <IconSearch />
-              <Text fz={10}>Explore</Text>
-            </Flex>
-          </Button>
-          <Button
-            variant="subtle"
-            c={getRouteColor('life')}
-            p={0}
-            w="20%"
-            h="auto"
-            onClick={() => navigate('/life')}
-          >
-            <Flex direction="column" align="center">
-              <IconRoad />
-              <Text fz={10}>Life</Text>
-            </Flex>
-          </Button>
-          <Button
-            variant="subtle"
-            c={getRouteColor('community')}
-            p={0}
-            w="20%"
-            h="auto"
-            onClick={() => navigate('/community')}
-          >
-            <Flex direction="column" align="center">
-              <IconUsers />
-              <Text fz={10}>Community</Text>
-            </Flex>
-          </Button>
-          <Button
-            variant="subtle"
-            c={getRouteColor('market')}
-            p={0}
-            w="20%"
-            h="auto"
-            radius={0}
-            onClick={() => navigate('/market')}
-          >
-            <Flex direction="column" align="center">
-              <IconBuildingStore />
-              <Text fz={10}>Market</Text>
-            </Flex>
-          </Button>
+          {
+            navLinks.map(view =>
+              <Button
+                variant="subtle"
+                c={getRouteColor(view.path.slice(1))}
+                p={0}
+                w="20%"
+                h="auto"
+                onClick={() => { console.log(view.path.slice(1) + "LİNK"); navigate(view.path); }}
+                key={view.text}
+              >
+                <Flex direction="column" gap={2} align="center">
+                  {view.icon}
+                  <Text fz={11} fw={500}>{view.text}</Text>
+                </Flex>
+              </Button>
+            )
+          }
         </Button.Group>
       </Paper>
 
@@ -171,7 +123,7 @@ function AppLayout() {
       >
         <CreateMenu />
       </Flex>
-    </Flex>
+    </Flex >
   )
 
   const TopBar = (
@@ -291,9 +243,9 @@ function AppLayout() {
         <Group gap={4}>
           <UserButton
             user={{
-              avatar: '/assets/avatar.webp',
-              name: 'Doruk Eray',
-              username: '@doruk',
+              avatar: user?.pictureUrl ?? '/images/avatar.webp',
+              name: user?.name ?? "Anonymous",
+              username: '@' + user?.username ?? '@------',
             }}
             compact
           />
@@ -331,9 +283,6 @@ function AppLayout() {
 
         <aside className={styles.Layout.Aside}>
           <DailyStats />
-          <Card withBorder m={10}>
-            News
-          </Card>
           <Card withBorder m={10}>
             Ad
           </Card>

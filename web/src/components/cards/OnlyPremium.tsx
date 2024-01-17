@@ -28,7 +28,7 @@ function OnlyPremium() {
       <Paper shadow="sm" className={PremiumStyles.Banner.Root} my={20}>
         <Stack mb={20}>
           <Title className={PremiumStyles.Banner.Title} c="white">
-            This premium feature is only available for Super Trekie subscribers
+            This feature is only available for premium subscribers
             :(
           </Title>
           <Text className={PremiumStyles.Banner.Text}>
