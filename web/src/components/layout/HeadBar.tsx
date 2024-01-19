@@ -4,7 +4,6 @@ import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 function HeadBar() {
-  const theme = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
 
   const navigate = useNavigate()
