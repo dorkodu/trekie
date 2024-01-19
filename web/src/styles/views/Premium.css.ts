@@ -29,7 +29,6 @@ export const Banner = {
     textShadow: `1px 1px 2px ${vanilla.colors.blue[9]}`,
   }),
 
-
   Button: style({
     maxWidth: 300,
     background: "white",

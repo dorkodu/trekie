@@ -101,24 +101,41 @@ export const Layout = {
   }),
 }
 
-export const BottomBar = style({
-  position: 'fixed',
-  width: 'calc(100% - 20px)',
-  bottom: 0,
-  backgroundColor: vanilla.colors.white,
-  border: `1px solid ${vanilla.colors.gray[3]}`,
-  boxShadow: `0 3px 4px 3px ${vanilla.colors.gray[2]}`,
-  borderRadius: 10,
-  margin: 10,
+const NavigationBarButtonBase = style({
+  borderRadius: 16,
+  padding: '8px 10px',
+  paddingRight: 18,
+  display: 'inline-block',
 
-  selectors: {
-    [vanilla.darkSelector]: {
-      backgroundColor: vanilla.colors.dark[8],
-      border: `1px solid ${vanilla.colors.dark[9]}`,
-      boxShadow: `0 3px 4px 3px ${vanilla.colors.dark[8]}`,
-    },
+  borderWidth: 2,
+  borderStyle: 'solid',
+  borderColor: 'rgba(255,255,255, 0)',
+
+  transitionDuration: '0.2s',
+
+  ':hover': {
+    backgroundColor: vanilla.colors.blue.light,
+    color: vanilla.colors.blue.lightColor,
   },
 })
+
+export const NavigationBar = {
+  Root: style({}),
+  Button: styleVariants({
+    plain: [NavigationBarButtonBase],
+    active: [
+      NavigationBarButtonBase,
+      {
+        backgroundColor: vanilla.colors.blue.light,
+        color: vanilla.colors.blue.lightColor,
+
+        borderColor: vanilla.colors.blue.light,
+      },
+    ],
+  })
+}
+
+
 
 export const Header = style({
   width: '100vw',
