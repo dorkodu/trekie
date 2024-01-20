@@ -10,6 +10,10 @@ export interface AppStoreState {
 
   segments: {}
 
+  menu: {
+    opened: boolean
+  },
+
   modals: {
     updateSW: {
       opened: boolean;
@@ -41,7 +45,11 @@ export interface AppStoreState {
 }
 
 export interface AppStoreAction {
-
+  menu: {
+    toggle: () => void
+    open: () => void
+    close: () => void
+  },
 }
 
 const initialState: AppStoreState = {
@@ -49,6 +57,10 @@ const initialState: AppStoreState = {
 
   loading: {
     auth: true,
+  },
+
+  menu: {
+    opened: false
   },
 
   segments: {},
@@ -63,7 +75,29 @@ const initialState: AppStoreState = {
 }
 
 export const useAppStore = create(
-  immer<AppStoreState & AppStoreAction>((_set, _get) => ({
+  immer<AppStoreState & AppStoreAction>((set, get) => ({
     ...initialState,
+
+    menu: {
+      opened: false,
+
+      open() {
+        set($ => {
+          $.menu.opened = true
+        })
+      },
+
+      close() {
+        set($ => {
+          $.menu.opened = false
+        })
+      },
+
+      toggle() {
+        set($ => {
+          $.menu.opened = !$.menu.opened
+        })
+      },
+    }
   }))
 );

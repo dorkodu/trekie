@@ -1,42 +1,64 @@
+import { useTrekieStore } from "#/stores/trekieStore";
+import { IHabit } from "@sdk/types";
+
 interface IEvent {
-  kind: EventKind;
-  timestamp: Date;
+  kind: string
+  timestamp: Date
+  context: IContext
+  data: any
+  onTrigger: () => void
 }
 
-interface IEventData {
-  xp: number,
-  coin: number,
-  momentum: number,
-  streak: number,
+type IContext = {}
+type IAction = (input: any, state: IGameState) => IEvent
 
-  onTrigger: () => void;
+// our first action ever!
+const createHabit: IAction = function (habit: IHabit, state: IGameState): IEvent {
+
+  // here do something with state
+  // mutate the state, update things etc.
+
+  return {
+    kind: "habit:create",
+    timestamp: new Date(),
+    context: {},
+    data: {},
+    onTrigger(event: IEvent, state: IGameState) {
+      console.log("new habit: " + event.data)
+    }
+  }
 }
+
+
+/**
+ * We have actions
+ */
 
 type EventKind = keyof typeof events;
 
-const events = {
-  habit: {
-    create: (xp: number, coin: number, momentum: number, streak: number): IEventData => ({
-      xp,
-      coin,
-      momentum,
-      streak,
+interface IGameState { }
 
-      onTrigger(habits: IHabit[] /* Habits from the zustand store */, otherParams: any) {
-        // Perform changes on the habit,
-        // Send request to server, etc.
-      },
-    }),
-  }
+// action(input, state)
+// - takes input, creates output
+// - mutates the state
+// 
 
-}
-
-// Usage
-useStore.setState(s => {
-  events.habit.create.(s.habits, someOtherParam)
-})
+interface TrekieConfig { }
 
 class Trekie {
+  constructor({ }: TrekieConfig) { }
 
-  constructor() { }
+  public components = {
+    habit: {},
+    goal: {},
+    story: {},
+  }
 }
+
+export const trekie = new Trekie({})
+
+
+// Usage
+useTrekieStore.setState(s => {
+  trekie.habit.create.(s.habits, someOtherParam)
+})
