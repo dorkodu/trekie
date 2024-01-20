@@ -1,53 +1,61 @@
-const BottomBar = (
-  <Flex
-    direction="column"
-    pos="fixed"
-    bottom={0}
-    left={0}
-    right={0}
-    mx="auto"
-    style={{ zIndex: 99 }}
-    hiddenFrom="sm"
-    h={styles.BARHEIGHT}
-  >
-    <Paper
-      style={{
-        borderWidth: 0,
-        borderTopWidth: 1,
-        borderStyle: 'solid',
-        borderColor: vanilla.colors.defaultBorder,
-        borderRadius: 0,
-      }}
-      h={styles.BARHEIGHT}
-    >
-      {
-        navLinks.map(view =>
-          <Button
-            variant="subtle"
-            p={0}
-            w="20%"
-            h="auto"
-            onClick={() => { navigate(view.path); }}
-            key={view.text}
-            // based on current route, change link variant to active 
-            className={styles.NavigationBar.Button[location.pathname === view.path ? 'active' : 'plain']}
-            radius={8}
-          >
-            <Flex direction="column" gap={2} align="center">
-              {view.icon}
-              <Text fz={11} fw={500}>{view.text}</Text>
-            </Flex>
-          </Button>
-        )
-      }
-    </Paper>
+import { Button, Flex, Group, Paper, Text, px } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
+import { navLinks } from "#/layouts/AppLayout";
+
+import CreateMenu from "#/components/menus/CreateMenu";
+import { theme, vanilla } from "#/styles/theme";
+import * as LayoutStyles from '#/styles/Layout.css'
+
+export function NavigationBar() {
+  const navigate = useNavigate()
+  const BARHEIGHT = 72
+
+  return (
     <Flex
-      pos="absolute"
-      right={theme.spacing.md}
-      top={-48 - (px(theme.spacing.md) as number)}
+      direction="column"
+      pos="fixed"
+      bottom={0}
+      left={0}
+      right={0}
+      mx="auto"
+      style={{ zIndex: 99 }}
+      hiddenFrom="sm"
+      h={BARHEIGHT}
     >
-      <CreateMenu />
+      <Paper
+        style={{
+          borderWidth: 0,
+          borderTopWidth: 1,
+          borderStyle: 'solid',
+          borderColor: vanilla.colors.defaultBorder,
+          borderRadius: 0,
+        }}
+        h={BARHEIGHT}
+      >
+        <Group p={8} gap={0} wrap="nowrap" h={BARHEIGHT} justify="space-between">
+          <Group wrap="nowrap" gap={0}>
+            {
+              navLinks.map(view =>
+                <Button
+                  variant="subtle"
+                  onClick={() => { navigate(view.path); }}
+                  key={view.text}
+                  // based on current route, change link variant to active 
+                  className={LayoutStyles.NavigationBar.Button[location.pathname === view.path ? 'active' : 'plain']}
+                >
+                  <Flex direction="column" gap={2} align="center">
+                    {view.icon}
+                    <Text fz={11} fw={500}>{view.text}</Text>
+                  </Flex>
+                </Button>
+              )
+            }
+          </Group>
+          <CreateMenu />
+        </Group>
+
+      </Paper>
     </Flex>
-  </Flex >
-)
+  )
+}

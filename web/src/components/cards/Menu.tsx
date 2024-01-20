@@ -37,7 +37,7 @@ export function AppMenu() {
           user={{
             avatar: '/assets/avatar.webp',
             name: 'Doruk Eray',
-            username: '@doruk',
+            username: 'doruk',
           }}
         />
       </UnstyledButton>

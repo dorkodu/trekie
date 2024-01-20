@@ -5,12 +5,13 @@ import {
   IconChecklist,
   IconNotebook,
   IconPencilPlus,
+  IconPlus,
   IconTargetArrow,
 } from '@tabler/icons-react'
 
-interface Props {}
+interface Props { }
 
-function CreateMenu({}: Props) {
+function CreateMenu({ }: Props) {
   const [opened, { open, close }] = useDisclosure()
 
   const onHabit = () => {
@@ -35,8 +36,8 @@ function CreateMenu({}: Props) {
   return (
     <Menu position="top-end" opened={opened} onOpen={open} onClose={close}>
       <Menu.Target>
-        <ActionIcon radius="xl" size={48}>
-          <IconPencilPlus />
+        <ActionIcon radius="lg" size={50}>
+          <IconPlus size={32} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>

@@ -102,10 +102,14 @@ export const Layout = {
 }
 
 const NavigationBarButtonBase = style({
-  borderRadius: 16,
-  padding: '8px 10px',
-  paddingRight: 18,
   display: 'inline-block',
+  borderRadius: 14,
+  padding: 0,
+  paddingTop: 6,
+  paddingBottom: 2,
+  minWidth: 54,
+  height: "auto",
+  color: vanilla.colors.text,
 
   borderWidth: 2,
   borderStyle: 'solid',

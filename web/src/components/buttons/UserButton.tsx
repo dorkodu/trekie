@@ -5,9 +5,14 @@ export function UserButton({
   user,
   compact = false,
 }: {
-  user: { name: string; username: string; avatar: string }
+  user: { name?: string; username?: string; avatar?: string }
   compact?: boolean
 }) {
+
+  user.avatar = user?.avatar ?? '/images/avatar.webp'
+  user.name = user?.name ?? "Anonymous"
+  user.username = '@' + user?.username ?? '@-----'
+
   return (
     <Card
       variant="light"

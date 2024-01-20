@@ -1,16 +1,16 @@
+import { useAppStore } from "#/stores/appStore";
+import { useTrekieStore } from "#/stores/trekieStore";
 import { vanilla } from "#/styles/theme";
-import { Flex, Paper, ActionIcon, Anchor } from "@mantine/core";
+import { Flex, Paper, ActionIcon, Anchor, useMantineColorScheme, Image } from "@mantine/core";
 import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-function HeadBar() {
+export function HeadBar() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const { colorScheme } = useMantineColorScheme()
 
-  const navigate = useNavigate()
-  const [opened, { open, close }] = useDisclosure(false)
-  const isWideScreen = useMediaQuery('(min-width: 768px)')
-  const location = useLocation()
-  const user = useTrekieStore($ => $.user)
+  const menu = useAppStore($ => $.menu)
 
   return (
     <Flex
@@ -60,7 +60,7 @@ function HeadBar() {
           <ActionIcon
             variant="subtle"
             size={32}
-            onClick={() => open()}
+            onClick={() => menu.open()}
             c="var(--text-color)"
           >
             <IconMenu2 />
