@@ -12,7 +12,7 @@ import NoGoalsCard from '#/components/cards/NoGoalsCard'
 import { IconPin, IconPinned } from '@tabler/icons-react'
 
 import { IconPinnedFilled } from '@tabler/icons-react'
-import { IHabit } from '@sdk/types'
+import { IHabit } from '../../../../core/src/types'
 
 import { vanilla } from '#/styles/theme'
 import { useSocialStore } from '#/stores/socialStore'

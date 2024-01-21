@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
-import type { IUser, IHabit, IStory, IGoal } from '@sdk/types'
+import type { IUser, IHabit, IStory, IGoal } from '../../../core/src/types'
 
 import { Maybe, util } from '#/lib/util'
 

@@ -1,6 +1,6 @@
 import { useApiStore } from '#/stores/apiStore'
 import { useAppStore } from '#/stores/appStore'
-import { IHabit } from '@sdk/types/habit'
+import { IHabit } from '../../../../core/src/types/habit'
 import {
   Button,
   Flex,

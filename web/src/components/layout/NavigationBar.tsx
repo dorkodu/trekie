@@ -33,7 +33,7 @@ export function NavigationBar() {
         }}
         h={BARHEIGHT}
       >
-        <Group p={8} gap={0} wrap="nowrap" h={BARHEIGHT} justify="space-between">
+        <Group p={8} gap={4} wrap="nowrap" h={BARHEIGHT} justify="space-between">
           <Group wrap="nowrap" gap={0}>
             {
               navLinks.map(view =>

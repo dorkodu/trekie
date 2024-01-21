@@ -1,5 +1,5 @@
 import { useApiStore } from '#/stores/apiStore'
-import { IStory } from '@sdk/types/memory'
+import { IStory } from '../../../../core/src/types/memory'
 import {
   ActionIcon,
   Anchor,

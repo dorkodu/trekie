@@ -1,6 +1,6 @@
 import { useApiStore } from '#/stores/apiStore'
 import { useAppStore } from '#/stores/appStore'
-import { IUser } from '@sdk/types/user'
+import { IUser } from '../../../../core/src/types/user'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
@@ -17,14 +17,14 @@ interface Props {
 function ProfileMenu({ user }: Props) {
   const currentUserId = useApiStore(state => state.userId)
 
-  const onShare = () => {}
-  const onClipboard = () => {}
+  const onShare = () => { }
+  const onClipboard = () => { }
   const onEdit = () => {
     useAppStore.setState(s => {
       s.modals.editProfile.opened = true
     })
   }
-  const onReport = () => {}
+  const onReport = () => { }
 
   return (
     <Menu position="bottom-end">

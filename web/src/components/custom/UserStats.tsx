@@ -1,5 +1,5 @@
 import { util } from '#/lib/util'
-import { IUser } from '@sdk/types/user'
+import { IUser } from '../../../../core/src/types/user'
 import { Flex, Text } from '@mantine/core'
 import { IconFlame, IconRocket, IconStarFilled } from '@tabler/icons-react'
 

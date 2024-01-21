@@ -1,6 +1,6 @@
 import { useTrekieStore } from '#/stores/trekieStore'
 import { useAppStore } from '#/stores/appStore'
-import { IHabit } from '@sdk/types/habit'
+import { IHabit } from '../../../../core/src/types/habit'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,

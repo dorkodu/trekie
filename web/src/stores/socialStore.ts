@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { persist } from 'zustand/middleware'
 
-import type { IUser, IHabit, IStory as IStory, IGoal } from '@sdk/types'
+import type { IUser, IHabit, IStory as IStory, IGoal } from '../../../core/src/types'
 
 import { util } from '#/lib/util'
 

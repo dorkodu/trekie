@@ -1,6 +1,6 @@
 import { useApiStore } from '#/stores/apiStore'
 import { useAppStore } from '#/stores/appStore'
-import { IStory } from '@sdk/types/memory'
+import { IStory } from '../../../../core/src/types/memory'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,

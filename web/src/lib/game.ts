@@ -1,5 +1,6 @@
 import { useTrekieStore } from "#/stores/trekieStore";
-import { IHabit } from "@sdk/types";
+import { IHabit } from "../../../core/src/types";
+
 
 interface IEvent {
   kind: string
@@ -36,27 +37,15 @@ const createHabit: IAction = function (habit: IHabit, state: IGameState): IEvent
 
 type EventKind = keyof typeof events;
 
-interface IGameState { }
+
 
 // action(input, state)
 // - takes input, creates output
 // - mutates the state
 // 
 
-interface TrekieConfig { }
-
-class Trekie {
-  constructor({ }: TrekieConfig) { }
-
-  public components = {
-    habit: {},
-    goal: {},
-    story: {},
-  }
-}
 
 export const trekie = new Trekie({})
-
 
 // Usage
 useTrekieStore.setState(s => {

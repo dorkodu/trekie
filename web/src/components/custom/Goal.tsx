@@ -1,6 +1,6 @@
 import { Badge, Flex, Paper, Text, Title } from '@mantine/core'
 import Emoji from './Emoji'
-import { IGoal } from '@sdk/types/goal'
+import { IGoal } from '../../../../core/src/types/goal'
 import TextParser from '../util/TextParser'
 import { truncate } from '#/styles/shared.css'
 import GoalMenu from '../menus/GoalMenu'

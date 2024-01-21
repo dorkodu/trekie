@@ -1,6 +1,6 @@
 import { useApiStore } from '#/stores/apiStore'
 import { useAppStore } from '#/stores/appStore'
-import { IGoal } from '@sdk/types/goal'
+import { IGoal } from '../../../../core/src/types/goal'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
