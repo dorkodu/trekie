@@ -27,4 +27,4 @@ const action = {
   general: [
     ["daily", +1]
   ]
-}
+},
