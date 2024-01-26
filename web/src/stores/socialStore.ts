@@ -6,7 +6,7 @@ import type { IUser, IHabit, IStory as IStory, IGoal } from '../../../core/src/t
 
 import { util } from '#/lib/util'
 
-import { useAppStore } from './appStore'
+import { useAppStore } from '../../../web/src/stores/appStore'
 
 export interface SocialStoreState {
   userId: string | undefined

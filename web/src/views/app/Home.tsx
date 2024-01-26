@@ -15,7 +15,7 @@ import { IconPinnedFilled } from '@tabler/icons-react'
 import { IHabit } from '../../../../core/src/types'
 
 import { vanilla } from '#/styles/theme'
-import { useSocialStore } from '#/stores/socialStore'
+import { useSocialStore } from '@core/stores/socialStore'
 import { useMediaQuery } from '@mantine/hooks'
 import { DailyStats } from '#/components/cards/DailyStats'
 
