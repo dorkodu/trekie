@@ -1,13 +1,14 @@
+import { useTrekieStore } from "./lib/store"
 
 interface Config { }
 
-export interface GameState { }
-
 export class Trekie {
-  constructor({ }: Config) { }
+  constructor({ }: Config) {
 
-  habit = {}
-  goal = {}
-  story = {}
+  }
+
+  store = useTrekieStore
 }
+
+const trekie = new Trekie({})
 
