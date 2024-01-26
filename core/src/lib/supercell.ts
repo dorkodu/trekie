@@ -4,14 +4,14 @@ export interface IStatus<TData> {
   data: TData;
 }
 
-export interface IEvent<TData> {
+export interface IKind<TData> {
   onCreate: (data: TData) => IStatus<TData>
   onShare: (status: IStatus<TData>) => void
 }
 
-export const EventKind = <TData>(kind: IEvent<TData>): IEvent<TData> => kind
+export const Kind = <TData>(kind: IKind<TData>): IKind<TData> => kind
 
-export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
+export function Cell<TKinds extends Record<any, IKind<any>>>(kinds: TKinds) {
   return {
     kinds,
     status<TKind extends keyof TKinds>(kind: TKind, data: Parameters<TKinds[TKind]["onCreate"]>[0]) {
@@ -22,3 +22,5 @@ export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
     }
   }
 }
+
+export default { Kind, create: Cell }
