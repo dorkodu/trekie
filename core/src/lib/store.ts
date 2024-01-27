@@ -5,18 +5,17 @@ import { immer } from 'zustand/middleware/immer'
 import { Maybe, Timestamp, util } from '#/lib/util'
 
 // commons
-import { IUser } from '#/commons/user'
-import { Component as HabitComponent, IHabit } from '#/commons/habit'
+import { IUser } from '#/commons/life'
+import { Interface as HabitComponent, IHabit } from '#/commons/habit'
 import { Component as GoalComponent } from '#/commons/goal'
 import { Component as SocialComponent } from '#/commons/social'
 import { Component as StoryComponent } from '#/commons/story'
+import { Component as LifeComponent } from '#/commons/life'
 import { IStory } from '#/commons/story'
 import { IGoal } from '#/commons/goal'
 
 export interface GameState {
   user: Maybe<IUser>
-
-  goals: Record<string, IGoal>
 
   xp: number
   coins: number
@@ -42,6 +41,7 @@ export interface GameComponents {
   story: StoryComponent
   goal: GoalComponent
   social: SocialComponent
+  life: LifeComponent
 }
 
 export interface GameActions {
@@ -113,7 +113,7 @@ const initialState: GameState = {
   goals: {},
 }
 
-export const useTrekieStore = create<GameState & GameComponents>()(
+export const useStore = create<GameState & GameComponents>()(
   immer((set, get) => ({
     ...initialState,
 

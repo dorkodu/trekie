@@ -1,10 +1,10 @@
 import ID from "#/lib/id";
-import { GameState, useTrekieStore } from "#/lib/store";
+import { GameState, useStore } from "#/lib/store";
 
 import { Cell, IKind, IStatus, Kind } from "#/lib/supercell"
 
 import { Maybe } from "#/lib/util";
-import { IUser } from "./user";
+import { IUser } from "./life";
 
 //? Interfaces
 
@@ -40,9 +40,9 @@ const events = {
   }),
 }
 
-const Social = Cell(events)
+const cell = Cell(events)
 
-export default Habit
+export default { events, cell, }
 
 /**
  * 

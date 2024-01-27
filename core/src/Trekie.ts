@@ -1,4 +1,4 @@
-import { useTrekieStore } from "./lib/store"
+import { useStore } from "./lib/store"
 
 interface Config { }
 
@@ -7,7 +7,7 @@ export class Trekie {
 
   }
 
-  store = useTrekieStore
+  store = useStore
 }
 
 const trekie = new Trekie({})

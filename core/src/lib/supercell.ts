@@ -15,10 +15,10 @@ export function Cell<TKinds extends Record<any, IKind<any>>>(kinds: TKinds) {
   return {
     kinds,
     status<TKind extends keyof TKinds>(kind: TKind, data: Parameters<TKinds[TKind]["onCreate"]>[0]) {
-      return this.kinds[kind]?.onCreate(data)
+      return this.kinds[kind]!.onCreate(data)
     },
     share(status: IStatus<any>) {
-      this.kinds[status.kind]?.onShare(status)
+      this.kinds[status.kind]!.onShare(status)
     }
   }
 }
