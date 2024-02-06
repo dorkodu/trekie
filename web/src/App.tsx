@@ -9,7 +9,6 @@ import UpdateSWModal from '#/components/modals/UpdateSWModal'
 import { useRefreshStatsDaily } from '#/components/hooks'
 
 import { useAppStore } from '#/stores/appStore'
-import { useTrekieStore } from '#/stores/trekieStore'
 import { useDorkoduStore } from './stores/dorkoduStore'
 
 function App() {

@@ -1,7 +1,7 @@
 import ID from "#/lib/id";
 import { GameState, useStore } from "#/lib/store";
 
-import { Cell, IKind, IStatus, Kind } from "#/lib/supercell"
+import { Cell, IEvent, IStatus, EventKind } from "#/lib/supercell"
 
 import { Maybe } from "#/lib/util";
 
@@ -24,29 +24,50 @@ export interface IHabitTemplate {
 }
 
 export interface Interface {
-  kinds: Record<string, Kind>
+  kinds: Record<string, IEvent<any>>
 
   data: {
     habits: Record<IHabit["id"], IHabit>
   }
-}
 
-add: (habit: IHabit) => void
+  add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
-read: (id: IHabit["id"]) => Maybe<IHabit>
-update: (id: IHabit["id"], props: IHabitTemplate) => IHabit
-remove: (id: IHabit["id"]) => void
+  read: (id: IHabit["id"]) => Maybe<IHabit>
+  update: (id: IHabit["id"], props: IHabitTemplate) => IHabit
+  remove: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => void
-    count: () => number
+  count: () => number
 }
 
-const kinds: {
-
+const kinds = {
+  CreateHabit: EventKind<{ habit: IHabit }>({
+    onCreate: (data) => ({
+      kind: "CreateHabit",
+      data,
+      timestamp: Date.now()
+    }),
+    onShare(status) {
+      console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
+    },
+  }),
+  "habit:commit": EventKind<{ habitId: IHabit["id"], count: number }>({
+    onCreate: (data) => ({
+      kind: "habit:commit",
+      data,
+      timestamp: Date.now()
+    }),
+    onShare(status) {
+      console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
+    },
+  })
 }
 
 const Component: Interface = {
   kinds,
 
+  add(habit) {
+    this.data.
+  },
   read(id) { },
   commit() { },
   update(id, props) { },
@@ -63,30 +84,8 @@ const Component: Interface = {
   },
 }
 
-const CreateHabit = Kind<{ habit: IHabit }>({
-  onCreate: (data) => ({
-    kind: "CreateHabit",
-    data,
-    timestamp: Date.now()
-  }),
-  onShare(status) {
-    console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
-  },
-})
-
-const CommitHabit = Kind<{ habitId: IHabit["id"], count: number }>({
-  onCreate: (data) => ({
-    kind: "CommitHabit",
-    data,
-    timestamp: Date.now()
-  }),
-  onShare(status) {
-    console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
-  },
-})
-
-const Habit = Cell({ CreateHabit, CommitHabit })
-Habit.share(Habit.status("CommitHabit", { count: 5, habitId: "10" }))
+const Habit = Cell(events)
+Habit.share(Habit.status("CommitHabit", { count: 5, habitId: "sd" }))
 
 export default Habit
 

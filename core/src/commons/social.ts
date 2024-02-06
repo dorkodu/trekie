@@ -1,7 +1,7 @@
 import ID from "#/lib/id";
 import { GameState, useStore } from "#/lib/store";
 
-import { Cell, IKind, IStatus, Kind } from "#/lib/supercell"
+import { Cell, IEvent, IStatus, EventKind } from "#/lib/supercell"
 
 import { Maybe } from "#/lib/util";
 import { IUser } from "./life";
@@ -28,7 +28,7 @@ const addUser: Component["addUser"] = (props) => {
 }
 
 const events = {
-  CreateHabit: Kind<{}>({
+  CreateHabit: EventKind<{}>({
     onCreate: (data) => ({
       kind: "CreateHabit",
       data,

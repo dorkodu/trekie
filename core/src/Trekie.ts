@@ -7,6 +7,8 @@ export class Trekie {
 
   }
 
+  updateStats() { }
+
   store = useStore
 }
 
