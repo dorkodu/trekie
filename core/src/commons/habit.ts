@@ -1,19 +1,27 @@
 import ID from "#/lib/id";
+
 import { GameState, useStore } from "#/lib/store";
 
-import { Cell, IEvent, IStatus, EventKind } from "#/lib/supercell"
+import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
+import Supercell from "#/lib/supercell"
 
-import { Maybe } from "#/lib/util";
+import { Maybe, Timestamp } from "#/lib/util";
+import { StateCreator } from "zustand";
 
 //? Interfaces
 
 export interface IHabit extends IHabitTemplate {
   id: string
-  userId: string
   count: number
   heatmap: { [offset: number]: number }
-  createdAt: Date
-  lastUpdated: Date
+  createdAt: Timestamp
+  lastUpdated: Timestamp
+
+  // duplicate from IHabitTemplate: juuuuuuuust in case...
+  title: string
+  description: string
+  dailyTarget: number
+  userId: string
 }
 
 export interface IHabitTemplate {
@@ -23,12 +31,9 @@ export interface IHabitTemplate {
   userId: string
 }
 
-export interface Interface {
-  kinds: Record<string, IEvent<any>>
-
-  data: {
-    habits: Record<IHabit["id"], IHabit>
-  }
+export interface Interface extends ComponentInterface {
+  events: Record<string, IEvent<any>>
+  store: StateCreator<{ text: string }, [], [], GameState>
 
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
@@ -39,10 +44,10 @@ export interface Interface {
   count: () => number
 }
 
-const kinds = {
-  CreateHabit: EventKind<{ habit: IHabit }>({
+const events = {
+  'habit:create': Event<{ habit: IHabit }>({
     onCreate: (data) => ({
-      kind: "CreateHabit",
+      kind: "habit:create",
       data,
       timestamp: Date.now()
     }),
@@ -50,7 +55,7 @@ const kinds = {
       console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
     },
   }),
-  "habit:commit": EventKind<{ habitId: IHabit["id"], count: number }>({
+  'habit:commit': Event<{ habitId: IHabit["id"], count: number }>({
     onCreate: (data) => ({
       kind: "habit:commit",
       data,
@@ -62,13 +67,17 @@ const kinds = {
   })
 }
 
-const Component: Interface = {
-  kinds,
+const cell = Cell<typeof events>(events)
+
+export const Component: Interface = {
+  events,
+  cell,
+  store: (set, get) => ({}),
 
   add(habit) {
-    this.data.
+    this.store.
   },
-  read(id) { },
+  get(id) { },
   commit() { },
   update(id, props) { },
   remove() { },
@@ -84,12 +93,4 @@ const Component: Interface = {
   },
 }
 
-const Habit = Cell(events)
-Habit.share(Habit.status("CommitHabit", { count: 5, habitId: "sd" }))
-
-export default Habit
-
-/**
- * 
- * EventKind<{ title: string, description: string }>
- */
+export default Component

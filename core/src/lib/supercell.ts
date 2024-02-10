@@ -1,3 +1,5 @@
+import { create, StateCreator } from 'zustand'
+
 export interface IStatus<TData> {
   kind: string; // keyof typeof "given kinds"
   timestamp: number;
@@ -9,7 +11,7 @@ export interface IEvent<TData> {
   onShare: (status: IStatus<TData>) => void
 }
 
-export const EventKind = <TData>(kind: IEvent<TData>): IEvent<TData> => kind
+export const Event = <TData>(kind: IEvent<TData>): IEvent<TData> => kind
 
 export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
   return {
@@ -23,4 +25,5 @@ export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
   }
 }
 
-export default { event: EventKind, create: Cell }
+const Supercell = { create: Cell, Event }
+export default Supercell
