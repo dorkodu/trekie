@@ -1,4 +1,6 @@
-import { StateCreator, create } from 'zustand'
+import { Supercell } from '#/lib/supercell';
+import { Cell, IEvent } from '#/lib/supercell'
+import { StateCreator, StoreApi, UseBoundStore, create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 // commons
@@ -15,28 +17,26 @@ interface Config {
 export class Trekie {
 
   components: GameComponents
-  store:
 
-    constructor({ components }: Config) {
+  constructor({ components }: Config) {
 
-  this.components = components
+    this.store = create<TrekieStoreInterface>()((...a) => ({
 
-  this.store = create<TrekieStoreInterface>()((...a) => ({
+    }))
 
-  }))
-}
+  }
 
-updateStats() { }
-
+  updateStats() { }
 }
 
 // misc
 import { Maybe, Timestamp, util } from '#/lib/util'
-import { IEvent } from './lib/supercell'
 
-export interface ComponentInterface {
-  events: Record<string, IEvent<any>>
-  store: StateCreator<any, [], [], GameState>
+
+export interface TrekieComponent<TComponentState = any> {
+  events?: Record<string, IEvent<any>>
+  store?: UseBoundStore<StoreApi<TComponentState>>
+  cell?: ReturnType<typeof Cell>
 }
 
 export interface GameState {
@@ -50,7 +50,7 @@ export interface GameState {
   dailyProgress: number
   dailyXp: number
 
-  targetDailyXp: number
+  targetXpDaily: number
 
   lastActive: Timestamp
   lastXp: Timestamp
@@ -59,46 +59,25 @@ export interface GameState {
 
 export type TrekieStoreInterface = GameComponents & GameState
 
-const initialState: GameState = {
-
-}
-
-
-
-export type GameComponents = Record<string, ComponentInterface>
+export type GameComponents = Record<string, TrekieComponent>
 
 export interface GameActions {
   updateStats: () => void
   reset: () => void
 }
 
-const defaultState: GameState = {
-  user: undefined,
-
+const initialState: GameState = {
+  // stats, points
   xp: 0,
   coins: 0,
   momentum: 0,
   streak: 0,
 
-  daily: 0,
-  lastXpDate: new Date(),
-  dailyXpCurrent: 0,
-  lastStreakDate: new Date(),
-  dailyProgress: 20,
+  user: Maybe<IUser>
 
-  habits: {},
-  stories: {},
-  goals: {},
-}
+  lastActive: new Date(1703846675432),
 
-const initialState: GameState = {
-  // stats, points
-  xp: 0,
-  coins: 3,
-  momentum: 0,
-  streak: 0,
-
-  dailyXpTarget: 5,
+  targetXpDaily: 5,
   lastXpDate: new Date(1703846675440),
   dailyXpCurrent: 0,
   lastStreakDate: new Date(1703846675432),
@@ -116,24 +95,6 @@ const initialState: GameState = {
     followerCount: 0,
     followingCount: 0,
   },
-
-  habits: {
-    '1': {
-      id: '1',
-      userId: '1',
-      title: 'Check Trekie Every Day!',
-      description: 'See your life goals, check your habits and stay on track. Never lose your momentum.',
-      count: 0,
-      createdAt: new Date(1703846675436),
-      lastUpdated: new Date(1703846675436),
-      heatmap: [0, 1, 4, 5, 0, 2],
-      dailyTarget: 5,
-    },
-  },
-
-  stories: {},
-
-  goals: {},
 }
 
 export const useStore = create<GameState & GameComponents>()(

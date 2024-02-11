@@ -6,7 +6,8 @@ import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 import Supercell from "#/lib/supercell"
 
 import { Maybe, Timestamp } from "#/lib/util";
-import { StateCreator } from "zustand";
+import { StateCreator, StoreApi, UseBoundStore, create } from "zustand";
+import { TrekieComponent } from "..";
 
 //? Interfaces
 
@@ -31,9 +32,9 @@ export interface IHabitTemplate {
   userId: string
 }
 
-export interface Interface extends ComponentInterface {
+export interface Interface extends TrekieComponent<ComponentState> {
   events: Record<string, IEvent<any>>
-  store: StateCreator<{ text: string }, [], [], GameState>
+  store: UseBoundStore<StoreApi<ComponentState>>
 
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
@@ -69,13 +70,20 @@ const events = {
 
 const cell = Cell<typeof events>(events)
 
+interface ComponentState {
+
+}
+
+const useStore = create<ComponentState>()((set) => ({
+}))
+
 export const Component: Interface = {
   events,
   cell,
-  store: (set, get) => ({}),
+  store: useStore,
 
   add(habit) {
-    this.store.
+    this
   },
   get(id) { },
   commit() { },
