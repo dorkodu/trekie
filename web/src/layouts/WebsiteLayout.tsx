@@ -1,3 +1,5 @@
+"use client"
+
 import {
   ActionIcon,
   Anchor,
@@ -36,6 +38,7 @@ import Emoji from '#/components/custom/Emoji'
 import ColorToggle from '#/components/util/ColorToggle'
 
 function WebsiteLayout() {
+
   const theme = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
 

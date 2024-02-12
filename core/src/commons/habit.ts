@@ -1,13 +1,11 @@
 import ID from "#/lib/id";
 
-import { GameState, useStore } from "#/lib/store";
-
 import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 import Supercell from "#/lib/supercell"
 
 import { Maybe, Timestamp } from "#/lib/util";
 import { StateCreator, StoreApi, UseBoundStore, create } from "zustand";
-import { TrekieComponent } from "..";
+import { TrekieComponent, GameState } from "#/Trekie";
 
 //? Interfaces
 
@@ -33,9 +31,6 @@ export interface IHabitTemplate {
 }
 
 export interface Interface extends TrekieComponent<ComponentState> {
-  events: Record<string, IEvent<any>>
-  store: UseBoundStore<StoreApi<ComponentState>>
-
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
   read: (id: IHabit["id"]) => Maybe<IHabit>

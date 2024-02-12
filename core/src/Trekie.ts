@@ -7,8 +7,7 @@ import { immer } from 'zustand/middleware/immer'
 import { IUser } from '#/commons/life'
 import { Interface as HabitInterface, Component as HabitComponent, IHabit } from '#/commons/habit'
 import { Interface as GoalInterface, Component as GoalComponent, IGoal } from '#/commons/goal'
-import { IStory } from '#/commons/story'
-import { IGoal } from '#/commons/goal'
+// import { Interface as StoryInterface, Component as StoryComponent, IStory } from '#/commons/story'
 
 interface Config {
   components: GameComponents
@@ -16,15 +15,13 @@ interface Config {
 
 export class Trekie {
 
-  components: GameComponents
+  public components: GameComponents = {}
 
-  constructor({ components }: Config) {
+  public store = create<TrekieStoreInterface>()((set, get) => ({
 
-    this.store = create<TrekieStoreInterface>()((...a) => ({
+  }))
 
-    }))
-
-  }
+  constructor({ components }: Config) { }
 
   updateStats() { }
 }
@@ -33,10 +30,18 @@ export class Trekie {
 import { Maybe, Timestamp, util } from '#/lib/util'
 
 
-export interface TrekieComponent<TComponentState = any> {
-  events?: Record<string, IEvent<any>>
-  store?: UseBoundStore<StoreApi<TComponentState>>
-  cell?: ReturnType<typeof Cell>
+export interface TrekieComponent<TState, TEvents extends Record<string, IEvent<any>>> {
+  events: TEvents
+  store: ReturnType<typeof ComponentStore<TState>>
+  cell: ReturnType<typeof Cell<TEvents>>
+}
+
+export function ComponentStore<TState>(initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) {
+  return create<TState>()(
+    immer(
+      initializer
+    )
+  )
 }
 
 export interface GameState {
@@ -57,9 +62,11 @@ export interface GameState {
   lastStreak: Timestamp
 }
 
-export type TrekieStoreInterface = GameComponents & GameState
 
-export type GameComponents = Record<string, TrekieComponent>
+export type GameComponents = Record<string, TrekieComponent<any, any>>
+
+export type TrekieStoreInterface = GameComponents & GameState & GameActions
+
 
 export interface GameActions {
   updateStats: () => void
@@ -73,14 +80,12 @@ const initialState: GameState = {
   momentum: 0,
   streak: 0,
 
-  user: Maybe<IUser>
-
-  lastActive: new Date(1703846675432),
+  lastActive: 1703846675432,
 
   targetXpDaily: 5,
-  lastXpDate: new Date(1703846675440),
+  lastXp: 1703846675440,
   dailyXpCurrent: 0,
-  lastStreakDate: new Date(1703846675432),
+  lastStreakDate: 1703846675432,
   dailyProgress: 20,
 
   user: {
