@@ -53,19 +53,18 @@ export interface GameState {
   streak: number
 
   dailyProgress: number
-  dailyXp: number
-
   targetXpDaily: number
+
+  xpToday: number
 
   lastActive: Timestamp
   lastXp: Timestamp
   lastStreak: Timestamp
 }
 
-
 export type GameComponents = Record<string, TrekieComponent<any, any>>
 
-export type TrekieStoreInterface = GameComponents & GameState & GameActions
+export type TrekieStoreInterface = GameState & GameActions
 
 
 export interface GameActions {
@@ -84,7 +83,7 @@ const initialState: GameState = {
 
   targetXpDaily: 5,
   lastXp: 1703846675440,
-  dailyXpCurrent: 0,
+  dailyXp: 0,
   lastStreakDate: 1703846675432,
   dailyProgress: 20,
 

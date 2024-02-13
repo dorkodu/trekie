@@ -44,9 +44,7 @@ const events = {
 
 const cell = Cell<typeof events>(events)
 
-interface ComponentState {
-
-}
+interface ComponentState { }
 
 
 

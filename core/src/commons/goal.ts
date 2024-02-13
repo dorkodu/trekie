@@ -12,7 +12,7 @@ import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 import { create } from "zustand";
 import { TrekieComponent, GameState } from "#/Trekie";
 
-export interface Interface extends TrekieComponent<ComponentState> {
+export interface Interface extends TrekieComponent<ComponentState, ComponentEvents> {
   sayHello: () => string
 }
 
@@ -32,6 +32,7 @@ const events = {
 const cell = Cell<typeof events>(events)
 
 interface ComponentState { }
+type ComponentEvents = typeof events
 
 const useStore = create<ComponentState>()(immer((set) => ({})))
 
