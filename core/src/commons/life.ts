@@ -46,8 +46,6 @@ const cell = Cell<typeof events>(events)
 
 interface ComponentState { }
 
-
-
 const useStore = create<ComponentState>()(immer((set, get) => ({
 
 })))

@@ -33,7 +33,7 @@ export interface IHabitTemplate {
 export interface Interface extends TrekieComponent<ComponentState, ComponentEvents> {
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
-  read: (id: IHabit["id"]) => Maybe<IHabit>
+  get: (id: IHabit["id"]) => Maybe<IHabit>
   update: (id: IHabit["id"], props: IHabitTemplate) => IHabit
   remove: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => void
@@ -84,12 +84,42 @@ export const Component: Interface = {
 
   },
   get(id) {
-    return Object.keys(this.store()).length
+    return this.store($ => $.habits[id])
   },
   count() {
-    return Object.keys(this.store).length
+    return Object.keys(this.store($ => $.habits)).length
   },
-  commit() { },
+  commit(id, count) {
+    this.store.setState($ => {
+      const targetHabit = $.habits[id]
+
+      if (!targetHabit) return
+
+      const user = 
+      if (!user) return
+
+      const dayDiff = util.getDayDiff(habit.createdAt.getTime(), Date.now())
+      const habitCount = (targetHabit.heatmap[dayDiff] ?? 0) + count
+
+      // Habit count can not be negative
+      if (habitCount < 0) return
+
+      updateStats = true
+
+      targetHabit.count += count
+      targetHabit.heatmap[dayDiff] = habitCount
+
+      // If habit count has become 0, remove the property
+      if (targetHabit.heatmap[dayDiff]! <= 0)
+        delete targetHabit.heatmap[dayDiff]
+
+      $.xp += count
+      $.dailyXpCurrent += Math.max(
+        Math.min(habit.dailyTarget - (habitCount - count), count),
+        count
+      )
+    })
+  },
   update(id, props) { },
   remove() { },
   create(props) {
