@@ -4,8 +4,7 @@ import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 import Supercell from "#/lib/supercell"
 
 import { Maybe, Timestamp } from "#/lib/util";
-import { StateCreator, StoreApi, UseBoundStore, create } from "zustand";
-import { TrekieComponent, GameState, ComponentStore } from "#/Trekie";
+import { IComponent, GameState, ComponentStore } from "#/Trekie";
 
 //? Interfaces
 
@@ -15,12 +14,6 @@ export interface IHabit extends IHabitTemplate {
   heatmap: { [offset: number]: number }
   createdAt: Timestamp
   lastUpdated: Timestamp
-
-  // duplicate from IHabitTemplate: juuuuuuuust in case...
-  title: string
-  description: string
-  dailyTarget: number
-  userId: string
 }
 
 export interface IHabitTemplate {
@@ -30,7 +23,7 @@ export interface IHabitTemplate {
   userId: string
 }
 
-export interface Interface extends TrekieComponent<ComponentState, ComponentEvents> {
+export interface Interface extends IComponent<ComponentState, ComponentEvents> {
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
   get: (id: IHabit["id"]) => Maybe<IHabit>
@@ -39,6 +32,8 @@ export interface Interface extends TrekieComponent<ComponentState, ComponentEven
   commit: (id: IHabit["id"], count: number) => void
   count: () => number
 }
+
+export type Interface = IComponent<{}>
 
 type ComponentEvents = typeof events
 

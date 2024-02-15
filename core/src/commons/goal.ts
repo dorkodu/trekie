@@ -10,16 +10,17 @@ export interface IGoal {
 import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 
 import { create } from "zustand";
-import { TrekieComponent, GameState } from "#/Trekie";
+import { IComponent, GameState, ComponentStore } from "#/Trekie";
+import { immer } from "zustand/middleware/immer";
 
-export interface Interface extends TrekieComponent<ComponentState, ComponentEvents> {
+export interface Interface extends IComponent<ComponentState, ComponentEvents> {
   sayHello: () => string
 }
 
 const events = {
-  'goal:SaidSomething': Event<{ message: string }>({
+  'goal:create': Event<{ title: string }>({
     onCreate: (data) => ({
-      kind: "goal:helloworld",
+      kind: "goal:create",
       data,
       timestamp: Date.now()
     }),
@@ -31,10 +32,15 @@ const events = {
 
 const cell = Cell<typeof events>(events)
 
-interface ComponentState { }
+interface ComponentState {
+  goals: string
+}
+
 type ComponentEvents = typeof events
 
-const useStore = create<ComponentState>()(immer((set) => ({})))
+const useStore = ComponentStore(() => ({
+
+}))
 
 export const Component: Interface = {
   events,
