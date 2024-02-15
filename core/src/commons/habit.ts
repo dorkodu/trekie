@@ -4,7 +4,7 @@ import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 import Supercell from "#/lib/supercell"
 
 import { Maybe, Timestamp } from "#/lib/util";
-import { IComponent, GameState, ComponentStore } from "#/Trekie";
+import { ComponentBase, GameState, Store } from "#/Trekie";
 
 //? Interfaces
 
@@ -23,7 +23,7 @@ export interface IHabitTemplate {
   userId: string
 }
 
-export interface Interface extends IComponent<ComponentState, ComponentEvents> {
+export interface Interface extends ComponentBase<ComponentState, ComponentEvents> {
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
   get: (id: IHabit["id"]) => Maybe<IHabit>
@@ -33,7 +33,7 @@ export interface Interface extends IComponent<ComponentState, ComponentEvents> {
   count: () => number
 }
 
-export type Interface = IComponent<{}>
+export type Interface = ComponentBase<{}>
 
 type ComponentEvents = typeof events
 
@@ -66,7 +66,7 @@ interface ComponentState {
   habits: Record<IHabit["id"], IHabit>
 }
 
-const store = ComponentStore<ComponentState>((set, get) => ({
+const store = Store<ComponentState>((set, get) => ({
   habits: {}
 }))
 

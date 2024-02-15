@@ -34,7 +34,11 @@ export interface GameState {
 
 export type TrekieInterface = ReturnType<typeof Game>
 
-export function Game(config: {} = {}) {
+interface GameConfig {
+  components: Record<string, GameComponent<any, any>>
+}
+
+export function Game({ components }: GameConfig = { components: {} }) {
 
   const store = create<TrekieStoreInterface>()(immer((set, get) => ({
     ...initialState,
@@ -45,41 +49,40 @@ export function Game(config: {} = {}) {
 
   return {
     store,
-
-    life: LifeComponent,
-    habit: HabitComponent,
-    goal: GoalComponent,
+    components
   }
 }
 
 //? COMPONENTS 
 
-export interface IComponent<TState, TEvents extends Record<string, IEvent<any>>> {
+export type ComponentBase<TState, TEvents extends Record<string, IEvent<any>>> = {
   events: TEvents
-  store: ReturnType<typeof ComponentStore<TState>>
+  store: ReturnType<typeof Store<TState>>
   cell: ReturnType<typeof Cell<TEvents>>
 }
 
-export function Component<TState, TEvents extends Record<string, IEvent<any>>>({
-  events, store, cell, ...rest
-}: IComponent<TState, TEvents>) {
+export type GameComponent<TState, TEvents extends Record<string, IEvent<any>>> = {
+  $: ComponentBase<TState, TEvents>,
+}
 
+export function Component
+  <TState, TEvents extends Record<string, IEvent<any>>>
+  (component: (game: TrekieInterface) => ComponentBase<TState, TEvents>) {
+
+  const { events, cell, store, ...rest } = component()
 
   return {
-
-    sayHello() {
-      this.cell.status
-      return "Hello, World!"
-    },
+    $: { events, cell, store },
+    ...rest
   }
 }
 
-export function ComponentStore<TState>(initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) {
+export function Store<TState>
+  (initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) {
   return create<TState>()(immer(initializer))
 }
 
-
-export type GameComponents = Record<string, IComponent<any, any>>
+export type GameComponents = Record<string, ComponentBase<any, any>>
 
 export type TrekieStoreInterface = GameState & GameActions
 

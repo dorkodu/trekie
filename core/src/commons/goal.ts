@@ -7,50 +7,54 @@ export interface IGoal {
   tasksDone: number;
 }
 
+import ID from "#/lib/id";
+
 import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
+import Supercell from "#/lib/supercell"
 
-import { create } from "zustand";
-import { IComponent, GameState, ComponentStore } from "#/Trekie";
-import { immer } from "zustand/middleware/immer";
+import { Maybe, Timestamp } from "#/lib/util";
 
-export interface Interface extends IComponent<ComponentState, ComponentEvents> {
-  sayHello: () => string
+import { ComponentBase, GameState, Store } from "#/Trekie";
+import * as Trekie from "#/Trekie";
+
+//? Interfaces
+
+export interface Interface extends ComponentBase<State, Events> {
+  get: (id: IGoal["id"]) => Maybe<IGoal>
+  count: () => number
 }
 
+type Events = typeof events
+
 const events = {
-  'goal:create': Event<{ title: string }>({
+  'goal:create': Event<{ goal: IGoal }>({
     onCreate: (data) => ({
       kind: "goal:create",
       data,
       timestamp: Date.now()
     }),
     onShare(status) {
-      console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
+      console.log(`[trekie] Created Goal (${status.data.goal.id})"`)
     },
   }),
 }
 
 const cell = Cell<typeof events>(events)
 
-interface ComponentState {
-  goals: string
+interface State {
+  goals: Record<IGoal["id"], IGoal>
 }
 
-type ComponentEvents = typeof events
-
-const useStore = ComponentStore(() => ({
-
+const store = Trekie.Store<State>((set, get) => ({
+  goals: {}
 }))
 
-export const Component: Interface = {
+export const Component = Trekie.Component<State, Events>((game) => ({
   events,
+  store,
   cell,
-  store: useStore,
 
-  sayHello() {
-    this.cell.status
-    return "Hello, World!"
-  },
-}
+  gain() { game.store.setState($ => $.xp += 100) }
+}))
 
 export default Component

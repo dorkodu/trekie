@@ -20,12 +20,12 @@ export interface IUser {
 import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 
 import { create, StateCreator } from "zustand";
-import { IComponent, GameState } from "#/Trekie";
+import { ComponentBase, GameState } from "#/Trekie";
 import { immer } from "zustand/middleware/immer";
 
 //? Interfaces
 
-export interface Interface extends IComponent<ComponentState> {
+export interface Interface extends ComponentBase<ComponentState> {
   count: () => number
 }
 
