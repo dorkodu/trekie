@@ -1,6 +1,6 @@
 import { Supercell } from '#/lib/supercell';
 import { Cell, IEvent } from '#/lib/supercell'
-import { StateCreator, create } from 'zustand'
+import { StateCreator, StoreApi, UseBoundStore, create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 // commons
@@ -13,6 +13,7 @@ import { Interface as LifeInterface, Component as LifeComponent, IUser } from '#
 
 // misc
 import { Maybe, Timestamp, util } from '#/lib/util'
+import { Objectish } from 'immer';
 
 export interface GameState {
   user: Maybe<IUser>
@@ -32,25 +33,36 @@ export interface GameState {
   lastStreak: Timestamp
 }
 
-export type TrekieInterface = ReturnType<typeof Game>
+export function App(
+  state: TrekieStoreInterface = initialState,
+  components: Record<string, GameComponent<any, any>> = {}
+) {
+  const store = create<TrekieStoreInterface>()(immer(() => state))
 
-interface GameConfig {
-  components: Record<string, GameComponent<any, any>>
-}
+  const game = Game(state)
 
-export function Game({ components }: GameConfig = { components: {} }) {
+  let boundComponents: Record<string, BoundComponent<any, any>> = {}
 
-  const store = create<TrekieStoreInterface>()(immer((set, get) => ({
-    ...initialState,
+  Object.keys(components).forEach((key) => {
+    let cx = components[key]?.(game)
 
-    refresh() { },
-    reset() { set(initialState) },
-  })))
+    if (!cx && typeof cx != "undefined")
+      boundComponents[key] = cx
+  })
 
   return {
-    store,
-    components
+    $: game,
+    ...boundComponents
   }
+}
+
+export type GameInterface = ReturnType<typeof Game>
+
+export function Game(state: TrekieStoreInterface = initialState) {
+
+  const store = create<TrekieStoreInterface>()(immer(() => state))
+
+  return { store }
 }
 
 //? COMPONENTS 
@@ -61,20 +73,27 @@ export type ComponentBase<TState, TEvents extends Record<string, IEvent<any>>> =
   cell: ReturnType<typeof Cell<TEvents>>
 }
 
-export type GameComponent<TState, TEvents extends Record<string, IEvent<any>>> = {
-  $: ComponentBase<TState, TEvents>,
+export type BoundComponent<TState, TEvents extends Record<string, IEvent<any>>> = {
+  $: ComponentBase<TState, TEvents>
 }
+
+export type GameComponent<TState, TEvents extends Record<string, IEvent<any>>>
+  = (game: GameInterface) => BoundComponent<TState, TEvents>
 
 export function Component
   <TState, TEvents extends Record<string, IEvent<any>>>
-  (component: (game: TrekieInterface) => ComponentBase<TState, TEvents>) {
+  (component: (game: GameInterface) => ComponentBase<TState, TEvents>) {
 
-  const { events, cell, store, ...rest } = component()
+  function creator(game: GameInterface) {
+    const { events, cell, store, ...rest } = component(game)
 
-  return {
-    $: { events, cell, store },
-    ...rest
+    return {
+      $: { events, cell, store },
+      ...rest
+    }
   }
+
+  return creator
 }
 
 export function Store<TState>
@@ -82,17 +101,17 @@ export function Store<TState>
   return create<TState>()(immer(initializer))
 }
 
-export type GameComponents = Record<string, ComponentBase<any, any>>
+export function Slice<TState>
+  (initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) { return initializer }
 
 export type TrekieStoreInterface = GameState & GameActions
-
 
 export interface GameActions {
   refresh: () => void
   reset: () => void
 }
 
-const initialState: GameState = {
+const initialState: TrekieStoreInterface = {
   // points
   xp: 0,
   coins: 0,
@@ -121,6 +140,10 @@ const initialState: GameState = {
     followerCount: 0,
     followingCount: 0,
   },
+
+  refresh() { },
+  reset() { set(initialState) },
+
 }
 
 
