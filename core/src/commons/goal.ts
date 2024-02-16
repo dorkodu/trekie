@@ -49,12 +49,12 @@ const store = Trekie.Store<State>((set, get) => ({
   goals: {}
 }))
 
-export const Component = Trekie.Component<State, Events>((game) => ({
+export const Component = Trekie.Component((game) => ({
   events,
   store,
   cell,
 
-  gain() { game.store.setState($ => $.xp += 100) }
+  gain() { }
 }))
 
 export default Component

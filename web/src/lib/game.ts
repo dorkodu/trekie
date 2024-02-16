@@ -1,3 +1,3 @@
-import { Trekie } from '@core/index'
+import { Game } from '@core/index'
 
-export const trekie = new Trekie({})
+export const trekie = new Game({})

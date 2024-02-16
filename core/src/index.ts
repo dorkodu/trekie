@@ -1,12 +1,12 @@
 import * as Trekie from '#/Trekie';
+import { create } from 'zustand';
 export * from "./Trekie"
 
+import { create } from 'zustand';
 
-const trekie = Trekie.Game()
-const trekie = Trekie.Component()
 
-trekie.store($ => $.coins)
+const game = Trekie.Game()
 
-trekie.habit.get("habit:12345")
-trekie.goal.events['goal:create']
-trekie.goal.cell.status("goal:create", { title: "hello" })
+const trekie = Trekie.App()
+
+const HelloComponent = Trekie.Component 
