@@ -1,4 +1,5 @@
 import { create, StateCreator } from 'zustand'
+import { immer } from 'zustand/middleware/immer';
 
 export interface IStatus<TData> {
   kind: string; // keyof typeof "given kinds"
@@ -25,5 +26,13 @@ export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
   }
 }
 
-const Supercell = { create: Cell, Event }
+export function Store<TState>
+  (initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) {
+  return create<TState>()(immer(initializer))
+}
+
+export function Slice<TState>
+  (initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) { return initializer }
+
+const Supercell = { Cell, Event, Store, Slice }
 export default Supercell
