@@ -4,7 +4,8 @@ import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
 import Supercell from "#/lib/supercell"
 
 import { Maybe, Timestamp } from "#/lib/util";
-import { ComponentBase, GameState, Store } from "#/Trekie";
+
+import * as Trekie from "#/Trekie";
 
 //? Interfaces
 
@@ -33,8 +34,6 @@ export interface Interface extends ComponentBase<ComponentState, ComponentEvents
   count: () => number
 }
 
-export type Interface = ComponentBase<{}>
-
 type ComponentEvents = typeof events
 
 const events = {
@@ -62,18 +61,19 @@ const events = {
 
 const cell = Cell<typeof events>(events)
 
-interface ComponentState {
+interface State {
   habits: Record<IHabit["id"], IHabit>
 }
 
-const store = Store<ComponentState>((set, get) => ({
+const store = Store<State>((set, get) => ({
   habits: {}
 }))
 
-export const Component: Interface = {
+export const Component = Trekie.Component<State, Events>((game) => ({
   events,
-  cell,
   store,
+  cell,
+
 
   add(habit) {
 
@@ -127,7 +127,7 @@ export const Component: Interface = {
       heatmap: [0]
     }
   },
-}
+}))
 
 addHabit(habit) {
   set($ => {
