@@ -70,8 +70,8 @@ export type GameComponent<TState, TEvents extends Record<string, Supercell.IEven
   = (game: GameInterface) => BoundComponent<TState, TEvents>
 
 export function Component
-  <TState, TEvents extends Record<string, Supercell.IEvent<any>>>
-  (component: (game: GameInterface) => ComponentBase<TState, TEvents>) {
+  <TInterface extends ComponentBase<TState, TEvents>, TState, TEvents extends Record<string, Supercell.IEvent<any>>>
+  (component: (game: GameInterface) => TInterface) {
 
   function creator(game: GameInterface) {
     const { events, cell, store, ...rest } = component(game)

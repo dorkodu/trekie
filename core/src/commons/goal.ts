@@ -1,22 +1,32 @@
-export interface IGoal {
-  id: string;
-  userId: string;
-  title: string;
-  description: string;
-  tasksTodo: number;
-  tasksDone: number;
-}
+import * as Trekie from "#/Trekie";
 
 import { Cell, IEvent, IStatus, Event, Store } from "#/lib/supercell"
-
 import { Maybe, Timestamp } from "#/lib/util";
 
-import * as Trekie from "#/Trekie";
+export interface IGoal extends IGoalTemplate {
+  id: string
+
+  xpCurrent: number
+}
+
+export interface IGoalTemplate {
+  title: string
+  description: string
+  xpTarget: number
+
+  userId: string
+}
 
 //? Interfaces
 
 export interface Interface extends Trekie.ComponentBase<State, Events> {
   get: (id: IGoal["id"]) => Maybe<IGoal>
+  create: (props: IGoalTemplate) => IGoal
+  update: (id: IGoal["id"], props: IGoalTemplate) => IGoal
+  remove: (id: IGoal["id"]) => void
+
+  changeXp: (count: number) => void
+
   count: () => number
 }
 
@@ -44,19 +54,17 @@ const store = Store<State>((set, get) => ({
   goals: {}
 }))
 
-export const Component = Trekie.Component<State, Events>((game) => ({
+export const Component = Trekie.Component<Interface, State, Events>((game) => ({
   events,
   store,
   cell,
 
-  tellMyXp() {
-    // Trekie.Game is a reactive store powered with supercell and zustand
-    const currentXp = game($ => $.xp)
-    game.setState($ => ({ coins: $.coins + 1 }))
-    game().refresh()
-    //...
-    // do some other shit as well
-  }
+  get(id) {
+    this.store()
+
+    store.)
+  },
+
 }))
 
 export default Component
