@@ -25,8 +25,6 @@ export interface Interface extends Trekie.ComponentBase<State, Events> {
   update: (id: IGoal["id"], props: IGoalTemplate) => IGoal
   remove: (id: IGoal["id"]) => void
 
-  changeXp: (count: number) => void
-
   count: () => number
 }
 
@@ -47,11 +45,11 @@ const events = {
 const cell = Cell<Events>(events)
 
 interface State {
-  goals: Record<IGoal["id"], IGoal>
+  goals: Record<string, IGoal>
 }
 
 const store = Store<State>((set, get) => ({
-  goals: {}
+  goals: {},
 }))
 
 export const Component = Trekie.Component<Interface, State, Events>((game) => ({
@@ -60,11 +58,36 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
   cell,
 
   get(id) {
-    this.store()
-
-    store.)
+    return store($ => $.goals[id])
   },
 
+  create(props) {
+    return {
+      id: "xxxx-xxxx-xxxx",
+      xpCurrent: 0,
+      ...props,
+    } as IGoal
+  },
+
+  update(id, props) {
+    const updatedGoal = this.create(props)
+
+    store.setState($ => {
+      $.goals[id] = updatedGoal
+    })
+
+    return updatedGoal
+  },
+
+  count() {
+    return Object.entries(store($ => $.goals)).length
+  },
+
+  remove(id) {
+    store.setState($ => {
+      delete $.goals[id]
+    })
+  },
 }))
 
 export default Component
