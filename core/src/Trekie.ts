@@ -1,3 +1,4 @@
+import { IStatus } from '#/lib/supercell';
 import { StateCreator, create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
@@ -62,29 +63,19 @@ export type ComponentBase<TState, TEvents extends Record<string, Supercell.IEven
   cell: ReturnType<typeof Supercell.Cell<TEvents>>
 }
 
-export type BoundComponent<TState, TEvents extends Record<string, Supercell.IEvent<any>>> = {
-  $: ComponentBase<TState, TEvents>
-}
-
 export type GameComponent<TState, TEvents extends Record<string, Supercell.IEvent<any>>>
-  = (game: GameInterface) => BoundComponent<TState, TEvents>
+  = (game: GameInterface) => ComponentBase<TState, TEvents>
 
 export function Component
   <TInterface extends ComponentBase<TState, TEvents>, TState, TEvents extends Record<string, Supercell.IEvent<any>>>
   (component: (game: GameInterface) => TInterface) {
 
-  function creator(game: GameInterface) {
-    const { events, cell, store, ...rest } = component(game)
-
-    return {
-      $: { events, cell, store },
-      ...rest
-    }
-  }
-
-  return creator
+  return (game: GameInterface) => component(game)
 }
 
+export function log(status: Supercell.IStatus<any>) {
+  console.log(`[trekie] <${status.kind}> @ "${(new Date(status.timestamp)).toISOString()}"`)
+}
 
 export type TrekieStoreInterface = GameState & GameActions
 

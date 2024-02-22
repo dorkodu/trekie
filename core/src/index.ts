@@ -4,6 +4,7 @@ import * as Trekie from '#/Trekie';
 
 import * as Goal from "#/commons/goal"
 import * as Habit from "#/commons/habit"
+import { Cell } from './lib/supercell';
 
 const initialState: Trekie.GameState = {
   // points
