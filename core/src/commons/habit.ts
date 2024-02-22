@@ -1,20 +1,19 @@
-import ID from "#/lib/id";
+import * as Trekie from "#/Trekie"
 
-import { Cell, IEvent, IStatus, Event } from "#/lib/supercell"
+import { Maybe, Timestamp, util } from "#/lib/util"
+import ID from "#/lib/id"
+import { Cell, IEvent, IStatus, Event, Store } from "#/lib/supercell"
 import Supercell from "#/lib/supercell"
-
-import { Maybe, Timestamp } from "#/lib/util";
-
-import * as Trekie from "#/Trekie";
 
 //? Interfaces
 
 export interface IHabit extends IHabitTemplate {
   id: string
   count: number
-  heatmap: { [offset: number]: number }
   createdAt: Timestamp
   lastUpdated: Timestamp
+
+  heatmap: { [offset: number]: number }
 }
 
 export interface IHabitTemplate {
@@ -24,7 +23,9 @@ export interface IHabitTemplate {
   userId: string
 }
 
-export interface Interface extends ComponentBase<ComponentState, ComponentEvents> {
+//? Interfaces
+
+export interface Interface extends Trekie.ComponentBase<State, Events> {
   add: (habit: IHabit) => void
   create: (props: IHabitTemplate) => IHabit
   get: (id: IHabit["id"]) => Maybe<IHabit>
@@ -34,8 +35,122 @@ export interface Interface extends ComponentBase<ComponentState, ComponentEvents
   count: () => number
 }
 
-type ComponentEvents = typeof events
+interface State {
+  habits: Record<IHabit["id"], IHabit>
+}
 
+const store = Store<State>(() => ({
+  habits: {}
+}))
+
+export const Component = Trekie.Component<Interface, State, Events>((game) => ({
+  events,
+  store,
+  cell,
+
+  add(habit) {
+    store.setState($ => {
+      $.habits[habit.id] = habit
+
+      // make sure has user + session
+      const currentUserId = game($ => $.user?.id)
+      const currentUser = game($ => $.user)
+      if (!currentUser) return
+
+      if (currentUserId !== habit.userId) return
+
+      game.setState($ => {
+        $.xpTargetDaily += habit.dailyTarget
+      })
+    })
+  },
+
+  remove(id) {
+    let updateStats = false
+    let removedHabit = this.get(id)
+
+    store.setState($ => {
+      delete $.habits[id]
+
+      const currentUser = $.habits
+      if (!currentUser || !removedHabit)
+        return
+
+      updateStats = true
+
+      const habitDailyCurrent = removedHabit.heatmap[util.getDayDiff(removedHabit.createdAt, Date.now())] ?? 0
+      const habitDailyTarget = removedHabit.dailyTarget
+      const habitCount = removedHabit.count
+
+      game.setState($ => {
+        $.xp -= habitCount
+        $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
+        $.xpTargetDaily -= habitDailyTarget
+      })
+    })
+
+    if (updateStats) game().refresh()
+  },
+
+  get: (id) => store($ => $.habits[id]),
+
+  count: () => Object.entries(store($ => $.habits)).length,
+
+  commit(id, count) {
+    store.setState($ => {
+      const habit = $.habits[id]
+      if (!habit) return
+
+      const user = game($ => $.user)
+      if (!user) return
+
+      const dayDiff = util.getDayDiff(habit.createdAt, Date.now())
+      const habitCount = (habit.heatmap[dayDiff] ?? 0) + count
+
+      // Habit count can not be negative
+      if (habitCount < 0) return
+
+      habit.count += count
+      habit.heatmap[dayDiff] = habitCount
+
+      // If habit count has become 0, remove the property
+      if (habit.heatmap[dayDiff]! <= 0)
+        delete habit.heatmap[dayDiff]
+
+      game.setState($ => {
+        $.xp += count
+        $.xp += Math.max(
+          Math.min(habit.dailyTarget - (habitCount - count), count),
+          count
+        )
+      })
+    })
+  },
+
+  update(id, props) {
+    const updatedHabit = this.create(props)
+
+    store.setState($ => {
+      $.habits[id] = updatedHabit
+    })
+
+    return updatedHabit
+  },
+
+  create(props) {
+    return {
+      ...props,
+
+      id: ID.habit(),
+      count: 0,
+      createdAt: new Date().getTime(),
+      lastUpdated: new Date().getTime(),
+      heatmap: [0]
+    }
+  },
+}))
+
+export type Events = typeof events
 const events = {
   'habit:create': Event<{ habit: IHabit }>({
     onCreate: (data) => ({
@@ -43,9 +158,7 @@ const events = {
       data,
       timestamp: Date.now()
     }),
-    onShare(status) {
-      console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
-    },
+    onShare(status): Trekie.
   }),
   'habit:commit': Event<{ habitId: IHabit["id"], count: number }>({
     onCreate: (data) => ({
@@ -59,188 +172,6 @@ const events = {
   })
 }
 
-const cell = Cell<typeof events>(events)
-
-interface State {
-  habits: Record<IHabit["id"], IHabit>
-}
-
-const store = Store<State>((set, get) => ({
-  habits: {}
-}))
-
-export const Component = Trekie.Component<State, Events>((game) => ({
-  events,
-  store,
-  cell,
-
-
-  add(habit) {
-
-  },
-  get(id) {
-    return this.store($ => $.habits[id])
-  },
-  count() {
-    return Object.keys(this.store($ => $.habits)).length
-  },
-  commit(id, count) {
-    this.store.setState($ => {
-      const targetHabit = $.habits[id]
-
-      if (!targetHabit) return
-
-      const user = 
-      if (!user) return
-
-      const dayDiff = util.getDayDiff(habit.createdAt.getTime(), Date.now())
-      const habitCount = (targetHabit.heatmap[dayDiff] ?? 0) + count
-
-      // Habit count can not be negative
-      if (habitCount < 0) return
-
-      updateStats = true
-
-      targetHabit.count += count
-      targetHabit.heatmap[dayDiff] = habitCount
-
-      // If habit count has become 0, remove the property
-      if (targetHabit.heatmap[dayDiff]! <= 0)
-        delete targetHabit.heatmap[dayDiff]
-
-      $.xp += count
-      $.dailyXpCurrent += Math.max(
-        Math.min(habit.dailyTarget - (habitCount - count), count),
-        count
-      )
-    })
-  },
-  update(id, props) { },
-  remove() { },
-  create(props) {
-    return {
-      ...props,
-      id: ID.habit(),
-      count: 0,
-      createdAt: new Date(),
-      lastUpdated: new Date(),
-      heatmap: [0]
-    }
-  },
-}))
-
-addHabit(habit) {
-  set($ => {
-    $.habits[habit.id] = habit
-
-    // make sure has user + session
-    const currentUserId = $.user?.id
-    const currentUser = $.user
-    if (!currentUser) return
-
-    if (currentUserId !== habit.userId) return
-
-    $.dailyXpTarget += habit.dailyTarget
-  })
-},
-
-getHabit(id) {
-  return get().habits[id]
-},
-
-removeHabit(id) {
-  let updateStats = false
-  let removedHabit = get().getHabit(id)
-
-  set($ => {
-    delete $.habits[id]
-
-    const currentUser = $.user
-    if (!currentUser || !removedHabit)
-      return
-
-    updateStats = true
-
-    const habitDailyCurrent = removedHabit.heatmap[util.getDayDiff(removedHabit.createdAt.getTime(), Date.now())] ?? 0
-    const habitDailyTarget = removedHabit.dailyTarget
-    const habitCount = removedHabit.count
-
-    $.xp -= habitCount
-    $.dailyXpCurrent -= Math.min(
-      habitDailyCurrent,
-      habitDailyTarget
-    )
-    $.dailyXpTarget -= habitDailyTarget
-  })
-
-  if (updateStats) get().updateStats()
-},
-
-updateHabit(id, title, description, dailyTarget) {
-  let updateStats = false
-
-  set($ => {
-    const habit = $.habits[id]
-    if (!habit) return
-
-    // make sure has active user session
-    const user = $.user
-
-    // make sure has active user session
-    if (!user) return
-
-    updateStats = true
-
-    const habitDailyCurrent = habit.heatmap[util.getDayDiff(habit.createdAt.getTime(), Date.now())] ?? 0
-    const habitDailyTarget = dailyTarget
-
-    const habitDailyTargetDiff = habitDailyTarget - habit.dailyTarget
-
-    habit.title = title
-    habit.description = description
-    habit.dailyTarget = dailyTarget
-
-    $.dailyXpCurrent = Math.min(habitDailyTarget, habitDailyCurrent)
-    $.dailyXpTarget += habitDailyTargetDiff
-  })
-
-  if (updateStats) get().updateStats()
-},
-
-trackHabit(habit, count) {
-  let updateStats = false
-
-  set($ => {
-    const targetHabit = $.habits[habit.id]
-
-    if (!targetHabit) return
-
-    const user = $.user
-    if (!user) return
-
-    const dayDiff = util.getDayDiff(habit.createdAt.getTime(), Date.now())
-    const habitCount = (targetHabit.heatmap[dayDiff] ?? 0) + count
-
-    // Habit count can not be negative
-    if (habitCount < 0) return
-
-    updateStats = true
-
-    targetHabit.count += count
-    targetHabit.heatmap[dayDiff] = habitCount
-
-    // If habit count has become 0, remove the property
-    if (targetHabit.heatmap[dayDiff]! <= 0)
-      delete targetHabit.heatmap[dayDiff]
-
-    $.xp += count
-    $.dailyXpCurrent += Math.max(
-      Math.min(habit.dailyTarget - (habitCount - count), count),
-      count
-    )
-  })
-
-  if (updateStats) get().updateStats()
-},
+const cell = Cell<Events>(events)
 
 export default Component
