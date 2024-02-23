@@ -1,9 +1,8 @@
-import * as Trekie from "#/Trekie"
+import * as Trekie from "../Trekie"
 
-import { Maybe, Timestamp, util } from "#/lib/util"
-import ID from "#/lib/id"
-import { Cell, IEvent, IStatus, Event, Store } from "#/lib/supercell"
-import Supercell from "#/lib/supercell"
+import { Maybe, Timestamp, util } from "../lib/util"
+import ID from "../lib/id"
+import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
 
 //? Interfaces
 
@@ -12,26 +11,25 @@ export interface IHabit extends IHabitTemplate {
   count: number
   createdAt: Timestamp
   lastUpdated: Timestamp
-
   heatmap: { [offset: number]: number }
+  userId: string
 }
 
 export interface IHabitTemplate {
   title: string
   description: string
   dailyTarget: number
-  userId: string
 }
 
 //? Interfaces
 
-export interface Interface extends Trekie.ComponentBase<State, Events> {
+export interface Interface extends Trekie.ComponentInterface<State, Events> {
   add: (habit: IHabit) => void
-  create: (props: IHabitTemplate) => IHabit
+  create: (template: IHabitTemplate) => Maybe<IHabit>
   get: (id: IHabit["id"]) => Maybe<IHabit>
-  update: (id: IHabit["id"], props: IHabitTemplate) => IHabit
+  update: (id: IHabit["id"], props: IHabitTemplate) => Maybe<IHabit>
   remove: (id: IHabit["id"]) => void
-  commit: (id: IHabit["id"], count: number) => void
+  commit: (id: IHabit["id"], count: number) => number | false
   count: () => number
 }
 
@@ -97,6 +95,9 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
   count: () => Object.entries(store($ => $.habits)).length,
 
   commit(id, count) {
+    let result: number | boolean
+    result = false
+
     store.setState($ => {
       const habit = $.habits[id]
       if (!habit) return
@@ -110,10 +111,12 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
       // Habit count can not be negative
       if (habitCount < 0) return
 
+      //? now can successfully commit 👍🏻
       habit.count += count
+      result = habit.count
       habit.heatmap[dayDiff] = habitCount
 
-      // If habit count has become 0, remove the property
+      // If habit count has become 0, re+move the property
       if (habit.heatmap[dayDiff]! <= 0)
         delete habit.heatmap[dayDiff]
 
@@ -125,10 +128,13 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
         )
       })
     })
+
+    return result
   },
 
   update(id, props) {
     const updatedHabit = this.create(props)
+    if (!updatedHabit) return
 
     store.setState($ => {
       $.habits[id] = updatedHabit
@@ -137,16 +143,22 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
     return updatedHabit
   },
 
-  create(props) {
+  create(template) {
+    const userId = game($ => $.user?.id)
+
+    if (!userId) return
+
     return {
-      ...props,
+      ...template,
 
       id: ID.habit(),
       count: 0,
       createdAt: new Date().getTime(),
       lastUpdated: new Date().getTime(),
-      heatmap: [0]
-    }
+      heatmap: [0],
+      userId,
+
+    } satisfies IHabit
   },
 }))
 
@@ -158,7 +170,7 @@ const events = {
       data,
       timestamp: Date.now()
     }),
-    onShare(status): Trekie.
+    onShare: (status) => Trekie.log(status)
   }),
   'habit:commit': Event<{ habitId: IHabit["id"], count: number }>({
     onCreate: (data) => ({
@@ -166,9 +178,7 @@ const events = {
       data,
       timestamp: Date.now()
     }),
-    onShare(status) {
-      console.log(`[trekie] <${status.kind}> with (${status.data}) @ "${(new Date(status.timestamp)).toISOString()}"`)
-    },
+    onShare: (status) => Trekie.log(status)
   })
 }
 
