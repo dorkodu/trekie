@@ -1,10 +1,9 @@
-export * as Trekie from '#/Trekie';
+export * as Trekie from './Trekie';
 
-import * as Trekie from '#/Trekie';
+import * as Trekie from './Trekie';
 
-import * as Goal from "#/commons/goal"
-import * as Habit from "#/commons/habit"
-import { Cell } from './lib/supercell';
+import * as Goal from "./commons/goal"
+import * as Habit from "./commons/habit"
 
 const initialState: Trekie.GameState = {
   // points
@@ -47,7 +46,20 @@ const trekie = {
 
 export default trekie
 
-
 let xp = trekie.game($ => $.xp)
 
-trekie.goal
+let myFirstHabit = trekie.habit.create({
+  title: "Do Pushups Everyday",
+  description: "At least 50 pushups to get stronger.",
+  dailyTarget: 50,
+})
+
+if (myFirstHabit) trekie.habit.add(myFirstHabit)
+
+trekie.habit.commit("xxxx-xxxx-xxxx-xxxx", 100)
+
+let myFirstGoal = trekie.goal.create({
+  title: "Become A Billionaire Until 25",
+  description: "Liquior, Ladies, Leverage. IYKYK.",
+  xpTarget: 5000,
+})

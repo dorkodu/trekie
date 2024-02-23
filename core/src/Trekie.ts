@@ -1,10 +1,9 @@
-import { IStatus } from '#/lib/supercell';
-import { StateCreator, create } from 'zustand'
+import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 // misc
-import * as Supercell from '#/lib/supercell'
-import { Maybe, Timestamp } from '#/lib/util'
+import * as Supercell from './lib/supercell'
+import { Maybe, Timestamp } from './lib/util'
 
 export interface IUser {
   id: string;
@@ -55,25 +54,23 @@ export function Game(state: GameState = defaultState) {
   })))
 }
 
-//? COMPONENTS 
-
-export type ComponentBase<TState, TEvents extends Record<string, Supercell.IEvent<any>>> = {
+export type ComponentInterface<TState, TEvents extends Record<string, Supercell.IEvent<any>>> = {
   events: TEvents
   store: ReturnType<typeof Supercell.Store<TState>>
   cell: ReturnType<typeof Supercell.Cell<TEvents>>
 }
 
 export type GameComponent<TState, TEvents extends Record<string, Supercell.IEvent<any>>>
-  = (game: GameInterface) => ComponentBase<TState, TEvents>
+  = (game: GameInterface) => ComponentInterface<TState, TEvents>
 
 export function Component
-  <TInterface extends ComponentBase<TState, TEvents>, TState, TEvents extends Record<string, Supercell.IEvent<any>>>
+  <TInterface extends ComponentInterface<TState, TEvents>, TState, TEvents extends Record<string, Supercell.IEvent<any>>>
   (component: (game: GameInterface) => TInterface) {
 
   return (game: GameInterface) => component(game)
 }
 
-export function log(status: Supercell.IStatus<any>) {
+export function log(status: Supercell.IStatus<unknown>) {
   console.log(`[trekie] <${status.kind}> @ "${(new Date(status.timestamp)).toISOString()}"`)
 }
 

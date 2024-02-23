@@ -14,9 +14,10 @@
 
     "esModuleInterop": true,
     "outDir": "./dist",
+    
     "target": "ES2017",
     "skipLibCheck": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "Node10",
 
     "paths": {
       "#/*": ["./src/*"]
