@@ -6,8 +6,6 @@ import { useMediaQuery } from '@mantine/hooks'
 import * as Nav from '#/components/custom/Nav'
 import { AppMenu } from '#/components/cards/Menu'
 
-import { useTrekieStore } from '#/stores/trekieStore'
-
 import * as styles from '#/styles/Layout.css'
 import { DailyStats } from '#/components/cards/DailyStats'
 import Emoji from '#/components/custom/Emoji'

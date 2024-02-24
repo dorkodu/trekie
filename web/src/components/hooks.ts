@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { trekie } from "#/lib/game";
+import { trekie } from "#/lib/trekie";
 
 export function useDelay(delay: number = 100) {
   const [state, setState] = useState(true)
@@ -15,7 +15,7 @@ export function useDelay(delay: number = 100) {
 
 export function useRefreshStatsDaily() {
   useEffect(() => {
-    const task = () => trekie.updateStats()
+    const task = () => trekie.game().refresh()
 
     const today = new Date()
     const tomorrow = new Date()

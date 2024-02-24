@@ -12,15 +12,15 @@ import {
 } from '@mantine/core'
 import Emoji from '../custom/Emoji'
 import { vanilla } from '#/styles/theme'
-import { trekie } from '#/lib/game'
+import { trekie } from '#/lib/trekie'
 
 export function DailyStats() {
 
-  const momentum = trekie.store($ => $.momentum)
-  const xp = trekie.store($ => $.xp)
-  const coins = trekie.store($ => $.coins)
-  const streak = trekie.store($ => $.streak)
-  const progress = trekie.store($ => $.daily.progress)
+  const momentum = trekie.game($ => $.momentum)
+  const xp = trekie.game($ => $.xp)
+  const coins = trekie.game($ => $.coins)
+  const streak = trekie.game($ => $.streak)
+  const progress = trekie.game($ => $.dailyProgress)
 
   return (
     <Paper p={10}>

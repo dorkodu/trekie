@@ -87,5 +87,3 @@ export const router = createBrowserRouter(
     </Route>
   )
 )
-
-const RT = createBrowserRouter([{}])
