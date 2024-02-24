@@ -3,7 +3,7 @@ import { immer } from 'zustand/middleware/immer'
 
 // misc
 import * as Supercell from './lib/supercell'
-import { Maybe, Timestamp } from './lib/util'
+import { Maybe, Timestamp, util } from './lib/util'
 
 export interface IUser {
   id: string;
@@ -49,7 +49,42 @@ export function Game(state: GameState = defaultState) {
     ...state,
 
     gainXp: (gain: number) => set($ => ({ xp: $.xp + gain })),
-    refresh() { /* reconcile, align all values together, 'cuz some depend on each other for calculations. */ },
+    refresh() {
+      /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
+      set($ => {
+        const user = $.user
+        if (!user) return
+
+        const didStreakToday = util.isSameDay(
+          $.lastStreak,
+          Date.now()
+        )
+
+        // If user is now above/equal to target xp and didn't do a streak today
+        if (
+          $.xpToday > 0 &&
+          $.xpToday >= $.xpTargetDaily &&
+          !didStreakToday
+        ) {
+          $.streak++
+          $.lastStreak = Date.now()
+        }
+        // If user is now below target xp and did a streak today
+        else if (
+          ($.xpToday <= 0 ||
+            $.xpToday < $.xpTargetDaily) &&
+          didStreakToday
+        ) {
+          $.streak--
+        }
+
+        // Handle user's last xp date
+        if (!util.isSameDay($.lastXp, Date.now())) {
+          $.xpToday = 0
+          $.lastXp = Date.now()
+        }
+      })
+    },
     reset() { set(defaultState) },
   })))
 }
