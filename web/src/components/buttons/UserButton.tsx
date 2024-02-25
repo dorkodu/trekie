@@ -9,9 +9,9 @@ export function UserButton({
   compact?: boolean
 }) {
 
-  user.avatar = user?.avatar ?? '/images/avatar.webp'
-  user.name = user?.name ?? "Anonymous"
-  user.username = '@' + user?.username ?? '@-----'
+  let avatar = user?.avatar ?? '/images/avatar.webp'
+  let name = user?.name ?? "Anonymous"
+  let username = "@" + user?.username ?? ''
 
   return (
     <Card
@@ -26,16 +26,16 @@ export function UserButton({
       <Group justify="space-between" gap={10}>
         <Group gap={compact ? 8 : 12}>
           <Avatar
-            src={user.avatar}
+            src={avatar}
             radius={compact ? 12 : 16}
             size={compact ? 36 : 44}
           />
           <Stack gap={0} ta="left" mr={10}>
             <Text fw={700} lh={1.1} size={compact ? 'sm' : 'md'}>
-              {user.name}
+              {name}
             </Text>
             <Text fw={500} lh={1.1} c="dimmed" size={compact ? 'sm' : 'md'}>
-              {user.username}
+              {username}
             </Text>
           </Stack>
         </Group>

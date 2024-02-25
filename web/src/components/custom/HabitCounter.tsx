@@ -1,4 +1,4 @@
-import { useTrekieStore } from '#/stores/trekieStore'
+import { trekie } from "#/lib/trekie"
 import { truncate } from '#/styles/shared.css'
 import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
@@ -13,12 +13,12 @@ interface Props {
 
 function HabitCounter({ habitId, onClick }: Props) {
   // get the habit yourself, fresh!
-  const habit = useTrekieStore($ => $.habits[habitId])
+  const habit = trekie.game($ => $.habits[habitId])
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
     if (!habit) return;
-    useTrekieStore.getState().trackHabit(habit, count)
+    trekie.game.getState().trackHabit(habit, count)
   }
 
   if (!habit) return null;

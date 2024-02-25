@@ -1,4 +1,7 @@
 import {
+  Badge,
+  Box,
+  Center,
   Divider,
   Group,
   MantineColor,
@@ -8,11 +11,12 @@ import {
   Stack,
   Text,
   Tooltip,
+  darken,
   useMantineColorScheme,
 } from '@mantine/core'
 import Emoji from '../custom/Emoji'
-import { vanilla } from '#/styles/theme'
-import { trekie } from '#/lib/trekie'
+import { useThemed, vanilla } from '#/styles/theme'
+import { trekie } from "#/lib/trekie"
 
 export function DailyStats() {
 
@@ -139,6 +143,62 @@ export function SumCard({
             {kind}
           </Text>
         </Stack>
+      </Group>
+    </Paper>
+  )
+}
+
+export function MinimalSumCard({
+  icon,
+  value,
+  color,
+  kind
+}: {
+  icon: React.ReactNode
+  value: number
+  color: string
+  kind?: string
+}) {
+  const { colorScheme } = useMantineColorScheme()
+
+  return (
+    <Paper style={{
+      padding: 0,
+      background: vanilla.colors[color]?.light,
+      border: `2px solid ${vanilla.colors[color]?.lightHover}`,
+      boxShadow: `0px 2px 2px 1px ${vanilla.colors[color]?.light}`
+    }}>
+      <Group wrap="nowrap" gap={10} justify="space-between">
+
+        <Stack gap={4}
+          px={6}
+          py={6}
+          pt={8}
+        >
+          <Text span lh={0.75} fw={800}
+
+            c={
+              colorScheme == 'dark'
+                ? vanilla.colors.white
+                : vanilla.colors.black
+            }
+            style={{ textShadow: `1px 1px 2px ${useThemed({ dark: "#111", light: "#fff" })}` }}
+          >
+            {value}
+          </Text>
+          <Text
+            tt="uppercase"
+            c={vanilla.colors[color]?.filled}
+            fw={700}
+            size="11"
+            lh={1}
+          >
+            {kind}
+          </Text>
+        </Stack>
+        <Box pr={6}>
+          <Center>{icon}</Center>
+        </Box>
       </Group>
     </Paper>
   )

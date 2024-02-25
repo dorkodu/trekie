@@ -1,4 +1,4 @@
-import { useTrekieStore } from '#/stores/trekieStore'
+import { trekie } from "#/lib/trekie"
 import { useAppStore } from '#/stores/appStore'
 import { IHabit } from '../../../../core/src/types/habit'
 import { ActionIcon, Menu } from '@mantine/core'
@@ -19,7 +19,7 @@ interface Props {
 }
 
 function HabitMenu({ habit }: Props) {
-  const currentUserId = useTrekieStore($ => $.user?.id)
+  const currentUserId = trekie.game($ => $.user?.id)
 
   const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
   const onClipboard = (ev: MouseEvent) => { ev.stopPropagation() }
@@ -43,7 +43,7 @@ function HabitMenu({ habit }: Props) {
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
 
-    useTrekieStore.getState().removeHabit(habit.id)
+    trekie.game.getState().removeHabit(habit.id)
   }
 
   return (

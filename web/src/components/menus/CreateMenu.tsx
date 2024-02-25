@@ -1,11 +1,26 @@
 import { useAppStore } from '#/stores/appStore'
-import { ActionIcon, Button, Flex, Menu, Title } from '@mantine/core'
+import { useThemed, vanilla } from '#/styles/theme'
+import { ActionIcon, Badge, Box, Button, Divider, Flex, Group, Menu, MenuDivider, Stack, Text, Title, rgba } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { IconAngle, IconCopyCheck, IconEqualDouble, IconHandLittleFinger, IconMetronome } from '@tabler/icons-react'
+import { IconMoodEmpty } from '@tabler/icons-react'
+import { IconHandClick } from '@tabler/icons-react'
 import {
+  IconCheckbox,
   IconChecklist,
+  IconChecks,
+  IconEyePlus,
+  IconH6,
+  IconLinkPlus,
   IconNotebook,
   IconPencilPlus,
+  IconPhoto,
+  IconPhotoPlus,
+  IconPictureInPicture,
+  IconPinned,
   IconPlus,
+  IconPlusEqual,
+  IconPlusMinus,
   IconTargetArrow,
 } from '@tabler/icons-react'
 
@@ -40,47 +55,59 @@ function CreateMenu({ }: Props) {
           <IconPlus size={32} />
         </ActionIcon>
       </Menu.Target>
-      <Menu.Dropdown>
-        <Flex direction="column" gap={4}>
+      <Menu.Dropdown style={{ padding: 8, border: 0, background: rgba("#fff", 0), minWidth: 240 }}>
+        <Stack gap={6} style={{ borderRadius: 16, padding: 10, border: 0, background: rgba(useThemed({ dark: "#111", light: "#fff" }), 0.5) }}>
+          <Box
+            style={{
+              background: vanilla.colors.gray.light,
+              padding: 6,
+              borderRadius: 20,
+            }}
+          >
+            <Stack gap={0}></Stack>
+            <Flex>
+              <Badge variant="light" color="gray" mx="auto">
+                {false ? 'Your favorite habits' : 'No pinned habits'}
+              </Badge>
+            </Flex>
+          </Box>
+          <Divider />
           <Button
-            variant="default"
+            variant="gradient"
             onClick={onHabit}
             h="auto"
-            py="md"
-            styles={{ label: { flex: 1 } }}
+            py={4}
+            styles={{ label: { flex: 1, fontSize: 14 } }}
+            leftSection={<IconCopyCheck size={26} />}
+            radius={12}
           >
-            <Flex align="center" gap="md">
-              <IconChecklist width={32} height={32} />
-              <Title order={5}>Create a habit</Title>
-            </Flex>
+            New Habit
           </Button>
           <Button
-            variant="default"
+            variant="gradient"
             onClick={onGoal}
+            py={4}
             h="auto"
-            py="md"
-            styles={{ label: { flex: 1 } }}
+            styles={{ label: { flex: 1, fontSize: 14 } }}
+            leftSection={<IconTargetArrow size={26} />}
+            radius={12}
           >
-            <Flex align="center" gap="md">
-              <IconTargetArrow width={32} height={32} />
-              <Title order={5}>Create a goal</Title>
-            </Flex>
+            New Goal
           </Button>
           <Button
-            variant="default"
+            variant="gradient"
             onClick={onMemory}
+            py={4}
             h="auto"
-            py="md"
-            styles={{ label: { flex: 1 } }}
+            styles={{ label: { flex: 1, fontSize: 14 } }}
+            leftSection={<IconPhotoPlus size={26} />}
+            radius={12}
           >
-            <Flex align="center" gap="md">
-              <IconNotebook width={32} height={32} />
-              <Title order={5}>Create a memory</Title>
-            </Flex>
+            Add To Story
           </Button>
-        </Flex>
+        </Stack>
       </Menu.Dropdown>
-    </Menu>
+    </Menu >
   )
 }
 

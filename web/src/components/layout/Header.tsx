@@ -2,12 +2,12 @@ import { ActionIcon, Box, Group, Image, useMantineColorScheme } from "@mantine/c
 import { IconMenu2 } from "@tabler/icons-react";
 import { UserButton } from "../buttons/UserButton";
 import { CommandCenter } from "../custom/CommandCenter";
-import { useTrekieStore } from "#/stores/trekieStore";
+import trekie from "#/lib/trekie";
 import { useAppStore } from "#/stores/appStore";
 
 export function Header() {
   const { colorScheme } = useMantineColorScheme()
-  const user = useTrekieStore($ => $.user)
+  const user = trekie.game($ => $.user)
   const menu = useAppStore($ => $.menu)
 
   return (
