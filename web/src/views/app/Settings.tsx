@@ -19,7 +19,7 @@ import { useState } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 
 import WIPCard from '#/components/cards/WIPCard'
-import { useTrekieStore } from '#/stores/trekieStore'
+import { trekie } from "#/lib/trekie"
 import { truncate, wrapContent } from '#/styles/shared.css'
 
 function Settings() {
@@ -82,16 +82,16 @@ function Index() {
 function AccountInformation() {
   const navigate = useNavigate()
 
-  const user = useTrekieStore(state =>
+  const user = trekie.game(state =>
     state.userId ? state.users[state.userId] : undefined
   )
 
   const onLogout = () => {
-    useTrekieStore.getState().logout()
+    trekie.game.getState().logout()
   }
 
   const onDelete = () => {
-    useTrekieStore.getState().reset()
+    trekie.game.getState().reset()
     navigate('/join')
   }
 
@@ -135,7 +135,7 @@ function OtherResources() {
 function Username() {
   const navigate = useNavigate()
 
-  const user = useTrekieStore(state =>
+  const user = trekie.game(state =>
     state.userId ? state.users[state.userId] : undefined
   )
 
@@ -143,7 +143,7 @@ function Username() {
 
   const confirm = () => {
     if (!user) return
-    useTrekieStore.getState().updateUser(user.id, username)
+    trekie.game.getState().updateUser(user.id, username)
     navigate(-1)
   }
 

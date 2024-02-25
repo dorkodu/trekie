@@ -28,7 +28,7 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
 import * as Nav from '#/components/custom/Nav'
 
-import { useTrekieStore } from '#/stores/trekieStore'
+import { trekie } from "#/lib/trekie"
 
 import * as LayoutStyle from '#/styles/Layout.css'
 import * as WebsiteStyle from '#/styles/website/Website.css'

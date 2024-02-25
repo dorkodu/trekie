@@ -1,4 +1,4 @@
-<<<<<<<< HEAD:web/src/views/app/MyPage.tsx
+<<<<<<<< HEAD: web / src / views / app / MyPage.tsx
 import ChevronTitle from "#/components/custom/ChevronTitle";
 import { UserStats } from "#/components/custom/UserStats";
 import ProfileMenu from "#/components/menus/ProfileMenu";
@@ -35,7 +35,7 @@ import { UserStats } from '#/components/custom/UserStats'
 import ProfileMenu from '#/components/menus/ProfileMenu'
 import TextParser from '#/components/util/TextParser'
 import { util } from '#/lib/util'
-import { useTrekieStore } from '#/stores/trekieStore'
+import { trekie } from "#/lib/trekie"
 import { wrapContent } from '#/styles/shared.css'
 import StatusCard from '#/components/cards/StatusCard'
 import Goal from '#/components/custom/Goal'
@@ -61,15 +61,15 @@ function Profile() {
   const previewGoals = useTrekie((state) => state.getGoals(userId));
 ========
   const username = params['username']
-  const userId = useTrekieStore(
+  const userId = trekie.game(
     state => username && state.index.usernameToUserId[username]
   )
-  const user = useTrekieStore(state => userId && state.users[userId])
+  const user = trekie.game(state => userId && state.users[userId])
 
-  const currentUserId = useTrekieStore(state => state.userId)
+  const currentUserId = trekie.game(state => state.userId)
 
-  const previewMemories = useTrekieStore(state => state.getMemories(userId))
-  const previewGoals = useTrekieStore(state => state.getGoals(userId))
+  const previewMemories = trekie.game(state => state.getMemories(userId))
+  const previewGoals = trekie.game(state => state.getGoals(userId))
 >>>>>>>> remaster:web/src/views/app/Profile.tsx
 
   if (!user) {
@@ -120,7 +120,7 @@ function Profile() {
                 radius="xl">
                 {!user.following ? "Follow" : "Unfollow"}
 ========
-                onClick={() => useTrekieStore.getState().followUser(user)}
+                onClick={() => trekie.game.getState().followUser(user)}
                 variant={!user.following ? 'filled' : 'default'}
                 radius="xl"
               >

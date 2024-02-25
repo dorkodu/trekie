@@ -46,7 +46,7 @@ function AppLayout() {
         <aside className={styles.Layout.Aside}>
           <DailyStats />
           <Card withBorder m={10}>
-            <Image src="/web/public/images/oasis.webp" w="100%" h="auto" />
+            <Image src="/images/oasis.webp" w="100%" h="auto" />
           </Card>
 
           <footer className={styles.Layout.Footer}>{Footer}</footer>

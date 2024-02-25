@@ -4,7 +4,6 @@ import * as Trekie from '@core/Trekie';
 import * as Goal from "@core/commons/goal"
 import * as Habit from "@core/commons/habit"
 
-// TODO here 😂
 const initialState: Trekie.GameState = {
   // points
   xp: 0,
