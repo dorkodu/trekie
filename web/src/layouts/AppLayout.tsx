@@ -1,4 +1,4 @@
-import { Anchor, Card, Divider, Group, Image, Modal, Stack, useMantineColorScheme, }
+import { Anchor, Box, Card, Divider, Group, Image, Modal, Paper, Stack, useMantineColorScheme, }
   from '@mantine/core'
 import { Link, Outlet } from 'react-router-dom'
 import { useMediaQuery } from '@mantine/hooks'
@@ -13,6 +13,7 @@ import { HeadBar } from '#/components/layout/HeadBar'
 import { NavigationBar } from '#/components/layout/NavigationBar'
 import { useAppStore } from '#/stores/appStore'
 import { Header } from '#/components/layout/Header'
+import { glassBackground, glassBar } from '#/styles/shared.css'
 
 export const navLinks = [
   { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
@@ -45,7 +46,7 @@ function AppLayout() {
 
         <aside className={styles.Layout.Aside}>
           <DailyStats />
-          <Card withBorder m={10}>
+          <Card withBorder my={10}>
             <Image src="/images/oasis.webp" w="100%" h="auto" />
           </Card>
 
@@ -123,23 +124,25 @@ function Menu() {
     >
       <Modal.Overlay blur={2.5} />
       <Modal.Content>
-        <Modal.Header>
-          <Modal.Title>
-            <Image
-              src={
-                colorScheme == 'dark'
-                  ? '/images/trekie_Brand_White.svg'
-                  : '/images/trekie_Brand.svg'
-              }
-              h={40}
-              w="auto"
-            />
-          </Modal.Title>
-          <Modal.CloseButton variant="default" />
-        </Modal.Header>
-        <Modal.Body>
-          <AppMenu />
-        </Modal.Body>
+        <Paper style={{ backgroundColor: "unset" }}>
+          <Modal.Header>
+            <Modal.Title>
+              <Image
+                src={
+                  colorScheme == 'dark'
+                    ? '/images/trekie_Brand_White.svg'
+                    : '/images/trekie_Brand.svg'
+                }
+                h={40}
+                w="auto"
+              />
+            </Modal.Title>
+            <Modal.CloseButton variant="default" />
+          </Modal.Header>
+          <Modal.Body>
+            <AppMenu />
+          </Modal.Body>
+        </Paper>
       </Modal.Content>
     </Modal.Root>
   )

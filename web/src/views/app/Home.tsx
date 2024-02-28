@@ -5,11 +5,11 @@ import { IconPinned } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
 import Emoji from '#/components/custom/Emoji'
-import TextParser from '#/components/util/TextParser'
+import EnhancedText from '#/components/util/TextParser'
 import HabitCounter from '#/components/custom/HabitCounter'
 import NoHabitsCard from '#/components/cards/NoHabitsCard'
 import NoGoalsCard from '#/components/cards/NoGoalsCard'
-import { DailyStats, MinimalSumCard } from '#/components/cards/DailyStats'
+import { DailyStats, SumCard } from '#/components/cards/DailyStats'
 
 import { wrapContent } from '#/styles/shared.css'
 import { vanilla } from '#/styles/theme'
@@ -21,7 +21,7 @@ import { trekie } from "#/lib/trekie"
 
 function Home() {
   const navigate = useNavigate()
-  const isMobile = useMediaQuery(vanilla.smallerThan("sm"))
+  const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
   const user = trekie.game($ => $.user)
 
@@ -34,32 +34,15 @@ function Home() {
   return (
     <Stack gap="xs" m="xs">
 
-      <Group justify="space-between">
+      <Group gap="sm">
         <Image src={user?.pictureUrl} w={64} h={64} radius={10} />
-        <SimpleGrid cols={{ base: 2 }} spacing="xs">
-          <MinimalSumCard
-            icon={<Emoji emoji="💎" size={24} />}
-            value={28347}
-            color="blue"
-            kind='XP'
-          />
-          <MinimalSumCard
-            icon={<Emoji emoji="🪙" size={24} />}
-            value={coins}
-            color="yellow"
-            kind='COINS'
-          />
-        </SimpleGrid>
+        <Stack gap={0}>
+          <Text fw={700} size="lg" lh={1}>
+            <EnhancedText ids={['emoji']} text={user?.name ?? ''} />
+          </Text>
+          <Text c="dimmed" fw={500}>@{user?.username}</Text>
+        </Stack>
       </Group>
-
-      <Title order={4} className={wrapContent}>
-        <Emoji emoji="👋" size={24} /> Welcome,{' '}
-        <TextParser ids={['emoji']} text={user?.name ?? ''} />
-      </Title>
-
-      <Text>
-        Hey! Welcome to <b>your social & gamified life companion.</b>
-      </Text>
 
       {isMobile && <DailyStats />}
 

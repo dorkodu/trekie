@@ -1,7 +1,7 @@
 import ChevronTitle from "#/components/custom/ChevronTitle";
 import { UserStats } from "#/components/custom/UserStats";
 import ProfileMenu from "#/components/menus/ProfileMenu";
-import TextParser from "#/components/util/TextParser";
+import EnhancedText from "#/components/util/TextParser";
 import { util } from "#/lib/util";
 import { useTrekie } from "#/stores/trekieStore";
 import { wrapContent } from "#/styles/shared.css";
@@ -114,7 +114,7 @@ function Profile() {
                       </>
                     )}
                   </Flex>
-                  <TextParser ids={["emoji"]} text={user.name} />
+                  <EnhancedText ids={["emoji"]} text={user.name} />
                 </Title>
               </Flex>
               <Text className={wrapContent}>@{user.username}</Text>
@@ -122,7 +122,7 @@ function Profile() {
 
             {user.bio && (
               <Text className={wrapContent}>
-                <TextParser
+                <EnhancedText
                   ids={["emoji", "url", "username"]}
                   text={user.bio}
                 />

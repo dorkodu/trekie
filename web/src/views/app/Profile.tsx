@@ -2,7 +2,7 @@
 import ChevronTitle from "#/components/custom/ChevronTitle";
 import { UserStats } from "#/components/custom/UserStats";
 import ProfileMenu from "#/components/menus/ProfileMenu";
-import TextParser from "#/components/util/TextParser";
+import EnhancedText from "#/components/util/TextParser";
 import { util } from "#/lib/util";
 import { useTrekie } from "#/stores/trekieStore";
 import { wrapContent } from "#/styles/shared.css";
