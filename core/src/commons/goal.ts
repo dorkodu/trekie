@@ -13,7 +13,6 @@ export interface IGoalTemplate {
   title: string
   description: string
   xpTarget: number
-
 }
 
 //? Interfaces
@@ -48,7 +47,16 @@ interface State {
 }
 
 const store = Store<State>((set, get) => ({
-  goals: {},
+  goals: {
+    "1": {
+      id: "1",
+      title: "Become a billionaire.",
+      description: "By the age of 30 or you die.",
+      userId: "0",
+      xpCurrent: 0,
+      xpTarget: 1000
+    }
+  },
 }))
 
 export const Component = Trekie.Component<Interface, State, Events>((game) => ({

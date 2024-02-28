@@ -118,11 +118,7 @@ export function SumCard({
     }}>
       <Group wrap="nowrap" gap={0} justify="space-between">
 
-        <Stack gap={4}
-          px={6}
-          py={6}
-          pt={8}
-        >
+        <Stack gap={4} px={6} py={6} pt={8}>
           <Text span lh={0.75} fw={800}
 
             c={

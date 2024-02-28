@@ -5,6 +5,7 @@ import { IconPinned } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
 import Emoji from '#/components/custom/Emoji'
+
 import EnhancedText from '#/components/util/TextParser'
 import HabitCounter from '#/components/custom/HabitCounter'
 import NoHabitsCard from '#/components/cards/NoHabitsCard'
@@ -24,12 +25,6 @@ function Home() {
   const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
   const user = trekie.game($ => $.user)
-
-  const momentum = trekie.game($ => $.momentum)
-  const xp = trekie.game($ => $.xp)
-  const coins = trekie.game($ => $.coins)
-  const streak = trekie.game($ => $.streak)
-  const progress = trekie.game($ => $.dailyProgress)
 
   return (
     <Stack gap="xs" m="xs">
@@ -123,16 +118,17 @@ function UserHabitSummary() {
 }
 
 function LifeGoalSummary() {
-  const hasAnyLifeGoals = false
+  const hasAnyLifeGoals = trekie.goal.count() > 0
+  const goals = trekie.goal.store($ => $.goals)
 
   if (!hasAnyLifeGoals) return <NoGoalsCard />
 
   return (
     <Box>
       <Stack>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        {
+          Object.entries(goals).map(([id, goal]) => <Card>{goal.title}</Card>)
+        }
       </Stack>
     </Box>
   )
