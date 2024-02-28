@@ -1,5 +1,7 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 import { vanilla } from './theme'
+import { glassBar } from './shared.css'
+import { rgba } from '@mantine/core'
 
 export const BARHEIGHT = 60
 
@@ -31,9 +33,10 @@ export const Layout = {
   }),
 
   Aside: style({
-    width: '36%',
-    maxWidth: '340px',
+    width: '45%',
+    maxWidth: '320px',
     display: 'none',
+    padding: 10,
 
     '@media': {
       [isWideScreen]: {
@@ -139,8 +142,6 @@ export const NavigationBar = {
   })
 }
 
-
-
 export const Header = style({
   width: '100vw',
   position: 'fixed',
@@ -210,4 +211,23 @@ export const Menu = {
       backgroundColor: vanilla.colors.gray.light,
     },
   }),
+}
+
+export const Headbar = {
+  Root: style([
+    glassBar,
+    {
+      borderWidth: 0,
+      borderBottomWidth: 1,
+      borderStyle: 'solid',
+      borderColor: rgba("#255090", 0.1),
+      borderRadius: 0,
+
+      "selectors": {
+        [vanilla.darkSelector]: {
+          borderColor: rgba("#101520", 0.5),
+        }
+      }
+    }]),
+
 }
