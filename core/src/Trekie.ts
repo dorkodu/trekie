@@ -32,8 +32,6 @@ export interface GameState {
   momentum: number
   streak: number
 
-  dailyProgress: number
-
   xpTargetDaily: number
   xpToday: number
 
@@ -47,7 +45,10 @@ export type GameInterface = ReturnType<typeof Game>
 export function Game(state: GameState = defaultState) {
   return create<TrekieStoreInterface>()(immer((set, get) => ({
     ...state,
-
+    dailyProgress() {
+      let ratio = get().xpToday / get().xpTargetDaily
+      return ratio
+    },
     gainXp: (gain: number) => set($ => ({ xp: $.xp + gain })),
     refresh() {
       /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
@@ -113,7 +114,11 @@ export type TrekieStoreInterface = GameState & GameActions
 
 export interface GameActions {
   refresh: () => void
+
+  dailyProgress: () => number
+
   reset: () => void
+
 }
 
 const defaultState: GameState = {
@@ -126,7 +131,6 @@ const defaultState: GameState = {
   // dailies
   xpTargetDaily: 0,
   xpToday: 0,
-  dailyProgress: 0,
 
   // timestamps
   lastXp: 0,
