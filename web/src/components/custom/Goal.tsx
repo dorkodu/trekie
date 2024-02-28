@@ -1,7 +1,7 @@
 import { Badge, Flex, Paper, Text, Title } from '@mantine/core'
 import Emoji from './Emoji'
 import { IGoal } from '../../../../core/src/types/goal'
-import TextParser from '../util/TextParser'
+import EnhancedText from '../util/TextParser'
 import { truncate } from '#/styles/shared.css'
 import GoalMenu from '../menus/GoalMenu'
 
@@ -21,7 +21,7 @@ function Goal({ goal, onClick }: Props) {
           <Flex align="center" justify="space-between">
             <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
               <Title order={5} className={truncate}>
-                <TextParser ids={['emoji']} text={goal.title} />
+                <EnhancedText ids={['emoji']} text={goal.title} />
               </Title>
             </Flex>
             <GoalMenu goal={goal} />
@@ -29,7 +29,7 @@ function Goal({ goal, onClick }: Props) {
 
           <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
             <Text truncate>
-              <TextParser
+              <EnhancedText
                 ids={['emoji', 'url', 'username']}
                 text={goal.description}
               />

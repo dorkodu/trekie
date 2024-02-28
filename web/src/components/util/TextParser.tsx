@@ -62,7 +62,7 @@ interface Props {
   ids?: Array<ParseableId>
 }
 
-function TextParser({ text, ids }: Props) {
+function EnhancedText({ text, ids }: Props) {
   const parseableIds = useMemo(() => {
     return ids?.filter(id => parseables[id]) || []
   }, [ids])
@@ -112,4 +112,4 @@ function TextParser({ text, ids }: Props) {
   return <>{elements}</>
 }
 
-export default TextParser
+export default EnhancedText

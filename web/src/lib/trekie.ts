@@ -6,15 +6,14 @@ import * as Habit from "@core/commons/habit"
 
 const initialState: Trekie.GameState = {
   // points
-  xp: 0,
-  coins: 0,
-  momentum: 0,
-  streak: 0,
+  xp: 1200,
+  coins: 80,
+  momentum: 60,
+  streak: 20,
 
   // dailies
-  xpTargetDaily: 5,
-  xpToday: 0,
-  dailyProgress: 20,
+  xpTargetDaily: 60,
+  xpToday: 50,
 
   // timestamps
   lastXp: 1703846675440,

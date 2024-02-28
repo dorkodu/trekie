@@ -2,7 +2,7 @@ import { trekie } from "#/lib/trekie"
 import { truncate } from '#/styles/shared.css'
 import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
-import TextParser from '../util/TextParser'
+import EnhancedText from '../util/TextParser'
 import { MouseEvent } from 'react'
 import HabitMenu from '../menus/HabitMenu'
 
@@ -67,7 +67,7 @@ function HabitCounter({ habitId, onClick }: Props) {
           <Flex justify="space-between" align="center">
             <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
               <Title order={5} className={truncate}>
-                <TextParser ids={['emoji']} text={habit.title} />
+                <EnhancedText ids={['emoji']} text={habit.title} />
               </Title>
             </Flex>
             <HabitMenu habit={habit} />
@@ -75,7 +75,7 @@ function HabitCounter({ habitId, onClick }: Props) {
 
           <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
             <Text truncate size="sm">
-              <TextParser
+              <EnhancedText
                 ids={['emoji', 'url', 'username']}
                 text={habit.description}
               />

@@ -10,7 +10,7 @@ import {
   Text,
 } from '@mantine/core'
 import { IconStar, IconStarFilled } from '@tabler/icons-react'
-import TextParser from '../util/TextParser'
+import EnhancedText from '../util/TextParser'
 import { wrapContent } from '#/styles/shared.css'
 import { util } from '#/lib/util'
 import MemoryMenu from '../menus/MemoryMenu'
@@ -63,7 +63,7 @@ function Memory({ memory, onClick }: Props) {
                   onClick={onProfile}
                   href={`/profile/${user?.username}`}
                 >
-                  <TextParser ids={['emoji']} text={user?.name ?? ''} />
+                  <EnhancedText ids={['emoji']} text={user?.name ?? ''} />
                 </Anchor>
               </Flex>
               <MemoryMenu memory={memory} />
@@ -76,7 +76,7 @@ function Memory({ memory, onClick }: Props) {
 
         <Flex direction="column" pos="absolute" bottom={0} w="100%">
           <Text lineClamp={2} className={wrapContent}>
-            <TextParser
+            <EnhancedText
               ids={['emoji', 'url', 'username']}
               text={memory.description}
             />

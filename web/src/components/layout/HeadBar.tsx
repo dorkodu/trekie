@@ -1,9 +1,11 @@
-import { useAppStore } from "#/stores/appStore";
-import { trekie } from "#/lib/trekie";
-import { vanilla } from "#/styles/theme";
-import { Flex, Paper, ActionIcon, Anchor, useMantineColorScheme, Image } from "@mantine/core";
-import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAppStore } from "#/stores/appStore"
+import { trekie } from "#/lib/trekie"
+import { vanilla } from "#/styles/theme"
+import { Flex, Paper, ActionIcon, Anchor, useMantineColorScheme, Image } from "@mantine/core"
+import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+
+import { Headbar as styles } from "#/styles/Layout.css"
 
 export function HeadBar() {
   const navigate = useNavigate()
@@ -23,16 +25,8 @@ export function HeadBar() {
       style={{ zIndex: 99 }}
       hiddenFrom="sm"
     >
-      <Paper
-        style={{
-          borderWidth: 0,
-          borderBottomWidth: 1,
-          borderStyle: 'solid',
-          borderColor: vanilla.colors.defaultBorder,
-          borderRadius: 0,
-        }}
-      >
-        <Flex align="center" justify="space-between" gap="md" px="md" h={56}>
+      <Paper className={styles.Root}>
+        <Flex align="center" justify="space-between" gap="md" px="xs" h={56}>
           <ActionIcon
             variant="subtle"
             size={32}
@@ -52,13 +46,14 @@ export function HeadBar() {
                   ? '/images/trekie_Brand.svg'
                   : '/images/trekie_Brand_White.svg'
               }
-              height={36}
+              height={40}
               p={1}
             />
           </Anchor>
 
           <ActionIcon
             variant="subtle"
+            color="gray"
             size={32}
             onClick={() => menu.open()}
             c="var(--text-color)"
@@ -67,7 +62,7 @@ export function HeadBar() {
           </ActionIcon>
         </Flex>
       </Paper>
-    </Flex>
+    </Flex >
   )
 
 }

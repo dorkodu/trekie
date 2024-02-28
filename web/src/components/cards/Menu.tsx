@@ -21,10 +21,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Menu as styles } from '#/styles/Layout.css'
 import ColorToggle from '../util/ColorToggle'
 import { UserButton } from '../buttons/UserButton'
+import trekie from '#/lib/trekie'
 
 export function AppMenu() {
   const isWideScreen = useMediaQuery('(min-width: 768px)')
   const navigate = useNavigate()
+  const user = trekie.game($ => $.user)
 
   return (
     <Stack w={isWideScreen ? 300 : 260} gap={2}>
@@ -35,9 +37,9 @@ export function AppMenu() {
       >
         <UserButton
           user={{
-            avatar: '/assets/avatar.webp',
-            name: 'Doruk Eray',
-            username: 'doruk',
+            avatar: user?.pictureUrl,
+            name: user?.name,
+            username: user?.username,
           }}
         />
       </UnstyledButton>

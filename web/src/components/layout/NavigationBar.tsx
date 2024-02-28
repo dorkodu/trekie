@@ -54,7 +54,6 @@ export function NavigationBar() {
           </Group>
           <CreateMenu />
         </Group>
-
       </Paper>
     </Flex>
   )
