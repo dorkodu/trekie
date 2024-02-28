@@ -24,10 +24,10 @@ export function DailyStats() {
   const xp = trekie.game($ => $.xp)
   const coins = trekie.game($ => $.coins)
   const streak = trekie.game($ => $.streak)
-  const progress = trekie.game($ => $.dailyProgress)
+  const progress = trekie.game($ => $.dailyProgress())
 
   return (
-    <Paper p={10}>
+    <Paper>
       <Stack>
         <SimpleGrid cols={{ base: 2 }} spacing="xs">
           <MomentumStatus value={momentum} />
@@ -45,6 +45,8 @@ export function DailyStats() {
 export function DailyProgress({ value }: { value: number }) {
   let color: MantineColor
   let message: string
+
+  value = value * 100
 
   if (value < 30) {
     message = 'Bad'
@@ -96,60 +98,6 @@ export function DailyProgress({ value }: { value: number }) {
 
 export function SumCard({
   icon,
-  kind,
-  value,
-  color,
-  text,
-}: {
-  icon: React.ReactNode
-  kind: string
-  value: number
-  color: string
-  text?: string
-}) {
-  const { colorScheme } = useMantineColorScheme()
-
-  return (
-    <Paper p={8} bg={vanilla.colors[color]?.lightHover}>
-      <Group wrap="nowrap" gap={10}>
-        {icon}
-        <Stack gap={0}>
-          <Text>
-            <Text
-              span
-              lh={0.75}
-              fw={800}
-              c={
-                colorScheme == 'dark'
-                  ? vanilla.colors.white
-                  : vanilla.colors.black
-              }
-            >
-              {value}
-            </Text>
-            {text && (
-              <Text span lh={1.25} size="14" fw={400}>
-                {text}
-              </Text>
-            )}
-          </Text>
-          <Text
-            tt="uppercase"
-            c={vanilla.colors[color]?.filled}
-            fw={700}
-            size="12.5"
-            lh={1}
-          >
-            {kind}
-          </Text>
-        </Stack>
-      </Group>
-    </Paper>
-  )
-}
-
-export function MinimalSumCard({
-  icon,
   value,
   color,
   kind
@@ -166,9 +114,9 @@ export function MinimalSumCard({
       padding: 0,
       background: vanilla.colors[color]?.light,
       border: `2px solid ${vanilla.colors[color]?.lightHover}`,
-      boxShadow: `0px 2px 2px 1px ${vanilla.colors[color]?.light}`
+      boxShadow: `0px 3px 0px 0px ${vanilla.colors[color]?.light}`,
     }}>
-      <Group wrap="nowrap" gap={10} justify="space-between">
+      <Group wrap="nowrap" gap={0} justify="space-between">
 
         <Stack gap={4}
           px={6}
@@ -244,7 +192,6 @@ export function MomentumStatus({ value }: { value: number }) {
       kind="MOMENTUM"
       value={value}
       color="green"
-      text=" xp/day"
     />
   )
 }
