@@ -53,7 +53,7 @@ const store = Store<State>((set, get) => ({
       title: "Become a billionaire.",
       description: "By the age of 30 or you die.",
       userId: "0",
-      xpCurrent: 0,
+      xpCurrent: 300,
       xpTarget: 1000
     }
   },

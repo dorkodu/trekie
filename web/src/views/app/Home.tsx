@@ -1,6 +1,6 @@
 import { Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconPinned } from '@tabler/icons-react'
+import { IconCopyCheck, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -18,6 +18,7 @@ import { vanilla } from '#/styles/theme'
 import { useSocialStore } from '#/stores/socialStore'
 
 import { trekie } from "#/lib/trekie"
+import GoalCard from '#/components/cards/GoalCard'
 
 
 function Home() {
@@ -52,8 +53,17 @@ export default Home
 
 const Habits = (
   <section>
-    <Title order={4}>Habits</Title>
-    <Divider mb={8} />
+    <Divider
+      mb={8}
+      label={
+        <Group gap={4} align="center" justify="center">
+          <IconCopyCheck />
+          Habits
+        </Group>
+      }
+      labelPosition="left"
+      styles={{ label: { fontSize: 14, fontWeight: 600 } }}
+    />
     <UserHabitSummary />
   </section>
 )
@@ -126,9 +136,9 @@ function LifeGoalSummary() {
   return (
     <Box>
       <Stack>
-        {
-          Object.entries(goals).map(([id, goal]) => <Card>{goal.title}</Card>)
-        }
+        {Object.keys(goals).map((id) =>
+          <GoalCard id={id} />
+        )}
       </Stack>
     </Box>
   )
@@ -136,8 +146,17 @@ function LifeGoalSummary() {
 
 const Goals = (
   <section>
-    <Title order={4}>Life Goals</Title>
-    <Divider mb={8} />
+    <Divider
+      mb={8}
+      label={
+        <Group gap={4} align="center" justify="center">
+          <IconTargetArrow />
+          Life Goals
+        </Group>
+      }
+      labelPosition="left"
+      styles={{ label: { fontSize: 14, fontWeight: 600 } }}
+    />
     <LifeGoalSummary />
   </section>
 )
