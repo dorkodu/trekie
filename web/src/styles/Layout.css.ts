@@ -127,7 +127,21 @@ const NavigationBarButtonBase = style({
 })
 
 export const NavigationBar = {
-  Root: style({}),
+  Root: style([
+    glassBar,
+    {
+      borderWidth: 0,
+      borderTopWidth: 1,
+      borderStyle: 'solid',
+      borderColor: rgba("#255090", 0.1),
+      borderRadius: 0,
+
+      "selectors": {
+        [vanilla.darkSelector]: {
+          borderColor: rgba("#111", 0.5),
+        }
+      }
+    }]),
   Button: styleVariants({
     plain: [NavigationBarButtonBase],
     active: [
@@ -225,9 +239,10 @@ export const Headbar = {
 
       "selectors": {
         [vanilla.darkSelector]: {
-          borderColor: rgba("#101520", 0.5),
+          borderColor: rgba("#111", 0.5),
         }
       }
     }]),
-
 }
+
+

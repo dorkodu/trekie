@@ -6,6 +6,7 @@ import { navLinks } from "#/layouts/AppLayout";
 import CreateMenu from "#/components/menus/CreateMenu";
 import { theme, vanilla } from "#/styles/theme";
 import * as LayoutStyles from '#/styles/Layout.css'
+import { NavigationBar as styles } from '#/styles/Layout.css'
 
 export function NavigationBar() {
   const navigate = useNavigate()
@@ -23,16 +24,7 @@ export function NavigationBar() {
       hiddenFrom="sm"
       h={BARHEIGHT}
     >
-      <Paper
-        style={{
-          borderWidth: 0,
-          borderTopWidth: 1,
-          borderStyle: 'solid',
-          borderColor: vanilla.colors.defaultBorder,
-          borderRadius: 0,
-        }}
-        h={BARHEIGHT}
-      >
+      <Paper h={BARHEIGHT} className={styles.Root}>
         <Group p={8} gap={4} wrap="nowrap" h={BARHEIGHT} justify="space-between">
           <Group wrap="nowrap" gap={0}>
             {
