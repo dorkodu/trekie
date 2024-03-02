@@ -28,7 +28,6 @@ export default function GoalCard({ id }: Props) {
 
       <SimpleGrid cols={{ base: 2 }}>
         <Group gap={4} align="center">
-          <ThemeIcon color="gray" variant="transparent" size={24}><IconProgressCheck size={24} /></ThemeIcon>
           <Progress.Root
             color="blue"
             radius="lg"

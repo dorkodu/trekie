@@ -30,15 +30,8 @@ function Home() {
   return (
     <Stack gap="xs" m="xs">
 
-      <Group gap="sm">
-        <Image src={user?.pictureUrl} w={64} h={64} radius={10} />
-        <Stack gap={0}>
-          <Text fw={700} size="lg" lh={1}>
-            <EnhancedText ids={['emoji']} text={user?.name ?? ''} />
-          </Text>
-          <Text c="dimmed" fw={500}>@{user?.username}</Text>
-        </Stack>
-      </Group>
+      <Profile />
+
 
       {isMobile && <DailyStats />}
 
@@ -48,6 +41,25 @@ function Home() {
     </Stack>
   )
 }
+
+const Profile = () => {
+  const user = trekie.game($ => $.user)
+
+  return (
+    <Paper>
+      <Group gap="sm">
+        <Image src={user?.pictureUrl} w={64} h={64} radius={10} />
+        <Stack gap={0}>
+          <Text fw={700} size="lg" lh={1}>
+            <EnhancedText ids={['emoji']} text={user?.name ?? ''} />
+          </Text>
+          <Text c="dimmed" fw={500}>@{user?.username}</Text>
+        </Stack>
+      </Group>
+    </Paper>
+  )
+}
+
 
 export default Home
 

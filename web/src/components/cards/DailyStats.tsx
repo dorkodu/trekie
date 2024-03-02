@@ -162,7 +162,7 @@ export function StreakStatus({ days }: { days: number }) {
 export function XPStatus({ value }: { value: number }) {
   return (
     <SumCard
-      icon={<Emoji emoji="💎" size={24} />}
+      icon={<Emoji emoji="💠" size={24} />}
       kind="XP"
       value={value}
       color="blue"
