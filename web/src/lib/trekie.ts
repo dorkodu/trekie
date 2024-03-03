@@ -24,13 +24,16 @@ const initialState: Trekie.GameState = {
     id: '1',
     username: 'dorukeray',
     name: 'Doruk Eray',
-    bio: 'Founder, Polymath, Craftsman.',
+    bio: `✦ Founder & Chief @dorkodu
+    ✦ Polymath • Software Craftsman • Designer
+    ✦ Boğaziçi University • Vefa Lisesi '23 
+    ✦ ENFJ • ♓ • 3w2 • E/Acc • Techno-optimist`,
     email: 'doruk@dorkodu.com',
     pictureUrl: '/images/doruk--green.png',
-    premium: true,
-    joinedAt: new Date(1703846675432),
-    followerCount: 0,
-    followingCount: 0,
+
+    tier: Trekie.AccountTier.PREMIUM,
+
+    joinedAt: 1703846675432,
   },
 }
 

@@ -15,7 +15,7 @@ export default function GoalCard({ id }: Props) {
 
   return (
     <Card withBorder shadow="xs" p="sm">
-      <Group justify="space-between" align="flex-start">
+      <Group wrap="nowrap" justify="space-between" align="flex-start">
         <Stack gap={0}>
           <Text fw={600}>{goal.title}</Text>
           <Text size="sm">{goal.description}</Text>
@@ -26,13 +26,13 @@ export default function GoalCard({ id }: Props) {
         </ActionIcon>
       </Group>
 
-      <SimpleGrid cols={{ base: 2 }}>
+      <SimpleGrid cols={{ base: 2 }} mt={4}>
         <Group gap={4} align="center">
           <Progress.Root
             color="blue"
             radius="lg"
             size={20}
-            w="calc(100% - 30px)"
+            w="100%"
           >
             <Tooltip
               arrowOffset={5}
@@ -41,18 +41,13 @@ export default function GoalCard({ id }: Props) {
               arrowRadius={2}
               withArrow
             >
-              <Progress.Section color="blue" striped value={progress} animated>
-                <Progress.Label>{progress}%</Progress.Label>
-              </Progress.Section>
+              <Progress.Section color="blue" value={progress} />
             </Tooltip>
           </Progress.Root>
         </Group>
 
-        <Badge size="lg" p={0} variant="light" color="red">
-          <Group gap={2}>
-            <ThemeIcon color="red" variant="transparent" size={24}><IconTrendingUp size={24} /></ThemeIcon>
-            <Text fw={800} c="red" size="sm" mr={6} lh={1}>{goal.xpTarget}</Text>
-          </Group>
+        <Badge size="lg" variant="light" color="blue">
+          {goal.xpCurrent}/{goal.xpTarget}
         </Badge>
       </SimpleGrid>
 

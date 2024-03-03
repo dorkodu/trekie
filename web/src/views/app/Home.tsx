@@ -1,6 +1,6 @@
-import { Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconCopyCheck, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
+import { IconCake, IconCalendar, IconCopyCheck, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -19,6 +19,7 @@ import { useSocialStore } from '#/stores/socialStore'
 
 import { trekie } from "#/lib/trekie"
 import GoalCard from '#/components/cards/GoalCard'
+import { relativeDateString } from '#/lib/util'
 
 
 function Home() {
@@ -30,8 +31,7 @@ function Home() {
   return (
     <Stack gap="xs" m="xs">
 
-      <Profile />
-
+      <MyProfile />
 
       {isMobile && <DailyStats />}
 
@@ -42,21 +42,46 @@ function Home() {
   )
 }
 
-const Profile = () => {
+const MyProfile = () => {
   const user = trekie.game($ => $.user)
+
+  if (!user) return <Paper>Failed to load user.</Paper>
 
   return (
     <Paper>
-      <Group gap="sm">
-        <Image src={user?.pictureUrl} w={64} h={64} radius={10} />
+      <Group mb={10} gap="sm" wrap="nowrap">
+        <Image src={user.pictureUrl} w={64} h={64} radius={10} />
         <Stack gap={0}>
           <Text fw={700} size="lg" lh={1}>
-            <EnhancedText ids={['emoji']} text={user?.name ?? ''} />
+            <EnhancedText ids={['emoji']} text={user.name} />
           </Text>
-          <Text c="dimmed" fw={500}>@{user?.username}</Text>
+          <Text c="dimmed" fw={500}>@{user.username}</Text>
         </Stack>
       </Group>
-    </Paper>
+
+      <Stack gap={0}>
+        <Text size="sm">{user.bio}</Text>
+
+        <Group gap="xs">
+          <Group gap={2}>
+            <ThemeIcon c="dimmed" variant="transparent" size={26}><IconCalendar size={24} /></ThemeIcon>
+            <Text c="dimmed" lh={1} size="sm" mt={4}>Joined {relativeDateString(user.joinedAt)}</Text>
+          </Group>
+
+          <Group gap={2}>
+            <ThemeIcon c="dimmed" variant="transparent" size={26}><IconCake size={24} /></ThemeIcon>
+            <Text c="dimmed" lh={1} size="sm" mt={4}>Born {relativeDateString(user.joinedAt)}</Text>
+          </Group>
+
+          <Group gap={2}>
+            <ThemeIcon c="dimmed" variant="transparent" size={26}><IconCalendar size={24} /></ThemeIcon>
+            <Text c="dimmed" lh={1} size="sm" mt={4}>Joined {relativeDateString(user.joinedAt)}</Text>
+          </Group>
+
+        </Group>
+
+      </Stack>
+    </Paper >
   )
 }
 
