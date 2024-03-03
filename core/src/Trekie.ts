@@ -5,23 +5,33 @@ import { immer } from 'zustand/middleware/immer'
 import * as Supercell from './lib/supercell'
 import { Maybe, Timestamp, util } from './lib/util'
 
-export interface IUser {
-  id: string;
+export type IUser = IAccount & IProfile
 
-  username: string;
-  name: string;
-  joinedAt: Date;
+export interface IProfile {
+  bio?: string
+  birthday?: Timestamp
+  title?: string
+  location?: string
+  url?: string
+}
 
-  email?: string;
+export interface IAccount {
+  id: string
 
-  bio?: string;
+  username: string
+  name: string
+  email?: string
 
-  pictureUrl?: string;
+  pictureUrl?: string
 
-  followerCount?: number;
-  followingCount?: number;
+  joinedAt: Timestamp
 
-  premium?: boolean;
+  tier: AccountTier
+}
+
+export enum AccountTier {
+  FREE = "free",
+  PREMIUM = "premium",
 }
 
 export interface GameState {
