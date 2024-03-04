@@ -38,7 +38,19 @@ interface State {
 }
 
 const store = Store<State>(() => ({
-  habits: {}
+  habits: {
+    "0": {
+      id: "0",
+      count: 5,
+      createdAt: Date.now(),
+      title: "Read Book Everyday",
+      description: "At least 100 pages.",
+      dailyTarget: 100,
+      heatmap: [5],
+      userId: "0",
+      lastUpdated: Date.now()
+    }
+  }
 }))
 
 export const Component = Trekie.Component<Interface, State, Events>((game) => ({

@@ -33,7 +33,11 @@ const initialState: Trekie.GameState = {
 
     tier: Trekie.AccountTier.PREMIUM,
 
+    category: "Entrepreneur",
+    location: "San Fransisco, CA",
+    url: "https://doruk.dorkodu.com",
     joinedAt: 1703846675432,
+    birthday: new Date("03/08/2004 09:45 AM").getTime(),
   },
 }
 

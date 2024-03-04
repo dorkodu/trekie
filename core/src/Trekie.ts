@@ -10,7 +10,7 @@ export type IUser = IAccount & IProfile
 export interface IProfile {
   bio?: string
   birthday?: Timestamp
-  title?: string
+  category?: string
   location?: string
   url?: string
 }

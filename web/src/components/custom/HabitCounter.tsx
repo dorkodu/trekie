@@ -13,12 +13,12 @@ interface Props {
 
 function HabitCounter({ habitId, onClick }: Props) {
   // get the habit yourself, fresh!
-  const habit = trekie.game($ => $.habits[habitId])
+  const habit = trekie.habit.get(habitId)
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
     if (!habit) return;
-    trekie.game.getState().trackHabit(habit, count)
+    trekie.habit.commit(habitId, count)
   }
 
   if (!habit) return null;

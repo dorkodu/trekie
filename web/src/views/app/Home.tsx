@@ -1,6 +1,6 @@
-import { Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core'
+import { Anchor, Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Tabs, Text, ThemeIcon, Title, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconCake, IconCalendar, IconCopyCheck, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
+import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconLocation, IconMapPin, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -24,7 +24,6 @@ import { relativeDateString } from '#/lib/util'
 
 function Home() {
   const navigate = useNavigate()
-  const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
   const user = trekie.game($ => $.user)
 
@@ -33,19 +32,25 @@ function Home() {
 
       <MyProfile />
 
-      {isMobile && <DailyStats />}
-
-      {Goals}
-      {PinnedHabits}
-      {Habits}
     </Stack>
   )
 }
 
 const MyProfile = () => {
+  const isMobile = !useMediaQuery(vanilla.largerThan(768))
+
   const user = trekie.game($ => $.user)
 
   if (!user) return <Paper>Failed to load user.</Paper>
+
+  const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
+    <Group gap={2}>
+      <ThemeIcon c="dimmed" variant="transparent" size={26}>{icon}</ThemeIcon>
+      <Text c="dimmed" lh={1} size="sm" mt={4}>{text}</Text>
+    </Group>
+  )
+
+  const iconStyle = { width: rem(20), height: rem(20) }
 
   return (
     <Paper>
@@ -59,29 +64,41 @@ const MyProfile = () => {
         </Stack>
       </Group>
 
-      <Stack gap={0}>
+      <Stack gap={4}>
         <Text size="sm">{user.bio}</Text>
 
-        <Group gap="xs">
-          <Group gap={2}>
-            <ThemeIcon c="dimmed" variant="transparent" size={26}><IconCalendar size={24} /></ThemeIcon>
-            <Text c="dimmed" lh={1} size="sm" mt={4}>Joined {relativeDateString(user.joinedAt)}</Text>
-          </Group>
-
-          <Group gap={2}>
-            <ThemeIcon c="dimmed" variant="transparent" size={26}><IconCake size={24} /></ThemeIcon>
-            <Text c="dimmed" lh={1} size="sm" mt={4}>Born {relativeDateString(user.joinedAt)}</Text>
-          </Group>
-
-          <Group gap={2}>
-            <ThemeIcon c="dimmed" variant="transparent" size={26}><IconCalendar size={24} /></ThemeIcon>
-            <Text c="dimmed" lh={1} size="sm" mt={4}>Joined {relativeDateString(user.joinedAt)}</Text>
-          </Group>
-
+        <Group gap={4} pb={8}>
+          <ProfileEntry icon={<IconCalendar size={24} />} text={`Joined ${relativeDateString(user.joinedAt)}`} />
+          {user.birthday && <ProfileEntry icon={<IconCake size={24} />} text={`Born ${relativeDateString(user.birthday)}`} />}
+          {user.category && <ProfileEntry icon={<IconBriefcase size={24} />} text={user.category} />}
+          {user.location && <ProfileEntry icon={<IconMapPin size={24} />} text={user.location} />}
+          {user.url && <ProfileEntry icon={<IconLink size={24} />} text={<Anchor href={user.url} referrerPolicy="no-referrer" target="_blank">{user.url}</Anchor>} />}
         </Group>
 
+        {isMobile && <DailyStats />}
+
+
+        <Tabs mt={8} variant="default" radius="md" defaultValue="gallery">
+          <Tabs.List>
+            <Tabs.Tab value="goals" leftSection={<IconTargetArrow style={iconStyle} />}>
+              Life Goals
+            </Tabs.Tab>
+            <Tabs.Tab value="habits" leftSection={<IconCopyCheck style={iconStyle} />}>
+              Habits
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="habits">
+            <UserHabitSummary />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="goals">
+            <LifeGoalSummary />
+          </Tabs.Panel>
+        </Tabs>
+
       </Stack>
-    </Paper >
+    </Paper>
   )
 }
 
@@ -101,7 +118,7 @@ const Habits = (
       labelPosition="left"
       styles={{ label: { fontSize: 14, fontWeight: 600 } }}
     />
-    <UserHabitSummary />
+
   </section>
 )
 
@@ -140,7 +157,7 @@ function UserHabitSummary() {
   const habitCount = trekie.habit.count()
   const hasAnyHabits = habitCount > 0
 
-  if (!hasAnyHabits) return <NoHabitsCard />
+  if (!hasAnyHabits) return <Box py={10}><NoHabitsCard /></Box>
 
   return (
     <Box
@@ -149,6 +166,8 @@ function UserHabitSummary() {
         padding: 6,
         borderRadius: 20,
       }}
+
+      py={10}
     >
       <Stack gap={0}>
         {Object.keys(habits).map(habitId => (
@@ -171,10 +190,10 @@ function LifeGoalSummary() {
   if (!hasAnyLifeGoals) return <NoGoalsCard />
 
   return (
-    <Box>
+    <Box py={10}>
       <Stack>
         {Object.keys(goals).map((id) =>
-          <GoalCard id={id} />
+          <GoalCard key={id} id={id} />
         )}
       </Stack>
     </Box>
