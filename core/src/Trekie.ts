@@ -1,4 +1,5 @@
-import { create } from 'zustand'
+import { create, useStore } from 'zustand'
+import { createStore } from 'zustand/vanilla'
 import { immer } from 'zustand/middleware/immer'
 
 // misc
@@ -50,10 +51,11 @@ export interface GameState {
   lastStreak: Timestamp
 }
 
-export type GameInterface = ReturnType<typeof Game>
+export type VanillaGame = ReturnType<typeof Game>["game"]
+export type ReactiveGame = ReturnType<typeof Game>["useGame"]
 
 export function Game(state: GameState = defaultState) {
-  return create<TrekieStoreInterface>()(immer((set, get) => ({
+  const game = createStore<TrekieStoreInterface>()(immer((set, get) => ({
     ...state,
     dailyProgress() {
       let ratio = get().xpToday / get().xpTargetDaily
@@ -98,22 +100,28 @@ export function Game(state: GameState = defaultState) {
     },
     reset() { set(defaultState) },
   })))
+
+  function useGame(): TrekieStoreInterface
+  function useGame<T>(selector: (state: TrekieStoreInterface) => T): T
+  function useGame<T>(selector?: (state: TrekieStoreInterface) => T) {
+    return useStore(game, selector!)
+  }
+
+  return { game, useGame }
 }
 
-export type ComponentInterface<TState, TEvents extends Record<string, Supercell.IEvent<any>>> = {
-  events: TEvents
+export type ComponentInterface<TState> = {
+  use: ReturnType<typeof Supercell.Store<TState>>
   store: ReturnType<typeof Supercell.Store<TState>>
-  cell: ReturnType<typeof Supercell.Cell<TEvents>>
 }
 
-export type GameComponent<TState, TEvents extends Record<string, Supercell.IEvent<any>>>
-  = (game: GameInterface) => ComponentInterface<TState, TEvents>
+export type GameComponent<TState>
+  = (game: VanillaGame) => ComponentInterface<TState>
 
 export function Component
-  <TInterface extends ComponentInterface<TState, TEvents>, TState, TEvents extends Record<string, Supercell.IEvent<any>>>
-  (component: (game: GameInterface) => TInterface) {
-
-  return (game: GameInterface) => component(game)
+  <TInterface extends ComponentInterface<TState>, TState>
+  (component: (game: VanillaGame) => TInterface) {
+  return (game: VanillaGame) => component(game)
 }
 
 export function log(status: Supercell.IStatus<unknown>) {
@@ -150,5 +158,3 @@ const defaultState: GameState = {
   // user
   user: undefined
 }
-
-

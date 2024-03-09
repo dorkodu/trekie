@@ -17,7 +17,7 @@ export interface IGoalTemplate {
 
 //? Interfaces
 
-export interface Interface extends Trekie.ComponentInterface<State, Events> {
+export interface Interface {
   get: (id: IGoal["id"]) => Maybe<IGoal>
   create: (template: IGoalTemplate) => Maybe<IGoal>
   update: (id: IGoal["id"], props: IGoalTemplate) => Maybe<IGoal>
@@ -59,10 +59,8 @@ const store = Store<State>((set, get) => ({
   },
 }))
 
-export const Component = Trekie.Component<Interface, State, Events>((game) => ({
-  events,
+export const Component = Trekie.Component<Interface, State>((game, store) => ({
   store,
-  cell,
 
   get(id) {
     return store($ => $.goals[id])
