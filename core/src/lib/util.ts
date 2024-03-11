@@ -125,18 +125,30 @@ export type Timestamp = number
 
 export type Maybe<T> = NonNullable<T> | undefined;
 
-import { StoreApi, useStore } from 'zustand'
+import { StoreApi, useStore, UseBoundStore } from 'zustand'
 
-type WithSelectors<S> = S extends { getState: () => infer T }
+export type WithSelectors<S> = S extends { getState: () => infer T }
   ? S & { use: { [K in keyof T]: () => T[K] } }
   : never
 
-const createSelectors = <S extends StoreApi<object>>(_store: S) => {
+export const createSelectorsVanilla = <S extends StoreApi<object>>(_store: S) => {
   const store = _store as WithSelectors<typeof _store>
   store.use = {}
   for (const k of Object.keys(store.getState())) {
     ; (store.use as any)[k] = () =>
       useStore(_store, (s) => s[k as keyof typeof s])
+  }
+
+  return store
+}
+
+export const createSelectorsBound = <S extends UseBoundStore<StoreApi<object>>>(
+  _store: S,
+) => {
+  let store = _store as WithSelectors<typeof _store>
+  store.use = {}
+  for (let k of Object.keys(store.getState())) {
+    ; (store.use as any)[k] = () => store((s) => s[k as keyof typeof s])
   }
 
   return store
