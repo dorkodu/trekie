@@ -23,7 +23,7 @@ export interface IHabitTemplate {
 
 //? Interfaces
 
-export interface Interface extends Trekie.ComponentInterface<State, Events> {
+export interface Interface extends Trekie.ComponentInterface<State> {
   add: (habit: IHabit) => void
   create: (template: IHabitTemplate) => Maybe<IHabit>
   get: (id: IHabit["id"]) => Maybe<IHabit>
@@ -53,20 +53,19 @@ const store = Store<State>(() => ({
   }
 }))
 
-export const Component = Trekie.Component<Interface, State, Events>((game) => ({
-  events,
+export const Component = Trekie.Component<Interface, State>((game) => ({
   store,
-  cell,
 
   add(habit) {
     store.setState($ => {
       $.habits[habit.id] = habit
 
-      // make sure has user + session
-      const currentUserId = game($ => $.user?.id)
-      const currentUser = game($ => $.user)
+      // make sure the user has active session
+      const currentUser = game.getState().user
       if (!currentUser) return
 
+      // make sure the user owns the habit
+      const currentUserId = currentUser?.id
       if (currentUserId !== habit.userId) return
 
       game.setState($ => {
@@ -99,7 +98,7 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
       })
     })
 
-    if (updateStats) game().refresh()
+    if (updateStats) game.getState().refresh()
   },
 
   get: (id) => store($ => $.habits[id]),
@@ -114,7 +113,7 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
       const habit = $.habits[id]
       if (!habit) return
 
-      const user = game($ => $.user)
+      const user = game.getState().user
       if (!user) return
 
       const dayDiff = util.getDayDiff(habit.createdAt, Date.now())
@@ -156,7 +155,7 @@ export const Component = Trekie.Component<Interface, State, Events>((game) => ({
   },
 
   create(template) {
-    const userId = game($ => $.user?.id)
+    const userId = game.getState().user?.id
 
     if (!userId) return
 

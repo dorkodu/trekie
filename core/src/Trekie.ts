@@ -111,7 +111,6 @@ export function Game(state: GameState = defaultState) {
 }
 
 export type ComponentInterface<TState> = {
-  use: ReturnType<typeof Supercell.Store<TState>>
   store: ReturnType<typeof Supercell.Store<TState>>
 }
 

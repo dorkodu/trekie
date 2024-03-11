@@ -34,17 +34,17 @@ const initialState: Trekie.GameState = {
     tier: Trekie.AccountTier.PREMIUM,
 
     category: "Entrepreneur",
-    location: "San Fransisco, CA",
+    location: "Istanbul, TR",
     url: "https://doruk.dorkodu.com",
     joinedAt: 1703846675432,
     birthday: new Date("03/08/2004 09:45 AM").getTime(),
   },
 }
 
-const game = Trekie.Game(initialState)
+const { game, useGame } = Trekie.Game(initialState)
 
 export const trekie = {
-  game,
+  game: useGame,
   goal: Goal.Component(game),
   habit: Habit.Component(game),
 }

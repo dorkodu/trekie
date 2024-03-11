@@ -1,3 +1,6 @@
+import { createStore } from 'zustand-x'
+
+import ID from "../lib/id";
 import * as Trekie from "../Trekie";
 
 import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
@@ -17,12 +20,11 @@ export interface IGoalTemplate {
 
 //? Interfaces
 
-export interface Interface {
+export interface Interface extends Trekie.ComponentInterface<State> {
   get: (id: IGoal["id"]) => Maybe<IGoal>
   create: (template: IGoalTemplate) => Maybe<IGoal>
   update: (id: IGoal["id"], props: IGoalTemplate) => Maybe<IGoal>
   remove: (id: IGoal["id"]) => void
-
   count: () => number
 }
 
@@ -40,10 +42,10 @@ const events = {
   }),
 }
 
-const cell = Cell<Events>(events)
-
 interface State {
-  goals: Record<string, IGoal>
+  goals: Record<IGoal["id"], IGoal>
+
+  count: () => number
 }
 
 const store = Store<State>((set, get) => ({
@@ -57,21 +59,23 @@ const store = Store<State>((set, get) => ({
       xpTarget: 1000
     }
   },
+
+  count: () => Object.entries(get().goals).length
 }))
 
-export const Component = Trekie.Component<Interface, State>((game, store) => ({
+export const Component = Trekie.Component<Interface, State>((game) => ({
   store,
 
   get(id) {
-    return store($ => $.goals[id])
+    return store.getState().goals[id]
   },
 
   create(props) {
-    const userId = game($ => $.user?.id)
+    const userId = game.getState().user?.id
     if (!userId) return
 
     return {
-      id: "xxxx-xxxx-xxxx",
+      id: ID.goal(),
       xpCurrent: 0,
       ...props,
       userId
@@ -89,9 +93,7 @@ export const Component = Trekie.Component<Interface, State>((game, store) => ({
     return updatedGoal
   },
 
-  count() {
-    return Object.entries(store($ => $.goals)).length
-  },
+  count: store.getState().count,
 
   remove(id) {
     store.setState($ => {
