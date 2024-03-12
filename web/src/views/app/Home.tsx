@@ -20,6 +20,8 @@ import { useSocialStore } from '#/stores/socialStore'
 import { trekie } from "#/lib/trekie"
 import GoalCard from '#/components/cards/GoalCard'
 import { relativeDateString } from '#/lib/util'
+import { db } from '#/lib/db'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 
 function Home() {
@@ -153,7 +155,23 @@ const PinnedHabits = (
 )
 
 function UserHabitSummary() {
-  const habits = trekie.habit.store($ => $.habits)
+  const habits = useLiveQuery(
+    async () => {
+      //
+      // Query Dexie's API
+      //
+      const friends = await db.habits
+        .where('userId')
+        .between(minAge, maxAge)
+        .toArray();
+
+      // Return result
+      return friends;
+    },
+    // specify vars that affect query:
+    [minAge, maxAge]
+  );
+
   const habitCount = trekie.habit.count()
   const hasAnyHabits = habitCount > 0
 
@@ -167,7 +185,8 @@ function UserHabitSummary() {
         borderRadius: 20,
       }}
 
-      py={10}
+      py={6}
+      my={10}
     >
       <Stack gap={0}>
         {Object.keys(habits).map(habitId => (
