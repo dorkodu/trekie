@@ -35,13 +35,15 @@ function CreateMenu({ }: Props) {
     })
     close()
   }
+
   const onGoal = () => {
     useAppStore.setState(s => {
       s.modals.goalEditor.opened = true
     })
     close()
   }
-  const onMemory = () => {
+
+  const onStory = () => {
     useAppStore.setState(s => {
       s.modals.memoryEditor.opened = true
     })
@@ -96,7 +98,7 @@ function CreateMenu({ }: Props) {
           </Button>
           <Button
             variant="gradient"
-            onClick={onMemory}
+            onClick={onStory}
             py={4}
             h="auto"
             styles={{ label: { flex: 1, fontSize: 14 } }}
@@ -107,7 +109,7 @@ function CreateMenu({ }: Props) {
           </Button>
         </Stack>
       </Menu.Dropdown>
-    </Menu >
+    </Menu>
   )
 }
 

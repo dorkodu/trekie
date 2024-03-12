@@ -1,6 +1,7 @@
-import { useApiStore } from '#/stores/apiStore'
+import { trekie } from '#/lib/trekie'
+
 import { useAppStore } from '#/stores/appStore'
-import { IGoal } from '../../../../core/src/types/goal'
+import { IGoal } from '@core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
@@ -17,14 +18,16 @@ interface Props {
 }
 
 function GoalMenu({ goal }: Props) {
-  const currentUserId = useApiStore(state => state.userId)
+  const currentUserId = trekie.game($ => $.user?.id)
 
   const onShare = (ev: MouseEvent) => {
     ev.stopPropagation()
   }
+
   const onClipboard = (ev: MouseEvent) => {
     ev.stopPropagation()
   }
+
   const onEdit = (ev: MouseEvent) => {
     ev.stopPropagation()
     useAppStore.setState(s => {
@@ -34,12 +37,14 @@ function GoalMenu({ goal }: Props) {
       s.modals.goalEditor.description = goal.description
     })
   }
+
   const onReport = (ev: MouseEvent) => {
     ev.stopPropagation()
   }
+
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
-    useApiStore.getState().removeGoal(goal)
+    trekie.goal.remove(goal.id)
   }
 
   return (

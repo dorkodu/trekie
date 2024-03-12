@@ -1,6 +1,6 @@
 import { trekie } from "#/lib/trekie"
 import { useAppStore } from '#/stores/appStore'
-import { IHabit } from '../../../../core/src/types/habit'
+import { IHabit } from '@core/commons/habit'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
@@ -43,7 +43,7 @@ function HabitMenu({ habit }: Props) {
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
 
-    trekie.game.getState().removeHabit(habit.id)
+    trekie.habit.remove(habit.id)
   }
 
   return (

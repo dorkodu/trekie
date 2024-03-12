@@ -83,10 +83,12 @@ export const Layout = {
   Body: style({
     display: 'flex',
     marginTop: BARHEIGHT,
+    marginBottom: BARHEIGHT * 1.5,
 
     '@media': {
       [isWideScreen]: {
         marginTop: 0,
+        marginBottom: 0,
       },
     },
   }),

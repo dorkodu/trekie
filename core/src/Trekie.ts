@@ -110,15 +110,13 @@ export function Game(state: GameState = defaultState) {
   return { game, useGame }
 }
 
-export type ComponentInterface<TState> = {
-  store: ReturnType<typeof Supercell.Store<TState>>
-}
+export type ComponentInterface = {}
 
-export type GameComponent<TState>
-  = (game: VanillaGame) => ComponentInterface<TState>
+export type GameComponent
+  = (game: VanillaGame) => ComponentInterface
 
 export function Component
-  <TInterface extends ComponentInterface<TState>, TState>
+  <TInterface extends ComponentInterface>
   (component: (game: VanillaGame) => TInterface) {
   return (game: VanillaGame) => component(game)
 }
@@ -135,7 +133,6 @@ export interface GameActions {
   dailyProgress: () => number
 
   reset: () => void
-
 }
 
 const defaultState: GameState = {

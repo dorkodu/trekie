@@ -23,7 +23,7 @@ export interface IHabitTemplate {
 
 //? Interfaces
 
-export interface Interface extends Trekie.ComponentInterface<State> {
+export interface Interface {
   add: (habit: IHabit) => void
   create: (template: IHabitTemplate) => Maybe<IHabit>
   get: (id: IHabit["id"]) => Maybe<IHabit>
@@ -53,7 +53,7 @@ const store = Store<State>(() => ({
   }
 }))
 
-export const Component = Trekie.Component<Interface, State>((game) => ({
+export const Component = Trekie.Component<Interface>((game) => ({
   store,
 
   add(habit) {
