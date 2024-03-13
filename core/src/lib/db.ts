@@ -1,6 +1,7 @@
 import Dexie, { Table } from 'dexie'
 
 import { IUser } from '../Trekie'
+import * as Trekie from '../Trekie'
 import { IGoal } from '../commons/goal'
 import { IHabit } from '../commons/habit'
 import ID from './id'
@@ -34,7 +35,7 @@ db.open().then(function (db) {
 
 export async function populate() {
   const doruk: IUser = {
-    id: '1',
+    id: '0',
     username: 'dorukeray',
     name: 'Doruk Eray',
     bio: `✦ Founder & Chief @dorkodu
@@ -53,31 +54,28 @@ export async function populate() {
     birthday: new Date("03/08/2004 09:45 AM").getTime(),
   }
 
-  const todoListId = await db.habits.bulkAdd([
-    {
-      id: ID.habit(),
-      title: "Read Book Everyday",
-      description: "At least 50 pages per day.",
-      count: 6,
-      createdAt: new Date("20/02/2024 16:30").getTime(),
-      dailyTarget: 5,
-      heatmap: [1],
-      userId: 0,
-    }
-  ])
+  const habit: IHabit = {
+    id: ID.habit(),
+    title: "Read Book Everyday",
+    description: "At least 50 pages per day.",
+    count: 6,
+    createdAt: new Date("20/02/2024 16:30").getTime(),
+    dailyTarget: 5,
+    heatmap: [1],
+    userId: doruk.id,
+    lastUpdated: new Date("20/02/2024 16:34").getTime()
+  }
 
-  await db.habits.bulkAdd([
-    {
-      todoListId,
-      title: "Feed the birds"
-    },
-    {
-      todoListId,
-      title: "Watch a movie"
-    },
-    {
-      todoListId,
-      title: "Have some sleep"
-    }
-  ]);
+  const goal: IGoal = {
+    id: ID.habit(),
+    title: "Become A Rockstar",
+    description: "Until you are 30 years old.",
+    userId: doruk.id,
+    xpCurrent: 600,
+    xpTarget: 10000,
+  }
+
+  await db.habits.add(habit, habit.id)
+  await db.users.add(doruk, doruk.id)
+  await db.goals.add(goal, goal.id)
 }

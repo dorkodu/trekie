@@ -3,6 +3,7 @@ import * as Trekie from "../Trekie"
 import { Maybe, Timestamp, util } from "../lib/util"
 import ID from "../lib/id"
 import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
+import { db } from "#/lib/db"
 
 //? Interfaces
 
@@ -36,20 +37,18 @@ export interface Interface {
 
 export const Component = Trekie.Component<Interface>((game) => ({
   add(habit) {
-    store.setState($ => {
-      $.habits[habit.id] = habit
+    db.habits.add(habit, habit.id)
 
-      // make sure the user has active session
-      const currentUser = game.getState().user
-      if (!currentUser) return
+    // make sure the user has active session
+    const currentUser = game.getState().user
+    if (!currentUser) return
 
-      // make sure the user owns the habit
-      const currentUserId = currentUser?.id
-      if (currentUserId !== habit.userId) return
+    // make sure the user owns the habit
+    const currentUserId = currentUser?.id
+    if (currentUserId !== habit.userId) return
 
-      game.setState($ => {
-        $.xpTargetDaily += habit.dailyTarget
-      })
+    game.setState($ => {
+      $.xpTargetDaily += habit.dailyTarget
     })
   },
 
@@ -57,32 +56,30 @@ export const Component = Trekie.Component<Interface>((game) => ({
     let updateStats = false
     let removedHabit = this.get(id)
 
-    store.setState($ => {
-      delete $.habits[id]
+    db.habits.delete(id)
 
-      const currentUser = $.habits
-      if (!currentUser || !removedHabit)
-        return
+    const currentUser = $.habits
+    if (!currentUser || !removedHabit)
+      return
 
-      updateStats = true
+    updateStats = true
 
-      const habitDailyCurrent = removedHabit.heatmap[util.getDayDiff(removedHabit.createdAt, Date.now())] ?? 0
-      const habitDailyTarget = removedHabit.dailyTarget
-      const habitCount = removedHabit.count
+    const habitDailyCurrent = removedHabit.heatmap[util.getDayDiff(removedHabit.createdAt, Date.now())] ?? 0
+    const habitDailyTarget = removedHabit.dailyTarget
+    const habitCount = removedHabit.count
 
-      game.setState($ => {
-        $.xp -= habitCount
-        $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
-        $.xpTargetDaily -= habitDailyTarget
-      })
+    game.setState($ => {
+      $.xp -= habitCount
+      $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
+      $.xpTargetDaily -= habitDailyTarget
     })
 
     if (updateStats) game.getState().refresh()
   },
 
-  get: (id) => store($ => $.habits[id]),
+  get: async (id) => await db.habits.get(id),
 
-  count: () => Object.entries(store($ => $.habits)).length,
+  async count() { return await db.habits.count() },
 
   commit(id, count) {
     let result: number | boolean
