@@ -42,30 +42,9 @@ const events = {
   }),
 }
 
-interface State {
-  goals: Record<IGoal["id"], IGoal>
-
-  count: () => number
-}
-
-const store = Store<State>((set, get) => ({
-  goals: {
-    "1": {
-      id: "1",
-      title: "Become a billionaire.",
-      description: "By the age of 30 or you die.",
-      userId: "0",
-      xpCurrent: 300,
-      xpTarget: 1000
-    }
-  },
-
-  count: () => Object.entries(get().goals).length
-}))
-
 export const Component = Trekie.Component<Interface>((game) => ({
   get(id) {
-    return store.getState().goals[id]
+    return db.getState().goals[id]
   },
 
   create(props) {

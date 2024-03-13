@@ -33,29 +33,8 @@ export interface Interface {
   count: () => number
 }
 
-interface State {
-  habits: Record<IHabit["id"], IHabit>
-}
-
-const store = Store<State>(() => ({
-  habits: {
-    "0": {
-      id: "0",
-      count: 5,
-      createdAt: Date.now(),
-      title: "Read Book Everyday",
-      description: "At least 100 pages.",
-      dailyTarget: 100,
-      heatmap: [5],
-      userId: "0",
-      lastUpdated: Date.now()
-    }
-  }
-}))
 
 export const Component = Trekie.Component<Interface>((game) => ({
-  store,
-
   add(habit) {
     store.setState($ => {
       $.habits[habit.id] = habit
