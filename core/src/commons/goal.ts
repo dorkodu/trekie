@@ -1,10 +1,11 @@
-import { createStore } from 'zustand-x'
 
 import ID from "../lib/id";
 import * as Trekie from "../Trekie";
 
 import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
 import { Maybe, Timestamp } from "../lib/util";
+import { db } from "@/lib/db";
+import { PromiseExtended } from "dexie";
 
 export interface IGoal extends IGoalTemplate {
   id: string
@@ -21,11 +22,12 @@ export interface IGoalTemplate {
 //? Interfaces
 
 export interface Interface {
-  get: (id: IGoal["id"]) => Maybe<IGoal>
+  get: (id: IGoal["id"]) => Promise<Maybe<IGoal>>
   create: (template: IGoalTemplate) => Maybe<IGoal>
+  add: (goal: IGoal) => Promise<string>
   update: (id: IGoal["id"], props: IGoalTemplate) => Maybe<IGoal>
   remove: (id: IGoal["id"]) => void
-  count: () => number
+  count: () => Promise<number>
 }
 
 export type Events = typeof events
@@ -44,7 +46,11 @@ const events = {
 
 export const Component = Trekie.Component<Interface>((game) => ({
   get(id) {
-    return db.getState().goals[id]
+    return db.goals.get(id)
+  },
+
+  add(goal) {
+    return db.goals.add(goal, goal.id)
   },
 
   create(props) {
@@ -63,19 +69,15 @@ export const Component = Trekie.Component<Interface>((game) => ({
     const updatedGoal = this.create(props)
     if (!updatedGoal) return
 
-    store.setState($ => {
-      $.goals[id] = updatedGoal
-    })
+    db.goals.update(id, props)
 
     return updatedGoal
   },
 
-  count: store.getState().count,
+  count: () => db.goals.count(),
 
   remove(id) {
-    store.setState($ => {
-      delete $.goals[id]
-    })
+    return db.goals.delete(id)
   },
 }))
 

@@ -1,8 +1,10 @@
 
-import * as Trekie from '@core/Trekie';
+import * as Trekie from '@core/Trekie'
 
 import * as Goal from "@core/commons/goal"
 import * as Habit from "@core/commons/habit"
+import { db } from '@core/lib/db'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 const initialState: Trekie.GameState = {
   // points
@@ -47,6 +49,8 @@ export const trekie = {
   game: useGame,
   goal: Goal.Component(game),
   habit: Habit.Component(game),
+  db: db,
+  query: useLiveQuery
 }
 
 export default trekie

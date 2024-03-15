@@ -155,12 +155,9 @@ const PinnedHabits = (
 )
 
 function UserHabitSummary() {
-  const habits = useLiveQuery(
+  const habits = trekie.query(
     async () => {
-      //
-      // Query Dexie's API
-      //
-      const friends = await db.habits
+      const habits = await trekie.db.habits
         .where('userId')
         .between(minAge, maxAge)
         .toArray();

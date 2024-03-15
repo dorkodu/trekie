@@ -3,7 +3,7 @@ import * as Trekie from "../Trekie"
 import { Maybe, Timestamp, util } from "../lib/util"
 import ID from "../lib/id"
 import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
-import { db } from "#/lib/db"
+import { db } from "../lib/db"
 
 //? Interfaces
 

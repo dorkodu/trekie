@@ -20,7 +20,7 @@
     "moduleResolution": "Node10",
 
     "paths": {
-      "#/*": ["./src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["./src/**/*"]

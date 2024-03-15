@@ -27,10 +27,13 @@ export const db = new TrekieDatabase()
 
 db.on("populate", populate)
 
-db.open().then(function (db) {
+db.open().then(async function (db) {
   // Database opened successfully
+  console.log("Başarıyla açtık")
+  console.log(await db.table("goals").count())
 }).catch(function (err) {
   // Error occurred
+  console.log("Bi hata oldu")
 });
 
 export async function populate() {
