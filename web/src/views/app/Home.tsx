@@ -155,21 +155,20 @@ const PinnedHabits = (
 )
 
 function UserHabitSummary() {
-  const habits = trekie.query(
-    async () => {
-      const habits = await trekie.db.habits
-        .where('userId')
-        .between(minAge, maxAge)
-        .toArray();
+  const userId = trekie.game($ => $.user?.id)
+  if (!userId) return <Box py={10}><NoHabitsCard /></Box>
 
-      // Return result
-      return friends;
+  const habits = useLiveQuery(
+    async () => {
+      return await trekie.db.habits
+        .where('userId')
+        .equals(userId)
+        .toArray();
     },
-    // specify vars that affect query:
-    [minAge, maxAge]
+    [userId]
   );
 
-  const habitCount = trekie.habit.count()
+  const habitCount = await trekie.db.habits.count()
   const hasAnyHabits = habitCount > 0
 
   if (!hasAnyHabits) return <Box py={10}><NoHabitsCard /></Box>
