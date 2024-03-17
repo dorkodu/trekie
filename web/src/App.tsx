@@ -10,6 +10,7 @@ import { useRefreshStatsDaily } from '#/components/hooks'
 
 import { useAppStore } from '#/stores/appStore'
 import { useDorkoduStore } from './stores/dorkoduStore'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {
 
@@ -26,8 +27,11 @@ function App() {
   // trekie hooks
   useRefreshStatsDaily()
 
+  // Create a client
+  const queryClient = new QueryClient()
+
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme} defaultColorScheme="dark">
         {loading.auth && <OverlayLoader full={true} />}
         {!loading.auth && <Outlet />}
@@ -37,7 +41,7 @@ function App() {
       </MantineProvider>
 
       <ScrollRestoration />
-    </>
+    </QueryClientProvider>
   )
 }
 
