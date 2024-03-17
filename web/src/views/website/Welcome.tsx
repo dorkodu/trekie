@@ -1,6 +1,6 @@
 import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title, useMantineColorScheme }
   from '@mantine/core'
-import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconRocket, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
+import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconChess, IconChessFilled, IconChessKnight, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconPointerStar, IconRocket, IconShare, IconShare2, IconShare3, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
   from '@tabler/icons-react'
 
 import GlassCard from '#/components/cards/GlassCard'
@@ -35,8 +35,16 @@ const Hero = () => {
             <Image src={'/images/Hero.svg'} w="80%" mx="auto" />
           </div>
 
-          <Title className={WebsiteStyles.Hero.Title}>
-            Your Social & Gamified <br /> Productivity Companion
+          <Text size="lg" lh={1} fw={800} c="dimmed" ta="center">INTRODUCING TREKIE</Text>
+          <Title style={{
+            fontSize: 28,
+            fontWeight: 750,
+            lineHeight: 1.0,
+            letterSpacing: -0.65,
+            maxWidth: 400,
+            margin: "0 auto"
+          }}>
+            Your social and gamified <br /> productivity companion.
           </Title>
 
           <Stack w="90%" maw={320} gap={12} mx="auto">
@@ -50,7 +58,7 @@ const Hero = () => {
         </Stack>
 
         <BackgroundImage
-          src="/images/hero-Gamify.png"
+          src="https://images.unsplash.com/photo-1597200381847-30ec200eeb9a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           maw={540}
           mx="auto"
           my="lg"
@@ -65,14 +73,20 @@ const Hero = () => {
               mx="auto"
             >
               {[
-                ['🎯', 'Add Life Goals', 'Design your new life.'],
-                ['✅', 'Track Habits & To-Dos', 'Never been more enjoyable.'],
-                ['🫂', 'Share Stories', 'Connect with close friends.'],
+                [<IconTargetArrow size={28} />, 'Add Life Goals', 'Design your new life.'],
+                [<IconCopyCheck size={26} />, 'Track Habits & To-Dos', 'Never been more enjoyable.'],
+                [<IconSparkles size={26} />, 'Share Stories', 'Connect with close friends.'],
               ].map(x => (
-                <GlassCard key={x[0]}>
+                <GlassCard key={x[1]}>
                   <Group wrap="nowrap">
                     {/* @ts-ignore */}
-                    <Emoji emoji={x[0]} size={30} />
+                    <ThemeIcon size={40} gradient={{
+                      from: vanilla.colors.green.filledHover,
+                      to: vanilla.colors.teal.lightColor,
+                      deg: 180
+                    }} variant="gradient" radius={10}>
+                      {x[0]}
+                    </ThemeIcon>
                     <Stack gap={0} pr={8}>
                       <Text fw={700}>{x[1]}</Text>
                       <Text>{x[2]}</Text>
@@ -89,7 +103,7 @@ const Hero = () => {
 }
 
 const ItWorks = (
-  <Paper component="section" p="lg" my="xl">
+  <Paper component="section" p="lg" my="xl" id='it-works'>
     <SimpleGrid cols={{ base: 1, sm: 2 }} my={50}>
       <Stack gap={0} style={{ alignSelf: 'center' }}>
         <Emoji emoji="🎮" size={40} />
@@ -115,7 +129,7 @@ const ItWorks = (
 )
 
 const Features = (
-  <Paper p="md" my={50}>
+  <Paper p="md" my={50} id='features'>
     <Group align="center" justify="center" gap={6}>
       <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 128 128"><path fill="#424242" d="M87.4 124H40.6c-4.7 0-8.6-3.8-8.6-8.6V12.6C32 7.9 35.9 4 40.6 4h46.8c4.7 0 8.6 3.8 8.6 8.6v102.9c0 4.7-3.9 8.5-8.6 8.5z" /><path d="M86.77 120.11H39.93c-2.15 0-3.89-1.74-3.89-3.89V19.65c0-2.14 1.74-3.88 3.88-3.88h48.15c2.15 0 3.89 1.74 3.89 3.89v95.93c0 .93-1.4 4.52-5.19 4.52z" /><path fill="#212121" d="M73.65 11.59h-19.2c-.7 0-1.2-.6-1.2-1.2s.6-1.2 1.2-1.2h19.1c.7 0 1.2.6 1.2 1.2s-.5 1.2-1.1 1.2z" /><path fill="#757575" d="M87.4 6c3.64 0 6.6 2.96 6.6 6.6v102.9c0 3.58-2.96 6.5-6.6 6.5H40.6c-3.64 0-6.6-2.96-6.6-6.6V12.6C34 9.02 37.02 6 40.6 6h46.8m0-2H40.6C35.9 4 32 7.9 32 12.6v102.8c0 4.8 3.9 8.6 8.6 8.6h46.8c4.7 0 8.6-3.8 8.6-8.5V12.6C96 7.8 92.1 4 87.4 4z" /><path fill="#EAB56E" d="M48.35 29.96h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#FB8C00" d="M60.9 29.96h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#FF80AB" d="M73.45 29.96H67.1c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.33 1.32z" /><path fill="#0288D1" d="M86.01 29.96h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#00BFA5" d="M48.35 44.12h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#81D4FA" d="M60.9 44.12h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#FB8C00" d="M73.45 44.12H67.1c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.33 1.32z" /><path fill="#EAB56E" d="M86.01 44.12h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#FB8C00" d="M48.35 58.28h-6.36c-.73 0-1.32-.59-1.32-1.32V50.6c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#FF80AB" d="M60.9 58.28h-6.36c-.73 0-1.32-.59-1.32-1.32V50.6c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#00BFA5" d="M73.45 58.28H67.1c-.73 0-1.32-.59-1.32-1.32V50.6c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.33 1.32z" /><path fill="#0288D1" d="M86.01 58.28h-6.36c-.73 0-1.32-.59-1.32-1.32V50.6c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32zM48.35 72.44h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32z" /><path fill="#81D4FA" d="M60.9 72.44h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .73-.59 1.32-1.32 1.32zm-12.55 42.48h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .72-.59 1.32-1.32 1.32z" /><path fill="#0288D1" d="M60.9 114.92h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .72-.59 1.32-1.32 1.32z" /><path fill="#00BFA5" d="M73.45 114.92H67.1c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .72-.59 1.32-1.33 1.32z" /><path fill="#FF80AB" d="M86.01 114.92h-6.36c-.73 0-1.32-.59-1.32-1.32v-6.36c0-.73.59-1.32 1.32-1.32h6.36c.73 0 1.32.59 1.32 1.32v6.36c0 .72-.59 1.32-1.32 1.32z" /></svg>
       <Title ta="center" order={2} size={32} fw={800}>Features</Title>
@@ -201,7 +215,7 @@ const Features = (
 )
 
 const Premium = (
-  <Paper shadow="sm" className={PremiumStyles.Banner.Root} my={50}>
+  <Paper shadow="sm" className={PremiumStyles.Banner.Root} my={50} id='premium'>
     <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
       <Stack gap="xs">
         <Title className={PremiumStyles.Banner.Title} c="white">
@@ -343,11 +357,17 @@ const DorkoduShilling = (
 )
 
 import { randomId } from '@mantine/hooks'
+import { vanilla } from '#/styles/theme'
+import { IconFileCheck } from '@tabler/icons-react'
 
 function FAQ() {
   const questions = [
     [
-      'Apples',
+      'What is gamification?',
+      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+    ],
+    [
+      'How much it costs?',
       'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
     ],
     [
@@ -363,18 +383,14 @@ function FAQ() {
       'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
     ],
     [
-      'Apples',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
-    ],
-    [
-      'Apples',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+      'How to get support?',
+      <>For premium members, you can send us a mail explaining support to <Anchor href='mailto:help@trekie.io' target="_blank">help@trekie.io</Anchor>. For free tier, unfortunately we can't provide customer support.</>,
     ],
   ]
 
   return (
     <Paper my={50}>
-      <Title ta="center">FAQs</Title>
+      <Title order={2} fw={750} ta="center">FAQs</Title>
       <Text ta="center">Frequently Asked Questions</Text>
 
       <SimpleGrid my="lg" cols={{ base: 1, sm: 2, md: 3 }}>
@@ -398,7 +414,7 @@ This is a civilizational moment in human history. <br />
 We will go extinct, or will adapt to our new digital-native reality.`
 
 const Pricing = (
-  <Paper>
+  <Paper id='pricing'>
     <Group wrap='nowrap' gap={8} justify='center' mr={8}>
       <Emoji emoji='💸' size={32} />
       <Title order={2} fw={800} size={32} lts={-0.5}>Pricing</Title>

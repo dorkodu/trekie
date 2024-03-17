@@ -1,5 +1,3 @@
-"use client"
-
 import {
   ActionIcon,
   Anchor,
@@ -36,6 +34,7 @@ import * as WebsiteStyle from '#/styles/website/Website.css'
 import { useThemed, theme, vanilla } from '#/styles/theme'
 import Emoji from '#/components/custom/Emoji'
 import ColorToggle from '#/components/util/ColorToggle'
+import { socialLinks } from '#/lib/website'
 
 function WebsiteLayout() {
 
@@ -45,27 +44,53 @@ function WebsiteLayout() {
   const navigate = useNavigate()
   const isWideScreen = useMediaQuery('(min-width: 768px)')
 
-  const Header = (
-    <Paper p={10} radius="lg">
-      <Group justify="space-between">
-        <div>
-          <Image
-            src={useThemed({
-              light: '/images/trekie_Brand.svg',
-              dark: '/images/trekie_Brand_White.svg',
-            })}
-            w="auto"
-            h={60}
-          />
-        </div>
+  return (
+    <div className={LayoutStyle.Layout.Root}>
+      <Header />
+      <div className={LayoutStyle.Layout.Body}>
+        <main className={LayoutStyle.Layout.Main}>
+          {/* Paper can be a different element, but not likely */}
+          <div>
+            <Outlet />
+          </div>
+        </main>
+      </div>
+      <Footer />
+    </div>
+  )
+}
+
+export default WebsiteLayout
+
+function Header() {
+  const isMobile = useMediaQuery(vanilla.smallerThan("sm"))
+
+  return (
+    <Box p={10}>
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: isMobile ? "column" : "row",
+          gap: 10,
+          alignContent: "center",
+          justifyItems: "center",
+          alignItems: "center",
+        }}>
+        <Image
+          src={useThemed({ dark: "/images/trekie_Brand_White.svg", light: "/images/trekie_Brand.svg" })}
+          h="auto"
+          w={220}
+          px="md"
+        />
 
         <Paper py={4} px={10}>
           <Group gap={2}>
             {[
-              ['Features', '/#features'],
-              ['Premium', '/#premium'],
-              ['Company', '/#company'],
-              ['FAQ', '/#faq'],
+              ['Features', '/welcome/#features'],
+              ['Premium', '/welcome/#premium'],
+              ['Company', '/welcome/#company'],
+              ['FAQ', '/welcome/#faq'],
             ].map(link => (
               <Anchor
                 component={Link}
@@ -81,119 +106,116 @@ function WebsiteLayout() {
         </Paper>
 
         <Group gap={8}>
-          <Button>Get Started</Button>
+          <Button fw={700}>GET STARTED</Button>
           <ColorToggle size="xs" />
         </Group>
-      </Group>
-    </Paper>
+      </Box>
+    </Box>
   )
+}
 
-  const Footer = (
-    <Paper className={WebsiteStyle.Footer.Root} withBorder shadow="xs">
-      <SimpleGrid cols={{ base: 1, xs: 2, sm: 4, md: 5 }}>
-        <Stack>
-          <Image src="/images/trekie_Icon.svg" h={64} w={64} display="block" />
-        </Stack>
 
-        <Stack gap={4} p={10}>
-          <Text className={WebsiteStyle.Footer.ListTitle}>Product</Text>
-          {[
-            ['About', '/about'],
-            ['Features', '/#features'],
-            ['Pricing', '/#pricing'],
-            ['Roadmap', '/#roadmap'],
-            ['Method', '/#method'],
-            ['FAQs', '/#faq'],
-          ].map(link => (
-            <Anchor
-              component={Link}
-              //@ts-ignore
-              to={link[1]}
-              key={link[1]}
-              className={WebsiteStyle.Footer.Link}
-            >
-              {link[0]}
-            </Anchor>
-          ))}
-        </Stack>
-
-        <Stack gap={4} p={10}>
-          <Text className={WebsiteStyle.Footer.ListTitle}>Resources</Text>
-          {[
-            ['Careers', 'https://dorkodu.com/jobs'],
-            ['Press', '/press'],
-            ['Contact', '/contact'],
-            ['Help', '/help'],
-            ['Blog', 'https://dorkodu.substack.com'],
-          ].map(link => (
-            <Anchor
-              component={Link}
-              //@ts-ignore
-              to={link[1]}
-              key={link[1]}
-              className={WebsiteStyle.Footer.Link}
-            >
-              {link[0]}
-            </Anchor>
-          ))}
-        </Stack>
-
-        <Stack gap={4} p={10}>
-          <Text className={WebsiteStyle.Footer.ListTitle}>Legal</Text>
-          {[
-            ['Terms', '/legal/terms'],
-            ['Privacy', '/legal/privacy'],
-            ['Company', 'https://dorkodu.com'],
-          ].map(link => (
-            <Anchor
-              component={Link}
-              //@ts-ignore
-              to={link[1]}
-              key={link[1]}
-              classNames={{
-                root: WebsiteStyle.Footer.Link,
-              }}
-            >
-              {link[0]}
-            </Anchor>
-          ))}
-        </Stack>
-
-        <Stack gap={0} px={10} align="center">
-          <Anchor display="block" href="https://dorkodu.com" target="_blank">
+function Footer() {
+  return (
+    <Box className={WebsiteStyle.Footer.Root}>
+      <Group align="flex-start">
+        <Stack gap={0} px={10} w={"35%"} miw={200}>
+          <Anchor display="block" href="https://trekie.io" target="_blank">
             <Image
-              src="/images/dorkodu_Logo_Colorful.svg"
-              w={150}
-              m={10}
-              h="auto"
+              src="/images/trekie_Icon.svg"
+              w={80}
+              h={80}
               display="block"
             />
           </Anchor>
-          <Text className={WebsiteStyle.Footer.DorkoduMotto} my={4} size="sm">
-            Your Life Fulfillment Technology Company.
+          <Text className={WebsiteStyle.Footer.DorkoduMotto} ta="left" mt={16} my={4} size="sm">
+            Your social and gamified <br /> productivity companion.
           </Text>
           <Text c="dimmed" fw={500}>
             Dorkodu &copy; {new Date().getFullYear()}
           </Text>
         </Stack>
-      </SimpleGrid>
-    </Paper>
-  )
+        <SimpleGrid style={{ flexGrow: 1 }} spacing="xs" cols={{ base: 2, xs: 2, sm: 4 }}>
+          <Stack gap={4} p={10}>
+            <Text className={WebsiteStyle.Footer.ListTitle}>Company</Text>
+            {[
+              ['About', '/#about'],
+              ['Mission', '/#mission'],
+              ['Team', '/#team'],
+              ['FAQs', '/#faq'],
+            ].map(link => (
+              <Anchor
+                component={Link}
+                //@ts-ignore
+                to={link[1]}
+                key={link[1]}
+                className={WebsiteStyle.Footer.Link}
+              >
+                {link[0]}
+              </Anchor>
+            ))}
+          </Stack>
 
-  return (
-    <div className={LayoutStyle.Layout.Root}>
-      {Header}
-      <div className={LayoutStyle.Layout.Body}>
-        <main className={LayoutStyle.Layout.Main}>
-          {/* Paper can be a different element, but not likely */}
-          <div>
-            <Outlet />
-          </div>
-        </main>
-      </div>
-      {Footer}
-    </div>
+          <Stack gap={4} p={10}>
+            <Text className={WebsiteStyle.Footer.ListTitle}>Resources</Text>
+            {[
+              ['Blog', 'https://dorkodu.substack.com'],
+              ['Community', 'https://t.me/dorkodu'],
+              ['Jobs', '/jobs'],
+              ['Press', '/press'],
+              ['Contact', '/#contact'],
+            ].map(link => (
+              <Anchor
+                component={Link}
+                //@ts-ignore
+                to={link[1]}
+                key={link[1]}
+                className={WebsiteStyle.Footer.Link}
+              >
+                {link[0]}
+              </Anchor>
+            ))}
+          </Stack>
+
+          <Stack gap={4} p={10}>
+            <Text className={WebsiteStyle.Footer.ListTitle}>Legal</Text>
+            {[
+              ['Terms', '/legal/terms'],
+              ['Privacy', '/legal/privacy'],
+              ['Community Rules', '/legal/community'],
+            ].map(link => (
+              <Anchor
+                component={Link}
+                //@ts-ignore
+                to={link[1]}
+                key={link[1]}
+                classNames={{
+                  root: WebsiteStyle.Footer.Link,
+                }}
+              >
+                {link[0]}
+              </Anchor>
+            ))}
+          </Stack>
+          <Stack gap={4} p={10}>
+            <Text className={WebsiteStyle.Footer.ListTitle}>Social</Text>
+            {socialLinks.map(link => (
+              <Anchor
+                //@ts-ignore
+                href={link.to} key={link.text}
+                classNames={{
+                  root: WebsiteStyle.Footer.Link,
+                }}
+              >
+                <Group wrap='nowrap' gap={4}>
+                  <span><link.icon /></span>
+                  <span>{link.text}</span>
+                </Group>
+              </Anchor>
+            ))}
+          </Stack>
+        </SimpleGrid>
+      </Group>
+    </Box>
   )
 }
-
-export default WebsiteLayout
