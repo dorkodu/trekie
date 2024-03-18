@@ -11,6 +11,7 @@ import { useRefreshStatsDaily } from '#/components/hooks'
 import { useAppStore } from '#/stores/appStore'
 import { useDorkoduStore } from './stores/dorkoduStore'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './lib/query'
 
 function App() {
 
@@ -26,9 +27,6 @@ function App() {
 
   // trekie hooks
   useRefreshStatsDaily()
-
-  // Create a client
-  const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -22,6 +22,7 @@ import GoalCard from '#/components/cards/GoalCard'
 import { relativeDateString } from '#/lib/util'
 import { db } from '#/lib/db'
 import { useLiveQuery } from 'dexie-react-hooks'
+import { useQueryClient } from '@tanstack/react-query'
 
 
 function Home() {
@@ -199,6 +200,8 @@ function UserHabitSummary() {
 }
 
 function LifeGoalSummary() {
+  const queryClient = useQueryClient()
+
   const hasAnyLifeGoals = trekie.goal.count() > 0
   const goals = trekie.goal.store($ => $.goals)
 
