@@ -1,6 +1,6 @@
-import { Anchor, Badge, Box, Button, Card, Divider, Flex, Group, Image, Paper, SimpleGrid, Stack, Tabs, Text, ThemeIcon, Title, rem } from '@mantine/core'
+import { Alert, Anchor, Badge, Box, Button, Card, Divider, Flex, Group, Image, Loader, Paper, SimpleGrid, Skeleton, Stack, Tabs, Text, ThemeIcon, Title, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconLocation, IconMapPin, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
+import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconInfoCircle, IconLink, IconLocation, IconMapPin, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -20,9 +20,8 @@ import { useSocialStore } from '#/stores/socialStore'
 import { trekie } from "#/lib/trekie"
 import GoalCard from '#/components/cards/GoalCard'
 import { relativeDateString } from '#/lib/util'
-import { db } from '#/lib/db'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 
 function Home() {
@@ -61,7 +60,7 @@ const MyProfile = () => {
         <Image src={user.pictureUrl} w={64} h={64} radius={10} />
         <Stack gap={0}>
           <Text fw={700} size="lg" lh={1}>
-            <EnhancedText ids={['emoji']} text={user.name} />
+            {user.name}
           </Text>
           <Text c="dimmed" fw={500}>@{user.username}</Text>
         </Stack>
@@ -157,22 +156,31 @@ const PinnedHabits = (
 
 function UserHabitSummary() {
   const userId = trekie.game($ => $.user?.id)
+
   if (!userId) return <Box py={10}><NoHabitsCard /></Box>
+
+  /** */
 
   const habits = useLiveQuery(
     async () => {
-      return await trekie.db.habits
+      return trekie.db.habits
         .where('userId')
         .equals(userId)
         .toArray();
     },
     [userId]
-  );
+  )
 
-  const habitCount = await trekie.db.habits.count()
-  const hasAnyHabits = habitCount > 0
+  if (!habits)
+    return <>
+      <Skeleton height={8} radius="xl" />
+      <Skeleton height={8} mt={8} radius="xl" />
+      <Skeleton height={8} mt={8} width="70%" radius="xl" />
+    </>
 
-  if (!hasAnyHabits) return <Box py={10}><NoHabitsCard /></Box>
+  const hasAnyHabits = habits?.length > 0
+  if (!hasAnyHabits)
+    return <Box py={10}><NoHabitsCard /></Box>
 
   return (
     <Box
@@ -186,8 +194,8 @@ function UserHabitSummary() {
       my={10}
     >
       <Stack gap={0}>
-        {Object.keys(habits).map(habitId => (
-          <HabitCounter habitId={habitId} key={habitId} />
+        {habits.map(habit => (
+          <HabitCounter habitId={habit.id} key={habit.id} />
         ))}
       </Stack>
       <Flex>
@@ -200,18 +208,44 @@ function UserHabitSummary() {
 }
 
 function LifeGoalSummary() {
+
+  const userId = trekie.game($ => $.user?.id)
+  if (!userId) return <Box py={10}><NoHabitsCard /></Box>
+
   const queryClient = useQueryClient()
 
-  const hasAnyLifeGoals = trekie.goal.count() > 0
-  const goals = trekie.goal.store($ => $.goals)
+  const goals = useLiveQuery(
+    async () => {
+      console.log("goals query started")
+
+      return await trekie.db.goals
+        .where('userId')
+        .equals("0")
+        .toArray()
+    },
+    [],
+    "loading"
+  )
+
+  if (goals == "loading")
+    return <>
+      <Skeleton height={8} radius="xl" />
+      <Skeleton height={8} mt={8} radius="xl" />
+      <Skeleton height={8} mt={8} width="70%" radius="xl" />
+    </>
+
+  console.log("Al sana goals knk")
+  console.log(goals)
+
+  const hasAnyLifeGoals = goals.length > 0
 
   if (!hasAnyLifeGoals) return <NoGoalsCard />
 
   return (
     <Box py={10}>
       <Stack>
-        {Object.keys(goals).map((id) =>
-          <GoalCard key={id} id={id} />
+        {goals.map((goal) =>
+          <p key={goal.id}>{goal.title}</p>
         )}
       </Stack>
     </Box>

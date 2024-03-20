@@ -27,13 +27,19 @@ export const db = new TrekieDatabase()
 
 db.on("populate", populate)
 
+db.on("ready", ready)
+
 db.open().then(async function (db) {
   // Database opened successfully
-  console.log("Başarıyla açtık")
-  console.log(await db.table("goals").count())
+  console.log("[Doruk]: dexie opened successfully")
+
+  let count = await db.table("goals").count()
+  console.log("[Doruk]: goals count is " + count)
+
+
 }).catch(function (err) {
   // Error occurred
-  console.log("Bi hata oldu")
+  console.log("[Doruk]: dexie error")
 });
 
 export async function populate() {
@@ -81,4 +87,11 @@ export async function populate() {
   await db.habits.add(habit, habit.id)
   await db.users.add(doruk, doruk.id)
   await db.goals.add(goal, goal.id)
+}
+
+export async function ready() {
+  console.log("[Doruk]: dexie is ready")
+
+  let count = await db.table("goals").count()
+  console.log("[Doruk]: goals count is " + count)
 }

@@ -23,7 +23,7 @@ const initialState: Trekie.GameState = {
   lastActive: 1703846675432,
 
   user: {
-    id: '1',
+    id: '0',
     username: 'dorukeray',
     name: 'Doruk Eray',
     bio: `✦ Founder & Chief @dorkodu

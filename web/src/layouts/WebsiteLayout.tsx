@@ -128,7 +128,7 @@ function Footer() {
               display="block"
             />
           </Anchor>
-          <Text className={WebsiteStyle.Footer.DorkoduMotto} ta="left" mt={16} my={4} size="sm">
+          <Text className={WebsiteStyle.Footer.DorkoduMotto} fw={700} ta="left" mt={16} my={4} size="sm">
             Your social and gamified <br /> productivity companion.
           </Text>
           <Text c="dimmed" fw={500}>
@@ -139,10 +139,12 @@ function Footer() {
           <Stack gap={4} p={10}>
             <Text className={WebsiteStyle.Footer.ListTitle}>Company</Text>
             {[
-              ['About', '/#about'],
-              ['Mission', '/#mission'],
-              ['Team', '/#team'],
-              ['FAQs', '/#faq'],
+              ['About', '/about'],
+              ['Features', '/welcome/#features'],
+              ['Pricing', '/welcome/#pricing'],
+              ['Roadmap', '/welcome/#roadmap'],
+              ['Method', '/welcome/#method'],
+              ['FAQs', '/welcome/#faq'],
             ].map(link => (
               <Anchor
                 component={Link}
@@ -159,11 +161,12 @@ function Footer() {
           <Stack gap={4} p={10}>
             <Text className={WebsiteStyle.Footer.ListTitle}>Resources</Text>
             {[
+              ['Help', '/help'],
               ['Blog', 'https://dorkodu.substack.com'],
               ['Community', 'https://t.me/dorkodu'],
-              ['Jobs', '/jobs'],
+              ['Jobs', 'https://dorkodu.com/jobs'],
               ['Press', '/press'],
-              ['Contact', '/#contact'],
+              ['Contact', '/contact'],
             ].map(link => (
               <Anchor
                 component={Link}
@@ -183,6 +186,7 @@ function Footer() {
               ['Terms', '/legal/terms'],
               ['Privacy', '/legal/privacy'],
               ['Community Rules', '/legal/community'],
+              ['Company', 'https://dorkodu.com'],
             ].map(link => (
               <Anchor
                 component={Link}

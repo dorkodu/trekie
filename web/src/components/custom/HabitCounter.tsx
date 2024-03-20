@@ -5,6 +5,7 @@ import { IconMinus, IconPlus } from '@tabler/icons-react'
 import EnhancedText from '../util/TextParser'
 import { MouseEvent } from 'react'
 import HabitMenu from '../menus/HabitMenu'
+import { useLiveQuery } from "dexie-react-hooks"
 
 interface Props {
   habitId: string
@@ -13,7 +14,8 @@ interface Props {
 
 function HabitCounter({ habitId, onClick }: Props) {
   // get the habit yourself, fresh!
-  const habit = trekie.habit.get(habitId)
+
+  const habit = useLiveQuery(async () => trekie.habit.get(habitId), [habitId])
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()

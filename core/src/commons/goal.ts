@@ -4,7 +4,7 @@ import * as Trekie from "../Trekie";
 
 import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
 import { Maybe, Timestamp } from "../lib/util";
-import { db } from "@/lib/db";
+import { db } from "../lib/db";
 import { PromiseExtended } from "dexie";
 
 export interface IGoal extends IGoalTemplate {

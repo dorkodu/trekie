@@ -27,13 +27,12 @@ export interface IHabitTemplate {
 export interface Interface {
   add: (habit: IHabit) => void
   create: (template: IHabitTemplate) => Maybe<IHabit>
-  get: (id: IHabit["id"]) => Maybe<IHabit>
+  get: (id: IHabit["id"]) => Promise<Maybe<IHabit>>
   update: (id: IHabit["id"], props: IHabitTemplate) => Maybe<IHabit>
   remove: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => number | false
-  count: () => number
+  count: () => Promise<number>
 }
-
 
 export const Component = Trekie.Component<Interface>((game) => ({
   add(habit) {
@@ -52,13 +51,14 @@ export const Component = Trekie.Component<Interface>((game) => ({
     })
   },
 
-  remove(id) {
+  async remove(id) {
     let updateStats = false
-    let removedHabit = this.get(id)
+    let removedHabit = await this.get(id)
 
-    db.habits.delete(id)
+    await db.habits.delete(id)
 
-    const currentUser = $.habits
+    // make sure the user has active session
+    const currentUser = game.getState().user
     if (!currentUser || !removedHabit)
       return
 
@@ -77,9 +77,9 @@ export const Component = Trekie.Component<Interface>((game) => ({
     if (updateStats) game.getState().refresh()
   },
 
-  get: async (id) => await db.habits.get(id),
+  get: db.habits.get,
 
-  async count() { return await db.habits.count() },
+  count: db.habits.count,
 
   commit(id, count) {
     let result: number | boolean
