@@ -63,6 +63,7 @@ const Hero = () => {
           mx="auto"
           my="lg"
           radius="lg"
+          px={16}
           style={{ padding: "40px 0" }}
         >
           <div>

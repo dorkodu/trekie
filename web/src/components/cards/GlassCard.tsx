@@ -9,6 +9,7 @@ export default function GlassCard(x: PropsWithChildren) {
       py="xs"
       px="md"
       radius="lg"
+      withBorder
       className={glassBackground}
       {...x}
     />

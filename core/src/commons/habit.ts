@@ -30,7 +30,7 @@ export interface Interface {
   get: (id: IHabit["id"]) => Promise<Maybe<IHabit>>
   update: (id: IHabit["id"], props: IHabitTemplate) => Maybe<IHabit>
   remove: (id: IHabit["id"]) => void
-  commit: (id: IHabit["id"], count: number) => number | false
+  commit: (id: IHabit["id"], count: number) => Promise<number | false>
   count: () => Promise<number>
 }
 
@@ -81,51 +81,54 @@ export const Component = Trekie.Component<Interface>((game) => ({
 
   count: db.habits.count,
 
-  commit(id, count) {
+  async commit(id, count) {
     let result: number | boolean
     result = false
 
-    store.setState($ => {
-      const habit = $.habits[id]
-      if (!habit) return
+    const habit = await this.get(id)
+    if (!habit) return false
 
-      const user = game.getState().user
-      if (!user) return
+    const user = game.getState().user
+    if (!user) return false
 
-      const dayDiff = util.getDayDiff(habit.createdAt, Date.now())
-      const habitCount = (habit.heatmap[dayDiff] ?? 0) + count
+    const dayDiff = util.getDayDiff(habit.createdAt, Date.now())
+    const habitCount = (habit.heatmap[dayDiff] ?? 0) + count
 
-      // Habit count can not be negative
-      if (habitCount < 0) return
+    // Habit count can not be negative
+    if (habitCount < 0) return
 
-      //? now can successfully commit 👍🏻
-      habit.count += count
-      result = habit.count
-      habit.heatmap[dayDiff] = habitCount
+    //? now can successfully commit 👍🏻
+    habit.count += count
+    result = habit.count
+    habit.heatmap[dayDiff] = habitCount
 
-      // If habit count has become 0, re+move the property
-      if (habit.heatmap[dayDiff]! <= 0)
-        delete habit.heatmap[dayDiff]
+    // If habit count has become 0, remove the property
+    if (habit.heatmap[dayDiff]! <= 0)
+      delete habit.heatmap[dayDiff]
 
-      game.setState($ => {
-        $.xp += count
-        $.xp += Math.max(
-          Math.min(habit.dailyTarget - (habitCount - count), count),
-          count
-        )
-      })
+    game.setState($ => {
+      $.xp += count
+      $.xp += Math.max(Math.min(habit.dailyTarget - (habitCount - count), count), count)
     })
+
+    db.habits.put(habit, habit.id)
 
     return result
   },
 
   update(id, props) {
-    const updatedHabit = this.create(props)
-    if (!updatedHabit) return
+    db.habits.update(id, props)
 
-    store.setState($ => {
-      $.habits[id] = updatedHabit
-    })
+    /**
+     * Terraria
+     * Good Loot: 950037805, small, classic, corruption
+     * CelebrationMK10
+     * 1.1.2.GlowTulipEasy
+     * 1.1.1.950037805
+     * 1.1.1.358475011
+     * 1.1.1.aether
+     * 
+     */
 
     return updatedHabit
   },
