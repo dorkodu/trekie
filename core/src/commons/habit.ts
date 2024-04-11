@@ -92,14 +92,13 @@ export const Component = Trekie.Component<Interface>((game) => ({
     if (!user) return false
 
     const dayDiff = util.getDayDiff(habit.createdAt, Date.now())
-    const habitCount = (habit.heatmap[dayDiff] ?? 0) + count
+    const habitCount = (habit.heatmap[dayDiff] ?? 0) + count //! ask to @berkcambaz
 
-    // Habit count can not be negative
+    // Habit count can NOT be negative
     if (habitCount < 0) return
 
-    //? now can successfully commit 👍🏻
+    //? now can successfully commit habit 👍🏻
     habit.count += count
-    result = habit.count
     habit.heatmap[dayDiff] = habitCount
 
     // If habit count has become 0, remove the property
@@ -111,26 +110,23 @@ export const Component = Trekie.Component<Interface>((game) => ({
       $.xp += Math.max(Math.min(habit.dailyTarget - (habitCount - count), count), count)
     })
 
-    db.habits.put(habit, habit.id)
+    try {
+      db.habits.put(habit, habit.id)
+      result = habit.count
+    } catch (error) {
+      // call error service and result this function in failure
+      return false
+    }
 
     return result
   },
 
   update(id, props) {
-    db.habits.update(id, props)
+    try {
+      let result = db.habits.update(id, props)
+    } catch (error) {
 
-    /**
-     * Terraria
-     * Good Loot: 950037805, small, classic, corruption
-     * CelebrationMK10
-     * 1.1.2.GlowTulipEasy
-     * 1.1.1.950037805
-     * 1.1.1.358475011
-     * 1.1.1.aether
-     * 
-     */
-
-    return updatedHabit
+    }
   },
 
   create(template) {
