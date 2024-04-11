@@ -12,6 +12,7 @@ import { useAppStore } from '#/stores/appStore'
 import { useDorkoduStore } from './stores/dorkoduStore'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './lib/query'
+import { Notifications } from '@mantine/notifications'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme} defaultColorScheme="dark">
+        <Notifications />
         {loading.auth && <OverlayLoader full={true} />}
         {!loading.auth && <Outlet />}
 
