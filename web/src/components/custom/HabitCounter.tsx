@@ -15,7 +15,7 @@ interface Props {
 function HabitCounter({ habitId, onClick }: Props) {
   // get the habit yourself, fresh!
 
-  const habit = useLiveQuery(async () => trekie.habit.get(habitId), [habitId])
+  const habit = useLiveQuery(() => trekie.habit.get(habitId), [habitId])
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
