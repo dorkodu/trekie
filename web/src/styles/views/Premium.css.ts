@@ -37,6 +37,13 @@ export const Banner = {
     fontWeight: 700,
     border: 0,
     borderBottom: `5px solid ${vanilla.colors.blue[2]}`,
+    transition: "0.25s",
+
+    ":hover": {
+      background: vanilla.colors.blue[0],
+      borderBottomColor: vanilla.colors.blue[3],
+      color: vanilla.colors.blue[9],
+    }
   })
 }
 

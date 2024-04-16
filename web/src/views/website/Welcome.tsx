@@ -1,23 +1,22 @@
-import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title, useMantineColorScheme }
+import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, TextInput, ThemeIcon, Title, rem, useMantineColorScheme }
   from '@mantine/core'
-import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconChess, IconChessFilled, IconChessKnight, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconPointerStar, IconRocket, IconShare, IconShare2, IconShare3, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
+import { IconAdOff, IconArrowRight, IconAt, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconChess, IconChessFilled, IconChessKnight, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLock, IconLockAccess, IconMail, IconMailAi, IconMailFast, IconMailFilled, IconMailOpened, IconMultiplier2x, IconPhoto, IconPin, IconPointerStar, IconRocket, IconShare, IconShare2, IconShare3, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
   from '@tabler/icons-react'
 
 import GlassCard from '#/components/cards/GlassCard'
 import Emoji from '#/components/custom/Emoji'
 
 import * as PremiumStyles from '#/styles/views/Premium.css'
-import * as WebsiteStyles from '#/styles/website/Website.css'
 
 export default function Welcome() {
   return (
     <Stack p={10} mt="4vw">
       <Hero />
 
+      {Join}
       {Premium}
       {ItWorks}
       {Features}
-      {Join}
       {Pricing}
       <FAQ />
     </Stack>
@@ -26,6 +25,8 @@ export default function Welcome() {
 
 const Hero = () => {
   const { colorScheme } = useMantineColorScheme()
+
+  const navigate = useNavigate()
 
   return (
     <Paper p={10}>
@@ -48,10 +49,10 @@ const Hero = () => {
           </Title>
 
           <Stack w="90%" maw={320} gap={12} mx="auto">
-            <Button size="md" fw={700}>
+            <Button size="md" fw={700} onClick={() => { navigate("#join") }}>
               GET STARTED
             </Button>
-            <Button size="md" fw={700} variant="light">
+            <Button size="md" fw={700} variant="light" onClick={() => { navigate("/login") }}>
               I ALREADY HAVE ACCOUNT
             </Button>
           </Stack>
@@ -275,91 +276,43 @@ const Premium = (
 )
 
 const Join = (
-  <Paper>
-    <Title></Title>
-  </Paper>
+  <Stack style={{ alignSelf: "center", marginTop: rem(30), maxWidth: 600, gap: 0, alignItems: "center" }}>
+
+    <Group gap={8}>
+      <ThemeIcon size={36} variant="white">
+        <IconLockAccess size={28} />
+      </ThemeIcon>
+      <Title order={2} fw={700} lts={-0.5} mr={20}>Early Access</Title>
+    </Group>
+
+    <Text size="lg">Enter your email to get the invite link.</Text>
+    <Text fw={450} c="dimmed">It's free & you will earn gifts and credits.</Text>
+
+    <Group gap={6} mt="sm" mx="md">
+      <TextInput
+        styles={{
+          input: {
+            border: `2px solid ${vanilla.colors.gray.light}`
+          }
+        }}
+        style={{ flexGrow: 1, flexShrink: 1 }}
+        leftSectionPointerEvents="none"
+        leftSection={<IconMail style={{ width: rem(20), height: rem(20) }} />}
+        placeholder="Email"
+        variant="filled"
+        size="md"
+        radius="lg"
+      />
+      <Button size="md" fw={700} variant="gradient" gradient={{ from: "green", to: "teal" }} style={{ flexGrow: 1, flexShrink: 1 }}>JOIN WAITLIST</Button>
+    </Group>
+
+  </Stack>
 )
 
-const WhyMeWhyNot = (
-  <Paper>
-    <Title>Why?</Title>
-    <Text>
-      We need to create the next generation human. <br />
-      This is a civilizational moment in human history. <br />
-      We will go extinct, or will adapt to our new digital-native reality.
-    </Text>
-    <Text>
-      Your life fulfillment companion. Know who you are and where you want to
-      go. We will assist in that way.
-    </Text>
-    <Text>
-      {[
-        'original',
-        'authentic',
-        'self-aware',
-        'idealist',
-        'high-grit',
-        'optimist',
-        'emphatetic',
-        'belonged',
-        'humane',
-      ]}
-    </Text>
-    <Text>
-      Connect with your real close friends, people you love, work on yourself
-      while seeing yourself get better every day.
-    </Text>
-    <Text>
-      Relax and be your true authentic self. Get to know yourself better, find
-      your purpose and passion for life. Set goals, add habits and todos.
-    </Text>
-    <Text>
-      Be motivated, commit to your goals, track your actions and see yourself
-      making progress.
-    </Text>
-    <Text>Be optimist, happy and enjoy a peace of mind.</Text>
-  </Paper>
-)
-
-const CallToAction = (
-  <Paper>
-    <Title ta="center">Call to Action</Title>
-    <Text>
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto,
-      aliquam?
-    </Text>
-  </Paper>
-)
-
-const DorkoduShilling = (
-  <Paper className={WebsiteStyles.DorkoduBanner.Root}>
-    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-      <Stack gap="xs">
-        <Title className={WebsiteStyles.DorkoduBanner.Title} c="white">
-          We are bringing meaning <br /> back to technology again.
-        </Title>
-        <Text className={WebsiteStyles.DorkoduBanner.Text}>
-          Reaching your life goals never been more fun. <br />
-          Your first super-week is on us.
-        </Text>
-        <Button
-          size="lg"
-          className={WebsiteStyles.DorkoduBanner.Button}
-          rightSection={<IconArrowRight stroke={2.5} />}
-        >
-          Join
-        </Button>
-      </Stack>
-      <Box style={{ alignSelf: 'center', maxWidth: 380 }}>
-        <Image src="https://dorkodu.com/images/dorkodu-ecosystem.svg" />
-      </Box>
-    </SimpleGrid>
-  </Paper>
-)
 
 import { randomId } from '@mantine/hooks'
 import { vanilla } from '#/styles/theme'
-import { IconFileCheck } from '@tabler/icons-react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function FAQ() {
   const questions = [
