@@ -28,7 +28,7 @@ export interface Interface {
   add: (habit: IHabit) => void
   create: (template: IHabitTemplate) => Maybe<IHabit>
   get: (id: IHabit["id"]) => Promise<Maybe<IHabit>>
-  update: (id: IHabit["id"], props: IHabitTemplate) => Maybe<IHabit>
+  update: (id: IHabit["id"], props: IHabitTemplate) => Promise<Maybe<IHabit>>
   remove: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => Promise<number | false>
   count: () => Promise<number>
@@ -82,9 +82,6 @@ export const Component = Trekie.Component<Interface>((game) => ({
   count: db.habits.count,
 
   async commit(id, count) {
-    let result: number | boolean
-    result = false
-
     const habit = await this.get(id)
     if (!habit) return false
 
@@ -95,7 +92,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     const habitCount = (habit.heatmap[dayDiff] ?? 0) + count //! ask to @berkcambaz
 
     // Habit count can NOT be negative
-    if (habitCount < 0) return
+    if (habitCount < 0) return false
 
     //? now can successfully commit habit 👍🏻
     habit.count += count
@@ -110,28 +107,17 @@ export const Component = Trekie.Component<Interface>((game) => ({
       $.xp += Math.max(Math.min(habit.dailyTarget - (habitCount - count), count), count)
     })
 
-    try {
-      db.habits.put(habit, habit.id)
-      result = habit.count
-    } catch (error) {
-      // call error service and result this function in failure
-      return false
-    }
-
-    return result
+    db.habits.put(habit, habit.id)
+    return habit.count
   },
 
-  update(id, props) {
-    try {
-      let result = db.habits.update(id, props)
-    } catch (error) {
-
-    }
+  async update(id, props) {
+    await db.habits.update(id, props)
+    return await db.habits.get(id)
   },
 
   create(template) {
     const userId = game.getState().user?.id
-
     if (!userId) return
 
     return {
