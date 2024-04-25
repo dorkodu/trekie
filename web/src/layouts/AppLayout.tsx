@@ -1,4 +1,4 @@
-import { Anchor, Box, Card, Divider, Group, Image, Modal, Paper, Stack, useMantineColorScheme, }
+import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, useMantineColorScheme, }
   from '@mantine/core'
 import { Link, Outlet } from 'react-router-dom'
 import { useMediaQuery } from '@mantine/hooks'
@@ -13,12 +13,10 @@ import { HeadBar } from '#/components/layout/HeadBar'
 import { NavigationBar } from '#/components/layout/NavigationBar'
 import { useAppStore } from '#/stores/appStore'
 import { Header } from '#/components/layout/Header'
-import { glassBackground, glassBar } from '#/styles/shared.css'
 
 export const navLinks = [
   { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
   { icon: <Emoji emoji="🌎" size={24} />, text: 'Explore', path: '/explore' },
-  { icon: <Emoji emoji="✅" size={24} />, text: 'Life', path: '/life' },
   { icon: <Emoji emoji="👥" size={24} />, text: 'Social', path: '/social' },
   { icon: <Emoji emoji="💸" size={24} />, text: 'Market', path: '/market' },
 ]

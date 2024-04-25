@@ -27,7 +27,7 @@ const LinkButtonBase = style({
   borderRadius: 16,
   padding: '8px 10px',
   paddingRight: 18,
-  display: 'inline-block',
+  display: 'block',
 
   borderWidth: 2,
   borderStyle: 'solid',

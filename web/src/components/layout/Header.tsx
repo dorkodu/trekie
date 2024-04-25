@@ -1,7 +1,5 @@
-import { ActionIcon, Box, Group, Image, useMantineColorScheme } from "@mantine/core";
-import { IconMenu2 } from "@tabler/icons-react";
+import { Box, Group, Image, useMantineColorScheme } from "@mantine/core";
 import { UserButton } from "../buttons/UserButton";
-import { CommandCenter } from "../custom/CommandCenter";
 import trekie from "#/lib/trekie";
 import { useAppStore } from "#/stores/appStore";
 
@@ -30,16 +28,9 @@ export function Header() {
               name: user?.name,
               username: user?.username,
             }}
+            onClick={() => menu.open()}
             compact
           />
-          <ActionIcon
-            variant="default"
-            size={32}
-            onClick={() => menu.open()}
-            c="var(--text-color)"
-          >
-            <IconMenu2 />
-          </ActionIcon>
         </Group>
       </Group>
     </Box>

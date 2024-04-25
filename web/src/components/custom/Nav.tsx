@@ -1,22 +1,13 @@
 import {
   Text,
-  Paper,
   Button,
   Stack,
   UnstyledButton,
   Group,
-  ThemeIcon,
   Box,
-  Divider,
 } from '@mantine/core'
 import {
-  IconHome,
-  IconNotes,
-  IconPlus,
-  IconCompass,
-  IconCheckbox,
-  IconUsers,
-  IconBuildingStore,
+  IconPlus
 } from '@tabler/icons-react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -37,7 +28,7 @@ export function Bar({
         ))}
       </Stack>
 
-      <Button my={10} size="md" w="90%" leftSection={<IconPlus />} radius="lg">
+      <Button my={10} size="md" w="100%" leftSection={<IconPlus />} radius="lg">
         Create
       </Button>
     </Box>
@@ -59,18 +50,16 @@ export function LinkButton({
   let isCurrentRoute = location.pathname === path
 
   return (
-    <div>
-      <UnstyledButton
-        onClick={() => navigate(path)}
-        className={`${styles.LinkButton[isCurrentRoute ? 'active' : 'plain']}`}
-      >
-        <Group gap={12} align="center">
-          {icon}
-          <Text fz={16} fw={500} lh={1}>
-            {text}
-          </Text>
-        </Group>
-      </UnstyledButton>
-    </div>
+    <UnstyledButton
+      onClick={() => navigate(path)}
+      className={`${styles.LinkButton[isCurrentRoute ? 'active' : 'plain']}`}
+    >
+      <Group gap={12} align="center">
+        {icon}
+        <Text fz={16} fw={500} lh={1}>
+          {text}
+        </Text>
+      </Group>
+    </UnstyledButton>
   )
 }
