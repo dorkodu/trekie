@@ -1,11 +1,8 @@
+import * as Trekie from "../Trekie"
 
-import ID from "../lib/id";
-import * as Trekie from "../Trekie";
-
-import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
-import { Maybe, Timestamp } from "../lib/util";
-import { db } from "../lib/db";
-import { PromiseExtended } from "dexie";
+import { Maybe } from "../lib/util"
+import { db } from "../lib/db"
+import { uuid } from "../lib/id"
 
 export interface IGoal extends IGoalTemplate {
   id: string
@@ -30,35 +27,17 @@ export interface Interface {
   count: () => Promise<number>
 }
 
-export type Events = typeof events
-const events = {
-  'goal:create': Event<{ goal: IGoal }>({
-    onCreate: (data) => ({
-      kind: "goal:create",
-      data,
-      timestamp: Date.now()
-    }),
-    onShare: (status) => {
-      console.log(`[trekie] Created Goal (${status.data.goal.id})"`)
-    },
-  }),
-}
-
 export const Component = Trekie.Component<Interface>((game) => ({
-  get(id) {
-    return db.goals.get(id)
-  },
+  get: (id) => db.goals.get(id),
 
-  add(goal) {
-    return db.goals.add(goal, goal.id)
-  },
+  add: (goal) => db.goals.add(goal, goal.id),
 
   create(props) {
     const userId = game.getState().user?.id
     if (!userId) return
 
     return {
-      id: ID.goal(),
+      id: uuid().toString(),
       xpCurrent: 0,
       ...props,
       userId
@@ -76,9 +55,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
 
   count: () => db.goals.count(),
 
-  remove(id) {
-    return db.goals.delete(id)
-  },
+  remove: (id) => db.goals.delete(id),
 }))
 
 export default Component

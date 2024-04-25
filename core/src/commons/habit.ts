@@ -1,9 +1,8 @@
 import * as Trekie from "../Trekie"
 
 import { Maybe, Timestamp, util } from "../lib/util"
-import ID from "../lib/id"
-import { Cell, IEvent, IStatus, Event, Store } from "../lib/supercell"
 import { db } from "../lib/db"
+import { uuid } from '../lib/id'
 
 //? Interfaces
 
@@ -123,7 +122,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     return {
       ...template,
 
-      id: ID.habit(),
+      id: uuid().toString(),
       count: 0,
       createdAt: new Date().getTime(),
       lastUpdated: new Date().getTime(),
@@ -133,27 +132,5 @@ export const Component = Trekie.Component<Interface>((game) => ({
     } satisfies IHabit
   },
 }))
-
-export type Events = typeof events
-const events = {
-  'habit:create': Event<{ habit: IHabit }>({
-    onCreate: (data) => ({
-      kind: "habit:create",
-      data,
-      timestamp: Date.now()
-    }),
-    onShare: (status) => Trekie.log(status)
-  }),
-  'habit:commit': Event<{ habitId: IHabit["id"], count: number }>({
-    onCreate: (data) => ({
-      kind: "habit:commit",
-      data,
-      timestamp: Date.now()
-    }),
-    onShare: (status) => Trekie.log(status)
-  })
-}
-
-const cell = Cell<Events>(events)
 
 export default Component

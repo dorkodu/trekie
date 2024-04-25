@@ -4,7 +4,7 @@ import { IUser } from '../Trekie'
 import * as Trekie from '../Trekie'
 import { IGoal } from '../commons/goal'
 import { IHabit } from '../commons/habit'
-import ID from './id'
+import { uuid } from './id'
 
 export class TrekieDatabase extends Dexie {
   // 'friends' is added by dexie when declaring the stores()
@@ -37,7 +37,7 @@ db.open().then(async function (db) {
   console.log("[Doruk]: goals count is " + count)
 
 
-}).catch(function (err) {
+}).catch(function (_err) {
   // Error occurred
   console.log("[Doruk]: dexie error")
 });
@@ -64,7 +64,7 @@ export async function populate() {
   }
 
   const habit: IHabit = {
-    id: ID.habit(),
+    id: uuid().toString(),
     title: "Read Book Everyday",
     description: "At least 50 pages per day.",
     count: 6,
@@ -76,7 +76,7 @@ export async function populate() {
   }
 
   const goal: IGoal = {
-    id: ID.habit(),
+    id: uuid().toString(),
     title: "Become A Rockstar",
     description: "Until you are 30 years old.",
     userId: doruk.id,
