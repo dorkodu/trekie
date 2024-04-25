@@ -1,4 +1,4 @@
-import { trekie } from "#/lib/trekie"
+import { trekie } from "#/commons/lib/trekie"
 import { truncate } from '#/styles/shared.css'
 import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'

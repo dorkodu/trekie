@@ -26,7 +26,7 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
 import * as Nav from '#/components/custom/Nav'
 
-import { trekie } from "#/lib/trekie"
+import { trekie } from "#/commons/lib/trekie"
 
 import * as LayoutStyle from '#/styles/Layout.css'
 import * as WebsiteStyle from '#/styles/website/Website.css'
@@ -34,7 +34,7 @@ import * as WebsiteStyle from '#/styles/website/Website.css'
 import { useThemed, theme, vanilla } from '#/styles/theme'
 import Emoji from '#/components/custom/Emoji'
 import ColorToggle from '#/components/util/ColorToggle'
-import { socialLinks } from '#/lib/website'
+import { socialLinks } from '#/commons/lib/website'
 
 function WebsiteLayout() {
 

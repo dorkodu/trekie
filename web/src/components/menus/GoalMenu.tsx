@@ -1,4 +1,4 @@
-import { trekie } from '#/lib/trekie'
+import { trekie } from '#/commons/lib/trekie'
 
 import { useAppStore } from '#/stores/appStore'
 import { IGoal } from '@core/commons/goal'

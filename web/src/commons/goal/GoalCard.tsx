@@ -1,4 +1,4 @@
-import trekie from "#/lib/trekie";
+import trekie from "#/commons/lib/trekie";
 import { IGoal } from "@core/commons/goal";
 import { ActionIcon, Badge, Card, Group, Progress, SimpleGrid, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { IconDots, IconDotsDiagonal, IconDotsVertical, IconHourglass, IconMenu2, IconProgress, IconProgressCheck, IconRings, IconTarget, IconTargetArrow, IconTargetOff, IconTrendingUp } from "@tabler/icons-react";

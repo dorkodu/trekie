@@ -33,6 +33,6 @@
       "#/*": ["./src/*"]
     }
   },
-  "include": ["src", "../core/src/stores/socialStore.ts"],
+  "include": ["src", "../core/src/stores/socialStore.ts", "src/lib"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

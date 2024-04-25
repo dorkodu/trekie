@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware'
 
 import type { IUser, IHabit, IStory as IStory, IGoal } from '../../../core/src/types'
 
-import { util } from '#/lib/util'
+import { util } from '#/commons/lib/util'
 
 import { useAppStore } from '../../../web/src/stores/appStore'
 

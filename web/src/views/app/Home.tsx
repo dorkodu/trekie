@@ -17,9 +17,9 @@ import { vanilla } from '#/styles/theme'
 
 import { useSocialStore } from '#/stores/socialStore'
 
-import { trekie } from "#/lib/trekie"
+import { trekie } from "#/commons/lib/trekie"
 import GoalCard from '#/components/cards/GoalCard'
-import { relativeDateString } from '#/lib/util'
+import { relativeDateString } from '#/commons/lib/util'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 

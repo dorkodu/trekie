@@ -1,4 +1,4 @@
-import { trekie } from "#/lib/trekie"
+import { trekie } from "#/commons/lib/trekie"
 import { useAppStore } from '#/stores/appStore'
 import { IHabit } from '@core/commons/habit'
 import { ActionIcon, Menu } from '@mantine/core'

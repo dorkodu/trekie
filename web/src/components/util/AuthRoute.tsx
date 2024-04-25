@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import { trekie } from "#/lib/trekie"
+import { trekie } from "#/commons/lib/trekie"
 
 export default {
   Require() {

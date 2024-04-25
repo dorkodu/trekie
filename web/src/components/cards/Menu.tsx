@@ -21,7 +21,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Menu as styles } from '#/styles/Layout.css'
 import ColorToggle from '../util/ColorToggle'
 import { UserButton } from '../buttons/UserButton'
-import trekie from '#/lib/trekie'
+import trekie from '#/commons/lib/trekie'
 
 export function AppMenu() {
   const isWideScreen = useMediaQuery('(min-width: 768px)')

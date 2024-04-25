@@ -1,6 +1,6 @@
-import { useApiStore } from '#/stores/apiStore'
+import trekie from '#/commons/lib/trekie'
 import { useAppStore } from '#/stores/appStore'
-import { IUser } from '../../../../core/src/types/user'
+import { IUser } from '@core/index'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
@@ -15,7 +15,7 @@ interface Props {
 }
 
 function ProfileMenu({ user }: Props) {
-  const currentUserId = useApiStore(state => state.userId)
+  const currentUserId = trekie.game($ => $.user?.id)
 
   const onShare = () => { }
   const onClipboard = () => { }

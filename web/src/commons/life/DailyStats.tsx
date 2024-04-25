@@ -12,10 +12,10 @@ import {
   Tooltip,
   useMantineColorScheme,
 } from '@mantine/core'
-import Emoji from '../custom/Emoji'
+import Emoji from '../../components/custom/Emoji'
 import { useThemed, vanilla } from '#/styles/theme'
-import { trekie } from "#/lib/trekie"
-import { format } from "#/lib/format";
+import { trekie } from "#/commons/lib/trekie"
+import { format } from "#/commons/lib/format";
 
 export function DailyStats() {
 

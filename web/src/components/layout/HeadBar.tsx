@@ -1,5 +1,5 @@
 import { useAppStore } from "#/stores/appStore"
-import { trekie } from "#/lib/trekie"
+import { trekie } from "#/commons/lib/trekie"
 import { vanilla } from "#/styles/theme"
 import { Flex, Paper, ActionIcon, Anchor, useMantineColorScheme, Image } from "@mantine/core"
 import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react"

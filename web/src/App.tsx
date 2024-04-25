@@ -16,7 +16,7 @@ import { Notifications } from '@mantine/notifications'
 
 function App() {
 
-  const loading = useAppStore(state => state.loading)
+  const loading = useAppStore($ => $.loading)
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
