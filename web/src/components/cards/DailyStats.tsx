@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Center,
   Divider,
@@ -11,12 +10,12 @@ import {
   Stack,
   Text,
   Tooltip,
-  darken,
   useMantineColorScheme,
 } from '@mantine/core'
 import Emoji from '../custom/Emoji'
 import { useThemed, vanilla } from '#/styles/theme'
 import { trekie } from "#/lib/trekie"
+import { format } from "#/lib/format";
 
 export function DailyStats() {
 
@@ -81,7 +80,7 @@ export function DailyProgress({ value }: { value: number }) {
         styles={{ section: { transition: 'width 100ms linear 0s' } }}
       >
         <Tooltip
-          label={`${value}%`}
+          label={format.percentage(value)}
           arrowOffset={5}
           arrowSize={6}
           arrowRadius={2}
