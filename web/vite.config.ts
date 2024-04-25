@@ -55,7 +55,6 @@ export default defineConfig({
   server: {
     watch: { usePolling: true },
     host: true,
-    port: 8014,
     strictPort: true,
     proxy: {
       "/api": {
