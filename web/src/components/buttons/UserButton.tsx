@@ -1,27 +1,26 @@
-import { Card, Group, Avatar, Stack, ThemeIcon, Text } from '@mantine/core'
-import { IconChevronRight } from '@tabler/icons-react'
+import { Button, Group, Avatar, Stack, ThemeIcon, Text } from '@mantine/core'
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 
-export function UserButton({
-  user,
-  compact = false,
-}: {
+interface Props {
   user: { name?: string; username?: string; avatar?: string }
-  compact?: boolean
-}) {
+  onClick?: () => void;
 
+  compact?: boolean
+}
+
+export function UserButton({ user, onClick, compact = false }: Props) {
   let avatar = user?.avatar ?? '/images/avatar.webp'
   let name = user?.name ?? "Anonymous"
   let username = "@" + user?.username ?? ''
 
   return (
-    <Card
-      variant="light"
-      color="white"
+    <Button
+      variant="default"
+      h="auto"
       p={compact ? 4 : 6}
-      withBorder
       mx={4}
       radius="lg"
-      display={compact ? 'inline-block' : 'block'}
+      onClick={onClick}
     >
       <Group justify="space-between" gap={10}>
         <Group gap={compact ? 8 : 12}>
@@ -31,7 +30,7 @@ export function UserButton({
             size={compact ? 36 : 44}
           />
           <Stack gap={0} ta="left" mr={10}>
-            <Text fw={700} lh={1.1} size={compact ? 'sm' : 'md'}>
+            <Text fw={700} lh={1.1} size={compact ? 'sm' : 'md'} c="var(--mantine-color-text)">
               {name}
             </Text>
             <Text fw={500} lh={1.1} c="dimmed" size={compact ? 'sm' : 'md'}>
@@ -39,12 +38,10 @@ export function UserButton({
             </Text>
           </Stack>
         </Group>
-        {!compact && (
-          <ThemeIcon variant="transparent" color="dark">
-            <IconChevronRight />
-          </ThemeIcon>
-        )}
+        <ThemeIcon variant="transparent" color="dark">
+          <IconChevronRight />
+        </ThemeIcon>
       </Group>
-    </Card>
+    </Button>
   )
 }
