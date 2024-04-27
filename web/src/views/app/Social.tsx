@@ -1,4 +1,4 @@
-import OnlyPremium from '@/components/cards/OnlyPremium'
+import OnlyPremium from '@/shared/components/cards/OnlyPremium'
 import { Flex, Image } from '@mantine/core'
 
 function Social() {

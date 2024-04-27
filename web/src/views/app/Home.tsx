@@ -4,11 +4,11 @@ import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconInfoCircle, I
 
 import { useNavigate } from 'react-router-dom'
 
-import Emoji from '@/components/custom/Emoji'
+import Emoji from '@/shared/custom/Emoji'
 
-import EnhancedText from '@/components/util/TextParser'
-import HabitCounter from '@/components/custom/HabitCounter'
-import NoHabitsCard from '@/components/cards/NoHabitsCard'
+import EnhancedText from '@/shared/util/TextParser'
+import HabitCounter from '@/shared/custom/HabitCounter'
+import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import NoGoalsCard from '@/components/cards/NoGoalsCard'
 import { DailyStats, SumCard } from '@/components/cards/DailyStats'
 
@@ -17,9 +17,9 @@ import { vanilla } from '@/styles/theme'
 
 import { useSocialStore } from '@/stores/socialStore'
 
-import { trekie } from "@/commons/lib/trekie"
+import { trekie } from "@/shared/lib/trekie"
 import GoalCard from '@/components/cards/GoalCard'
-import { relativeDateString } from '@/commons/lib/util'
+import { relativeDateString } from '@/shared/lib/util'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 

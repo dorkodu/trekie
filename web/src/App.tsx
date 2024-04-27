@@ -1,27 +1,48 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
 import { MantineProvider } from '@mantine/core'
+import { ErrorBoundary } from "react-error-boundary"
+import { httpBatchLink } from '@trpc/client'
 
 import { theme } from '@/styles/theme'
 
-import OverlayLoader from '@/components/loaders/OverlayLoader'
-import UpdateSWModal from '@/components/modals/UpdateSWModal'
-import { useRefreshStatsDaily } from '@/components/hooks'
+import OverlayLoader from '@/shared/components/loaders/OverlayLoader'
+import UpdateSWModal from '@/shared/components/modals/UpdateSWModal'
+import { useRefreshStatsDaily } from '@/shared/hooks'
 
-import { useAppStore } from '@/stores/appStore'
-import { useDorkoduStore } from './stores/dorkoduStore'
+import { useAppStore } from '@/shared/stores/appStore'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { queryClient } from './lib/query'
 import { Notifications } from '@mantine/notifications'
+import { onError, onReset } from './shared/lib/errors'
+import { trpc } from './shared/lib/trpc'
+import ApplicationError from './shared/components/misc/ApplicationError'
+import { db } from './shared/lib/db'
 
 function App() {
 
   const loading = useAppStore($ => $.loading)
 
+  const [queryClient] = useState(() => new QueryClient())
+  const [trpcClient] = useState(() =>
+    trpc.createClient({
+      links: [
+        httpBatchLink({
+          url: 'http://localhost:3000/trpc',
+          // You can pass any HTTP headers you wish here
+          async headers() {
+            return {
+              authorization: getAuthCookie(),
+            };
+          },
+        }),
+      ],
+    }),
+  );
+
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
     if (!loading.auth) return
-    useDorkoduStore.getState().auth(undefined)
+    useAppStore.getState().auth.login()
   }, [loading.auth])
 
   // app hooks
@@ -30,18 +51,26 @@ function App() {
   useRefreshStatsDaily()
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <MantineProvider theme={theme} defaultColorScheme="dark">
-        <Notifications />
-        {loading.auth && <OverlayLoader full={true} />}
-        {!loading.auth && <Outlet />}
+    <ErrorBoundary
+      FallbackComponent={ApplicationError}
+      onError={onError}
+      onReset={onReset}
+    >
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider theme={theme} defaultColorScheme="dark">
+            <Notifications />
+            {loading.auth && <OverlayLoader full={true} />}
+            {!loading.auth && <Outlet />}
 
-        {/* Modals */}
-        <UpdateSWModal />
-      </MantineProvider>
+            {/* Modals */}
+            <UpdateSWModal />
+          </MantineProvider>
 
-      <ScrollRestoration />
-    </QueryClientProvider>
+          <ScrollRestoration />
+        </QueryClientProvider>
+      </trpc.Provider>
+    </ErrorBoundary>
   )
 }
 

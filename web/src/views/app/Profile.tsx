@@ -1,5 +1,5 @@
-import OnlyPremium from '@/components/cards/OnlyPremium'
-import WIPCard from '@/components/cards/WIPCard'
+import OnlyPremium from '@/shared/components/cards/OnlyPremium'
+import WIPCard from '@/shared/components/cards/WIPCard'
 import { Flex, Image } from '@mantine/core'
 
 function Profile() {

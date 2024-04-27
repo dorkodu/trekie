@@ -3,16 +3,19 @@ import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, useMantineCol
 import { Link, Outlet } from 'react-router-dom'
 import { useMediaQuery } from '@mantine/hooks'
 
-import * as Nav from '@/components/custom/Nav'
-import { AppMenu } from '@/components/cards/Menu'
+import * as Nav from '@/shared/components/layout/Nav'
+import { AppMenu } from '@/shared/components/cards/Menu'
+
+import Emoji from '@/shared/components/misc/Emoji'
+
+import { useAppStore } from '@/shared/stores/appStore'
+import { DailyStats } from '@/namespaces/life/DailyStats'
+
+import { Header } from '@/shared/components/layout/Header'
+import { HeadBar } from '@/shared/components/layout/HeadBar'
+import { NavigationBar } from '@/shared/components/layout/NavigationBar'
 
 import * as styles from '@/styles/Layout.css'
-import { DailyStats } from '@/components/cards/DailyStats'
-import Emoji from '@/components/custom/Emoji'
-import { HeadBar } from '@/components/layout/HeadBar'
-import { NavigationBar } from '@/components/layout/NavigationBar'
-import { useAppStore } from '@/stores/appStore'
-import { Header } from '@/components/layout/Header'
 
 export const navLinks = [
   { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },

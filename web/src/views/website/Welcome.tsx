@@ -3,8 +3,8 @@ import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image
 import { IconAdOff, IconArrowRight, IconAt, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconChess, IconChessFilled, IconChessKnight, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLock, IconLockAccess, IconMail, IconMailAi, IconMailFast, IconMailFilled, IconMailOpened, IconMultiplier2x, IconPhoto, IconPin, IconPointerStar, IconRocket, IconShare, IconShare2, IconShare3, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
   from '@tabler/icons-react'
 
-import GlassCard from '@/components/cards/GlassCard'
-import Emoji from '@/components/custom/Emoji'
+import GlassCard from '@/shared/components/cards/GlassCard'
+import Emoji from '@/shared/custom/Emoji'
 
 import * as PremiumStyles from '@/styles/views/Premium.css'
 

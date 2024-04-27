@@ -1,7 +1,7 @@
 import * as Trekie from "../Trekie"
 
 import { Maybe } from "../lib/util"
-import { db } from "../lib/db"
+import { db } from "../../../web/src/shared/lib/db"
 import { uuid } from "../lib/id"
 
 export interface IGoal extends IGoalTemplate {
