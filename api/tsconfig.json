@@ -6,7 +6,11 @@
     "strict": true,
     "moduleResolution": "node",
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "index.ts"],
   "exclude": ["node_modules"]
