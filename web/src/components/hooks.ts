@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { trekie } from "#/commons/lib/trekie";
+import { trekie } from "@/commons/lib/trekie";
 
 export function useDelay(delay: number = 100) {
   const [state, setState] = useState(true)

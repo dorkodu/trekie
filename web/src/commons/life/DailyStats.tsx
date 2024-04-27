@@ -13,9 +13,9 @@ import {
   useMantineColorScheme,
 } from '@mantine/core'
 import Emoji from '../../components/custom/Emoji'
-import { useThemed, vanilla } from '#/styles/theme'
-import { trekie } from "#/commons/lib/trekie"
-import { format } from "#/commons/lib/format";
+import { useThemed, vanilla } from '@/styles/theme'
+import { trekie } from "@/commons/lib/trekie"
+import { format } from "@/commons/lib/format";
 
 export function DailyStats() {
 

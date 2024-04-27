@@ -1,6 +1,6 @@
-import { trekie } from '#/commons/lib/trekie'
+import { trekie } from '@/commons/lib/trekie'
 
-import { useAppStore } from '#/stores/appStore'
+import { useAppStore } from '@/stores/appStore'
 import { IGoal } from '@core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
 import {

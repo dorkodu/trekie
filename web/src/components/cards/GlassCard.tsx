@@ -1,4 +1,4 @@
-import { glassBackground } from '#/styles/shared.css'
+import { glassBackground } from '@/styles/shared.css'
 import { Paper } from '@mantine/core'
 import { PropsWithChildren } from 'react'
 

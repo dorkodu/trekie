@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
 import { MantineProvider } from '@mantine/core'
 
-import { theme } from '#/styles/theme'
+import { theme } from '@/styles/theme'
 
-import OverlayLoader from '#/components/loaders/OverlayLoader'
-import UpdateSWModal from '#/components/modals/UpdateSWModal'
-import { useRefreshStatsDaily } from '#/components/hooks'
+import OverlayLoader from '@/components/loaders/OverlayLoader'
+import UpdateSWModal from '@/components/modals/UpdateSWModal'
+import { useRefreshStatsDaily } from '@/components/hooks'
 
-import { useAppStore } from '#/stores/appStore'
+import { useAppStore } from '@/stores/appStore'
 import { useDorkoduStore } from './stores/dorkoduStore'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './lib/query'

@@ -12,7 +12,7 @@ import {
 
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import styles from '#/styles/components/NavBar.css'
+import styles from '@/styles/components/NavBar.css'
 import React from 'react'
 
 export function Bar({

@@ -4,22 +4,22 @@ import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconInfoCircle, I
 
 import { useNavigate } from 'react-router-dom'
 
-import Emoji from '#/components/custom/Emoji'
+import Emoji from '@/components/custom/Emoji'
 
-import EnhancedText from '#/components/util/TextParser'
-import HabitCounter from '#/components/custom/HabitCounter'
-import NoHabitsCard from '#/components/cards/NoHabitsCard'
-import NoGoalsCard from '#/components/cards/NoGoalsCard'
-import { DailyStats, SumCard } from '#/components/cards/DailyStats'
+import EnhancedText from '@/components/util/TextParser'
+import HabitCounter from '@/components/custom/HabitCounter'
+import NoHabitsCard from '@/components/cards/NoHabitsCard'
+import NoGoalsCard from '@/components/cards/NoGoalsCard'
+import { DailyStats, SumCard } from '@/components/cards/DailyStats'
 
-import { wrapContent } from '#/styles/shared.css'
-import { vanilla } from '#/styles/theme'
+import { wrapContent } from '@/styles/shared.css'
+import { vanilla } from '@/styles/theme'
 
-import { useSocialStore } from '#/stores/socialStore'
+import { useSocialStore } from '@/stores/socialStore'
 
-import { trekie } from "#/commons/lib/trekie"
-import GoalCard from '#/components/cards/GoalCard'
-import { relativeDateString } from '#/commons/lib/util'
+import { trekie } from "@/commons/lib/trekie"
+import GoalCard from '@/components/cards/GoalCard'
+import { relativeDateString } from '@/commons/lib/util'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 

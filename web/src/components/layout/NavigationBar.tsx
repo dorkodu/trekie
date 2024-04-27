@@ -1,12 +1,12 @@
 import { Button, Flex, Group, Paper, Text, px } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
-import { navLinks } from "#/layouts/AppLayout";
+import { navLinks } from "@/layouts/AppLayout";
 
-import CreateMenu from "#/components/menus/CreateMenu";
-import { theme, vanilla } from "#/styles/theme";
-import * as LayoutStyles from '#/styles/Layout.css'
-import { NavigationBar as styles } from '#/styles/Layout.css'
+import CreateMenu from "@/components/menus/CreateMenu";
+import { theme, vanilla } from "@/styles/theme";
+import * as LayoutStyles from '@/styles/Layout.css'
+import { NavigationBar as styles } from '@/styles/Layout.css'
 
 export function NavigationBar() {
   const navigate = useNavigate()

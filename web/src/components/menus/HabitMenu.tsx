@@ -1,5 +1,5 @@
-import { trekie } from "#/commons/lib/trekie"
-import { useAppStore } from '#/stores/appStore'
+import { trekie } from "@/commons/lib/trekie"
+import { useAppStore } from '@/stores/appStore'
 import { IHabit } from '@core/commons/habit'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
@@ -12,7 +12,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
-import { vanilla } from '#/styles/theme'
+import { vanilla } from '@/styles/theme'
 
 interface Props {
   habit: IHabit

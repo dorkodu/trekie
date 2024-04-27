@@ -1,4 +1,4 @@
-import { useAppStore } from '#/stores/appStore'
+import { useAppStore } from '@/stores/appStore'
 import { Flex, Image, Loader, Modal, Title } from '@mantine/core'
 import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
@@ -23,7 +23,7 @@ function UpdateSWModal() {
   return (
     <Modal
       opened={updateSW.opened}
-      onClose={() => {}}
+      onClose={() => { }}
       lockScroll={false}
       withCloseButton={false}
       centered

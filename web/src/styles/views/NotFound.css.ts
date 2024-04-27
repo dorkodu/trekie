@@ -1,4 +1,4 @@
-import { vanilla } from '#/styles/theme';
+import { vanilla } from '@/styles/theme';
 import { rem } from '@mantine/core';
 import { style } from '@vanilla-extract/css';
 

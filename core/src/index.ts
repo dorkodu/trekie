@@ -1,1 +1,1 @@
-export * from './Trekie';
+export * from './Trekie'

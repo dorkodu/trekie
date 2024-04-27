@@ -30,9 +30,9 @@
     "paths": {
       "@api/*": ["../api/src/*"],
       "@core/*": ["../core/src/*"],
-      "#/*": ["./src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "../core/src/stores/socialStore.ts", "src/lib"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

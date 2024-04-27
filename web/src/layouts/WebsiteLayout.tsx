@@ -24,17 +24,17 @@ import { IconUsers } from '@tabler/icons-react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 
-import * as Nav from '#/components/custom/Nav'
+import * as Nav from '@/components/custom/Nav'
 
-import { trekie } from "#/commons/lib/trekie"
+import { trekie } from "@/commons/lib/trekie"
 
-import * as LayoutStyle from '#/styles/Layout.css'
-import * as WebsiteStyle from '#/styles/website/Website.css'
+import * as LayoutStyle from '@/styles/Layout.css'
+import * as WebsiteStyle from '@/styles/website/Website.css'
 
-import { useThemed, theme, vanilla } from '#/styles/theme'
-import Emoji from '#/components/custom/Emoji'
-import ColorToggle from '#/components/util/ColorToggle'
-import { socialLinks } from '#/commons/lib/website'
+import { useThemed, theme, vanilla } from '@/styles/theme'
+import Emoji from '@/components/custom/Emoji'
+import ColorToggle from '@/components/util/ColorToggle'
+import { socialLinks } from '@/commons/lib/website'
 
 function WebsiteLayout() {
 

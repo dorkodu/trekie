@@ -3,10 +3,10 @@ import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image
 import { IconAdOff, IconArrowRight, IconAt, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconChess, IconChessFilled, IconChessKnight, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLock, IconLockAccess, IconMail, IconMailAi, IconMailFast, IconMailFilled, IconMailOpened, IconMultiplier2x, IconPhoto, IconPin, IconPointerStar, IconRocket, IconShare, IconShare2, IconShare3, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
   from '@tabler/icons-react'
 
-import GlassCard from '#/components/cards/GlassCard'
-import Emoji from '#/components/custom/Emoji'
+import GlassCard from '@/components/cards/GlassCard'
+import Emoji from '@/components/custom/Emoji'
 
-import * as PremiumStyles from '#/styles/views/Premium.css'
+import * as PremiumStyles from '@/styles/views/Premium.css'
 
 export default function Welcome() {
   return (
@@ -311,7 +311,7 @@ const Join = (
 
 
 import { randomId } from '@mantine/hooks'
-import { vanilla } from '#/styles/theme'
+import { vanilla } from '@/styles/theme'
 import { Link, useNavigate } from 'react-router-dom'
 
 function FAQ() {

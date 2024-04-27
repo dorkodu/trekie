@@ -1,4 +1,4 @@
-import WIPCard from '#/components/cards/WIPCard'
+import WIPCard from '@/components/cards/WIPCard'
 import { Flex } from '@mantine/core'
 
 function Archive() {

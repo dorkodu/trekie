@@ -1,7 +1,7 @@
 import { Box, Group, Image, useMantineColorScheme } from "@mantine/core";
 import { UserButton } from "../buttons/UserButton";
-import trekie from "#/commons/lib/trekie";
-import { useAppStore } from "#/stores/appStore";
+import trekie from "@/commons/lib/trekie";
+import { useAppStore } from "@/stores/appStore";
 
 export function Header() {
   const { colorScheme } = useMantineColorScheme()

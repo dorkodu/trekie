@@ -1,5 +1,5 @@
-import { useApiStore } from '#/stores/apiStore'
-import { useAppStore } from '#/stores/appStore'
+import { useApiStore } from '@/stores/apiStore'
+import { useAppStore } from '@/stores/appStore'
 import { IHabit } from '../../../../core/src/types/habit'
 import {
   Button,

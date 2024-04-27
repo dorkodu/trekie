@@ -1,5 +1,5 @@
-import { useApiStore } from '#/stores/apiStore'
-import { useAppStore } from '#/stores/appStore'
+import { useApiStore } from '@/stores/apiStore'
+import { useAppStore } from '@/stores/appStore'
 import { Button, Flex, Modal, TextInput, Textarea } from '@mantine/core'
 import { useEffect, useState } from 'react'
 

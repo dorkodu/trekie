@@ -1,5 +1,5 @@
-import trekie from '#/commons/lib/trekie'
-import { useAppStore } from '#/stores/appStore'
+import trekie from '@/commons/lib/trekie'
+import { useAppStore } from '@/stores/appStore'
 import { IUser } from '@core/index'
 import { ActionIcon, Menu } from '@mantine/core'
 import {

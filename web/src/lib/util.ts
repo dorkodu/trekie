@@ -118,6 +118,8 @@ export function isSameDay(
   )
 }
 
-export type Maybe<T> = NonNullable<T> | undefined;
+export type Maybe<T> = NonNullable<T> | undefined
+
+export const sleep = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export * as util from './util'

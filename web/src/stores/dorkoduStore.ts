@@ -1,11 +1,11 @@
-import { IUser } from '@core/commons/user';
+import { IUser } from '@core/index'
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { useAppStore } from './appStore'
-import { useSocialStore } from './socialStore'
+import trekie from '@/lib/trekie'
 
 export interface DorkoduAction {
   auth: (user: IUser | undefined) => void
@@ -15,7 +15,6 @@ export interface DorkoduAction {
 export interface DorkoduState {
   userId: string | undefined
   accountId: string | undefined
-
   deviceId: string | undefined
 }
 
@@ -46,8 +45,7 @@ export const useDorkoduStore = create<DorkoduStoreInterface>()(
               s.userId = user.id
             })
 
-            useSocialStore.getState().addUser(user)
-            useSocialStore.getState().updateStats()
+            trekie.db.users.add(user)
           }
 
           useAppStore.setState(s => {

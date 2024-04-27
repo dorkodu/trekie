@@ -1,11 +1,11 @@
-import { useAppStore } from "#/stores/appStore"
-import { trekie } from "#/commons/lib/trekie"
-import { vanilla } from "#/styles/theme"
+import { useAppStore } from "@/stores/appStore"
+import { trekie } from "@/commons/lib/trekie"
+import { vanilla } from "@/styles/theme"
 import { Flex, Paper, ActionIcon, Anchor, useMantineColorScheme, Image } from "@mantine/core"
 import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-import { Headbar as styles } from "#/styles/Layout.css"
+import { Headbar as styles } from "@/styles/Layout.css"
 
 export function HeadBar() {
   const navigate = useNavigate()

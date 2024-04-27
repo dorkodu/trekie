@@ -1,4 +1,4 @@
-import { vanilla } from '#/styles/theme'
+import { vanilla } from '@/styles/theme'
 import {
   SegmentedControl,
   Center,

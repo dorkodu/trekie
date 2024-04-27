@@ -14,7 +14,7 @@ import {
 } from '@mantine/core'
 import Emoji from '../custom/Emoji'
 
-import * as PremiumStyles from '#/styles/views/Premium.css'
+import * as PremiumStyles from '@/styles/views/Premium.css'
 import {
   IconAdOff,
   IconArrowRight,

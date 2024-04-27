@@ -1,5 +1,5 @@
-import { useAppStore } from '#/stores/appStore'
-import { useThemed, vanilla } from '#/styles/theme'
+import { useAppStore } from '@/stores/appStore'
+import { useThemed, vanilla } from '@/styles/theme'
 import { ActionIcon, Badge, Box, Button, Divider, Flex, Group, Menu, MenuDivider, Stack, Text, Title, rgba } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconAngle, IconCopyCheck, IconEqualDouble, IconHandLittleFinger, IconMetronome } from '@tabler/icons-react'

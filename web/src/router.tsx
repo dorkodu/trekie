@@ -8,8 +8,8 @@ import {
   Navigate,
   Route,
 } from 'react-router-dom'
-import CenterLoader from '#/components/loaders/CenterLoader'
-import { util } from '#/commons/lib/util'
+import CenterLoader from '@/components/loaders/CenterLoader'
+import { util } from '@/lib/util'
 import App from './App'
 
 import Auth from './components/util/AuthRoute'
