@@ -12,7 +12,7 @@ export const appRouter = router({
   userCreate: publicProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async (opts) => { }),
-});
+})
 
 // Export type router type signature,
 // NOT the router itself.

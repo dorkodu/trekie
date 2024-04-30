@@ -4,14 +4,17 @@ import express from "express"
 import * as trpcExpress from '@trpc/server/adapters/express'
 
 const app = express()
-const port = 3131
+const port = 4000
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
+// Connect tRPC to Express
 app.get("/", (req, res) => {
   res.send("✪ Welcome to the Trekie API!")
 })
 
+// Connect tRPC to Express
 app.use(
   '/trpc',
   trpcExpress.createExpressMiddleware({
