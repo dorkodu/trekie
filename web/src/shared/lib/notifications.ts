@@ -24,4 +24,4 @@ export function serverError(message: string | undefined) {
   });
 }
 
-export * as notifications from "./notifications";
+export * as notifications from "./notifications"

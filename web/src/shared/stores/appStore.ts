@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import trekie from "../lib/trekie";
+import trekie from "@/shared/lib/trekie";
 import { IUser } from "@core/Trekie";
-import { log } from "console";
+import { LogKind, log } from "@/shared/utils/log";
 
 export interface AppStoreState {
   online: boolean;
@@ -140,7 +140,7 @@ export const useAppStore = create(
 
           return true
         } catch (error) {
-          log(error, "ERROR")
+          log(error, LogKind.ERROR)
           return false
         }
       },

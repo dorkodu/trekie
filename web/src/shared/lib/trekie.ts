@@ -1,10 +1,12 @@
+import { useLiveQuery } from 'dexie-react-hooks'
 
 import * as Trekie from '@core/Trekie'
 
+import { db } from '@/shared/lib/db'
+
 import * as Goal from "@core/commons/goal"
 import * as Habit from "@core/commons/habit"
-import { db } from '@core/lib/db'
-import { useLiveQuery } from 'dexie-react-hooks'
+import { mock } from './mock'
 
 const initialState: Trekie.GameState = {
   // points
@@ -22,25 +24,7 @@ const initialState: Trekie.GameState = {
   lastStreak: 1703846675432,
   lastActive: 1703846675432,
 
-  user: {
-    id: '0',
-    username: 'dorukeray',
-    name: 'Doruk Eray',
-    bio: `✦ Founder & Chief @dorkodu
-    ✦ Polymath • Software Craftsman • Designer
-    ✦ Boğaziçi University • Vefa Lisesi '23 
-    ✦ ENFJ • ♓ • 3w2 • E/Acc • Techno-optimist`,
-    email: 'doruk@dorkodu.com',
-    pictureUrl: '/images/doruk--green.png',
-
-    tier: Trekie.AccountTier.PREMIUM,
-
-    category: "Entrepreneur",
-    location: "Istanbul, TR",
-    url: "https://doruk.dorkodu.com",
-    joinedAt: 1703846675432,
-    birthday: new Date("03/08/2004 09:45 AM").getTime(),
-  },
+  user: mock.user
 }
 
 const { game, useGame } = Trekie.Game(initialState)

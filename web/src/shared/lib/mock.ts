@@ -33,7 +33,7 @@ export const habit: IHabit = {
   createdAt: new Date("20/02/2024 16:30").getTime(),
   dailyTarget: 5,
   heatmap: [1],
-  userId: doruk.id,
+  userId: user.id,
   lastUpdated: new Date("20/02/2024 16:34").getTime()
 }
 
@@ -41,7 +41,9 @@ export const goal: IGoal = {
   id: uuid().toString(),
   title: "Become A Rockstar",
   description: "Until you are 30 years old.",
-  userId: doruk.id,
+  userId: user.id,
   xpCurrent: 600,
   xpTarget: 10000,
 }
+
+export * as mock from './mock'

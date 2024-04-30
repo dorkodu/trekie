@@ -1,10 +1,13 @@
 import Dexie, { Table } from 'dexie'
 
-import { IUser } from '../../../../core/src/Trekie'
 import * as Trekie from '@core/Trekie'
+import { IUser } from '@core/index'
+
+import { uuid } from '@core/lib/id'
+
 import { IGoal } from '@core/commons/goal'
 import { IHabit } from '@core/commons/habit'
-import { uuid } from '@core/lib/id'
+import { mock } from './mock'
 
 export class TrekieDatabase extends Dexie {
   // 'friends' is added by dexie when declaring the stores()
@@ -43,11 +46,9 @@ db.open().then(async function (db) {
 });
 
 export async function populate() {
-
-
-  await db.habits.add(habit, habit.id)
-  await db.users.add(doruk, doruk.id)
-  await db.goals.add(goal, goal.id)
+  await db.habits.add(mock.habit, mock.habit.id)
+  await db.users.add(mock.user, mock.user.id)
+  await db.goals.add(mock.goal, mock.goal.id)
 }
 
 export async function ready() {
