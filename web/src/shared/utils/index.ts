@@ -28,70 +28,6 @@ export function wait<T>(
     })
 }
 
-export function formatNumber(number: number, long?: boolean) {
-  if (long) return Intl.NumberFormat('en').format(number)
-  return Intl.NumberFormat('en', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(number)
-}
-
-export function formatPercent(number: number) {
-  return Intl.NumberFormat('en', {
-    notation: 'compact',
-    style: 'percent',
-  }).format(number)
-}
-
-export function relativeDateString(date: number) {
-  const current = new Date()
-  const target = new Date(date)
-  let diff = 0
-
-  if (current.getUTCFullYear() - target.getUTCFullYear() >= 1)
-    return new Intl.DateTimeFormat('en', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(date)
-  else if (current.getUTCMonth() - target.getUTCMonth() >= 1)
-    return new Intl.DateTimeFormat('en', {
-      month: 'short',
-      day: 'numeric',
-    }).format(date)
-  else if (current.getUTCDate() - target.getUTCDate() >= 1)
-    return new Intl.DateTimeFormat('en', {
-      month: 'short',
-      day: 'numeric',
-    }).format(date)
-  else if ((diff = current.getUTCHours() - target.getUTCHours()) >= 1)
-    return new Intl.RelativeTimeFormat('en', {
-      numeric: 'always',
-      style: 'narrow',
-    }).format(-diff, 'hours')
-  else if ((diff = current.getUTCMinutes() - target.getUTCMinutes()) >= 1)
-    return new Intl.RelativeTimeFormat('en', {
-      numeric: 'always',
-      style: 'narrow',
-    }).format(-diff, 'minutes')
-  else if ((diff = current.getUTCSeconds() - target.getUTCSeconds()) >= 1)
-    return new Intl.RelativeTimeFormat('en', {
-      numeric: 'always',
-      style: 'narrow',
-    }).format(-diff, 'seconds')
-  else
-    return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
-      0,
-      'seconds'
-    )
-}
-
-export function formatDate(date: number, time?: boolean) {
-  return new Intl.DateTimeFormat('en', {
-    dateStyle: 'medium',
-    timeStyle: time ? 'short' : undefined,
-  }).format(date)
-}
 
 export function getDayDiff(from: number, to: number): number {
   const _from = new Date(from)
@@ -122,4 +58,4 @@ export type Maybe<T> = NonNullable<T> | undefined
 
 export const sleep = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export * as util from '.'
+export * as utils from '.'
