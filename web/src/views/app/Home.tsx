@@ -1,27 +1,22 @@
-import { Alert, Anchor, Badge, Box, Button, Card, Divider, Flex, Group, Image, Loader, Paper, SimpleGrid, Skeleton, Stack, Tabs, Text, ThemeIcon, Title, rem } from '@mantine/core'
+import { Anchor, Badge, Box, Divider, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconInfoCircle, IconLink, IconLocation, IconMapPin, IconPinned, IconTarget, IconTargetArrow } from '@tabler/icons-react'
+import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconMapPin, IconPinned, IconTargetArrow } from '@tabler/icons-react'
 
 import { useNavigate } from 'react-router-dom'
 
-import Emoji from '@/shared/custom/Emoji'
 
-import EnhancedText from '@/shared/util/TextParser'
-import HabitCounter from '@/shared/custom/HabitCounter'
+import HabitCounter from '@/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
-import NoGoalsCard from '@/components/cards/NoGoalsCard'
-import { DailyStats, SumCard } from '@/components/cards/DailyStats'
+import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
+import { DailyStats } from '@/namespaces/life/DailyStats'
 
-import { wrapContent } from '@/styles/shared.css'
 import { vanilla } from '@/styles/theme'
 
-import { useSocialStore } from '@/stores/socialStore'
 
 import { trekie } from "@/shared/lib/trekie"
-import GoalCard from '@/components/cards/GoalCard'
-import { relativeDateString } from '@/shared/lib/util'
+import { relativeDateString } from '@/shared/utils/format'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 
 function Home() {
@@ -80,7 +75,7 @@ const MyProfile = () => {
         {isMobile && <DailyStats />}
 
 
-        <Tabs mt={8} variant="default" radius="md" defaultValue="gallery">
+        <Tabs mt={8} color="green" variant="default" radius="md" defaultValue="habits">
           <Tabs.List>
             <Tabs.Tab value="goals" leftSection={<IconTargetArrow style={iconStyle} />}>
               Life Goals

@@ -30,19 +30,19 @@ export function AppMenu() {
 
   return (
     <Stack w={isWideScreen ? 300 : 260} gap={2}>
-      <UnstyledButton
-        onClick={e => {
-          navigate('/me')
-        }}
-      >
+      <div>
         <UserButton
+          onClick={() => {
+            navigate('/me')
+          }}
+
           user={{
             avatar: user?.pictureUrl,
             name: user?.name,
             username: user?.username,
           }}
         />
-      </UnstyledButton>
+      </div>
 
       <div style={{ marginTop: 10 }}></div>
 

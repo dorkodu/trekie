@@ -6,20 +6,20 @@ import {
   Route,
 } from 'react-router-dom'
 import CenterLoader from '@/shared/components/loaders/CenterLoader'
-import { util } from '@/shared/utils'
+import { utils } from '@/shared/utils'
 import App from './App'
 
 function view(path: string) {
   const [folder, file] = path.split(':')
 
   return suspenseLoader(
-    React.lazy(util.wait(() => import(`./views/${folder}/${file}.tsx`)))
+    React.lazy(utils.wait(() => import(`./views/${folder}/${file}.tsx`)))
   )
 }
 
 function layout(path: string) {
   return suspenseLoader(
-    React.lazy(util.wait(() => import(`./layouts/${path}.tsx`)))
+    React.lazy(utils.wait(() => import(`./layouts/${path}.tsx`)))
   )
 }
 

@@ -1,5 +1,5 @@
-import Emoji from '../custom/Emoji'
-import StatusCard from './StatusCard'
+import StatusCard from "@/shared/components/cards/StatusCard"
+import Emoji from "@/shared/components/misc/Emoji"
 
 function NoGoalsCard() {
   return (
