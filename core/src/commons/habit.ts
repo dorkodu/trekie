@@ -76,9 +76,11 @@ export const Component = Trekie.Component<Interface>((game) => ({
     if (updateStats) game.getState().refresh()
   },
 
-  get: db.habits.get,
+  repository: db.habits,
 
-  count: db.habits.count,
+  get: (id) => db.habits.get(id),
+
+  count: () => db.habits.count(),
 
   async commit(id, count) {
     const habit = await this.get(id)
