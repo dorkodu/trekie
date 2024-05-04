@@ -3,37 +3,53 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:server": "tsx watch src/server",
-    "dev:client": "wait-port 2021 && tsx watch src/client",
-    "dev": "run-p dev:* --print-label",
-    "type-check": "tsc",
-    "build": "esbuild src/server.ts src/client.ts --bundle --packages=external --platform=node --format=esm --outdir=dist --sourcemap",
+    "dev": "bun run --hot index.ts",
+    "build": "rimraf ./dist && tsc",
     "lint": "eslint --cache --ext \".js,.ts,.tsx\" src",
-    "start": "bun dev",
-    "test-dev": "start-server-and-test 'tsx src/server' 2021 'tsx src/client'",
-    "test-start": "start-server-and-test 'node dist/server' 2021 'node dist/client'"
+    "type-check": "tsc",
+    "test:unit": "bun test run --dir ./src/test/unit",
+    "test:unit:watch": "bun test watch --dir ./src/test/unit",
+    "test:integration": "bun test run --dir ./src/test/integration",
+    "test:integration:watch": "bun test watch --dir ./src/test/integration",
+    "migrate:make": "pnpm knex migrate:make migrate_name -x ts --knexfile ./src/knexfile.ts",
+    "migrate:dev:latest": "NODE_ENV=development knex migrate:latest --knexfile ./src/knexfile.ts",
+    "migrate:dev:rollback": "NODE_ENV=development knex migrate:rollback --all --knexfile ./src/knexfile.ts",
+    "migrate:dev:up": "NODE_ENV=development knex migrate:up --knexfile ./src/knexfile.ts",
+    "migrate:dev:down": "NODE_ENV=development knex migrate:down --knexfile ./src/knexfile.ts",
+    "migrate:dev:reset": "pnpm migrate:dev:rollback && pnpm migrate:dev:latest",
+    "migrate:prod:latest": "NODE_ENV=production knex migrate:latest --knexfile ./dist/knexfile.js",
+    "migrate:prod:rollback": "NODE_ENV=production knex migrate:rollback --all --knexfile ./dist/knexfile.js",
+    "migrate:prod:up": "NODE_ENV=production knex migrate:up --knexfile ./dist/knexfile.js",
+    "migrate:prod:down": "NODE_ENV=production knex migrate:down --knexfile ./dist/knexfile.js",
+    "migrate:prod:reset": "pnpm migrate:prod:rollback && pnpm migrate:prod:latest",
+    "email:dev": "email dev"
   },
   "dependencies": {
     "@trpc/client": "npm:@trpc/client@next",
     "@trpc/react-query": "npm:@trpc/react-query@next",
     "@trpc/server": "npm:@trpc/server@next",
-    "express": "^4.17.1",
-    "zod": "^3.23.4"
+    "express": "^4.19.2",
+    "postgres": "^3.4.4",
+    "zod": "^3.23.4",
+    "react-email": "^2.1.1",
+    "@react-email/components": "^0.0.16",
+    "@react-email/render": "^0.0.12",
+    "cors": "^2.8.5",
+    "nodemailer": "^6.9.13"
   },
-  "alias": {
-    "scheduler/tracing": "../../node_modules/scheduler/tracing-profiling"
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.33",
     "esbuild": "^0.17.10",
     "eslint": "^8.56.0",
-    "npm-run-all": "^4.1.5",
-    "start-server-and-test": "^1.12.0",
-    "tsx": "^4.0.0",
     "typescript": "^5.4.0",
-    "wait-port": "^1.0.1"
+    "@types/bun": "^1.0.12",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/nodemailer": "^6.4.14"
   },
   "publishConfig": {
     "access": "restricted"
