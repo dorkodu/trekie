@@ -10,7 +10,7 @@ import { NavigationBar as styles } from '@/styles/Layout.css'
 
 export function NavigationBar() {
   const navigate = useNavigate()
-  const BARHEIGHT = 72
+  const BARHEIGHT = 80
 
   return (
     <Flex
@@ -25,7 +25,7 @@ export function NavigationBar() {
       h={BARHEIGHT}
     >
       <Paper h={BARHEIGHT} className={styles.Root}>
-        <Group p={8} gap={4} wrap="nowrap" h={BARHEIGHT} justify="space-between">
+        <Group px={10} py={12} gap={4} wrap="nowrap" h={BARHEIGHT} justify="space-between">
           <Group wrap="nowrap" gap={0}>
             {
               navLinks.map(view =>
@@ -36,7 +36,7 @@ export function NavigationBar() {
                   // based on current route, change link variant to active 
                   className={LayoutStyles.NavigationBar.Button[location.pathname === view.path ? 'active' : 'plain']}
                 >
-                  <Flex direction="column" gap={2} align="center">
+                  <Flex direction="column" gap={4} align="center">
                     {view.icon}
                     <Text fz={11} fw={500}>{view.text}</Text>
                   </Flex>

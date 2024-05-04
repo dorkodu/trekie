@@ -25,7 +25,7 @@ const Paper = style({
 
 const LinkButtonBase = style({
   borderRadius: 16,
-  padding: '8px 10px',
+  padding: '6px 10px',
   paddingRight: 18,
   display: 'block',
 

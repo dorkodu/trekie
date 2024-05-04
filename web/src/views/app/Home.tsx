@@ -17,6 +17,7 @@ import { trekie } from "@/shared/lib/trekie"
 import { relativeDateString } from '@/shared/utils/format'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useQueryClient } from '@tanstack/react-query'
+import GoalCard from '@/namespaces/goal/GoalCard'
 
 
 function Home() {
@@ -73,7 +74,6 @@ const MyProfile = () => {
         </Group>
 
         {isMobile && <DailyStats />}
-
 
         <Tabs mt={8} color="green" variant="default" radius="md" defaultValue="habits">
           <Tabs.List>
@@ -210,16 +210,8 @@ function LifeGoalSummary() {
   const queryClient = useQueryClient()
 
   const goals = useLiveQuery(
-    async () => {
-      console.log("goals query started")
-
-      return await trekie.db.goals
-        .where('userId')
-        .equals("0")
-        .toArray()
-    },
-    [],
-    "loading"
+    async () => trekie.db.goals.where('userId').equals(userId).toArray(),
+    [], "loading"
   )
 
   if (goals == "loading")
@@ -229,9 +221,6 @@ function LifeGoalSummary() {
       <Skeleton height={8} mt={8} width="70%" radius="xl" />
     </>
 
-  console.log("Al sana goals knk")
-  console.log(goals)
-
   const hasAnyLifeGoals = goals.length > 0
 
   if (!hasAnyLifeGoals) return <NoGoalsCard />
@@ -240,7 +229,7 @@ function LifeGoalSummary() {
     <Box py={10}>
       <Stack>
         {goals.map((goal) =>
-          <p key={goal.id}>{goal.title}</p>
+          <GoalCard id={goal.id} key={goal.id} />
         )}
       </Stack>
     </Box>

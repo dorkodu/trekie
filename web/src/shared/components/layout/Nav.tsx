@@ -22,7 +22,7 @@ export function Bar({
 }) {
   return (
     <Box p={12}>
-      <Stack gap={2} maw={180}>
+      <Stack gap={4} maw={180}>
         {links.map($ => (
           <LinkButton icon={$.icon} key={$.text} path={$.path} text={$.text} />
         ))}

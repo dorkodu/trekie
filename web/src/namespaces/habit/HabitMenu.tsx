@@ -51,8 +51,7 @@ function HabitMenu({ habit }: Props) {
       <Menu.Target>
         <ActionIcon
           variant="subtle"
-          c="var(--text-color)"
-          radius="xl"
+          color="gray"
           onClick={ev => ev.stopPropagation()}
         >
           <IconDotsVertical color={vanilla.colors.gray.lightColor} />

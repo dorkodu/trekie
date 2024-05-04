@@ -1,12 +1,12 @@
 import { MouseEvent } from 'react'
-import { IconMinus, IconPlus } from '@tabler/icons-react'
+import { IconLayersSelectedBottom, IconMinus, IconPlus } from '@tabler/icons-react'
 import { useLiveQuery } from "dexie-react-hooks"
 import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
 
 import { trekie } from "@/shared/lib/trekie"
 import { truncate } from '@/styles/shared.css'
 import EnhancedText from '@/shared/components/misc/TextParser'
-import HabitMenu from '@/shared/components/menus/HabitMenu'
+import HabitMenu from '@/namespaces/habit/HabitMenu'
 
 interface Props {
   habitId: string

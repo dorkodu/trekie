@@ -26,7 +26,7 @@ export function HeadBar() {
       hiddenFrom="sm"
     >
       <Paper className={styles.Root}>
-        <Flex align="center" justify="space-between" gap="md" px="xs" h={56}>
+        <Flex align="center" justify="space-between" gap="md" px="xs" h={60}>
           <ActionIcon
             variant="subtle"
             size={32}
@@ -46,7 +46,8 @@ export function HeadBar() {
                   ? '/images/trekie_Brand.svg'
                   : '/images/trekie_Brand_White.svg'
               }
-              height={40}
+              width="auto"
+              height={48}
               p={1}
             />
           </Anchor>
@@ -64,5 +65,4 @@ export function HeadBar() {
       </Paper>
     </Flex >
   )
-
 }

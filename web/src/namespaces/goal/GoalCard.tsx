@@ -1,14 +1,15 @@
 import trekie from "@/shared/lib/trekie";
 import { IGoal } from "@core/commons/goal";
-import { ActionIcon, Badge, Card, Group, Progress, SimpleGrid, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
+import { ActionIcon, Alert, Badge, Card, Group, Progress, SimpleGrid, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { IconDots, IconDotsDiagonal, IconDotsVertical, IconHourglass, IconMenu2, IconProgress, IconProgressCheck, IconRings, IconTarget, IconTargetArrow, IconTargetOff, IconTrendingUp } from "@tabler/icons-react";
+import { useLiveQuery } from "dexie-react-hooks";
 
 interface Props {
   id: IGoal["id"]
 }
 
 export default function GoalCard({ id }: Props) {
-  const goal = trekie.goal.store($ => $.goals[id])
+  const goal = useLiveQuery(() => trekie.goal.get(id), [id])
   if (!goal) return GoalNotFound
 
   let progress = (goal.xpCurrent / goal.xpTarget) * 100
@@ -50,15 +51,12 @@ export default function GoalCard({ id }: Props) {
           {goal.xpCurrent}/{goal.xpTarget}
         </Badge>
       </SimpleGrid>
-
-
-
     </Card>
   )
 }
 
 const GoalNotFound = (
-  <Card>
-    <Text fw={500}></Text>
-  </Card>
+  <Alert title="Oops!">
+    Goal not found.
+  </Alert>
 )

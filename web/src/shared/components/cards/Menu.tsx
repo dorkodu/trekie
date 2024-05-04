@@ -9,6 +9,7 @@ import {
   Text,
   ThemeIcon,
   UnstyledButton,
+  useMantineColorScheme,
 } from '@mantine/core'
 import {
   IconSettings,
@@ -51,7 +52,7 @@ export function AppMenu() {
       <MenuItem icon={<IconSettings />}>Settings</MenuItem>
 
       <div style={{ marginTop: 10 }}></div>
-      <ColorToggle size='xs' />
+      <div><ColorToggle size='lg' /></div>
 
       <Divider my={8} />
 
