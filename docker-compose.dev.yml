@@ -2,54 +2,6 @@ version: '3.8'
 name: trekie_dev
 
 services:
-  trekie_web:
-    build:
-      context: .
-      dockerfile: ./web/Dockerfile.dev
-    env_file:
-      - ./.env
-    environment:
-      - NODE_ENV=development
-      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.io}
-      - VIRTUAL_PORT=${WEB_PORT:-8014}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.io}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-hey@dorkodu.com}
-      - VIRTUAL_PATH=/
-    ports:
-      - ${WEB_PORT:-8014}:${WEB_PORT:-8014}
-    volumes:
-      - ./web:/web
-      - ./api:/api
-      - /web/node_modules
-      - /api/node_modules
-    restart: always
-    networks:
-      - app
-      - nginx-proxy
-
-  trekie_api:
-    build:
-      context: .
-      dockerfile: ./api/Dockerfile.dev
-    env_file:
-      - ./.env
-    environment:
-      - NODE_ENV=development
-      - VIRTUAL_HOST=${VIRTUAL_HOST:-trekie.io}
-      - VIRTUAL_PORT=${API_PORT:-8015}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST:-trekie.io}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-hey@dorkodu.com}
-      - VIRTUAL_PATH=/api
-    ports:
-      - ${API_PORT:-8015}:${API_PORT:-8015}
-    volumes:
-      - ./api:/api
-      - /api/node_modules
-    restart: always
-    networks:
-      - app
-      - nginx-proxy
-
   trekie_postgres:
     image: postgres:16-alpine
     environment:
@@ -59,15 +11,7 @@ services:
       - PGPORT=${POSTGRES_PORT:-7007}
     volumes:
       - pgdata:/var/lib/postgresql/data
-    restart: always
-    networks:
-      - app
-      - nginx-proxy
+    restart: unless-stopped
 
 volumes:
   pgdata:
-
-networks:
-  nginx-proxy:
-    external: true
-  app:
