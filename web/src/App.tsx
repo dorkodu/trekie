@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
-import { MantineProvider } from '@mantine/core'
+import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import { ErrorBoundary } from "react-error-boundary"
 import { httpBatchLink } from '@trpc/client'
 
@@ -58,7 +58,8 @@ function App() {
     >
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
-          <MantineProvider theme={theme} defaultColorScheme="dark">
+          <ColorSchemeScript defaultColorScheme="auto" />
+          <MantineProvider theme={theme} defaultColorScheme="auto">
             <Notifications />
             {loading.auth && <OverlayLoader full={true} />}
             {!loading.auth && <Outlet />}
