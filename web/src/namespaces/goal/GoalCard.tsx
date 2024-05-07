@@ -1,8 +1,10 @@
 import trekie from "@/shared/lib/trekie";
+import { vanilla } from "@/styles/theme";
 import { IGoal } from "@core/commons/goal";
 import { ActionIcon, Alert, Badge, Card, Group, Progress, SimpleGrid, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
-import { IconDots, IconDotsDiagonal, IconDotsVertical, IconHourglass, IconMenu2, IconProgress, IconProgressCheck, IconRings, IconTarget, IconTargetArrow, IconTargetOff, IconTrendingUp } from "@tabler/icons-react";
+import { IconDiamond, IconDiamondsFilled, IconDots, IconDotsDiagonal, IconDotsVertical, IconHourglass, IconMenu2, IconNorthStar, IconProgress, IconProgressCheck, IconRings, IconSparkles, IconTarget, IconTargetArrow, IconTargetOff, IconTrendingUp } from "@tabler/icons-react";
 import { useLiveQuery } from "dexie-react-hooks";
+import GoalMenu from "./GoalMenu";
 
 interface Props {
   id: IGoal["id"]
@@ -22,9 +24,7 @@ export default function GoalCard({ id }: Props) {
           <Text size="sm">{goal.description}</Text>
         </Stack>
 
-        <ActionIcon variant="subtle" color="gray">
-          <IconDotsVertical />
-        </ActionIcon>
+        <GoalMenu goal={goal} />
       </Group>
 
       <SimpleGrid cols={{ base: 2 }} mt={4}>
@@ -48,7 +48,10 @@ export default function GoalCard({ id }: Props) {
         </Group>
 
         <Badge size="lg" variant="light" color="blue">
-          {goal.xpCurrent}/{goal.xpTarget}
+          <Group>
+            <IconDiamond size={22} />
+            <Text fz={12} lh={24} fw={700}>{goal.xpCurrent}/{goal.xpTarget}</Text>
+          </Group>
         </Badge>
       </SimpleGrid>
     </Card>

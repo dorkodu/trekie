@@ -47,7 +47,7 @@ function HabitMenu({ habit }: Props) {
   }
 
   return (
-    <Menu position="bottom-end">
+    <Menu position="bottom-end" withArrow>
       <Menu.Target>
         <ActionIcon
           variant="subtle"
@@ -58,7 +58,9 @@ function HabitMenu({ habit }: Props) {
         </ActionIcon>
       </Menu.Target>
 
-      <Menu.Dropdown>
+      <Menu.Dropdown style={{
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+      }}>
         <Menu.Item onClick={onShare} leftSection={<IconShare />}>
           Share
         </Menu.Item>

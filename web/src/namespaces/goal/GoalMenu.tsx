@@ -1,11 +1,13 @@
 import { trekie } from '@/shared/lib/trekie'
 
 import { useAppStore } from '@/shared/stores/appStore'
+import { vanilla } from '@/styles/theme'
 import { IGoal } from '@core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
   IconDots,
+  IconDotsVertical,
   IconEdit,
   IconExclamationCircle,
   IconShare,
@@ -48,19 +50,20 @@ function GoalMenu({ goal }: Props) {
   }
 
   return (
-    <Menu position="bottom-end">
+    <Menu position="bottom-end" withArrow>
       <Menu.Target>
         <ActionIcon
           variant="subtle"
-          c="var(--text-color)"
-          radius="xl"
+          color="gray"
           onClick={ev => ev.stopPropagation()}
         >
-          <IconDots />
+          <IconDotsVertical color={vanilla.colors.gray.lightColor} />
         </ActionIcon>
       </Menu.Target>
 
-      <Menu.Dropdown>
+      <Menu.Dropdown style={{
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+      }}>
         <Menu.Item onClick={onShare} leftSection={<IconShare />}>
           Share
         </Menu.Item>

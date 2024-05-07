@@ -47,7 +47,7 @@ export function HeadBar() {
                   : '/images/trekie_Brand_White.svg'
               }
               width="auto"
-              height={48}
+              height={44}
               p={1}
             />
           </Anchor>

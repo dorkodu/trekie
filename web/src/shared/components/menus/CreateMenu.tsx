@@ -38,7 +38,7 @@ function CreateMenu({ }: Props) {
           <IconPlus size={32} />
         </ActionIcon>
       </Menu.Target>
-      <Menu.Dropdown style={{ padding: 8, border: 0, background: rgba("#fff", 0), minWidth: 240 }}>
+      <Menu.Dropdown style={{ padding: 8, paddingBottom: 16, border: 0, background: rgba("#fff", 0), minWidth: 240 }}>
         <Stack gap={6} style={{ borderRadius: 16, padding: 10, border: 0, background: rgba(useThemed({ dark: vanilla.colors.dark[8], light: vanilla.colors.white }), 0.9) }}>
           <Box
             style={{

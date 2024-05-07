@@ -58,8 +58,8 @@ function App() {
     >
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
-          <ColorSchemeScript defaultColorScheme="auto" />
-          <MantineProvider theme={theme} defaultColorScheme="auto">
+          <ColorSchemeScript defaultColorScheme="light" />
+          <MantineProvider theme={theme} defaultColorScheme="light">
             <Notifications />
             {loading.auth && <OverlayLoader full={true} />}
             {!loading.auth && <Outlet />}

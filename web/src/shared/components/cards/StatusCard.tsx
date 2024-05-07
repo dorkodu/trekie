@@ -13,7 +13,7 @@ function StatusCard({
   children,
 }: React.PropsWithChildren<Props>) {
   return (
-    <Alert icon={icon} title={title} color={color} variant="light" p="md">
+    <Alert icon={icon} title={title} color={color} variant="light" p="md" my="md">
       {children}
     </Alert>
   );

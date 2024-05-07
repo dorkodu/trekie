@@ -28,13 +28,13 @@ function Home() {
   return (
     <Stack gap="xs" m="xs">
 
-      <MyProfile />
+      <MySummary />
 
     </Stack>
   )
 }
 
-const MyProfile = () => {
+const MySummary = () => {
   const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
   const user = trekie.game($ => $.user)
@@ -63,16 +63,6 @@ const MyProfile = () => {
       </Group>
 
       <Stack gap={4}>
-        <Text size="sm">{user.bio}</Text>
-
-        <Group gap={4} pb={8}>
-          <ProfileEntry icon={<IconCalendar size={24} />} text={`Joined ${relativeDateString(user.joinedAt)}`} />
-          {user.birthday && <ProfileEntry icon={<IconCake size={24} />} text={`Born ${relativeDateString(user.birthday)}`} />}
-          {user.category && <ProfileEntry icon={<IconBriefcase size={24} />} text={user.category} />}
-          {user.location && <ProfileEntry icon={<IconMapPin size={24} />} text={user.location} />}
-          {user.url && <ProfileEntry icon={<IconLink size={24} />} text={<Anchor href={user.url} referrerPolicy="no-referrer" target="_blank">{user.url}</Anchor>} />}
-        </Group>
-
         {isMobile && <DailyStats />}
 
         <Tabs mt={8} color="green" variant="default" radius="md" defaultValue="habits">
@@ -102,52 +92,6 @@ const MyProfile = () => {
 
 export default Home
 
-const Habits = (
-  <section>
-    <Divider
-      mb={8}
-      label={
-        <Group gap={4} align="center" justify="center">
-          <IconCopyCheck />
-          Habits
-        </Group>
-      }
-      labelPosition="left"
-      styles={{ label: { fontSize: 14, fontWeight: 600 } }}
-    />
-
-  </section>
-)
-
-const PinnedHabits = (
-  <section>
-    <Divider
-      mb={8}
-      label={
-        <>
-          <IconPinned />
-          Pinned
-        </>
-      }
-      labelPosition="left"
-      styles={{ label: { fontSize: 14, fontWeight: 600 } }}
-    />
-    <Box
-      style={{
-        background: vanilla.colors.gray.light,
-        padding: 6,
-        borderRadius: 20,
-      }}
-    >
-      <Stack gap={0}></Stack>
-      <Flex>
-        <Badge variant="light" color="gray" mx="auto">
-          {false ? 'Your favorite habits' : 'No pinned habits'}
-        </Badge>
-      </Flex>
-    </Box>
-  </section>
-)
 
 function UserHabitSummary() {
   const userId = trekie.game($ => $.user?.id)
@@ -235,20 +179,3 @@ function LifeGoalSummary() {
     </Box>
   )
 }
-
-const Goals = (
-  <section>
-    <Divider
-      mb={8}
-      label={
-        <Group gap={4} align="center" justify="center">
-          <IconTargetArrow />
-          Life Goals
-        </Group>
-      }
-      labelPosition="left"
-      styles={{ label: { fontSize: 14, fontWeight: 600 } }}
-    />
-    <LifeGoalSummary />
-  </section>
-)

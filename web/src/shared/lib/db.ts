@@ -35,14 +35,9 @@ db.on("ready", ready)
 db.open().then(async function (db) {
   // Database opened successfully
   console.log("[Doruk]: dexie opened successfully")
-
-  let count = await db.table("goals").count()
-  console.log("[Doruk]: goals count is " + count)
-
-
-}).catch(function (_err) {
+}).catch(function (e) {
   // Error occurred
-  console.log("[Doruk]: dexie error")
+  console.log("[Doruk]: dexie error: ", e)
 });
 
 export async function populate() {
