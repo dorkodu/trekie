@@ -69,7 +69,7 @@ const initialState: AppStoreState = {
   online: false,
 
   loading: {
-    auth: true,
+    auth: false,
   },
 
   session: undefined,

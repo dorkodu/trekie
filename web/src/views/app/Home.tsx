@@ -21,15 +21,9 @@ import GoalCard from '@/namespaces/goal/GoalCard'
 
 
 function Home() {
-  const navigate = useNavigate()
-
-  const user = trekie.game($ => $.user)
-
   return (
     <Stack gap="xs" m="xs">
-
       <MySummary />
-
     </Stack>
   )
 }

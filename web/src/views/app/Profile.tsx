@@ -1,18 +1,23 @@
+import GoalCard from '@/namespaces/goal/GoalCard'
+import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
+import HabitCounter from '@/namespaces/habit/HabitCounter'
+import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
-import OnlyPremium from '@/shared/components/cards/OnlyPremium'
-import WIPCard from '@/shared/components/cards/WIPCard'
 import trekie from '@/shared/lib/trekie'
 import { vanilla } from '@/styles/theme'
 import { relativeDateString } from '@core/lib/util'
-import { Anchor, Flex, Group, Image, Paper, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
+import { Anchor, Badge, Box, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck } from '@tabler/icons-react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useLiveQuery } from 'dexie-react-hooks'
+
 
 function Profile() {
   return (
-    <Flex direction="column" m="md">
-      <WIPCard />
-    </Flex>
+    <Stack gap="xs" m="xs">
+      <MyProfile />
+    </Stack>
   )
 }
 
@@ -80,6 +85,93 @@ const MyProfile = () => {
     </Paper>
   )
 }
+
+
+function UserHabitSummary() {
+  const userId = trekie.game($ => $.user?.id)
+
+  if (!userId) return <Box py={10}><NoHabitsCard /></Box>
+
+  const habits = useLiveQuery(
+    async () => {
+      return trekie.db.habits
+        .where('userId')
+        .equals(userId)
+        .toArray();
+    },
+    [userId]
+  )
+
+  if (!habits)
+    return <>
+      <Skeleton height={8} radius="xl" />
+      <Skeleton height={8} mt={8} radius="xl" />
+      <Skeleton height={8} mt={8} width="70%" radius="xl" />
+    </>
+
+  const hasAnyHabits = habits?.length > 0
+  if (!hasAnyHabits)
+    return <Box py={10}><NoHabitsCard /></Box>
+
+  return (
+    <Box
+      style={{
+        background: vanilla.colors.gray.light,
+        padding: 6,
+        borderRadius: 20,
+      }}
+
+      py={6}
+      my={10}
+    >
+      <Stack gap={0}>
+        {habits.map(habit => (
+          <HabitCounter habitId={habit.id} key={habit.id} />
+        ))}
+      </Stack>
+      <Flex>
+        <Badge variant="light" color="gray" mx="auto">
+          Check your daily habits!
+        </Badge>
+      </Flex>
+    </Box>
+  )
+}
+
+function LifeGoalSummary() {
+
+  const userId = trekie.game($ => $.user?.id)
+  if (!userId) return <Box py={10}><NoHabitsCard /></Box>
+
+  const queryClient = useQueryClient()
+
+  const goals = useLiveQuery(
+    async () => trekie.db.goals.where('userId').equals(userId).toArray(),
+    [], "loading"
+  )
+
+  if (goals == "loading")
+    return <>
+      <Skeleton height={8} radius="xl" />
+      <Skeleton height={8} mt={8} radius="xl" />
+      <Skeleton height={8} mt={8} width="70%" radius="xl" />
+    </>
+
+  const hasAnyLifeGoals = goals.length > 0
+
+  if (!hasAnyLifeGoals) return <NoGoalsCard />
+
+  return (
+    <Box py={10}>
+      <Stack>
+        {goals.map((goal) =>
+          <GoalCard id={goal.id} key={goal.id} />
+        )}
+      </Stack>
+    </Box>
+  )
+}
+
 
 
 export default Profile
