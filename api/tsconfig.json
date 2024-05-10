@@ -1,12 +1,18 @@
 {
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
-    "target": "esnext",
+    "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
+    "target": "ESNext",
     "esModuleInterop": true,
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "noEmit": true,
     "skipLibCheck": true,
+
+    "downlevelIteration": true,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
 
     "paths": {
       "@/*": ["./src/*"]

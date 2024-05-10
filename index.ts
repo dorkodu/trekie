@@ -1,0 +1,1 @@
+// ✪ Welcome to the Trekie monorepo!

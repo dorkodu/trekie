@@ -1,8 +1,8 @@
-import * as Trekie from "../Trekie"
+import * as Trekie from "../Trekie.js"
 
-import { Maybe, Timestamp, util } from "../lib/util"
+import { Maybe, Timestamp, util } from "../lib/util.js"
 import { db } from "../../../web/src/shared/lib/db"
-import { uuid } from '../lib/id'
+import { uuid } from '../lib/id.js'
 
 //? Interfaces
 

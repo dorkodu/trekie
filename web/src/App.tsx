@@ -31,7 +31,7 @@ function App() {
           // You can pass any HTTP headers you wish here
           async headers() {
             return {
-              authorization: getAuthCookie(),
+              authorization: "aaaa-bbbb-cccc-dddd"
             };
           },
         }),
@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
     if (!loading.auth) return
-    useAppStore.getState().auth.login()
+    // useAppStore.getState().auth.login()
   }, [loading.auth])
 
   // app hooks

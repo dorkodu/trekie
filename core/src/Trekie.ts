@@ -3,8 +3,8 @@ import { createStore } from 'zustand/vanilla'
 import { immer } from 'zustand/middleware/immer'
 
 // misc
-import * as Supercell from './lib/supercell'
-import { Maybe, Timestamp, util } from './lib/util'
+import * as Supercell from './lib/supercell.js'
+import { Maybe, Timestamp, util } from './lib/util.js'
 
 export type IUser = IAccount & IProfile
 

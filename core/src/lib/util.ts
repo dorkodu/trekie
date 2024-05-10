@@ -154,4 +154,4 @@ export const createSelectorsBound = <S extends UseBoundStore<StoreApi<object>>>(
   return store
 }
 
-export * as util from './util'
+export * as util from './util.js'

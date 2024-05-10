@@ -1,5 +1,12 @@
 {
+  "name": "trekie",
+  "private": "true",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": ["./*"], 
   "scripts": {
+    "clean": "rm -rf node_modules packages/a/node_modules packages/b/node_modules bun.lockb packages/a/bun.lockb packages/b/bun.lockb",
+
     "docker:build:prod": "docker compose -f docker-compose.prod.yml build",
     "docker:build:dev": "docker compose -f docker-compose.dev.yml build",
     "docker:dev": "docker compose -f docker-compose.dev.yml up",

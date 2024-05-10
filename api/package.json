@@ -1,7 +1,9 @@
 {
-  "name": "trekie-api",
+  "name": "@trekie/api",
   "private": true,
   "type": "module",
+  "module": "index.ts",
+  "version": "0.0.0",
   "scripts": {
     "dev": "bun run --hot index.ts",
     "build": "rimraf ./dist && tsc",
@@ -25,6 +27,7 @@
     "email:dev": "email dev"
   },
   "dependencies": {
+    "@trekie/core": "workspace:*",
     "@trpc/client": "npm:@trpc/client@next",
     "@trpc/react-query": "npm:@trpc/react-query@next",
     "@trpc/server": "npm:@trpc/server@next",
@@ -38,7 +41,7 @@
     "nodemailer": "^6.9.13"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
