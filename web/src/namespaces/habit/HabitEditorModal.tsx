@@ -1,6 +1,4 @@
-import { useApiStore } from '@/stores/apiStore'
-import { useAppStore } from '@/shared/stores/appStore'
-import { IHabit } from '../../../../core/src/types/habit'
+import { IHabit } from '@trekie/core/src/commons/habit'
 import {
   Button,
   Flex,
@@ -12,16 +10,18 @@ import {
 } from '@mantine/core'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { MouseEvent, useRef } from 'react'
+import { useAppStore } from '@/shared/stores/appStore'
+import trekie from '@/shared/lib/trekie'
 
 function HabitEditorModal() {
-  const habitEditor = useAppStore(state => state.modals.habitEditor)
+  const habitEditor = useAppStore($ => $.modals.habitEditor)
   const close = () => {
-    useAppStore.setState(s => {
-      s.modals.habitEditor.opened = false
+    useAppStore.setState($ => {
+      $.modals.habitEditor.opened = false
 
       // If created/edited a habit, perform cleanup
-      if (s.modals.habitEditor.id) {
-        s.modals.habitEditor = {
+      if ($.modals.habitEditor.id) {
+        $.modals.habitEditor = {
           opened: false,
           id: undefined,
           title: '',
@@ -51,19 +51,18 @@ function HabitEditorModal() {
   const dailyTargetRef = useRef<NumberInputHandlers>(null)
 
   const onCreate = () => {
-    const currentUserId = useApiStore.getState().userId
-    if (!currentUserId) return
+    const currentUser = trekie.game($ => $.user)
+    if (!currentUser) return
 
-    const habit: IHabit = {
-      id: Date.now().toString(),
-      userId: currentUserId,
-      date: Date.now(),
+    const habit = trekie.habit.create({
       title: habitEditor.title,
       description: habitEditor.description,
-      count: 0,
       dailyTarget: habitEditor.dailyTarget,
-      heatmap: {},
-    }
+    })
+
+    if (!habit) return
+
+    trekie.habit.add(habit)
 
     useApiStore.getState().addHabit(habit)
     useAppStore.setState(s => {

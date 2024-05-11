@@ -25,3 +25,24 @@ export function onError(error: Error, info: ErrorInfo) {
 export function onReset() {
   // Reset the state of your app so the error doesn't happen again
 }
+
+export interface ErrorKind {
+  code: string
+  message: string
+  action: (e?: Error, data?: any) => void
+}
+
+export const errorKinds = [
+  {
+    code: "NO_SESSION",
+    message: "No active user session found. Please login first.",
+    action: (err, data) => {
+      notify
+    }
+  },
+  {
+    code: "NOT_AUTHORIZED",
+    message: "You don't have permissions for this action.",
+    action: (err, data) => { }
+  },
+]

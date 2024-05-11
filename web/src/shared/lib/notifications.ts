@@ -16,6 +16,15 @@ export function clientError(message: string | undefined) {
   });
 }
 
+
+export function error(message: string | undefined) {
+  notifications.show({
+    title: "Error!",
+    message: message ?? "An error occured. Please try again, or restart the app.",
+    color: "red",
+  });
+}
+
 export function serverError(message: string | undefined) {
   notifications.show({
     title: "Server Error!",

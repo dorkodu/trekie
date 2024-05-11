@@ -35,15 +35,18 @@ export interface Interface {
 
 export const Component = Trekie.Component<Interface>((game) => ({
   add(habit) {
-    db.habits.add(habit, habit.id)
-
     // make sure the user has active session
     const currentUser = game.getState().user
-    if (!currentUser) return
+    if (!currentUser) {
+      errorSystem.handle(ErrorKind.NO_SESSION, [habit])
+      return false
+    }
 
     // make sure the user owns the habit
     const currentUserId = currentUser?.id
-    if (currentUserId !== habit.userId) return
+    if (currentUserId !== habit.userId) return false
+
+    db.habits.add(habit, habit.id)
 
     game.setState($ => {
       $.xpTargetDaily += habit.dailyTarget
