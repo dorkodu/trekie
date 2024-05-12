@@ -8,6 +8,7 @@ import { uuid } from '@core/lib/id'
 import { IGoal } from '@core/commons/goal'
 import { IHabit } from '@core/commons/habit'
 import { mock } from './mock'
+import { LogKind, log } from '../utils/log'
 
 export class TrekieDatabase extends Dexie {
   // 'friends' is added by dexie when declaring the stores()
@@ -34,10 +35,10 @@ db.on("ready", ready)
 
 db.open().then(async function (db) {
   // Database opened successfully
-  console.log("[Doruk]: dexie opened successfully")
+  log("dexie opened successfully", LogKind.INFO)
 }).catch(function (e) {
   // Error occurred
-  console.log("[Doruk]: dexie error: ", e)
+  log(e, LogKind.ERROR)
 });
 
 export async function populate() {
@@ -47,8 +48,5 @@ export async function populate() {
 }
 
 export async function ready() {
-  console.log("[Doruk]: dexie is ready")
-
-  let count = await db.table("goals").count()
-  console.log("[Doruk]: goals count is " + count)
+  log("db is ready", LogKind.INFO)
 }

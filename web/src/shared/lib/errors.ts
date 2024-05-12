@@ -27,13 +27,13 @@ export function onReset() {
   // Reset the state of your app so the error doesn't happen again
 }
 
-export interface ErrorKind {
+export interface AppError {
   code: string
   message: string
   action: (e?: Error, data?: any) => void
 }
 
-export const errorKinds = [
+export const errorKinds: AppError[] = [
   {
     code: "NO_SESSION",
     message: "No active user session found. Please login first.",
@@ -46,6 +46,13 @@ export const errorKinds = [
     message: "You don't have permissions for this action.",
     action(err, data) {
       notifications.error("Not Authorized", this.message)
+    }
+  },
+  {
+    code: "INDEXEDDB_ERROR",
+    message: "An error occured with local IndexedDB.",
+    action(err, data) {
+      log("IndexedDB Error: " + err, LogKind.ERROR)
     }
   },
 ]

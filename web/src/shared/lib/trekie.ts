@@ -1,5 +1,3 @@
-import { useLiveQuery } from 'dexie-react-hooks'
-
 import * as Trekie from '@core/Trekie'
 
 import { db } from '@/shared/lib/db'
@@ -10,19 +8,19 @@ import { mock } from './mock'
 
 const initialState: Trekie.GameState = {
   // points
-  xp: 1200,
-  coins: 80,
-  momentum: 60,
-  streak: 20,
+  xp: 0,
+  coins: 0,
+  momentum: 0,
+  streak: 0,
 
   // dailies
-  xpTargetDaily: 60,
-  xpToday: 50,
+  xpTargetDaily: 0,
+  xpToday: 0,
 
   // timestamps
-  lastXp: 1703846675440,
-  lastStreak: 1703846675432,
-  lastActive: 1703846675432,
+  lastXp: undefined,
+  lastStreak: undefined,
+  lastActive: undefined,
 
   user: mock.user
 }
@@ -34,7 +32,10 @@ export const trekie = {
   goal: Goal.Component(game),
   habit: Habit.Component(game),
   db: db,
-  query: useLiveQuery
 }
 
 export default trekie
+
+function initialize() {
+
+} 

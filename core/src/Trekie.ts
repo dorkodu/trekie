@@ -46,9 +46,9 @@ export interface GameState {
   xpTargetDaily: number
   xpToday: number
 
-  lastActive: Timestamp
-  lastXp: Timestamp
-  lastStreak: Timestamp
+  lastActive: Maybe<Timestamp>
+  lastXp: Maybe<Timestamp>
+  lastStreak: Maybe<Timestamp>
 }
 
 export type VanillaGame = ReturnType<typeof Game>["game"]
