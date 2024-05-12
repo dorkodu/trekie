@@ -1,10 +1,11 @@
 /**
  *  We need to track results on function calls
- *  If we encounter an error, function will fail and call this handler with the error  
+ *  If we encounter an error, function will ,fail and call this handler with the error  
  */
 
 import { ErrorInfo } from "react"
 import { LogKind, log, reportToRemote } from "@/shared/utils/log"
+import { notifications } from "./notifications"
 
 /**
  * Global error handler of our application
@@ -36,13 +37,15 @@ export const errorKinds = [
   {
     code: "NO_SESSION",
     message: "No active user session found. Please login first.",
-    action: (err, data) => {
-      notify
+    action(err, data) {
+      notifications.error("No Active User", this.message)
     }
   },
   {
     code: "NOT_AUTHORIZED",
     message: "You don't have permissions for this action.",
-    action: (err, data) => { }
+    action(err, data) {
+      notifications.error("Not Authorized", this.message)
+    }
   },
 ]

@@ -64,16 +64,15 @@ function HabitEditorModal() {
 
     trekie.habit.add(habit)
 
-    useApiStore.getState().addHabit(habit)
-    useAppStore.setState(s => {
-      s.modals.habitEditor.id = habit.id
+    useAppStore.setState($ => {
+      $.modals.habitEditor.id = habit.id
     })
     close()
   }
 
   const onEdit = () => {
-    const currentUserId = useApiStore.getState().userId
-    if (!currentUserId) return
+    const currentUser = trekie.game($ => $.user)
+    if (!currentUser) return
 
     if (habitEditor.id) {
       useApiStore

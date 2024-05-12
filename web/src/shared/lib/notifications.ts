@@ -8,27 +8,10 @@ export function success(message: string | undefined) {
   });
 }
 
-export function clientError(message: string | undefined) {
+export function error(title?: string, message?: string) {
   notifications.show({
-    title: "Error!",
+    title: title ?? "Error!",
     message: message ?? "An error occured. Please try again, or restart the app.",
-    color: "red",
-  });
-}
-
-
-export function error(message: string | undefined) {
-  notifications.show({
-    title: "Error!",
-    message: message ?? "An error occured. Please try again, or restart the app.",
-    color: "red",
-  });
-}
-
-export function serverError(message: string | undefined) {
-  notifications.show({
-    title: "Server Error!",
-    message: message ?? "An error occured on the server. Please try again later.",
     color: "red",
   });
 }
