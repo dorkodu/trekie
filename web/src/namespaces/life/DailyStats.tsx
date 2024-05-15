@@ -1,10 +1,12 @@
 import {
   Divider,
   MantineColor,
+  Overlay,
   Paper,
   Progress,
   SimpleGrid,
   Stack,
+  Text,
   Tooltip,
 } from '@mantine/core'
 import Emoji from '@/shared/components/misc/Emoji'
@@ -42,7 +44,8 @@ export function DailyProgress({ value }: { value: number }) {
 
   value = value * 100
 
-  if (value < 30) {
+
+  if (value > 0 && value < 45) {
     message = 'Bad'
     color = 'red'
   } else if (value >= 30 && value < 45) {
@@ -81,12 +84,14 @@ export function DailyProgress({ value }: { value: number }) {
           arrowRadius={2}
           withArrow
         >
-          <Progress.Section color={color} striped value={value} animated>
-            <Progress.Label>{message}</Progress.Label>
+          <Progress.Section color={color} striped value={value} animated >
+            <Overlay color="#fff" backgroundOpacity={0}>
+              <Text size="xs" c="white" style={{ textShadow: "0 0 0 1px #111" }}>{message}</Text>
+            </Overlay>
           </Progress.Section>
         </Tooltip>
       </Progress.Root>
-    </Stack>
+    </Stack >
   )
 }
 

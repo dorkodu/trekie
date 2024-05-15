@@ -1,8 +1,8 @@
-import * as Trekie from "../Trekie.js"
+import * as Trekie from "./Trekie"
 
-import { Maybe, Timestamp, util } from "../lib/util.js"
-import { db } from "../../../web/src/shared/lib/db"
-import { uuid } from '../lib/id.js'
+import { Maybe, Timestamp, util } from "./lib/util"
+import { db } from "../shared/lib/db"
+import { uuid } from '../shared/lib/id'
 
 //? Interfaces
 
@@ -38,7 +38,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     // make sure the user has active session
     const currentUser = game.getState().user
     if (!currentUser) {
-      errorSystem.handle(ErrorKind.NO_SESSION, [habit])
+      errors.handle(ErrorKind.NO_SESSION,)
       return false
     }
 
@@ -138,4 +138,4 @@ export const Component = Trekie.Component<Interface>((game) => ({
   },
 }))
 
-export default Component
+export * as Habit from "./habit"

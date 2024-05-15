@@ -10,7 +10,7 @@ import { notifications } from "./notifications"
 /**
  * Global error handler of our application
  */
-export function errorHandler(error: Error) {
+export function globalErrorHandler(error: Error) {
   log(error, LogKind.ERROR)
 
   if (import.meta.env.PROD) {
@@ -20,7 +20,7 @@ export function errorHandler(error: Error) {
 
 export function onError(error: Error, info: ErrorInfo) {
   // Do something with the error, e.g. log to an external API
-  errorHandler(error)
+  globalErrorHandler(error)
 }
 
 export function onReset() {
@@ -33,7 +33,13 @@ export interface AppError {
   action: (e?: Error, data?: any) => void
 }
 
-export const errorKinds: AppError[] = [
+export function handle(code: string, e?: Error, data?: any) {
+  const error = kinds.find((err) => err.code === code)
+  if (error)
+    error.action(e, data)
+}
+
+export const kinds: AppError[] = [
   {
     code: "NO_SESSION",
     message: "No active user session found. Please login first.",
@@ -56,3 +62,5 @@ export const errorKinds: AppError[] = [
     }
   },
 ]
+
+export * as errors from "./errors"

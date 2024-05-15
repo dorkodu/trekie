@@ -4,4 +4,4 @@ export const postgresName = process.env.POSTGRES_DB || "postgres"
 export const postgresUser = process.env.POSTGRES_USER || "postgres"
 export const postgresPassword = process.env.POSTGRES_PASSWORD || "postgres"
 
-export * as config from "./config.js"
+export * as config from "./config"

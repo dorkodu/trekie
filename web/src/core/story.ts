@@ -16,3 +16,5 @@ export enum IStoryKind {
   Text,
   Mixed,
 }
+
+export * as Story from "./story"

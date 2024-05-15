@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "index.ts"],
+  "include": ["src", "index.ts", "../web/src/core/Trekie.ts"],
   "exclude": ["node_modules"]
 }

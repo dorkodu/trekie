@@ -1,8 +1,8 @@
-import * as Trekie from "../Trekie.js"
+import * as Trekie from "./Trekie"
 
-import { Maybe } from "../lib/util.js"
-import { db } from "../../../web/src/shared/lib/db"
-import { uuid } from "../lib/id.js"
+import { Maybe } from "./lib/util"
+import { db } from "../shared/lib/db"
+import { uuid } from "../shared/lib/id"
 
 export interface IGoal extends IGoalTemplate {
   id: string
@@ -58,4 +58,4 @@ export const Component = Trekie.Component<Interface>((game) => ({
   remove: (id) => db.goals.delete(id),
 }))
 
-export default Component
+export * as Goal from "./goal"

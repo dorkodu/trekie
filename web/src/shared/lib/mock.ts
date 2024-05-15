@@ -3,7 +3,7 @@ import * as Trekie from '@core/Trekie'
 import { IUser } from "@core/Trekie"
 import { IGoal } from "@core/commons/goal"
 import { IHabit } from "@core/commons/habit"
-import { uuid } from "@core/lib/id"
+import { uuid } from "@/core/lib/id"
 
 export const user: IUser = {
   id: '0',
@@ -44,6 +44,10 @@ export const goal: IGoal = {
   userId: user.id,
   xpCurrent: 600,
   xpTarget: 10000,
+}
+
+export const game: Trekie.GameState = {
+
 }
 
 export * as mock from './mock'

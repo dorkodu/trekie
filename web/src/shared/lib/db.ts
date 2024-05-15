@@ -3,7 +3,7 @@ import Dexie, { Table } from 'dexie'
 import * as Trekie from '@core/Trekie'
 import { IUser } from '@core/index'
 
-import { uuid } from '@core/lib/id'
+import { uuid } from '@/core/lib/id'
 
 import { IGoal } from '@core/commons/goal'
 import { IHabit } from '@core/commons/habit'

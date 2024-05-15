@@ -13,10 +13,10 @@ import { useRefreshStatsDaily } from '@/shared/hooks'
 import { useAppStore } from '@/shared/stores/appStore'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
-import { onError, onReset } from './shared/lib/errors'
+import { onError, onReset } from '@trekie/core/errors'
 import { trpc } from './shared/lib/trpc'
 import ApplicationError from './shared/components/misc/ApplicationError'
-import { db } from './shared/lib/db'
+import { db } from '@trekie/core/src/lib/db'
 
 function App() {
 

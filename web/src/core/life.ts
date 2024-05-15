@@ -1,0 +1,1 @@
+export * as Life from "./life"
