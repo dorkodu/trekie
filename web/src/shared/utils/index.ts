@@ -1,3 +1,11 @@
+// By declaring a unique symbol, we create a distinct marker in TypeScript.
+declare const __brand: unique symbol
+
+// Define a Branded type that combines a base type with a brand
+export type Branded<Type, Brand> = Type & {
+  readonly [__brand]: Brand
+}
+
 export function wait<T>(
   start: () => Promise<T>,
   before: number = 100,
@@ -28,7 +36,6 @@ export function wait<T>(
     })
 }
 
-
 export function getDayDiff(from: number, to: number): number {
   const _from = new Date(from)
   const _to = new Date(to)
@@ -42,20 +49,42 @@ export function getDayDiff(from: number, to: number): number {
 }
 
 export function isSameDay(
-  date1: Date | undefined,
-  date2: Date | undefined
+  t1: Timestamp | undefined,
+  t2: Timestamp | undefined
 ): boolean {
-  if (date1 === undefined || date2 === undefined) return false
+  const d1 = t1 ? new Date(t1) : undefined
+  const d2 = t2 ? new Date(t2) : undefined
+  if (d1 === undefined || d2 === undefined) return false
 
   return (
-    date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
+    d1.getDate() === d2.getDate() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getFullYear() === d2.getFullYear()
   )
 }
 
 export type Maybe<T> = NonNullable<T> | undefined
 
+// Date & Time Utils
+export type Timestamp = number
+
+export type Daystamp = Branded<string, 'Daystamp'>
+
+export const daystamp = {
+  get(input?: Timestamp): Daystamp {
+    let date = new Date(input ?? Date.now())
+    return date.toISOString().split('T')[0] as Daystamp
+  },
+  match(daystamp: Daystamp, timestamp: Timestamp): boolean {
+    return daystamp == this.get(timestamp)
+  },
+  today(): Daystamp {
+    return this.get(Date.now())
+  }
+}
+
 export const sleep = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export { format } from './format'
 
 export * as utils from '.'

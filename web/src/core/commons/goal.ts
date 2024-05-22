@@ -1,13 +1,16 @@
-import * as Trekie from "./Trekie"
+import { create } from 'zustand';
+import * as Trekie from "../Trekie"
 
-import { Maybe } from "./lib/util"
-import { db } from "../shared/lib/db"
-import { uuid } from "../shared/lib/id"
+import { Maybe, Timestamp } from "@/shared/utils"
+import { db } from "@/shared/lib/db"
+import { uuid } from "@/shared/lib/id"
 
 export interface IGoal extends IGoalTemplate {
   id: string
   userId: string
   xpCurrent: number
+  createdAt: Timestamp,
+  lastUpdated: Timestamp,
 }
 
 export interface IGoalTemplate {
@@ -57,5 +60,3 @@ export const Component = Trekie.Component<Interface>((game) => ({
 
   remove: (id) => db.goals.delete(id),
 }))
-
-export * as Goal from "./goal"

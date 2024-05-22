@@ -27,7 +27,7 @@
     "email:dev": "email dev"
   },
   "dependencies": {
-    "@trekie/core": "workspace:*",
+    "@trekie/web": "workspace:*",
     "@trpc/client": "npm:@trpc/client@next",
     "@trpc/react-query": "npm:@trpc/react-query@next",
     "@trpc/server": "npm:@trpc/server@next",

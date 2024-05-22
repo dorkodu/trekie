@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite'
 
-import path from "path";
+import path from "path"
 
 import react from '@vitejs/plugin-react-swc'
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-import viteCompression from "vite-plugin-compression";
-import { VitePWA as vitePWA } from "vite-plugin-pwa";
-import { createHtmlPlugin as html } from "vite-plugin-html";
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
+import viteCompression from "vite-plugin-compression"
+import { VitePWA as vitePWA } from "vite-plugin-pwa"
+import { createHtmlPlugin as html } from "vite-plugin-html"
 
-import postCSSPresetMantine from "postcss-preset-mantine";
+import postCSSPresetMantine from "postcss-preset-mantine"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -66,7 +66,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@api": path.resolve(__dirname, "../api/src"),
-      "@core": path.resolve(__dirname, "../core/src"),
       "@": path.resolve(__dirname, "./src"),
     },
   },

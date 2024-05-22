@@ -4,8 +4,8 @@ import HabitCounter from '@/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
 import trekie from '@/shared/lib/trekie'
+import { relativeDateString } from '@/shared/utils/format'
 import { vanilla } from '@/styles/theme'
-import { relativeDateString } from '@/core/lib/util'
 import { Anchor, Badge, Box, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck } from '@tabler/icons-react'
@@ -97,7 +97,7 @@ function UserHabitSummary() {
       return trekie.db.habits
         .where('userId')
         .equals(userId)
-        .toArray();
+        .toArray()
     },
     [userId]
   )

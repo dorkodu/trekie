@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import trekie from "@/shared/lib/trekie";
-import { IUser } from "@core/Trekie";
+import { IUser } from "@/core/Trekie";
 import { LogKind, log } from "@/shared/utils/log";
 
 export interface AppStoreState {

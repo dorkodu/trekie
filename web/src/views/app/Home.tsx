@@ -1,4 +1,4 @@
-import { Anchor, Badge, Box, Divider, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
+import { Alert, Anchor, Badge, Box, Divider, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconMapPin, IconPinned, IconTargetArrow } from '@tabler/icons-react'
 
@@ -14,10 +14,10 @@ import { vanilla } from '@/styles/theme'
 
 
 import { trekie } from "@/shared/lib/trekie"
-import { relativeDateString } from '@/shared/utils/format'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import GoalCard from '@/namespaces/goal/GoalCard'
+import { errors } from '@/shared/lib/errors'
 
 
 function Home() {
@@ -32,8 +32,10 @@ const MySummary = () => {
   const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
   const user = trekie.game($ => $.user)
-
-  if (!user) return <Paper>Failed to load user.</Paper>
+  if (!user) {
+    errors.handle("NO_SESSION", new Error("Failed to load user in home page."))
+    return <Alert></Alert>
+  }
 
   const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
     <Group gap={2}>
@@ -99,7 +101,7 @@ function UserHabitSummary() {
       return trekie.db.habits
         .where('userId')
         .equals(userId)
-        .toArray();
+        .toArray()
     },
     [userId]
   )

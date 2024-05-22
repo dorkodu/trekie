@@ -13,10 +13,9 @@ import { useRefreshStatsDaily } from '@/shared/hooks'
 import { useAppStore } from '@/shared/stores/appStore'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
-import { onError, onReset } from '@trekie/core/errors'
-import { trpc } from './shared/lib/trpc'
-import ApplicationError from './shared/components/misc/ApplicationError'
-import { db } from '@trekie/core/src/lib/db'
+import { onError, onReset } from '@/shared/lib/errors'
+import { trpc } from '@/shared/lib/trpc'
+import ApplicationError from '@/shared/components/misc/ApplicationError'
 
 function App() {
 
@@ -42,7 +41,7 @@ function App() {
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
     if (!loading.auth) return
-    useAppStore.getState().auth.login()
+    // auth.login()
   }, [loading.auth])
 
   // app hooks

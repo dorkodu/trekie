@@ -20,11 +20,11 @@ function HabitCounter({ habitId, onClick }: Props) {
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()
-    if (!habit) return;
+    if (!habit) return
     trekie.habit.commit(habitId, count)
   }
 
-  if (!habit) return null;
+  if (!habit) return null
 
   return (
     <Card

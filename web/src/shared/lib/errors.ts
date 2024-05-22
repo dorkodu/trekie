@@ -28,39 +28,43 @@ export function onReset() {
 }
 
 export interface AppError {
-  code: string
-  message: string
+  code: string,
+  message: string,
   action: (e?: Error, data?: any) => void
 }
 
-export function handle(code: string, e?: Error, data?: any) {
-  const error = kinds.find((err) => err.code === code)
+export const AppError = (e: AppError) => e
+
+export function handle(code: Kind, e?: Error, data?: any) {
+  const error = kinds[code]
   if (error)
     error.action(e, data)
 }
 
-export const kinds: AppError[] = [
-  {
+export type Kind = keyof typeof kinds
+export const kinds = {
+  NO_SESSION: AppError({
     code: "NO_SESSION",
     message: "No active user session found. Please login first.",
     action(err, data) {
       notifications.error("No Active User", this.message)
     }
-  },
-  {
+  }),
+  NOT_AUTHORIZED: AppError({
     code: "NOT_AUTHORIZED",
     message: "You don't have permissions for this action.",
     action(err, data) {
       notifications.error("Not Authorized", this.message)
     }
-  },
-  {
+  }),
+  INDEXEDDB_ERROR: AppError({
     code: "INDEXEDDB_ERROR",
     message: "An error occured with local IndexedDB.",
     action(err, data) {
       log("IndexedDB Error: " + err, LogKind.ERROR)
     }
-  },
-]
+  }),
+}
+
 
 export * as errors from "./errors"

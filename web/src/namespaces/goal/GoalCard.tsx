@@ -1,10 +1,9 @@
-import trekie from "@/shared/lib/trekie";
-import { vanilla } from "@/styles/theme";
-import { IGoal } from "@core/commons/goal";
-import { ActionIcon, Alert, Badge, Card, Group, Progress, SimpleGrid, Stack, Text, ThemeIcon, Tooltip } from "@mantine/core";
-import { IconDiamond, IconDiamondsFilled, IconDots, IconDotsDiagonal, IconDotsVertical, IconHourglass, IconMenu2, IconNorthStar, IconProgress, IconProgressCheck, IconRings, IconSparkles, IconTarget, IconTargetArrow, IconTargetOff, IconTrendingUp } from "@tabler/icons-react";
-import { useLiveQuery } from "dexie-react-hooks";
-import GoalMenu from "./GoalMenu";
+import trekie from "@/shared/lib/trekie"
+import { IGoal } from "@/core/commons/goal"
+import { Alert, Badge, Card, Group, Progress, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core"
+import { IconDiamond } from "@tabler/icons-react"
+import { useLiveQuery } from "dexie-react-hooks"
+import GoalMenu from "./GoalMenu"
 
 interface Props {
   id: IGoal["id"]

@@ -1,10 +1,12 @@
 import { create, useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { immer } from 'zustand/middleware/immer'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 // misc
 import * as Supercell from '@/shared/lib/supercell'
-import { Maybe, Timestamp, util } from './lib/util'
+import { Maybe, Timestamp } from '@/shared/utils'
+import { utils } from '@/shared/utils'
 
 export type IUser = IAccount & IProfile
 
@@ -55,51 +57,55 @@ export type VanillaGame = ReturnType<typeof Game>["game"]
 export type ReactiveGame = ReturnType<typeof Game>["useGame"]
 
 export function Game(state: GameState = defaultState) {
-  const game = createStore<TrekieStoreInterface>()(immer((set, get) => ({
-    ...state,
-    dailyProgress() {
-      let ratio = get().xpToday / get().xpTargetDaily
-      return ratio
-    },
-    gainXp: (gain: number) => set($ => ({ xp: $.xp + gain })),
-    refresh() {
-      /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
-      set($ => {
-        const user = $.user
-        if (!user) return
+  const game = createStore<TrekieStoreInterface>()(
+    persist(
+      immer((set, get) => ({
+        ...state,
+        dailyProgress() {
+          let ratio = get().xpToday / get().xpTargetDaily
+          return ratio
+        },
+        gainXp: (gain: number) => set($ => ({ xp: $.xp + gain })),
+        refresh() {
+          /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
+          set($ => {
+            const user = $.user
+            if (!user) return
 
-        const didStreakToday = util.isSameDay(
-          $.lastStreak,
-          Date.now()
-        )
+            const didStreakToday = utils.isSameDay(
+              $.lastStreak,
+              Date.now()
+            )
 
-        // If user is now above/equal to target xp and didn't do a streak today
-        if (
-          $.xpToday > 0 &&
-          $.xpToday >= $.xpTargetDaily &&
-          !didStreakToday
-        ) {
-          $.streak++
-          $.lastStreak = Date.now()
-        }
-        // If user is now below target xp and did a streak today
-        else if (
-          ($.xpToday <= 0 ||
-            $.xpToday < $.xpTargetDaily) &&
-          didStreakToday
-        ) {
-          $.streak--
-        }
+            // If user is now above/equal to target xp and didn't do a streak today
+            if (
+              $.xpToday > 0 &&
+              $.xpToday >= $.xpTargetDaily &&
+              !didStreakToday
+            ) {
+              $.streak++
+              $.lastStreak = Date.now()
+            }
+            // If user is now below target xp and did a streak today
+            else if (
+              ($.xpToday <= 0 ||
+                $.xpToday < $.xpTargetDaily) &&
+              didStreakToday
+            ) {
+              $.streak--
+            }
 
-        // Handle user's last xp date
-        if (!util.isSameDay($.lastXp, Date.now())) {
-          $.xpToday = 0
-          $.lastXp = Date.now()
-        }
-      })
-    },
-    reset() { set(defaultState) },
-  })))
+            // Handle user's last xp date
+            if (!utils.isSameDay($.lastXp, Date.now())) {
+              $.xpToday = 0
+              $.lastXp = Date.now()
+            }
+          })
+        },
+        reset() { set(defaultState) },
+      })),
+      { name: 'trekie-game' }
+    ))
 
   function useGame(): TrekieStoreInterface
   function useGame<T>(selector: (state: TrekieStoreInterface) => T): T
@@ -129,9 +135,7 @@ export type TrekieStoreInterface = GameState & GameActions
 
 export interface GameActions {
   refresh: () => void
-
   dailyProgress: () => number
-
   reset: () => void
 }
 

@@ -1,6 +1,6 @@
 import { trekie } from "@/shared/lib/trekie"
 import { useAppStore } from '@/shared/stores/appStore'
-import { IHabit } from '@core/commons/habit'
+import { IHabit } from '@/core/commons/habit'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,

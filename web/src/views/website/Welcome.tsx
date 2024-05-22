@@ -4,7 +4,6 @@ import { IconAdOff, IconArrowRight, IconAt, IconBuildingCommunity, IconBuildingS
   from '@tabler/icons-react'
 
 import GlassCard from '@/shared/components/cards/GlassCard'
-import Emoji from '@/shared/custom/Emoji'
 
 import * as PremiumStyles from '@/styles/views/Premium.css'
 
@@ -313,6 +312,7 @@ const Join = (
 import { randomId } from '@mantine/hooks'
 import { vanilla } from '@/styles/theme'
 import { Link, useNavigate } from 'react-router-dom'
+import Emoji from '@/shared/components/misc/Emoji'
 
 function FAQ() {
   const questions = [

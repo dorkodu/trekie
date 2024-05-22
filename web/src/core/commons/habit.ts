@@ -1,8 +1,9 @@
-import * as Trekie from "./Trekie"
+import * as Trekie from "@/core/Trekie"
 
-import { Maybe, Timestamp, util } from "./lib/util"
-import { db } from "../shared/lib/db"
-import { uuid } from '../shared/lib/id'
+import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
+import { db } from "@/shared/lib/db"
+import { uuid } from '@/shared/lib/id'
+import { errors } from "@/shared/lib/errors"
 
 //? Interfaces
 
@@ -11,7 +12,7 @@ export interface IHabit extends IHabitTemplate {
   count: number
   createdAt: Timestamp
   lastUpdated: Timestamp
-  heatmap: { [offset: number]: number }
+  history: Map<Daystamp, number>
   userId: string
 }
 
@@ -38,7 +39,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     // make sure the user has active session
     const currentUser = game.getState().user
     if (!currentUser) {
-      errors.handle(ErrorKind.NO_SESSION,)
+      errors.handle("NO_SESSION")
       return false
     }
 
@@ -66,17 +67,18 @@ export const Component = Trekie.Component<Interface>((game) => ({
 
     updateStats = true
 
-    const habitDailyCurrent = removedHabit.heatmap[util.getDayDiff(removedHabit.createdAt, Date.now())] ?? 0
+    const habitDailyCurrent = removedHabit.history.get(daystamp.get(Date.now())) ?? 0
     const habitDailyTarget = removedHabit.dailyTarget
     const habitCount = removedHabit.count
 
-    game.setState($ => {
-      $.xp -= habitCount
-      $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
-      $.xpTargetDaily -= habitDailyTarget
-    })
-
-    if (updateStats) game.getState().refresh()
+    if (updateStats) {
+      game.setState($ => {
+        $.xp -= habitCount
+        $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
+        $.xpTargetDaily -= habitDailyTarget
+      })
+      game.getState().refresh()
+    }
   },
 
   repository: db.habits,
@@ -86,32 +88,31 @@ export const Component = Trekie.Component<Interface>((game) => ({
   count: () => db.habits.count(),
 
   async commit(id, count) {
+    // console.table({ where: "Before Commit", sumCount: habit.count, updatedCount, xpToday: game.getState().xpToday, xp: game.getState().xp })
     const habit = await this.get(id)
     if (!habit) return false
 
     const user = game.getState().user
     if (!user) return false
 
-    const dayDiff = util.getDayDiff(habit.createdAt, Date.now())
-    const habitCount = (habit.heatmap[dayDiff] ?? 0) + count //! ask to @berkcambaz
+    const todaysCount = habit.history.get(daystamp.today()) ?? 0
+    const updatedCount = todaysCount + count
 
-    // Habit count can NOT be negative
-    if (habitCount < 0) return false
+    // daily updated count can NOT be negative
+    if (updatedCount < 0) return false
 
     //? now can successfully commit habit 👍🏻
     habit.count += count
-    habit.heatmap[dayDiff] = habitCount
-
-    // If habit count has become 0, remove the property
-    if (habit.heatmap[dayDiff]! <= 0)
-      delete habit.heatmap[dayDiff]
-
-    game.setState($ => {
-      $.xp += count
-      $.xp += Math.max(Math.min(habit.dailyTarget - (habitCount - count), count), count)
-    })
+    habit.history.set(daystamp.today(), updatedCount)
 
     db.habits.put(habit, habit.id)
+
+    game.setState($ => {
+      $.xpToday += Math.min(habit.dailyTarget - (updatedCount - count), count)
+      $.xp += Math.max(Math.min(habit.dailyTarget - (updatedCount - count), count), count)
+    })
+    game.getState().refresh()
+
     return habit.count
   },
 
@@ -131,7 +132,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
       count: 0,
       createdAt: new Date().getTime(),
       lastUpdated: new Date().getTime(),
-      heatmap: [0],
+      history: new Map<Daystamp, number>(),
       userId,
 
     } satisfies IHabit

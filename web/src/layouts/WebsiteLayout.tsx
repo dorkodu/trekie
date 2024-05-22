@@ -1,55 +1,32 @@
 import {
-  ActionIcon,
   Anchor,
   Box,
   Button,
-  Card,
-  Divider,
-  Flex,
   Group,
   Image,
-  MantineColor,
-  Modal,
   Paper,
   SimpleGrid,
   Stack,
   Text,
-  px,
-  rgba,
-  useMantineColorScheme,
-  useMantineTheme,
 } from '@mantine/core'
 
-import { IconUsers } from '@tabler/icons-react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { useDisclosure, useMediaQuery } from '@mantine/hooks'
+import { Link, Outlet } from 'react-router-dom'
+import { useMediaQuery } from '@mantine/hooks'
 
-import * as Nav from '@/shared/components/misc/Nav'
-
-import { trekie } from "@/shared/lib/trekie"
 
 import * as LayoutStyle from '@/styles/Layout.css'
 import * as WebsiteStyle from '@/styles/website/Website.css'
 
-import { useThemed, theme, vanilla } from '@/styles/theme'
-import Emoji from '@/shared/custom/Emoji'
-import ColorToggle from '@/shared/components/util/ColorToggle'
-import { socialLinks } from '@/shared/lib/website'
+import { useThemed, vanilla } from '@/styles/theme'
+import ColorToggle from '@/shared/components/misc/ColorToggle'
+import { socialLinks } from '@/shared/website'
 
 function WebsiteLayout() {
-
-  const theme = useMantineTheme()
-  const { colorScheme } = useMantineColorScheme()
-
-  const navigate = useNavigate()
-  const isWideScreen = useMediaQuery('(min-width: 768px)')
-
   return (
     <div className={LayoutStyle.Layout.Root}>
       <Header />
       <div className={LayoutStyle.Layout.Body}>
         <main className={LayoutStyle.Layout.Main}>
-          {/* Paper can be a different element, but not likely */}
           <div>
             <Outlet />
           </div>
@@ -107,13 +84,12 @@ function Header() {
 
         <Group gap={8}>
           <Button fw={700}>GET STARTED</Button>
-          <ColorToggle size="xs" />
+          <ColorToggle size="md" />
         </Group>
       </Box>
     </Box>
   )
 }
-
 
 function Footer() {
   return (

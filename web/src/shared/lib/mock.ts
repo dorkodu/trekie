@@ -1,9 +1,10 @@
-import * as Trekie from '@core/Trekie'
+import { Avatar } from '@mantine/core'
+import * as Trekie from '@/core/Trekie'
 
-import { IUser } from "@core/Trekie"
-import { IGoal } from "@core/commons/goal"
-import { IHabit } from "@core/commons/habit"
-import { uuid } from "@/core/lib/id"
+import { IUser } from "@/core/Trekie"
+import { IGoal } from "@/core/commons/goal"
+import { IHabit } from "@/core/commons/habit"
+import { uuid } from "@/shared/lib/id"
 
 export const user: IUser = {
   id: '0',
@@ -21,33 +22,44 @@ export const user: IUser = {
   category: "Entrepreneur",
   location: "Istanbul, TR",
   url: "https://doruk.dorkodu.com",
-  joinedAt: 1703846675432,
+  joinedAt: new Date("19/02/2024 10:50").getTime(),
   birthday: new Date("03/08/2004 09:45 AM").getTime(),
 }
 
 export const habit: IHabit = {
   id: uuid().toString(),
-  title: "Read Book Everyday",
-  description: "At least 50 pages per day.",
-  count: 6,
+  title: "Daily Guitar Practice",
+  description: "At least 30 minutes per day.",
+  count: 0,
   createdAt: new Date("20/02/2024 16:30").getTime(),
-  dailyTarget: 5,
-  heatmap: [1],
+  dailyTarget: 10,
+  history: new Map(),
   userId: user.id,
   lastUpdated: new Date("20/02/2024 16:34").getTime()
 }
 
 export const goal: IGoal = {
   id: uuid().toString(),
-  title: "Become A Rockstar",
-  description: "Until you are 30 years old.",
+  title: "Be An Indie Rockstar",
+  description: "A thousand true fans & a million streams.",
   userId: user.id,
-  xpCurrent: 600,
-  xpTarget: 10000,
+  xpCurrent: 0,
+  xpTarget: 1000,
+  createdAt: new Date("19/02/2024 14:00").getTime(),
+  lastUpdated: new Date("20/02/2024 12:15").getTime()
 }
 
 export const game: Trekie.GameState = {
-
+  user,
+  xp: 0,
+  coins: 0,
+  momentum: 0,
+  streak: 0,
+  xpTargetDaily: 10,
+  xpToday: 0,
+  lastActive: new Date("20/02/2024 16:34").getTime(),
+  lastXp: new Date("20/02/2024 16:34").getTime(),
+  lastStreak: new Date("20/02/2024 16:34").getTime(),
 }
 
 export * as mock from './mock'

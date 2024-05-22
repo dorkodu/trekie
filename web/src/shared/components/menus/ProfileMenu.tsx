@@ -1,6 +1,6 @@
 import trekie from '@/shared/lib/trekie'
 import { useAppStore } from '@/shared/stores/appStore'
-import { IUser } from '@core/index'
+import { IUser } from '@/core'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,

@@ -1,3 +1,12 @@
+import { IUser } from "../Trekie"
+
+export interface ILife {
+  id: string
+  ownerId: string
+  user?: IUser
+  stories: IStory[]
+}
+
 export interface IStory {
   id: string
   kind: IStoryKind
@@ -16,5 +25,3 @@ export enum IStoryKind {
   Text,
   Mixed,
 }
-
-export * as Story from "./story"

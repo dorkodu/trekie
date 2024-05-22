@@ -1,4 +1,5 @@
 import {
+  Center,
   Divider,
   MantineColor,
   Overlay,
@@ -13,6 +14,7 @@ import Emoji from '@/shared/components/misc/Emoji'
 import { trekie } from "@/shared/lib/trekie"
 import { format } from "@/shared/utils/format"
 import { SumCard } from './SumCard'
+import { vanilla } from '@/styles/theme'
 
 export function DailyStats() {
 
@@ -43,9 +45,9 @@ export function DailyProgress({ value }: { value: number }) {
   let message: string
 
   value = value * 100
+  let haveProgressToday = value > 0
 
-
-  if (value > 0 && value < 45) {
+  if (value > 0 && value < 30) {
     message = 'Bad'
     color = 'red'
   } else if (value >= 30 && value < 45) {
@@ -64,33 +66,52 @@ export function DailyProgress({ value }: { value: number }) {
     message = 'Awesome!'
     color = 'green'
   } else {
-    message = ''
-    color = 'red'
+    message = 'Nothing.'
+    color = 'gray'
   }
+
+  const noProgressToday =
+    <Progress.Root
+      color="gray"
+      radius="lg"
+      size={20}>
+      <Progress.Section color="gray" striped value={100}>
+        <Overlay color="#fff" backgroundOpacity={0} blur={2} zIndex={10}>
+          <Center>
+            <Text size="sm" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dark}` }} fw={500}>Nothing so far.</Text>
+          </Center>
+        </Overlay>
+      </Progress.Section>
+    </Progress.Root>
+
+  const progressBar =
+    <Progress.Root
+      color={color}
+      radius="lg"
+      size={20}
+      styles={{ section: { transition: 'width 100ms linear 0s' } }}
+    >
+      <Tooltip
+        label={format.percentage(value)}
+        arrowOffset={5}
+        arrowSize={6}
+        arrowRadius={2}
+        withArrow
+      >
+        <Progress.Section color={color} striped value={value} animated>
+          <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
+            <Center>
+              <Text size="sm" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dimmed}` }} fw={500}>{message}</Text>
+            </Center>
+          </Overlay>
+        </Progress.Section>
+      </Tooltip>
+    </Progress.Root>
 
   return (
     <Stack gap={2}>
       <Divider label="Your Daily Progress" labelPosition="left" />
-      <Progress.Root
-        color={color}
-        radius="lg"
-        size={20}
-        styles={{ section: { transition: 'width 100ms linear 0s' } }}
-      >
-        <Tooltip
-          label={format.percentage(value)}
-          arrowOffset={5}
-          arrowSize={6}
-          arrowRadius={2}
-          withArrow
-        >
-          <Progress.Section color={color} striped value={value} animated >
-            <Overlay color="#fff" backgroundOpacity={0}>
-              <Text size="xs" c="white" style={{ textShadow: "0 0 0 1px #111" }}>{message}</Text>
-            </Overlay>
-          </Progress.Section>
-        </Tooltip>
-      </Progress.Root>
+      {haveProgressToday ? progressBar : noProgressToday}
     </Stack >
   )
 }

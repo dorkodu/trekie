@@ -2,7 +2,7 @@ import { trekie } from '@/shared/lib/trekie'
 
 import { useAppStore } from '@/shared/stores/appStore'
 import { vanilla } from '@/styles/theme'
-import { IGoal } from '@core/commons/goal'
+import { IGoal } from '@/core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
 import {
   IconClipboardText,
