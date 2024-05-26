@@ -1,9 +1,11 @@
+import { IUser } from '@/core'
 import GoalCard from '@/namespaces/goal/GoalCard'
 import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
 import HabitCounter from '@/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
 import trekie from '@/shared/lib/trekie'
+import { Maybe } from '@/shared/utils'
 import { relativeDateString } from '@/shared/utils/format'
 import { vanilla } from '@/styles/theme'
 import { Anchor, Badge, Box, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
@@ -12,28 +14,38 @@ import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTarget
 import { useQueryClient } from '@tanstack/react-query'
 import { useLiveQuery } from 'dexie-react-hooks'
 
-
-function Profile() {
+export default function Profile() {
   return (
     <Stack gap="xs" m="xs">
-      <MyProfile />
+      <ProfilePage />
     </Stack>
   )
 }
 
-const MyProfile = () => {
-  const isMobile = !useMediaQuery(vanilla.largerThan(768))
+export const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
+  <Group gap={2}>
+    <ThemeIcon c="dimmed" variant="transparent" size={26}>{icon}</ThemeIcon>
+    <Text c="dimmed" lh={1} size="sm" mt={4}>{text}</Text>
+  </Group>
+)
 
-  const user = trekie.game($ => $.user)
+export async function getUser(username: string): Promise<IUser> {
+  // 1) ask db 2) if not found, ask server 3) if not found, return null
+  /**
+   * try to connect
+   * querys server
+   */
+}
+
+export const ProfilePage = () => {
+  const isMobile = !useMediaQuery(vanilla.largerThan(768))
+  const userId = 
+
+  const user = await getUser()
 
   if (!user) return <Paper>Failed to load user.</Paper>
 
-  const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
-    <Group gap={2}>
-      <ThemeIcon c="dimmed" variant="transparent" size={26}>{icon}</ThemeIcon>
-      <Text c="dimmed" lh={1} size="sm" mt={4}>{text}</Text>
-    </Group>
-  )
+
 
   const iconStyle = { width: rem(20), height: rem(20) }
 
@@ -87,7 +99,7 @@ const MyProfile = () => {
 }
 
 
-function UserHabitSummary() {
+export function UserHabitSummary() {
   const userId = trekie.game($ => $.user?.id)
 
   if (!userId) return <Box py={10}><NoHabitsCard /></Box>
@@ -138,7 +150,7 @@ function UserHabitSummary() {
   )
 }
 
-function LifeGoalSummary() {
+export function LifeGoalSummary() {
 
   const userId = trekie.game($ => $.user?.id)
   if (!userId) return <Box py={10}><NoHabitsCard /></Box>
@@ -171,7 +183,3 @@ function LifeGoalSummary() {
     </Box>
   )
 }
-
-
-
-export default Profile

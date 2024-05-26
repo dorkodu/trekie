@@ -88,12 +88,13 @@ export const Component = Trekie.Component<Interface>((game) => ({
   count: () => db.habits.count(),
 
   async commit(id, count) {
-    // console.table({ where: "Before Commit", sumCount: habit.count, updatedCount, xpToday: game.getState().xpToday, xp: game.getState().xp })
     const habit = await this.get(id)
     if (!habit) return false
 
     const user = game.getState().user
     if (!user) return false
+
+    console.log("Habit:", habit)
 
     const todaysCount = habit.history.get(daystamp.today()) ?? 0
     const updatedCount = todaysCount + count
@@ -108,9 +109,12 @@ export const Component = Trekie.Component<Interface>((game) => ({
     db.habits.put(habit, habit.id)
 
     game.setState($ => {
-      $.xpToday += Math.min(habit.dailyTarget - (updatedCount - count), count)
-      $.xp += Math.max(Math.min(habit.dailyTarget - (updatedCount - count), count), count)
+      $.xpToday += Math.max(Math.min(habit.dailyTarget - (updatedCount - count), count), count)
+      $.xp += count
     })
+
+    console.table({ updatedCount, xpToday: game.getState().xpToday, xp: game.getState().xp })
+
     game.getState().refresh()
 
     return habit.count

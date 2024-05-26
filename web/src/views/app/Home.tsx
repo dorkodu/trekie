@@ -85,16 +85,13 @@ const MySummary = () => {
   )
 }
 
-
 export default Home
 
 
 function UserHabitSummary() {
   const userId = trekie.game($ => $.user?.id)
 
-  if (!userId) return <Box py={10}><NoHabitsCard /></Box>
-
-  /** */
+  if (!userId) return <NoHabitsCard />
 
   const habits = useLiveQuery(
     async () => {
@@ -114,18 +111,15 @@ function UserHabitSummary() {
     </>
 
   const hasAnyHabits = habits?.length > 0
-  if (!hasAnyHabits)
-    return <Box py={10}><NoHabitsCard /></Box>
+  if (!hasAnyHabits) return <NoHabitsCard />
 
   return (
     <Box
       style={{
         background: vanilla.colors.gray.light,
-        padding: 6,
         borderRadius: 20,
+        padding: 6,
       }}
-
-      py={6}
       my={10}
     >
       <Stack gap={0}>

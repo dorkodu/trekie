@@ -65,6 +65,24 @@ export function Game(state: GameState = defaultState) {
           let ratio = get().xpToday / get().xpTargetDaily
           return ratio
         },
+        calculateStreak() {
+          let count = 0
+
+          const deserveStreak = $.xpToday >= $.xpTargetDaily
+          const hasStreakToday = utils.isSameDay($.lastStreak, Date.now())
+
+          // If user is now above/equal to target xp and didn't do a streak today
+          if (deserveStreak && !hasStreakToday) {
+            $.streak++
+            $.lastStreak = Date.now()
+          }
+          // If user is now below target xp and did a streak today
+          else if (!deserveStreak && hasStreakToday) {
+            $.streak--
+          }
+
+          return count
+        },
         gainXp: (gain: number) => set($ => ({ xp: $.xp + gain })),
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
@@ -72,28 +90,8 @@ export function Game(state: GameState = defaultState) {
             const user = $.user
             if (!user) return
 
-            const didStreakToday = utils.isSameDay(
-              $.lastStreak,
-              Date.now()
-            )
+            $.streak = this.calculateStreak()
 
-            // If user is now above/equal to target xp and didn't do a streak today
-            if (
-              $.xpToday > 0 &&
-              $.xpToday >= $.xpTargetDaily &&
-              !didStreakToday
-            ) {
-              $.streak++
-              $.lastStreak = Date.now()
-            }
-            // If user is now below target xp and did a streak today
-            else if (
-              ($.xpToday <= 0 ||
-                $.xpToday < $.xpTargetDaily) &&
-              didStreakToday
-            ) {
-              $.streak--
-            }
 
             // Handle user's last xp date
             if (!utils.isSameDay($.lastXp, Date.now())) {
@@ -136,6 +134,7 @@ export type TrekieStoreInterface = GameState & GameActions
 export interface GameActions {
   refresh: () => void
   dailyProgress: () => number
+  calculateStreak: () => number
   reset: () => void
 }
 

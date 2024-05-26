@@ -236,12 +236,12 @@ export const Headbar = {
       borderWidth: 0,
       borderBottomWidth: 1,
       borderStyle: 'solid',
-      borderColor: rgba("#255090", 0.1),
+      borderColor: rgba(vanilla.colors.defaultBorder, 0.7),
       borderRadius: 0,
 
       "selectors": {
         [vanilla.darkSelector]: {
-          borderColor: rgba("#111", 0.5),
+          borderColor: rgba(vanilla.colors.dark[9], 0.5),
         }
       }
     }]),

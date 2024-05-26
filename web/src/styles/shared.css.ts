@@ -26,13 +26,12 @@ export const glassBackground = style({
 })
 
 export const glassBar = style({
-  /* From https://css.glass */
-  background: "rgba(15, 15, 20, 0.4)",
+  background: rgba(vanilla.colors.dark[9], 0.6),
   backdropFilter: " blur(10px) saturate(150%);",
 
   selectors: {
     [vanilla.lightSelector]: {
-      background: "rgba(255, 255, 255, 0.4)",
+      background: rgba("#FFFFFF", 0.6),
       backdropFilter: " blur(10px) saturate(150%);",
     },
   },

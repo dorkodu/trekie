@@ -1,7 +1,7 @@
 import WIPCard from '@/shared/components/cards/WIPCard'
 import { Flex } from '@mantine/core'
 
-function Page() {
+export default function Page() {
   return (
     <Flex direction="column" m="md">
       <WIPCard />
@@ -9,4 +9,3 @@ function Page() {
   )
 }
 
-export default Page
