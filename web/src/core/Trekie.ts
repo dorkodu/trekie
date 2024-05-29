@@ -5,37 +5,11 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 
 // misc
 import * as Supercell from '@/shared/lib/supercell'
-import { Maybe, Timestamp } from '@/shared/utils'
+import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
 import { utils } from '@/shared/utils'
 
-export type IUser = IAccount & IProfile
-
-export interface IProfile {
-  bio?: string
-  birthday?: Timestamp
-  category?: string
-  location?: string
-  url?: string
-}
-
-export interface IAccount {
-  id: string
-
-  username: string
-  name: string
-  email?: string
-
-  pictureUrl?: string
-
-  joinedAt: Timestamp
-
-  tier: AccountTier
-}
-
-export enum AccountTier {
-  FREE = "free",
-  PREMIUM = "premium",
-}
+import { IUser, IAccount, IProfile, AccountTier } from '@/core/account'
+export * from '@/core/account'
 
 export interface GameState {
   user: Maybe<IUser>
@@ -51,6 +25,9 @@ export interface GameState {
   lastActive: Maybe<Timestamp>
   lastXp: Maybe<Timestamp>
   lastStreak: Maybe<Timestamp>
+  lastDailyCheck: Maybe<Timestamp>,
+
+  xpHistory: Map<Daystamp, number>
 }
 
 export type VanillaGame = ReturnType<typeof Game>["game"]
@@ -62,42 +39,89 @@ export function Game(state: GameState = defaultState) {
       immer((set, get) => ({
         ...state,
         dailyProgress() {
+          get().refresh()
+
           let ratio = get().xpToday / get().xpTargetDaily
           return ratio
         },
         calculateStreak() {
-          let count = 0
+          let count = get().streak
 
-          const deserveStreak = $.xpToday >= $.xpTargetDaily
-          const hasStreakToday = utils.isSameDay($.lastStreak, Date.now())
+          set($ => {
+            // If user is now above/equal to target xp and didn't do a streak today
+            const deserveStreak = $.xpToday >= $.xpTargetDaily
+            const hasStreakToday = utils.isSameDay($.lastStreak, Date.now())
 
-          // If user is now above/equal to target xp and didn't do a streak today
-          if (deserveStreak && !hasStreakToday) {
-            $.streak++
-            $.lastStreak = Date.now()
-          }
-          // If user is now below target xp and did a streak today
-          else if (!deserveStreak && hasStreakToday) {
-            $.streak--
-          }
+            if (deserveStreak && !hasStreakToday) {
+              ++$.streak
+              $.lastStreak = Date.now()
+
+            }
+            // If user is now below target xp and did a streak today
+            else if (!deserveStreak && hasStreakToday) {
+              --$.streak
+              $.lastStreak = undefined
+            }
+
+            count = $.streak
+          })
 
           return count
         },
-        gainXp: (gain: number) => set($ => ({ xp: $.xp + gain })),
+        gainXp: (change: number) => {
+          set($ => {
+            let newTotalXp = $.xp + change
+            let newDailyXp = $.xpToday + change
+
+            // prevent negative xp
+            if (newTotalXp < 0)
+              newTotalXp = 0
+
+            if (newDailyXp < 0 && newTotalXp)
+              $.xpToday = 0
+
+            $.xp = newTotalXp
+            $.xpToday = newDailyXp
+
+            // add XP to history
+            $.xpHistory.set(daystamp.today(), newDailyXp)
+
+            // Handle user's last xp date
+            if (!utils.isSameDay($.lastXp, Date.now()))
+              $.lastXp = Date.now()
+
+          })
+        },
+        dailyRefresh() {
+          set($ => {
+            // first we reset stale values
+            if (!utils.isSameDay($.lastActive, Date.now()))
+              $.xpToday = 0 // reset daily xp
+
+            // then we calculate new values
+            $.xpTargetDaily = 100
+            $.calculateStreak()
+
+            // update last active date
+            $.lastActive = Date.now()
+          })
+        },
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
           set($ => {
             const user = $.user
             if (!user) return
 
-            $.streak = this.calculateStreak()
+            // first we reset stale values
+            if (!utils.isSameDay($.lastActive, Date.now()))
+              $.xpToday = 0 // reset daily xp
+
+            // then we calculate new values
+
+            $.calculateStreak()
 
 
-            // Handle user's last xp date
-            if (!utils.isSameDay($.lastXp, Date.now())) {
-              $.xpToday = 0
-              $.lastXp = Date.now()
-            }
+            $.lastActive = Date.now()
           })
         },
         reset() { set(defaultState) },
@@ -150,10 +174,13 @@ const defaultState: GameState = {
   xpToday: 0,
 
   // timestamps
-  lastXp: 0,
-  lastStreak: 0,
-  lastActive: 0,
+  lastXp: undefined,
+  lastStreak: undefined,
+  lastActive: undefined,
+  lastDailyCheck: undefined,
 
   // user
-  user: undefined
+  user: undefined,
+
+  xpHistory: new Map()
 }
