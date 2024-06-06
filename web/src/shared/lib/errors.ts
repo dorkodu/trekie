@@ -43,6 +43,14 @@ export function handle(code: Kind, e?: Error, data?: any) {
 
 export type Kind = keyof typeof kinds
 export const kinds = {
+  UNKNOWN_ERROR: AppError({
+    code: "UNKNOWN_ERROR",
+    message: "An unknown error occured. Please try again or restart the application.",
+    action(err, data) {
+      log("Unknown Error: " + err, LogKind.ERROR)
+      notifications.error("Error", this.message)
+    }
+  }),
   NO_SESSION: AppError({
     code: "NO_SESSION",
     message: "No active user session found. Please login first.",

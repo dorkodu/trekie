@@ -48,10 +48,9 @@ export const router = createBrowserRouter(
         <Route path="/market" element={view('app:Market')} />
         <Route path="/me" element={view('app:Me')} />
         <Route path="/social" element={view('app:Social')} />
-        <Route path="/commmunity/:name" element={view('app:CommunityPage')} />
 
         {/* trekie.io/@doruk */}
-        <Route path="/@:username" element={view('app:Profile')} />
+        <Route path="/:username" element={view('app:Profile')} />
 
         <Route path="/super" element={view('app:Premium')} />
         <Route path="/premium" element={view('app:Premium')} />

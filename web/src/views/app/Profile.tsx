@@ -4,6 +4,7 @@ import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
 import HabitCounter from '@/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
+import { errors } from '@/shared/lib/errors'
 import trekie from '@/shared/lib/trekie'
 import { Maybe } from '@/shared/utils'
 import { relativeDateString } from '@/shared/utils/format'
@@ -11,13 +12,20 @@ import { vanilla } from '@/styles/theme'
 import { Anchor, Badge, Box, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck } from '@tabler/icons-react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLiveQuery } from 'dexie-react-hooks'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export default function Profile() {
+export default function Page() {
+  let { username } = useParams()
+  if (!username) {
+    useNavigate()("/home")
+    return null
+  }
+
   return (
     <Stack gap="xs" m="xs">
-      <ProfilePage />
+      <Profile username={username} />
     </Stack>
   )
 }
@@ -29,23 +37,33 @@ export const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: Reac
   </Group>
 )
 
-export async function getUser(username: string): Promise<IUser> {
+export async function getUser(username: string): Promise<Maybe<IUser>> {
   // 1) ask db 2) if not found, ask server 3) if not found, return null
   /**
-   * try to connect
-   * querys server
+   * 1) ask local db
+   * - if exists, return it & trigger a server fetch for updates
+   * 2) ask server
+   * 3) error (not found)
    */
+
+  return await trekie.db.users.where('username').equals(username).first()
 }
 
-export const ProfilePage = () => {
+export function Profile({ username }: { username: string }) {
   const isMobile = !useMediaQuery(vanilla.largerThan(768))
-  const userId = 
 
-  const user = await getUser()
+  const { isPending, error, data } = useQuery({
+    queryKey: ['profile:' + username],
+    queryFn: () => getUser(username),
+  })
 
-  if (!user) return <Paper>Failed to load user.</Paper>
+  if (isPending) return 'Loading...'
 
+  if (error) {
+    errors.handle("UNKNOWN_ERROR", error)
+    return <Paper>Failed to get user profile.</Paper>
 
+  }
 
   const iconStyle = { width: rem(20), height: rem(20) }
 
@@ -57,6 +75,7 @@ export const ProfilePage = () => {
           <Text fw={700} size="lg" lh={1}>
             {user.name}
           </Text>
+
           <Text c="dimmed" fw={500}>@{user.username}</Text>
         </Stack>
       </Group>

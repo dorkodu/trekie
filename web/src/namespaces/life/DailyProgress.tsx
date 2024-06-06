@@ -33,11 +33,11 @@ export function DailyProgress({ value }: { value: number }) {
   } else if (value >= 80 && value < 95) {
     message = 'Great'
     color = 'green'
-  } else if (value >= 95) {
+  } else if (value == 95) {
     message = 'Awesome!'
     color = 'green'
   } else {
-    message = 'Nothing.'
+    message = 'Nothing'
     color = 'gray'
   }
 
