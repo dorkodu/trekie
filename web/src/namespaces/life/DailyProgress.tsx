@@ -1,13 +1,4 @@
-import {
-  Center,
-  Divider,
-  MantineColor,
-  Overlay,
-  Progress,
-  Stack,
-  Text,
-  Tooltip,
-} from '@mantine/core'
+import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
 import { format } from "@/shared/utils/format"
 import { vanilla } from '@/styles/theme'
 
@@ -33,7 +24,7 @@ export function DailyProgress({ value }: { value: number }) {
   } else if (value >= 80 && value < 95) {
     message = 'Great'
     color = 'green'
-  } else if (value == 95) {
+  } else if (value >= 95) {
     message = 'Awesome!'
     color = 'green'
   } else {
@@ -42,14 +33,11 @@ export function DailyProgress({ value }: { value: number }) {
   }
 
   const noProgressToday =
-    <Progress.Root
-      color="gray"
-      radius="lg"
-      size={20}>
+    <Progress.Root color="gray" radius="lg" size={20}>
       <Progress.Section color="gray" striped value={100}>
         <Overlay color="#fff" backgroundOpacity={0} blur={2} zIndex={10}>
           <Center>
-            <Text size="sm" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dark}` }} fw={500}>Nothing so far.</Text>
+            <Text tt="uppercase" lh={"20px"} size="xs" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dark}` }} fw={500}>NO PROGRESS TODAY</Text>
           </Center>
         </Overlay>
       </Progress.Section>
@@ -69,7 +57,7 @@ export function DailyProgress({ value }: { value: number }) {
         arrowRadius={2}
         withArrow
       >
-        <Progress.Section color={color} striped value={value} animated>
+        <Progress.Section color={color} striped value={value} animated={haveProgressToday}>
           <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
             <Center>
               <Text size="sm" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dimmed}` }} fw={500}>{message}</Text>
