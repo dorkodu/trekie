@@ -1,7 +1,7 @@
-import { Box, Group, Image, useMantineColorScheme } from "@mantine/core";
-import { UserButton } from "../buttons/UserButton";
-import trekie from "@/shared/lib/trekie";
-import { useAppStore } from "@/shared/stores/appStore";
+import { Box, Group, Image, useMantineColorScheme } from "@mantine/core"
+import { UserButton } from "../buttons/UserButton"
+import trekie from "@/shared/lib/trekie"
+import { useAppStore } from "@/shared/stores/appStore"
 
 export function Header() {
   const { colorScheme } = useMantineColorScheme()
@@ -9,7 +9,7 @@ export function Header() {
   const menu = useAppStore($ => $.menu)
 
   return (
-    <Box m={10} mx={16}>
+    <Box m={10} mx="sm">
       <Group justify="space-between">
         <div>
           <Image

@@ -41,7 +41,7 @@ export const router = createBrowserRouter(
       <Route index element={<Navigate to="/home" />} />
 
       {/* Requires login, navigate to website for read-only public pages */}
-      <Route element={layout('AppLayout')}>
+      <Route element={layout('App')}>
         <Route path="/home" element={view('app:Home')} />
         <Route path="/explore" element={view('app:Explore')} />
         <Route path="/life" element={view('app:Life')} />
@@ -65,7 +65,7 @@ export const router = createBrowserRouter(
       <Route path="/error" element={view('flow:Error')} />
 
       {/* Website & Landing Page */}
-      <Route element={layout('WebsiteLayout')}>
+      <Route element={layout('Website')}>
         <Route path="/" element={view('website:Welcome')} />
         <Route path="/welcome" element={view('website:Welcome')} />
 

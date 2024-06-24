@@ -3,7 +3,7 @@ import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 
 interface Props {
   user: { name?: string; username?: string; avatar?: string }
-  onClick?: () => void;
+  onClick?: () => void
 
   compact?: boolean
 }
@@ -18,7 +18,6 @@ export function UserButton({ user, onClick, compact = false }: Props) {
       variant="default"
       h="auto"
       p={compact ? 4 : 6}
-      mx={4}
       radius="lg"
       onClick={onClick}
     >

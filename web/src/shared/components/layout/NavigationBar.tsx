@@ -1,10 +1,10 @@
-import { Button, Flex, Group, Paper, Text, px } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { Button, Flex, Group, Paper, Text, px } from "@mantine/core"
+import { useNavigate } from "react-router-dom"
 
-import { navLinks } from "@/layouts/AppLayout";
+import { navLinks } from "@/layouts/App"
 
-import CreateMenu from "@/shared/components/menus/CreateMenu";
-import { theme, vanilla } from "@/styles/theme";
+import CreateMenu from "@/shared/components/menus/CreateMenu"
+import { theme, vanilla } from "@/styles/theme"
 import * as LayoutStyles from '@/styles/Layout.css'
 import { NavigationBar as styles } from '@/styles/Layout.css'
 
@@ -31,7 +31,7 @@ export function NavigationBar() {
               navLinks.map(view =>
                 <Button
                   variant="subtle"
-                  onClick={() => { navigate(view.path); }}
+                  onClick={() => { navigate(view.path) }}
                   key={view.text}
                   // based on current route, change link variant to active 
                   className={LayoutStyles.NavigationBar.Button[location.pathname === view.path ? 'active' : 'plain']}

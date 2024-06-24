@@ -26,6 +26,7 @@ export function HeadBar() {
 
   const returnButton = <ActionIcon
     variant="subtle"
+    color="gray"
     size={32}
     onClick={() => navigate(-1)}
     c="var(--text-color)"

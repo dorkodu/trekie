@@ -55,7 +55,6 @@ export default defineConfig({
   server: {
     watch: { usePolling: true },
     host: true,
-    strictPort: true,
     proxy: {
       "/api": {
         target: "trekie_api:8015",

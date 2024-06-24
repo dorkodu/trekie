@@ -1,17 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Image,
-  List,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-} from '@mantine/core'
+import { Box, Button, Card, Divider, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core'
 import Emoji from '../misc/Emoji'
 
 import * as PremiumStyles from '@/styles/views/Premium.css'
@@ -28,8 +15,7 @@ function OnlyPremium() {
       <Paper shadow="sm" className={PremiumStyles.Banner.Root} my={20}>
         <Stack mb={20}>
           <Title className={PremiumStyles.Banner.Title} c="white">
-            This feature is only available for premium subscribers
-            :(
+            This feature is only available for premium subscribers :(
           </Title>
           <Text className={PremiumStyles.Banner.Text}>
             Do you like and enjoy Trekie? <b>Support</b> this passionate indie

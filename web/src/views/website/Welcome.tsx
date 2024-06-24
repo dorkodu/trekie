@@ -325,18 +325,6 @@ function FAQ() {
       'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
     ],
     [
-      'Apples',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
-    ],
-    [
-      'Apples',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
-    ],
-    [
-      'Apples',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
-    ],
-    [
       'How to get support?',
       <>For premium members, you can send us a mail explaining support to <Anchor href='mailto:help@trekie.io' target="_blank">help@trekie.io</Anchor>. For free tier, unfortunately we can't provide customer support.</>,
     ],
