@@ -6,7 +6,7 @@ import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
 import { trekie } from "@/shared/lib/trekie"
 import { truncate } from '@/styles/shared.css'
 import EnhancedText from '@/shared/components/misc/TextParser'
-import HabitMenu from '@/namespaces/habit/HabitMenu'
+import HabitCounterMenu from '@/namespaces/habit/HabitCounterMenu'
 import { vanilla } from '@/styles/theme'
 
 interface Props {
@@ -66,8 +66,6 @@ function HabitCounter({ habitId, onClick }: Props) {
           py="xs"
           style={{
             flex: 1,
-            borderTop: `2px solid ${vanilla.colors.defaultBorder}`,
-            borderBottom: `2px solid ${vanilla.colors.defaultBorder}`,
           }}
         >
           <Flex justify="space-between" align="center">
@@ -76,7 +74,7 @@ function HabitCounter({ habitId, onClick }: Props) {
                 <EnhancedText ids={['emoji']} text={habit.title} />
               </Title>
             </Flex>
-            <HabitMenu habit={habit} />
+            <HabitCounterMenu habit={habit} />
           </Flex>
 
           <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>

@@ -18,7 +18,7 @@ interface Props {
   habit: IHabit
 }
 
-function HabitMenu({ habit }: Props) {
+function HabitCounterMenu({ habit }: Props) {
   const currentUserId = trekie.game($ => $.user?.id)
 
   const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
@@ -76,14 +76,14 @@ function HabitMenu({ habit }: Props) {
             {currentUserId === habit.userId ? (
               <>
                 <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                  Edit habit
+                  Edit Habit
                 </Menu.Item>
                 <Menu.Item
                   onClick={onDelete}
                   leftSection={<IconTrash />}
                   c="red"
                 >
-                  Delete habit
+                  Delete Habit
                 </Menu.Item>
               </>
             ) : (
@@ -102,4 +102,4 @@ function HabitMenu({ habit }: Props) {
   )
 }
 
-export default HabitMenu
+export default HabitCounterMenu
