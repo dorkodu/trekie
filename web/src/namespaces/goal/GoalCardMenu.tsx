@@ -4,15 +4,7 @@ import { useAppStore } from '@/shared/stores/appStore'
 import { vanilla } from '@/styles/theme'
 import { IGoal } from '@/core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
-import {
-  IconClipboardText,
-  IconDots,
-  IconDotsVertical,
-  IconEdit,
-  IconExclamationCircle,
-  IconShare,
-  IconTrash,
-} from '@tabler/icons-react'
+import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
 
 interface Props {
@@ -22,13 +14,9 @@ interface Props {
 function GoalMenu({ goal }: Props) {
   const currentUserId = trekie.game($ => $.user?.id)
 
-  const onShare = (ev: MouseEvent) => {
-    ev.stopPropagation()
-  }
-
-  const onClipboard = (ev: MouseEvent) => {
-    ev.stopPropagation()
-  }
+  const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onReport = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onClipboard = (ev: MouseEvent) => { ev.stopPropagation() }
 
   const onEdit = (ev: MouseEvent) => {
     ev.stopPropagation()
@@ -38,10 +26,6 @@ function GoalMenu({ goal }: Props) {
       s.modals.goalEditor.title = goal.title
       s.modals.goalEditor.description = goal.description
     })
-  }
-
-  const onReport = (ev: MouseEvent) => {
-    ev.stopPropagation()
   }
 
   const onDelete = (ev: MouseEvent) => {
@@ -55,7 +39,7 @@ function GoalMenu({ goal }: Props) {
         <ActionIcon
           variant="subtle"
           color="gray"
-          onClick={ev => ev.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <IconDotsVertical color={vanilla.colors.gray.lightColor} />
         </ActionIcon>
@@ -79,14 +63,14 @@ function GoalMenu({ goal }: Props) {
             {currentUserId === goal.userId ? (
               <>
                 <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                  Edit goal
+                  Edit Goal
                 </Menu.Item>
                 <Menu.Item
                   onClick={onDelete}
                   leftSection={<IconTrash />}
                   c="red"
                 >
-                  Delete goal
+                  Delete Goal
                 </Menu.Item>
               </>
             ) : (
@@ -95,7 +79,7 @@ function GoalMenu({ goal }: Props) {
                 color="red"
                 leftSection={<IconExclamationCircle />}
               >
-                Report goal
+                Report Goal
               </Menu.Item>
             )}
           </>
