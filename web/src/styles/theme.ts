@@ -38,7 +38,6 @@ export const theme = createTheme({
     }),
   },
 })
-
 export const vanilla = themeToVars(theme)
 
 export function useThemed({ dark, light }: { light: string; dark: string }) {

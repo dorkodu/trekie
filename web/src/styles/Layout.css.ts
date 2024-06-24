@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 import { vanilla } from './theme'
-import { glassBar } from './shared.css'
+import { glassBar } from './glass.css'
 import { rgba } from '@mantine/core'
 
 export const BARHEIGHT = 60
@@ -28,8 +28,6 @@ export const Layout = {
         width: '1200px',
       },
     },
-
-    selectors: {},
   }),
 
   Aside: style({
