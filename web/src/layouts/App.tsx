@@ -1,4 +1,4 @@
-import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, useMantineColorScheme, }
+import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, ThemeIcon, useMantineColorScheme, }
   from '@mantine/core'
 import { Link, Outlet } from 'react-router-dom'
 import { useMediaQuery } from '@mantine/hooks'
@@ -16,6 +16,7 @@ import { HeadBar } from '@/shared/components/layout/HeadBar'
 import { NavigationBar } from '@/shared/components/layout/NavigationBar'
 
 import * as styles from '@/styles/Layout.css'
+import { TipAdviceCard } from '@/shared/components/cards/TipAdviceCard'
 
 export const navLinks = [
   { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
@@ -47,9 +48,8 @@ function AppLayout() {
 
         <aside className={styles.Layout.Aside}>
           <DailyStats />
-          <Card withBorder my={10}>
-            <Image src="/images/oasis.webp" w="100%" h="auto" />
-          </Card>
+
+          <TipAdviceCard />
 
           <footer className={styles.Layout.Footer}>{Footer}</footer>
         </aside>

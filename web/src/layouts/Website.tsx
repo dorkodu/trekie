@@ -57,12 +57,12 @@ function Header() {
         <Image
           src={useThemed({ dark: "/images/trekie_Brand_White.svg", light: "/images/trekie_Brand.svg" })}
           h="auto"
-          w={220}
+          w={"calc(200px + 2.5vw)"}
           px="md"
         />
 
-        <Paper py={4} px={10}>
-          <Group gap={2}>
+        <Paper py={4}>
+          <Group gap={0}>
             {[
               ['Features', '/welcome/#features'],
               ['Premium', '/welcome/#premium'],
@@ -82,7 +82,7 @@ function Header() {
           </Group>
         </Paper>
 
-        <Group gap={8}>
+        <Group gap={8} wrap="nowrap">
           <Button fw={700}>GET STARTED</Button>
           <ColorToggle size="md" />
         </Group>

@@ -19,21 +19,19 @@ export function HeadBar() {
   const menuButton = <ActionIcon
     variant="subtle"
     color="gray"
-    size={32}
+    size={40}
     onClick={() => menu.open()}
-    c="var(--text-color)"
-  ><IconMenu2 /></ActionIcon>
+    c="var(--text-color)"><IconMenu2 size={26} /></ActionIcon>
 
   const returnButton = <ActionIcon
     variant="subtle"
     color="gray"
-    size={32}
+    size={40}
     onClick={() => navigate(-1)}
-    c="var(--text-color)"
-  ><IconArrowLeft /></ActionIcon>
+    c="var(--text-color)"><IconArrowLeft size={26} /></ActionIcon>
 
   const profileButton = <UnstyledButton onClick={() => navigate("/me")}>
-    <Image src={user?.pictureUrl ?? vars.defaultAvatarUrl} width={36} height={36} radius="xl" />
+    <Image src={user?.pictureUrl ?? vars.defaultAvatarUrl} width={40} height={40} radius="xl" />
   </UnstyledButton>
 
   return (

@@ -1,12 +1,15 @@
-import { Box, Group, Image, useMantineColorScheme } from "@mantine/core"
+import { ActionIcon, Box, Group, Image, useMantineColorScheme } from "@mantine/core"
 import { UserButton } from "../buttons/UserButton"
 import trekie from "@/shared/lib/trekie"
 import { useAppStore } from "@/shared/stores/appStore"
+import { IconBell, IconMenu2, IconNotification } from "@tabler/icons-react"
+import { useNavigate } from "react-router-dom"
 
 export function Header() {
   const { colorScheme } = useMantineColorScheme()
   const user = trekie.game($ => $.user)
   const menu = useAppStore($ => $.menu)
+  const navigate = useNavigate()
 
   return (
     <Box m={10} mx="sm">
@@ -28,9 +31,15 @@ export function Header() {
               name: user?.name,
               username: user?.username,
             }}
-            onClick={() => menu.open()}
+            onClick={() => navigate('/me')}
             compact
           />
+          <ActionIcon size="xl" radius="lg" variant="subtle" color="default">
+            <IconBell />
+          </ActionIcon>
+          <ActionIcon size="xl" radius="lg" variant="subtle" color="default">
+            <IconMenu2 />
+          </ActionIcon>
         </Group>
       </Group>
     </Box>

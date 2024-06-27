@@ -13,7 +13,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from '@/styles/components/NavBar.css'
-import React from 'react'
+import CreateMenu from '../menus/CreateMenu'
 
 export function Bar({
   links,
@@ -28,9 +28,13 @@ export function Bar({
         ))}
       </Stack>
 
-      <Button my={10} size="md" w="100%" leftSection={<IconPlus />} radius="lg">
-        Create
-      </Button>
+      <CreateMenu>
+        <Button my={10} size="md" w="100%" leftSection={<IconPlus />} radius="lg">
+          Create
+        </Button>
+      </CreateMenu>
+
+
     </Box>
   )
 }

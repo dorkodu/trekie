@@ -6,7 +6,7 @@ import { rgba } from '@mantine/core'
 export const BARHEIGHT = 60
 
 export const WIDESCREEN_MIN = 768
-export const WIDESCREEN_MAX = 1200
+export const WIDESCREEN_MAX = 1024
 
 // Screen breakpoints
 const isWideScreen = vanilla.largerThan(WIDESCREEN_MIN)
@@ -19,7 +19,7 @@ export const Layout = {
     flexDirection: 'column',
 
     width: '100%',
-    maxWidth: 1200,
+    maxWidth: 1024,
     minHeight: '100vh',
     margin: '0 auto',
 
