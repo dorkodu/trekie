@@ -32,11 +32,7 @@ export function AppMenu() {
   return (
     <Stack w={isWideScreen ? 300 : 260} gap={2}>
       <div>
-        <UserButton
-          onClick={() => {
-            navigate('/me')
-          }}
-
+        <UserButton onClick={() => { navigate('/me') }}
           user={{
             avatar: user?.pictureUrl,
             name: user?.name,

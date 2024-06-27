@@ -21,7 +21,7 @@ export function UserButton({ user, onClick, compact = false }: Props) {
       radius="lg"
       onClick={onClick}
     >
-      <Group justify="space-between" gap={10}>
+      <Group w="100%" justify="space-between" gap={10}>
         <Group gap={compact ? 8 : 12}>
           <Avatar
             src={avatar}

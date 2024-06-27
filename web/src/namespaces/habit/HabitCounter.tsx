@@ -34,15 +34,13 @@ function HabitCounter({ habitId, onClick }: Props) {
       style={{ overflow: 'visible' }}
       onClick={onClick}
       radius="lg"
-      shadow="sm"
-    >
+      shadow="sm">
       <Button.Group mih={80}>
         <Button
           color="green"
           h="auto"
           onClick={ev => onChangeCount(ev, +1)}
-          px="sm"
-        >
+          px="sm">
           <Flex
             style={{
               background: 'rgba(255,255,255,0.25)',
@@ -53,8 +51,7 @@ function HabitCounter({ habitId, onClick }: Props) {
               alignItems: 'center',
               borderRadius: 8,
               padding: 2,
-            }}
-          >
+            }}>
             <IconPlus stroke={2.5} size={28} />
           </Flex>
         </Button>
@@ -79,10 +76,7 @@ function HabitCounter({ habitId, onClick }: Props) {
 
           <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
             <Text truncate size="sm">
-              <EnhancedText
-                ids={['emoji', 'url', 'username']}
-                text={habit.description}
-              />
+              <EnhancedText ids={['emoji', 'url', 'username']} text={habit.description} />
             </Text>
           </Flex>
 
