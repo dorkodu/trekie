@@ -95,7 +95,7 @@ function Footer() {
   return (
     <Box className={WebsiteStyle.Footer.Root}>
       <Group align="flex-start">
-        <Stack gap={0} px={10} w={"35%"} miw={200}>
+        <Stack gap={0} px={10} w={"calc(20% + 5vw)"} miw={200}>
           <Anchor display="block" href="https://trekie.io" target="_blank">
             <Image
               src="/images/trekie_Icon.svg"

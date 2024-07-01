@@ -42,15 +42,12 @@ function AppLayout() {
         </nav>
 
         <main className={styles.Layout.Main}>
-          {/* Paper can be a different element, but not likely */}
           <div><Outlet /></div>
         </main>
 
         <aside className={styles.Layout.Aside}>
           <DailyStats />
-
           <TipAdviceCard />
-
           <footer className={styles.Layout.Footer}>{Footer}</footer>
         </aside>
       </div>
