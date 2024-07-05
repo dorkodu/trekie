@@ -22,7 +22,10 @@ const blankState: Trekie.GameState = {
   lastStreak: undefined,
   lastActive: undefined,
 
-  user: undefined
+  user: undefined,
+
+  lastDailyCheck: undefined,
+  xpHistory: new Map(),
 }
 
 const initialState: Trekie.GameState = mock.game

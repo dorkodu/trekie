@@ -1,36 +1,47 @@
+
 import { useEffect, useState } from "react";
 
-import { trekie } from "@/shared/lib/trekie";
-
-export function useDelay(delay: number = 100) {
-  const [state, setState] = useState(true)
+export function useDelay() {
+  const [state, setState] = useState(true);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setState(false), delay)
-    return () => clearTimeout(timeout)
-  }, [])
+    const timeout = setTimeout(() => setState(false), 100);
+    return () => clearTimeout(timeout);
+  }, []);
 
   return state;
 }
 
-export function useRefreshStatsDaily() {
-  useEffect(() => {
-    const task = () => trekie.game().refresh()
+import { useMantineColorScheme } from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
 
-    const today = new Date()
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    tomorrow.setUTCHours(0, 0, 0, 0)
+export function useSafeColorScheme(): "light" | "dark" {
+  const { colorScheme } = useMantineColorScheme();
+  const systemColorScheme = useColorScheme(undefined, {
+    getInitialValueInEffect: false,
+  });
 
-    let interval: NodeJS.Timeout | undefined = undefined
-    let timeout = setTimeout(() => {
-      task()
-      interval = setInterval(task, 24 * 60 * 60 * 1000)
-    }, tomorrow.getTime() - today.getTime())
-
-    return () => {
-      clearTimeout(interval)
-      clearTimeout(timeout)
-    }
-  }, [])
+  if (colorScheme === "auto") return systemColorScheme;
+  return colorScheme;
 }
+
+import { useNavigate } from "react-router-dom";
+
+export function useSafeGoBack() {
+  const navigate = useNavigate();
+
+  return () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/", { replace: true });
+    }
+  };
+}
+
+
+export function useThemed(options: { light: any; dark: any }) {
+  const colorScheme = useSafeColorScheme();
+  return options[colorScheme];
+}
+

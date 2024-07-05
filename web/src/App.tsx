@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react'
-import { Outlet, ScrollRestoration } from 'react-router-dom'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
-import { ErrorBoundary } from "react-error-boundary"
 import { httpBatchLink } from '@trpc/client'
+import { useEffect, useState } from 'react'
+import { ErrorBoundary } from "react-error-boundary"
+import { Outlet, ScrollRestoration } from 'react-router-dom'
 
 import { theme } from '@/styles/theme'
 
 import OverlayLoader from '@/shared/components/loaders/OverlayLoader'
 import UpdateSWModal from '@/shared/components/modals/UpdateSWModal'
-import { useRefreshStatsDaily } from '@/shared/hooks'
 
-import { useAppStore } from '@/shared/stores/appStore'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Notifications } from '@mantine/notifications'
+import { useRefreshStatsDaily } from '@/core/hooks'
+
+import ApplicationError from '@/shared/components/misc/ApplicationError'
 import { onError, onReset } from '@/shared/lib/errors'
 import { trpc } from '@/shared/lib/trpc'
-import ApplicationError from '@/shared/components/misc/ApplicationError'
+import { useAppStore } from '@/shared/stores/appStore'
+import { Notifications } from '@mantine/notifications'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {
 
@@ -47,7 +48,7 @@ function App() {
   // app hooks
 
   // trekie hooks
-  useRefreshStatsDaily()
+  // useRefreshStatsDaily()
 
   return (
     <ErrorBoundary

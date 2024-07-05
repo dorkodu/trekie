@@ -17,9 +17,10 @@ import { useMediaQuery } from '@mantine/hooks'
 import * as LayoutStyle from '@/styles/Layout.css'
 import * as WebsiteStyle from '@/styles/website/Website.css'
 
-import { useThemed, vanilla } from '@/styles/theme'
+import { vanilla } from '@/styles/theme'
 import ColorToggle from '@/shared/components/misc/ColorToggle'
 import { socialLinks } from '@/shared/website'
+import { useThemed } from '@/shared/hooks'
 
 function WebsiteLayout() {
   return (
