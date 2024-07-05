@@ -13,3 +13,13 @@ export const truncate = style({
   whiteSpace: 'nowrap',
 })
 
+export const ContainerSheet = style({
+  backgroundColor: vanilla.colors.gray[1],
+
+  selectors: {
+    [vanilla.darkSelector]: {
+      backgroundColor: vanilla.colors.dark[8],
+    },
+  },
+})
+

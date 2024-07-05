@@ -1,10 +1,5 @@
-import {
-  Anchor,
-  Button,
-  Title,
-  createTheme,
-  useMantineColorScheme,
-} from '@mantine/core'
+import { useThemed } from '@/shared/hooks'
+import { Anchor, Button, Title, createTheme, useMantineColorScheme } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
 
 export const theme = createTheme({
@@ -38,8 +33,5 @@ export const theme = createTheme({
     }),
   },
 })
-export const vanilla = themeToVars(theme)
 
-export function useThemed({ dark, light }: { light: string; dark: string }) {
-  return useMantineColorScheme().colorScheme == 'dark' ? dark : light
-}
+export const vanilla = themeToVars(theme)

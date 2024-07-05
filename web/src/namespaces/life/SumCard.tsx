@@ -1,4 +1,5 @@
-import { useThemed, vanilla } from "@/styles/theme"
+import { useThemed } from "@/shared/hooks"
+import { vanilla } from "@/styles/theme"
 import { Box, Center, Group, Paper, Stack, Text, useMantineColorScheme } from "@mantine/core"
 
 export function SumCard({

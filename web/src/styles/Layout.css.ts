@@ -10,7 +10,7 @@ export const WIDESCREEN_MAX = 1024
 
 // Screen breakpoints
 const isWideScreen = vanilla.largerThan(WIDESCREEN_MIN)
-const isMobile = vanilla.smallerThan(WIDESCREEN_MIN)
+const isMobile = vanilla.smallerThan(WIDESCREEN_MIN - 1)
 const isExtraWide = vanilla.largerThan(WIDESCREEN_MAX)
 
 export const Layout = {
@@ -19,7 +19,7 @@ export const Layout = {
     flexDirection: 'column',
 
     width: '100%',
-    maxWidth: 1024,
+    maxWidth: WIDESCREEN_MAX,
     minHeight: '100vh',
     margin: '0 auto',
 
@@ -110,7 +110,7 @@ const NavigationBarButtonBase = style({
   padding: 0,
   paddingTop: 6,
   paddingBottom: 2,
-  minWidth: 54,
+  minWidth: 56,
   height: "auto",
   color: vanilla.colors.text,
 
