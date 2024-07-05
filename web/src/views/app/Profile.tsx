@@ -1,4 +1,4 @@
-import { IUser } from '@/core'
+import { IUser, USERHANDLE_REGEX } from '@/core'
 import GoalCard from '@/namespaces/goal/GoalCard'
 import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
 import HabitCounter from '@/namespaces/habit/HabitCounter'
@@ -14,18 +14,29 @@ import { useMediaQuery } from '@mantine/hooks'
 import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck } from '@tabler/icons-react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 export default function Page() {
-  let { username } = useParams()
-  if (!username) {
-    useNavigate()("/home")
-    return null
-  }
+  let location = useLocation()
+  let username = null
+  let result = null
 
+  console.log(location.pathname.slice(1))
+
+  // const match = location.pathname.match(USERHANDLE_REGEX)
+
+  /*
+    if (match)
+      result = <Text>Username Match!</Text>
+  
+    if (!username)
+      result = <Text>User not found.</Text>
+  
+    else result = <Profile username={username} />
+  */
   return (
     <Stack gap="xs" m="xs">
-      <Profile username={username} />
+      {result}
     </Stack>
   )
 }
