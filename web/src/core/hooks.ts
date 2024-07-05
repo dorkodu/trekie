@@ -1,0 +1,24 @@
+import { trekie } from "@/shared/lib/trekie";
+import { useEffect } from "react";
+
+export function useRefreshStatsDaily() {
+  useEffect(() => {
+    const task = () => trekie.game().refresh()
+
+    const today = new Date()
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setUTCHours(0, 0, 0, 0)
+
+    let interval: NodeJS.Timeout | undefined = undefined
+    let timeout = setTimeout(() => {
+      task()
+      interval = setInterval(task, 24 * 60 * 60 * 1000)
+    }, tomorrow.getTime() - today.getTime())
+
+    return () => {
+      clearTimeout(interval)
+      clearTimeout(timeout)
+    }
+  }, [])
+}
