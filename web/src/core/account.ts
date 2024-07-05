@@ -30,5 +30,6 @@ export enum AccountTier {
   PREMIUM = "premium",
 }
 
-export const USERNAME_REGEX = /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])$/
+export const USERNAME_REGEX = /^@(?![_.])(?!.*[_.]{2})([a-zA-Z0-9_.]{1,16})(?<![_.])$/
+export const USERHANDLE_REGEX = /^@(?![_.])(?!.*[_.]{2})([a-zA-Z0-9_.]{1,16})(?<![_.])$/
 export const usernameSchema = z.string().trim().regex(USERNAME_REGEX)
