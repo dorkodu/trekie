@@ -13,7 +13,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from '@/styles/components/NavBar.css'
-import CreateMenu from '../menus/CreateMenu'
+import CreateMenu from '@/shared/components/menus/CreateMenu'
 
 export function Bar({
   links,
@@ -22,13 +22,13 @@ export function Bar({
 }) {
   return (
     <Box p={12}>
-      <Stack gap={4} maw={180}>
+      <Stack gap={4}>
         {links.map($ => (
           <LinkButton icon={$.icon} key={$.text} path={$.path} text={$.text} />
         ))}
       </Stack>
 
-      <CreateMenu>
+      <CreateMenu popupPosition="right">
         <Button my={10} size="md" w="100%" leftSection={<IconPlus />} radius="lg">
           Create
         </Button>

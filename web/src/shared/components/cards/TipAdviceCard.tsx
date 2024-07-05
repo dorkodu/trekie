@@ -9,12 +9,12 @@ export function TipAdviceCard({ }: Props) {
       <Group gap="sm" justify="space-between">
         <Title order={3} size={18} fw={700}>Daily Tip</Title>
 
-        <Text></Text>
-
         <ThemeIcon size="lg" variant="light">
           <IconProgressHelp />
         </ThemeIcon>
       </Group>
+
+      <Text size="sm" mt="md">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium, vitae.</Text>
     </Card>
   )
 }

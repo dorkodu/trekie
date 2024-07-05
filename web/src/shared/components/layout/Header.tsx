@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, Image, useMantineColorScheme } from "@mantine/core"
+import { ActionIcon, Box, Group, Image, Text, Title, useMantineColorScheme } from "@mantine/core"
 import { UserButton } from "../buttons/UserButton"
 import trekie from "@/shared/lib/trekie"
 import { useAppStore } from "@/shared/stores/appStore"
@@ -13,8 +13,8 @@ export function Header() {
 
   return (
     <Box m={10} mx="sm">
-      <Group justify="space-between">
-        <div>
+      <Group justify="space-between" gap={0}>
+        <div style={{ width: "20%" }}>
           <Image
             src={
               colorScheme == 'light'
@@ -22,9 +22,13 @@ export function Header() {
                 : '/images/trekie_Brand_White.svg'
             }
             h={50}
+            w="auto"
           />
         </div>
-        <Group gap={4}>
+        <div style={{ width: "50%", padding: 12 }}>
+        </div>
+        <Group gap={4} style={{ width: "30%" }} justify="flex-end">
+
           <UserButton
             user={{
               avatar: user?.pictureUrl,
@@ -33,11 +37,11 @@ export function Header() {
             }}
             onClick={() => navigate('/me')}
             compact
+            withChevron={false}
+            withBorder={false}
           />
-          <ActionIcon size="xl" radius="lg" variant="subtle" color="default">
-            <IconBell />
-          </ActionIcon>
-          <ActionIcon size="xl" radius="lg" variant="subtle" color="default">
+
+          <ActionIcon size="xl" radius="lg" variant="subtle" color="default" onClick={() => menu.open()}>
             <IconMenu2 />
           </ActionIcon>
         </Group>

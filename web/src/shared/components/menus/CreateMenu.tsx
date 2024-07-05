@@ -1,5 +1,6 @@
+import { useThemed } from '@/shared/hooks'
 import { useAppStore } from '@/shared/stores/appStore'
-import { useThemed, vanilla } from '@/styles/theme'
+import { vanilla } from '@/styles/theme'
 import { ActionIcon, Badge, Box, Button, Divider, Flex, FloatingPosition, Menu, Stack, rgba } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconCopyCheck } from '@tabler/icons-react'

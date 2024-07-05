@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { navLinks } from "@/layouts/App"
 
 import CreateMenu from "@/shared/components/menus/CreateMenu"
-import { theme, vanilla } from "@/styles/theme"
 import * as LayoutStyles from '@/styles/Layout.css'
 import { NavigationBar as styles } from '@/styles/Layout.css'
 import { IconPlus } from "@tabler/icons-react"
@@ -45,7 +44,7 @@ export function NavigationBar() {
               )
             }
           </Group>
-          <CreateMenu>
+          <CreateMenu popupPosition="top">
             <ActionIcon radius="lg" size={50}>
               <IconPlus size={32} />
             </ActionIcon>

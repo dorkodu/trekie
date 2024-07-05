@@ -6,16 +6,18 @@ interface Props {
   onClick?: () => void
 
   compact?: boolean
+  withChevron?: boolean
+  withBorder?: boolean
 }
 
-export function UserButton({ user, onClick, compact = false }: Props) {
+export function UserButton({ user, onClick, compact = false, withBorder = true, withChevron = true }: Props) {
   let avatar = user?.avatar ?? '/images/avatar.webp'
   let name = user?.name ?? "Anonymous"
   let username = "@" + user?.username ?? ''
 
   return (
     <Button
-      variant="default"
+      variant={withBorder ? 'default' : 'transparent'}
       h="auto"
       p={compact ? 4 : 6}
       radius="lg"
@@ -37,9 +39,8 @@ export function UserButton({ user, onClick, compact = false }: Props) {
             </Text>
           </Stack>
         </Group>
-        <ThemeIcon variant="transparent" color="dark">
-          <IconChevronRight />
-        </ThemeIcon>
+
+        {withChevron && <ThemeIcon variant="transparent" color="dark"><IconChevronRight /></ThemeIcon>}
       </Group>
     </Button>
   )
