@@ -1,8 +1,6 @@
-import { Alert, Anchor, Badge, Box, Divider, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
+import { Alert, Badge, Box, Center, Flex, Group, Image, Paper, SegmentedControl, Skeleton, Stack, Tabs, Text, ThemeIcon, darken, rem, rgba } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconMapPin, IconPinned, IconTargetArrow } from '@tabler/icons-react'
-
-import { useNavigate } from 'react-router-dom'
+import { IconCopyCheck, IconNews, IconTableRow, IconTargetArrow } from '@tabler/icons-react'
 
 
 import HabitCounter from '@/namespaces/habit/HabitCounter'
@@ -18,6 +16,10 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import GoalCard from '@/namespaces/goal/GoalCard'
 import { errors } from '@/shared/lib/errors'
+import { useState } from 'react'
+import WIPCard from '@/shared/components/cards/WIPCard'
+import { useThemed } from '@/shared/hooks'
+import { ContainerSheet } from '@/styles/shared.css'
 
 
 function Home() {
@@ -34,59 +36,71 @@ const MySummary = () => {
   const user = trekie.game($ => $.user)
   if (!user) {
     errors.handle("NO_SESSION", new Error("Failed to load user in home page."))
-    return <Alert></Alert>
+    return <Alert>Failed to load user in home page.</Alert>
   }
-
-  const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
-    <Group gap={2}>
-      <ThemeIcon c="dimmed" variant="transparent" size={26}>{icon}</ThemeIcon>
-      <Text c="dimmed" lh={1} size="sm" mt={4}>{text}</Text>
-    </Group>
-  )
 
   const iconStyle = { width: rem(20), height: rem(20) }
 
+  const [tab, setTab] = useState('feed')
+
   return (
-    <Paper>
-      <Group mb={10} gap="sm" wrap="nowrap">
-        <Image src={user.pictureUrl} w={64} h={64} radius={10} />
-        <Stack gap={0}>
-          <Text fw={700} size="lg" lh={1}>
-            {user.name}
-          </Text>
-          <Text c="dimmed" fw={500}>@{user.username}</Text>
-        </Stack>
-      </Group>
-
+    <div>
       <Stack gap={4}>
-        {isMobile && <DailyStats />}
+        {isMobile && <Box mb="md"><DailyStats /></Box>}
 
-        <Tabs mt={8} color="green" variant="default" radius="md" defaultValue="habits">
-          <Tabs.List>
-            <Tabs.Tab value="goals" leftSection={<IconTargetArrow style={iconStyle} />}>
-              Life Goals
-            </Tabs.Tab>
-            <Tabs.Tab value="habits" leftSection={<IconCopyCheck style={iconStyle} />}>
-              Habits
-            </Tabs.Tab>
-          </Tabs.List>
+        <SegmentedControl
+          value={tab}
+          onChange={setTab}
+          radius={12}
+          data={[
+            {
+              value: 'feed',
+              label: <Center style={{ gap: 6 }}><IconNews style={iconStyle} /><span>Feed</span></Center>,
+            },
+            {
+              value: 'habits',
+              label: <Center style={{ gap: 6 }}><IconCopyCheck style={iconStyle} /><span>Habits</span></Center>,
+            },
+            {
+              value: 'goals',
+              label: <Center style={{ gap: 6 }}><IconTargetArrow style={iconStyle} /><span>Goals</span></Center>,
+            },
+          ]}
+        />
 
+        <Tabs mt={8} color="green" variant="pills" radius="md" defaultValue="feed" value={tab}>
+          <Tabs.Panel value="feed">
+            <NewsFeed />
+          </Tabs.Panel>
           <Tabs.Panel value="habits">
             <UserHabitSummary />
           </Tabs.Panel>
-
           <Tabs.Panel value="goals">
             <LifeGoalSummary />
           </Tabs.Panel>
         </Tabs>
 
       </Stack>
-    </Paper>
+    </div>
   )
 }
 
 export default Home
 
+function NewsFeed() {
+  return (
+    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
+      <Stack gap={0}>
+        <Text ta="center" my="xs" c="dimmed">Nothing to see here yet.</Text>
+      </Stack>
+      <Flex>
+        <Badge variant="light" color="gray" mx="auto">
+          Your Activities
+        </Badge>
+      </Flex>
+    </Box>
+  )
+}
 
 function UserHabitSummary() {
   const userId = trekie.game($ => $.user?.id)
@@ -94,12 +108,7 @@ function UserHabitSummary() {
   if (!userId) return <NoHabitsCard />
 
   const habits = useLiveQuery(
-    async () => {
-      return trekie.db.habits
-        .where('userId')
-        .equals(userId)
-        .toArray()
-    },
+    async () => { return trekie.db.habits.where('userId').equals(userId).toArray() },
     [userId]
   )
 
@@ -114,18 +123,9 @@ function UserHabitSummary() {
   if (!hasAnyHabits) return <NoHabitsCard />
 
   return (
-    <Box
-      style={{
-        background: vanilla.colors.gray.light,
-        borderRadius: 20,
-        padding: 6,
-      }}
-      my={10}
-    >
+    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
       <Stack gap={0}>
-        {habits.map(habit => (
-          <HabitCounter habitId={habit.id} key={habit.id} />
-        ))}
+        {habits.map(habit => (<HabitCounter habitId={habit.id} key={habit.id} />))}
       </Stack>
       <Flex>
         <Badge variant="light" color="gray" mx="auto">
@@ -137,11 +137,8 @@ function UserHabitSummary() {
 }
 
 function LifeGoalSummary() {
-
   const userId = trekie.game($ => $.user?.id)
   if (!userId) return <Box py={10}><NoHabitsCard /></Box>
-
-  const queryClient = useQueryClient()
 
   const goals = useLiveQuery(
     async () => trekie.db.goals.where('userId').equals(userId).toArray(),
@@ -160,12 +157,19 @@ function LifeGoalSummary() {
   if (!hasAnyLifeGoals) return <NoGoalsCard />
 
   return (
-    <Box py={10}>
-      <Stack>
+    <Box
+      style={{ borderRadius: 20, padding: 6 }}
+      className={ContainerSheet}>
+      <Stack gap={0}>
         {goals.map((goal) =>
           <GoalCard id={goal.id} key={goal.id} />
         )}
       </Stack>
+      <Flex mt="xs">
+        <Badge variant="light" color="gray" mx="auto">
+          Track your goals!
+        </Badge>
+      </Flex>
     </Box>
   )
 }
