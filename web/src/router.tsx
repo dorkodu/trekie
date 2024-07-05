@@ -4,10 +4,12 @@ import {
   createRoutesFromElements,
   Navigate,
   Route,
+  useParams,
 } from 'react-router-dom'
 import CenterLoader from '@/shared/components/loaders/CenterLoader'
 import { utils } from '@/shared/utils'
 import App from './App'
+import { USERHANDLE_REGEX, USERNAME_REGEX } from './core'
 
 function view(path: string) {
   const [folder, file] = path.split(':')
@@ -35,6 +37,27 @@ function suspenseLoader(
 
 let isLoggedIn: boolean = true
 
+function PathMiddleware() {
+  let params = useParams()
+  let path = params.path ?? ""
+
+  let isProfile = false
+  let username = null
+
+  const match = path.match(USERHANDLE_REGEX)
+
+  if (match) {
+    isProfile = true
+    username = match[1]
+  } else {
+    isProfile = false
+    username = null
+  }
+
+  if (!isProfile) return <Navigate to="/404" />
+  return view('app:Profile')
+}
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} errorElement={view('flow:Error')}>
@@ -50,7 +73,7 @@ export const router = createBrowserRouter(
         <Route path="/social" element={view('app:Social')} />
 
         {/* trekie.io/@doruk */}
-        <Route path="/:username" element={view('app:Profile')} />
+        <Route path="/:path" element={<PathMiddleware />} />
 
         <Route path="/super" element={view('app:Premium')} />
         <Route path="/premium" element={view('app:Premium')} />
