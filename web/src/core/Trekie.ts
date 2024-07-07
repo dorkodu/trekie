@@ -55,7 +55,6 @@ export function Game(state: GameState = defaultState) {
             if (deserveStreak && !hasStreakToday) {
               ++$.streak
               $.lastStreak = Date.now()
-
             }
             // If user is now below target xp and did a streak today
             else if (!deserveStreak && hasStreakToday) {

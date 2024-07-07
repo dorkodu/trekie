@@ -16,7 +16,7 @@ import { HeadBar } from '@/shared/components/layout/HeadBar'
 import { NavigationBar } from '@/shared/components/layout/NavigationBar'
 
 import * as styles from '@/styles/Layout.css'
-import { TipAdviceCard } from '@/shared/components/cards/TipAdviceCard'
+import { DailyHintCard } from '@/shared/components/cards/DailyHintCard'
 
 export const navLinks = [
   { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
@@ -47,7 +47,7 @@ function AppLayout() {
 
         <aside className={styles.Layout.Aside}>
           <DailyStats />
-          <TipAdviceCard />
+          <DailyHintCard />
           <footer className={styles.Layout.Footer}>{Footer}</footer>
         </aside>
       </div>
