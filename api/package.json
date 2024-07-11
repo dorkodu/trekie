@@ -27,18 +27,18 @@
     "email:dev": "email dev"
   },
   "dependencies": {
+    "@react-email/components": "^0.0.21",
+    "@react-email/render": "^0.0.16",
     "@trekie/web": "workspace:*",
     "@trpc/client": "npm:@trpc/client@next",
     "@trpc/react-query": "npm:@trpc/react-query@next",
     "@trpc/server": "npm:@trpc/server@next",
-    "express": "^4.19.2",
-    "postgres": "^3.4.4",
-    "zod": "^3.23.4",
-    "react-email": "^2.1.1",
-    "@react-email/components": "^0.0.16",
-    "@react-email/render": "^0.0.12",
     "cors": "^2.8.5",
-    "nodemailer": "^6.9.13"
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.14",
+    "postgres": "^3.4.4",
+    "react-email": "^2.1.5",
+    "zod": "^3.23.8"
   },
   "peerDependencies": {
     "typescript": "^5.4.0"
