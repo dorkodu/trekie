@@ -1,14 +1,14 @@
-import { create, useStore } from 'zustand'
+import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { immer } from 'zustand/middleware/immer'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { persist } from 'zustand/middleware'
 
 // misc
 import * as Supercell from '@/shared/lib/supercell'
 import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
 import { utils } from '@/shared/utils'
 
-import { IUser, IAccount, IProfile, AccountTier } from '@/core/account'
+import { IUser } from '@/core/account'
 export * from '@/core/account'
 
 export interface GameState {
@@ -27,7 +27,7 @@ export interface GameState {
   lastStreak: Maybe<Timestamp>
   lastDailyCheck: Maybe<Timestamp>,
 
-  xpHistory: Map<Daystamp, number>
+  xpHistory: Record<Daystamp, number>
 }
 
 export type VanillaGame = ReturnType<typeof Game>["game"]
@@ -53,7 +53,7 @@ export function Game(state: GameState = defaultState) {
             const hasStreakToday = utils.isSameDay($.lastStreak, Date.now())
 
             if (deserveStreak && !hasStreakToday) {
-              ++$.streak
+              $.streak = $.streak + 1
               $.lastStreak = Date.now()
             }
             // If user is now below target xp and did a streak today
@@ -67,8 +67,10 @@ export function Game(state: GameState = defaultState) {
 
           return count
         },
-        gainXp: (change: number) => {
+        changeXp: (change: number) => {
           set($ => {
+            $.refresh()
+
             let newTotalXp = $.xp + change
             let newDailyXp = $.xpToday + change
 
@@ -83,12 +85,15 @@ export function Game(state: GameState = defaultState) {
             $.xpToday = newDailyXp
 
             // add XP to history
-            $.xpHistory.set(daystamp.today(), newDailyXp)
+            $.xpHistory[daystamp.today()] = newDailyXp
+            console.log("XPHistory: ", $.xpHistory[daystamp.today()])
+
 
             // Handle user's last xp date
             if (!utils.isSameDay($.lastXp, Date.now()))
               $.lastXp = Date.now()
 
+            $.refresh()
           })
         },
         dailyRefresh() {
@@ -118,7 +123,6 @@ export function Game(state: GameState = defaultState) {
             // then we calculate new values
 
             $.calculateStreak()
-
 
             $.lastActive = Date.now()
           })
@@ -156,8 +160,10 @@ export type TrekieStoreInterface = GameState & GameActions
 
 export interface GameActions {
   refresh: () => void
+  dailyRefresh: () => void
   dailyProgress: () => number
   calculateStreak: () => number
+  changeXp: (change: number) => void,
   reset: () => void
 }
 
@@ -181,5 +187,5 @@ const defaultState: GameState = {
   // user
   user: undefined,
 
-  xpHistory: new Map()
+  xpHistory: {}
 }
