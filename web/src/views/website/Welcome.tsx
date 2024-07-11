@@ -1,6 +1,6 @@
-import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, TextInput, ThemeIcon, Title, rem, useMantineColorScheme }
+import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, TextInput, ThemeIcon, Title, rem }
   from '@mantine/core'
-import { IconAdOff, IconArrowRight, IconAt, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconChess, IconChessFilled, IconChessKnight, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLock, IconLockAccess, IconMail, IconMailAi, IconMailFast, IconMailFilled, IconMailOpened, IconMultiplier2x, IconPhoto, IconPin, IconPointerStar, IconRocket, IconShare, IconShare2, IconShare3, IconSocial, IconSparkles, IconSquareCheckFilled, IconTargetArrow, IconUserCheck, IconUsers, IconUsersGroup, IconWorld, }
+import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLockAccess, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconRocket, IconSparkles, IconTargetArrow, IconUserCheck, IconUsersGroup, IconWorld, }
   from '@tabler/icons-react'
 
 import GlassCard from '@/shared/components/cards/GlassCard'
@@ -23,8 +23,6 @@ export default function Welcome() {
 }
 
 const Hero = () => {
-  const { colorScheme } = useMantineColorScheme()
-
   const navigate = useNavigate()
 
   return (
@@ -48,9 +46,9 @@ const Hero = () => {
           </Title>
 
           <Stack w="90%" maw={320} gap={12} mx="auto">
-            <Button size="md" fw={700} onClick={() => { navigate("#join") }}>
+            <Butt404on size="md" fw={700} onClick={() => { navigate("#join") }}>
               GET STARTED
-            </Button>
+            </Butt404on>
             <Button size="md" fw={700} variant="light" onClick={() => { navigate("/login") }}>
               I ALREADY HAVE ACCOUNT
             </Button>
@@ -163,8 +161,7 @@ const Features = (
         {
           icon: IconSparkles,
           title: 'XP',
-          description:
-            'Life is about experience, see your score!',
+          description: "Life is about experience!",
         },
         {
           icon: IconCoins,
@@ -197,9 +194,9 @@ const Features = (
             'Buy boosts, features, and life packs.',
         },
       ].map(Feature => (
-        <Card withBorder key={randomId()} p={10}>
+        <Card withBorder key={randomId()} p={8} radius="lg">
           <Group gap={10} wrap="nowrap" align="flex-start">
-            <ThemeIcon variant="gradient" gradient={{ from: "green", to: "teal" }} size={40}>
+            <ThemeIcon variant="gradient" gradient={{ from: "green", to: "teal" }} size={40} radius={12}>
               <Feature.icon stroke={2.25} size={26} />
             </ThemeIcon>
             <Stack gap={0}>
@@ -311,7 +308,7 @@ const Join = (
 
 import { randomId } from '@mantine/hooks'
 import { vanilla } from '@/styles/theme'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Emoji from '@/shared/components/misc/Emoji'
 
 function FAQ() {
@@ -331,7 +328,7 @@ function FAQ() {
   ]
 
   return (
-    <Paper my={50}>
+    <Paper my={50} id='faq'>
       <Title order={2} fw={750} ta="center">FAQs</Title>
       <Text ta="center">Frequently Asked Questions</Text>
 
@@ -351,9 +348,6 @@ function FAQ() {
   )
 }
 
-const text = `      We need to create the next generation human. <br />
-This is a civilizational moment in human history. <br />
-We will go extinct, or will adapt to our new digital-native reality.`
 
 const Pricing = (
   <Paper id='pricing'>

@@ -55,12 +55,15 @@ function Header() {
           justifyItems: "center",
           alignItems: "center",
         }}>
-        <Image
-          src={useThemed({ dark: "/images/trekie_Brand_White.svg", light: "/images/trekie_Brand.svg" })}
-          h="auto"
-          w={"calc(200px + 2.5vw)"}
-          px="md"
-        />
+        <Link to="/welcome">
+          <Image
+            src={useThemed({ dark: "/images/trekie_Brand_White.svg", light: "/images/trekie_Brand.svg" })}
+            h="auto"
+            w={"calc(200px + 2.5vw)"}
+            px="md"
+          />
+        </Link>
+
 
         <Paper py={4}>
           <Group gap={0}>

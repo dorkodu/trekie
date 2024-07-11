@@ -95,6 +95,7 @@ export const router = createBrowserRouter(
         <Route path="/about" element={view('website:About')} />
 
         <Route path="/legal/:document" element={view('website:Legal')} />
+        <Route path="/legal" element={view('website:Legal')} />
 
         <Route path="/404" element={view('website:NotFound')} />
       </Route>

@@ -39,7 +39,6 @@ export const Hero = {
 
 export const Footer = {
   Root: style({
-    background:  vanilla.colors.default,
     borderRadius: vanilla.radius.lg,
     padding: vanilla.spacing.md,
     margin: `${vanilla.spacing.md} ${vanilla.spacing.xs}`,
