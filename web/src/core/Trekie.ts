@@ -9,6 +9,7 @@ import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
 import { utils } from '@/shared/utils'
 
 import { IUser } from '@/core/account'
+import { Console } from 'console'
 export * from '@/core/account'
 
 export interface GameState {
@@ -39,38 +40,41 @@ export function Game(state: GameState = defaultState) {
       immer((set, get) => ({
         ...state,
         dailyProgress() {
-          get().refresh()
-
           let ratio = get().xpToday / get().xpTargetDaily
           return ratio
         },
         calculateStreak() {
-          let count = get().streak
 
-          set($ => {
-            // If user is now above/equal to target xp and didn't do a streak today
-            const deserveStreak = $.xpToday >= $.xpTargetDaily
-            const hasStreakToday = utils.isSameDay($.lastStreak, Date.now())
+          // If user is now above/equal to target xp and didn't do a streak today
+          const deserveStreak = get().xpToday >= get().xpTargetDaily
+          const hasStreakToday = utils.isSameDay(get().lastStreak, Date.now())
 
-            if (deserveStreak && !hasStreakToday) {
+          const isStreaking = deserveStreak && !hasStreakToday
+          const lostStreak = !deserveStreak && hasStreakToday
+
+          if (isStreaking) {
+            set($ => {
               $.streak = $.streak + 1
+              $.momentum = $.momentum + 100
+
               $.lastStreak = Date.now()
-            }
-            // If user is now below target xp and did a streak today
-            else if (!deserveStreak && hasStreakToday) {
-              --$.streak
-              $.lastStreak = undefined
-            }
+            })
+          }
 
-            count = $.streak
-          })
+          if (lostStreak) {
+            set($ => {
+              // Reduce streak count if user don't deserve && has a streak already
+              if ($.streak > 0) {
+                --$.streak
+                $.lastStreak = undefined
+              }
+            })
+          }
 
-          return count
+          console.log("STREAK: " + get().streak)
         },
         changeXp: (change: number) => {
           set($ => {
-            $.refresh()
-
             let newTotalXp = $.xp + change
             let newDailyXp = $.xpToday + change
 
@@ -86,14 +90,14 @@ export function Game(state: GameState = defaultState) {
 
             // add XP to history
             $.xpHistory[daystamp.today()] = newDailyXp
-            console.log("XPHistory: ", $.xpHistory[daystamp.today()])
+            console.log("Daily XP: ", $.xpToday)
+            console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
 
+            $.calculateStreak()
 
             // Handle user's last xp date
             if (!utils.isSameDay($.lastXp, Date.now()))
               $.lastXp = Date.now()
-
-            $.refresh()
           })
         },
         dailyRefresh() {
@@ -110,6 +114,9 @@ export function Game(state: GameState = defaultState) {
             $.lastActive = Date.now()
           })
         },
+        calculateMomentum() {
+
+        },
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
           set($ => {
@@ -123,7 +130,7 @@ export function Game(state: GameState = defaultState) {
             // then we calculate new values
 
             $.calculateStreak()
-
+            $.calculateMomentum()
             $.lastActive = Date.now()
           })
         },
@@ -162,7 +169,8 @@ export interface GameActions {
   refresh: () => void
   dailyRefresh: () => void
   dailyProgress: () => number
-  calculateStreak: () => number
+  calculateStreak: () => void
+  calculateMomentum: () => void
   changeXp: (change: number) => void,
   reset: () => void
 }

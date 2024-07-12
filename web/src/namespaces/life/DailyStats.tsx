@@ -10,20 +10,16 @@ import { SumCard } from './SumCard'
 import { DailyProgress } from './DailyProgress'
 
 export function DailyStats() {
-  const momentum = trekie.game($ => $.momentum)
-  const xp = trekie.game($ => $.xp)
-  const coins = trekie.game($ => $.coins)
-  const streak = trekie.game($ => $.streak)
   const progress = trekie.game($ => $.dailyProgress())
 
   return (
     <Paper>
       <Stack>
         <SimpleGrid cols={{ base: 2 }} spacing="xs">
-          <MomentumStatus value={momentum} />
-          <StreakStatus days={streak} />
-          <XPStatus value={xp} />
-          <CoinStatus value={coins} />
+          <MomentumStatus />
+          <StreakStatus />
+          <XPStatus />
+          <CoinStatus />
         </SimpleGrid>
 
         <DailyProgress value={progress} />
@@ -32,45 +28,53 @@ export function DailyStats() {
   )
 }
 
-export function StreakStatus({ days }: { days: number }) {
+export function StreakStatus() {
+  const streak = trekie.game($ => $.streak)
+  console.log("STATUS: ", streak)
   return (
     <SumCard
       icon={<Emoji emoji="🔥" size={24} />}
       kind="STREAK"
-      value={days}
+      value={streak}
       color="orange"
     />
   )
 }
 
-export function XPStatus({ value }: { value: number }) {
+export function XPStatus() {
+  const xp = trekie.game($ => $.xp)
+
   return (
     <SumCard
       icon={<Emoji emoji="💠" size={24} />}
       kind="XP"
-      value={value}
+      value={xp}
       color="blue"
     />
   )
 }
 
-export function CoinStatus({ value }: { value: number }) {
+export function CoinStatus() {
+  const coins = trekie.game($ => $.coins)
+
   return (
     <SumCard
       icon={<Emoji emoji="🪙" size={24} />}
       kind="Coins"
-      value={value}
+      value={coins}
       color="yellow"
     />
   )
 }
 
-export function MomentumStatus({ value }: { value: number }) {
+export function MomentumStatus() {
+  const momentum = trekie.game($ => $.momentum)
+
   return (
     <SumCard
       icon={<Emoji emoji="🚀" size={24} />}
       kind="MOMENTUM"
-      value={value}
+      value={momentum}
       color="green"
     />
   )
