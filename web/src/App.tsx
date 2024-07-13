@@ -15,6 +15,8 @@ import { trpc } from '@/shared/lib/trpc'
 import { useAppStore } from '@/shared/stores/appStore'
 import { Notifications } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ModalsProvider } from '@mantine/modals'
+import HabitEditorModal from './namespaces/habit/HabitEditorModal'
 
 function App() {
 
@@ -58,12 +60,16 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <ColorSchemeScript defaultColorScheme="light" />
           <MantineProvider theme={theme} defaultColorScheme="light">
-            <Notifications limit={3} position="top-center" zIndex={99999} />
-            {loading.auth && <OverlayLoader full={true} />}
-            {!loading.auth && <Outlet />}
+            <ModalsProvider modals={{ habitEditor: HabitEditorModal }}>
 
-            {/* Modals */}
-            <UpdateSWModal />
+              <Notifications limit={3} position="top-center" zIndex={99999} />
+              {loading.auth && <OverlayLoader full={true} />}
+              {!loading.auth && <Outlet />}
+
+              {/* Modals */}
+              <UpdateSWModal />
+
+            </ModalsProvider>
           </MantineProvider>
 
           <ScrollRestoration />

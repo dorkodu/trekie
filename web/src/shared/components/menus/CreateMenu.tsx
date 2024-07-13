@@ -3,6 +3,7 @@ import { useAppStore } from '@/shared/stores/appStore'
 import { vanilla } from '@/styles/theme'
 import { ActionIcon, Badge, Box, Button, Divider, Flex, FloatingPosition, Menu, Stack, rgba } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { modals } from '@mantine/modals'
 import { IconCopyCheck } from '@tabler/icons-react'
 import { IconPhotoPlus, IconPlus, IconTargetArrow } from '@tabler/icons-react'
 import { PropsWithChildren } from 'react'
@@ -16,7 +17,7 @@ function CreateMenu({ children, popupPosition = "top-end" }: Props) {
 
   const onHabit = () => {
     useAppStore.setState(s => {
-      s.modals.habitEditor.opened = true
+      modals.openContextModal()
     })
     close()
   }
