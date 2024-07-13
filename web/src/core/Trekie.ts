@@ -9,6 +9,7 @@ import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
 import { utils } from '@/shared/utils'
 
 import { IUser } from '@/core/account'
+import { calculateStreak } from './commons/life'
 export * from '@/core/account'
 
 export interface GameState {
@@ -43,11 +44,9 @@ export function Game(state: GameState = defaultState) {
           return ratio
         },
         calculateStreak() {
-          set((state) => ({
-            streak: 100,
-          }))
-
-          console.log("Streak: ", get().streak)
+          set($ => {
+            $.streak = calculateStreak($.xpHistory, $.xpTargetDaily)
+          })
         },
         changeXp: (change: number) => {
           set($ => {
@@ -66,15 +65,15 @@ export function Game(state: GameState = defaultState) {
 
             // add XP to history
             $.xpHistory[daystamp.today()] = newDailyXp
-            console.log("Daily XP: ", $.xpToday)
-            console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
+            // console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
 
-            $.calculateStreak()
 
             // Handle user's last xp date
             if (!utils.isSameDay($.lastXp, Date.now()))
               $.lastXp = Date.now()
           })
+
+          get().refresh()
         },
         dailyRefresh() {
           set($ => {
@@ -84,33 +83,31 @@ export function Game(state: GameState = defaultState) {
 
             // then we calculate new values
             $.xpTargetDaily = 100
-            $.calculateStreak()
 
             // update last active date
             $.lastActive = Date.now()
           })
+
+          get().refresh()
         },
         calculateMomentum() {
-          set((state) => ({
-            momentum: 100,
-          }));
+
         },
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
-          set($ => {
-            const user = $.user
-            if (!user) return
+          const user = get().user
+          if (!user) return
 
+          set($ => {
             // first we reset stale values
             if (!utils.isSameDay($.lastActive, Date.now()))
               $.xpToday = 0 // reset daily xp
 
-            // then we calculate new values
-
-            $.calculateStreak()
-            $.calculateMomentum()
             $.lastActive = Date.now()
           })
+
+          get().calculateStreak()
+          get().calculateMomentum()
         },
         reset() { set(defaultState) },
       })),
