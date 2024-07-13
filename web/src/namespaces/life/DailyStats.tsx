@@ -30,7 +30,7 @@ export function DailyStats() {
 
 export function StreakStatus() {
   const streak = trekie.game($ => $.streak)
-  console.log("STATUS: ", streak)
+
   return (
     <SumCard
       icon={<Emoji emoji="🔥" size={24} />}

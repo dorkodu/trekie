@@ -9,8 +9,6 @@ import { theme } from '@/styles/theme'
 import OverlayLoader from '@/shared/components/loaders/OverlayLoader'
 import UpdateSWModal from '@/shared/components/modals/UpdateSWModal'
 
-import { useRefreshStatsDaily } from '@/core/hooks'
-
 import ApplicationError from '@/shared/components/misc/ApplicationError'
 import { onError, onReset } from '@/shared/lib/errors'
 import { trpc } from '@/shared/lib/trpc'

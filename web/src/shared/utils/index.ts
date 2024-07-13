@@ -52,15 +52,8 @@ export function isSameDay(
   t1: Timestamp | undefined,
   t2: Timestamp | undefined
 ): boolean {
-  const d1 = t1 ? new Date(t1) : undefined
-  const d2 = t2 ? new Date(t2) : undefined
-  if (d1 === undefined || d2 === undefined) return false
-
-  return (
-    d1.getDate() === d2.getDate() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getFullYear() === d2.getFullYear()
-  )
+  if (!t1 || !t2) return false
+  return getDayDiff(t1, t2) === 0
 }
 
 export type Maybe<T> = NonNullable<T> | undefined

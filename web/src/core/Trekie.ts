@@ -9,7 +9,6 @@ import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
 import { utils } from '@/shared/utils'
 
 import { IUser } from '@/core/account'
-import { Console } from 'console'
 export * from '@/core/account'
 
 export interface GameState {
@@ -44,34 +43,11 @@ export function Game(state: GameState = defaultState) {
           return ratio
         },
         calculateStreak() {
+          set((state) => ({
+            streak: 100,
+          }))
 
-          // If user is now above/equal to target xp and didn't do a streak today
-          const deserveStreak = get().xpToday >= get().xpTargetDaily
-          const hasStreakToday = utils.isSameDay(get().lastStreak, Date.now())
-
-          const isStreaking = deserveStreak && !hasStreakToday
-          const lostStreak = !deserveStreak && hasStreakToday
-
-          if (isStreaking) {
-            set($ => {
-              $.streak = $.streak + 1
-              $.momentum = $.momentum + 100
-
-              $.lastStreak = Date.now()
-            })
-          }
-
-          if (lostStreak) {
-            set($ => {
-              // Reduce streak count if user don't deserve && has a streak already
-              if ($.streak > 0) {
-                --$.streak
-                $.lastStreak = undefined
-              }
-            })
-          }
-
-          console.log("STREAK: " + get().streak)
+          console.log("Streak: ", get().streak)
         },
         changeXp: (change: number) => {
           set($ => {
@@ -115,7 +91,9 @@ export function Game(state: GameState = defaultState) {
           })
         },
         calculateMomentum() {
-
+          set((state) => ({
+            momentum: 100,
+          }));
         },
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
