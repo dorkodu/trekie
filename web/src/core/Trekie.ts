@@ -28,7 +28,7 @@ export interface GameState {
   lastStreak: Maybe<Timestamp>
   lastDailyCheck: Maybe<Timestamp>,
 
-  xpHistory: Record<Daystamp, number>
+  xpHistory: { [date: Daystamp]: number }
 }
 
 export type VanillaGame = ReturnType<typeof Game>["game"]
@@ -65,7 +65,7 @@ export function Game(state: GameState = defaultState) {
 
             // add XP to history
             $.xpHistory[daystamp.today()] = newDailyXp
-            // console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
+            console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
 
 
             // Handle user's last xp date
@@ -83,6 +83,8 @@ export function Game(state: GameState = defaultState) {
 
             // then we calculate new values
             $.xpTargetDaily = 100
+
+            $.xpHistory[daystamp.today()] = 0
 
             // update last active date
             $.lastActive = Date.now()

@@ -68,6 +68,9 @@ export const daystamp = {
     let date = new Date(input ?? Date.now())
     return date.toISOString().split('T')[0] as Daystamp
   },
+  fromDate(date: Date): Daystamp {
+    return date.toISOString().split('T')[0] as Daystamp
+  },
   match(daystamp: Daystamp, timestamp: Timestamp): boolean {
     return daystamp == this.get(timestamp)
   },

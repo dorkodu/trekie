@@ -1,4 +1,5 @@
-import { IUser } from "../Trekie"
+import { daystamp } from "@/shared/utils"
+import { IUser, TrekieStoreInterface } from "../Trekie"
 
 export interface ILife {
   id: string
@@ -26,38 +27,34 @@ export enum IStoryKind {
   Mixed,
 }
 
+// Function to calculate the current streak based on xpHistory and dailyXpTarget
 export function calculateStreak(
-  xpHistory: { [date: string]: number },
+  xpHistory: TrekieStoreInterface["xpHistory"], // { [date: Daystamp]: number }
   dailyXpTarget: number
 ): number {
-  // Helper function to convert date strings in "dd-MM-yyyy" format to Date objects
-  const toDate = (dateString: string): Date => {
-    const [day, month, year] = dateString.split('-').map(Number);
-    return new Date(year, month - 1, day);
-  };
+  let currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - 1); // Start from yesterday
+  let streak: number = 0; // Initialize the streak count
 
-  // Step 1: Filter dates that meet or exceed the daily XP target, convert to Date objects, and sort in ascending order
-  const dates = Object.keys(xpHistory)
-    .filter(date => xpHistory[date] >= dailyXpTarget)
-    .map(toDate)
-    .sort((a, b) => a.getTime() - b.getTime());
+  // Loop through each day in reverse, checking if the XP meets the daily target
+  while (true) {
+    const dateString = daystamp.fromDate(currentDate); // Convert the date to the required format
+    const xp = xpHistory[dateString]; // Get the XP for the current date
 
-  // Step 2: If no valid dates, return a streak of 0
-  if (dates.length === 0) return 0;
-
-  let streak = 1; // Initialize the streak count
-
-  // Step 3: Calculate the streak by checking consecutive dates
-  for (let i = dates.length - 1; i > 0; i--) {
-    const diffDays = (dates[i].getTime() - dates[i - 1].getTime()) / (1000 * 60 * 60 * 24);
-
-    // If the difference is exactly 1 day, increment the streak
-    if (diffDays === 1) {
+    // If the XP meets or exceeds the daily target, increment the streak
+    if (xp && xp >= dailyXpTarget) {
       streak++;
+      currentDate.setDate(currentDate.getDate() - 1); // Move to the previous day
     } else {
-      break; // If the difference is more than 1 day, the streak is broken
+      break; // If the XP doesn't meet the target, break the loop
     }
   }
 
-  return streak; // Step 4: Return the calculated streak
-};
+  // Check if today's XP meets or exceeds the daily target
+  const todaysXp = xpHistory[daystamp.fromDate(new Date())];
+  if (todaysXp && todaysXp >= dailyXpTarget) {
+    streak++;
+  }
+
+  return streak; // Return the calculated streak
+}

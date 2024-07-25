@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 import * as Trekie from "../Trekie"
 
 import { Maybe, Timestamp } from "@/shared/utils"

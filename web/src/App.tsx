@@ -23,6 +23,7 @@ function App() {
   const loading = useAppStore(state => state.loading)
 
   const [queryClient] = useState(() => new QueryClient())
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -31,13 +32,11 @@ function App() {
           // You can pass any HTTP headers you wish here
           async headers() {
             return {
-              authorization: "aaaa-bbbb-cccc-dddd"
             }
           },
         }),
       ],
-    }),
-  )
+    }))
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API

@@ -74,6 +74,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     if (updateStats) {
       game.setState($ => {
         $.xp -= habitCount
+        $.xpHistory[daystamp.today()] -= habitDailyCurrent
         $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
         $.xpTargetDaily -= habitDailyTarget
       })
