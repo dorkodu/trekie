@@ -10,7 +10,8 @@ import { SumCard } from './SumCard'
 import { DailyProgress } from './DailyProgress'
 
 export function DailyStats() {
-  const progress = trekie.game($ => $.dailyProgress())
+  // refresh every time daily stats is rendered
+  trekie.game($ => $.refresh())
 
   return (
     <Paper>
@@ -22,7 +23,7 @@ export function DailyStats() {
           <CoinStatus />
         </SimpleGrid>
 
-        <DailyProgress value={progress} />
+        <DailyProgress />
       </Stack>
     </Paper>
   )

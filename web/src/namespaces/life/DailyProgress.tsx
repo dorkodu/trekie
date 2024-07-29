@@ -1,12 +1,15 @@
 import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
 import { format } from "@/shared/utils/format"
 import { vanilla } from '@/styles/theme'
+import trekie from '@/shared/lib/trekie'
 
-export function DailyProgress({ value }: { value: number }) {
+export function DailyProgress() {
+  let progress = trekie.game($ => $.dailyProgress())
+
   let color: MantineColor
   let message: string
 
-  value = value * 100
+  let value = progress * 100
   let haveProgressToday = value > 0
 
   if (value > 0 && value < 30) {
