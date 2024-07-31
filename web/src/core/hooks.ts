@@ -10,7 +10,7 @@ export function useRefreshStatsDaily() {
     tomorrow.setDate(tomorrow.getDate() + 1)
     tomorrow.setUTCHours(0, 0, 0, 0)
 
-    let interval: NodeJS.Timeout | undefined = undefined
+    let interval: ReturnType<typeof setInterval>
     let timeout = setTimeout(() => {
       task()
       interval = setInterval(task, 24 * 60 * 60 * 1000)

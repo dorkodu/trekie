@@ -17,6 +17,7 @@ import { Notifications } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ModalsProvider } from '@mantine/modals'
 import HabitEditorModal from './namespaces/habit/HabitEditorModal'
+import { useRefreshStatsDaily } from './core'
 
 function App() {
 
@@ -44,10 +45,9 @@ function App() {
     // auth.login()
   }, [loading.auth])
 
-  // app hooks
 
   // trekie hooks
-  // useRefreshStatsDaily()
+  useRefreshStatsDaily()
 
   return (
     <ErrorBoundary
