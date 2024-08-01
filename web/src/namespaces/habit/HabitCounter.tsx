@@ -40,7 +40,7 @@ function HabitCounter({ habitId, onClick }: Props) {
           color="green"
           h="auto"
           onClick={ev => onChangeCount(ev, +1)}
-          px="sm">
+          px="xs">
           <Flex
             style={{
               background: 'rgba(255,255,255,0.25)',
@@ -59,8 +59,9 @@ function HabitCounter({ habitId, onClick }: Props) {
         <Flex
           direction="column"
           justify="center"
-          px="sm"
-          py="xs"
+          py="sm"
+          pl="sm"
+          pr={8}
           style={{
             flex: 1,
           }}
@@ -91,7 +92,7 @@ function HabitCounter({ habitId, onClick }: Props) {
           color="red"
           h="auto"
           onClick={ev => onChangeCount(ev, -1)}
-          px="sm"
+          px="xs"
         >
           <Flex
             style={{

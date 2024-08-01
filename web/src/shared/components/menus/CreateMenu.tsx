@@ -7,6 +7,7 @@ import { modals } from '@mantine/modals'
 import { IconCopyCheck } from '@tabler/icons-react'
 import { IconPhotoPlus, IconPlus, IconTargetArrow } from '@tabler/icons-react'
 import { PropsWithChildren } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface Props extends PropsWithChildren {
   popupPosition: FloatingPosition
@@ -14,26 +15,33 @@ interface Props extends PropsWithChildren {
 
 function CreateMenu({ children, popupPosition = "top-end" }: Props) {
   const [opened, { open, close }] = useDisclosure()
+  const navigate = useNavigate()
 
   const onHabit = () => {
-    useAppStore.setState(s => {
-      modals.openContextModal()
+    modals.openContextModal({
+      modal: "habitEditor",
+      title: "New Habit",
+      innerProps: {
+        mode: "CREATE"
+      }
     })
     close()
   }
 
   const onGoal = () => {
-    useAppStore.setState(s => {
-      s.modals.goalEditor.opened = true
+    modals.openContextModal({
+      modal: "goalEditor",
+      title: "New Goal",
+      innerProps: {
+        mode: "CREATE"
+      }
     })
     close()
   }
 
   const onStory = () => {
-    useAppStore.setState(s => {
-      s.modals.memoryEditor.opened = true
-    })
     close()
+    navigate('/new-story')
   }
 
   return (

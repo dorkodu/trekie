@@ -1,104 +1,74 @@
-import { useApiStore } from '@/stores/apiStore'
-import { useAppStore } from '@/shared/stores/appStore'
-import { IGoal } from '../../../../core/src/types/goal'
-import { Button, Flex, Modal, TextInput, Textarea } from '@mantine/core'
+import { IHabit } from '@/core/commons/habit'
+import {
+  Button,
+  Checkbox,
+  Group,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+} from '@mantine/core'
+import { ContextModalProps } from '@mantine/modals'
+import { useForm } from '@mantine/form'
+import { IGoal } from '@/core/commons/goal'
 
-function GoalEditorModal() {
-  const goalEditor = useAppStore(state => state.modals.goalEditor)
-  const close = () => {
-    useAppStore.setState(s => {
-      s.modals.goalEditor.opened = false
+type GoalEditorMode = "CREATE" | "EDIT";
 
-      // If created/edited a goal, perform cleanup
-      if (s.modals.goalEditor.id) {
-        s.modals.goalEditor = {
-          opened: false,
-          id: undefined,
-          title: '',
-          description: '',
-        }
-      }
-    })
-  }
+const GoalEditorModal = ({
+  context,
+  id,
+  innerProps,
+}: ContextModalProps<{ mode: GoalEditorMode }>) => {
 
-  const setTitle = (text: string) => {
-    useAppStore.setState(s => {
-      s.modals.goalEditor.title = text
-    })
-  }
-  const setDescription = (text: string) => {
-    useAppStore.setState(s => {
-      s.modals.goalEditor.description = text
-    })
-  }
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      email: '',
+      termsOfService: false,
+    },
 
-  const onCreate = () => {
-    const currentUserId = useApiStore.getState().userId
-    if (!currentUserId) return
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  });
 
-    const goal: IGoal = {
-      id: Date.now().toString(),
-      userId: currentUserId,
-      title: goalEditor.title,
-      description: goalEditor.description,
-      tasksTodo: 0,
-      tasksDone: 0,
-    }
-
-    useApiStore.getState().addGoal(goal)
-    useAppStore.setState(s => {
-      s.modals.goalEditor.id = goal.id
-    })
-    close()
-  }
-
-  const onEdit = () => {
-    const currentUserId = useApiStore.getState().userId
-    if (!currentUserId) return
-
-    useApiStore.setState(s => {
-      if (!goalEditor.id) return
-      const goal = s.goals[goalEditor.id]
-      if (!goal) return
-
-      goal.title = goalEditor.title
-      goal.description = goalEditor.description
-    })
-
-    close()
-  }
-
-  return (
-    <Modal
-      opened={goalEditor.opened}
-      onClose={close}
-      lockScroll={false}
-      centered
-      size={360}
-      title="Goal editor"
-    >
-      <Flex direction="column" gap="md">
+  return (<>
+    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <Stack gap="sm">
         <TextInput
+          withAsterisk
           label="Title"
-          placeholder="Title..."
-          value={goalEditor.title}
-          onChange={ev => setTitle(ev.currentTarget.value)}
+          placeholder="Title"
+          key={form.key('title')}
+          {...form.getInputProps('title')}
         />
 
         <Textarea
+          withAsterisk
           label="Description"
-          placeholder="Description..."
-          value={goalEditor.description}
-          onChange={ev => setDescription(ev.currentTarget.value)}
-          autosize
+          placeholder="Description"
+          key={form.key('description')}
+          {...form.getInputProps('description')}
         />
 
-        <Button onClick={!goalEditor.id ? onCreate : onEdit}>
-          {!goalEditor.id ? 'Create' : 'Edit'}
-        </Button>
-      </Flex>
-    </Modal>
-  )
+        <TextInput
+          withAsterisk
+          label="XP Target"
+          type="number"
+          placeholder="0"
+          key={form.key('xpTarget')}
+          {...form.getInputProps('xpTarget')}
+        />
+
+        {innerProps.mode === "CREATE" && <Button type="submit" size="md">CREATE</Button>}
+        {innerProps.mode === "EDIT" && <Stack>
+          <Button type="submit" onClick={() => { }} size="md" color="red" variant="light">DELETE</Button>
+          <Button type="submit" size="md" color="blue">UPDATE</Button>
+        </Stack>}
+
+      </Stack>
+    </form>
+  </>)
 }
 
 export default GoalEditorModal

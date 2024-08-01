@@ -1,21 +1,5 @@
-import {
-  Anchor,
-  Box,
-  Divider,
-  Flex,
-  Group,
-  Image,
-  Stack,
-  Text,
-  ThemeIcon,
-  UnstyledButton,
-  useMantineColorScheme,
-} from '@mantine/core'
-import {
-  IconSettings,
-  IconHelp,
-  IconCoinFilled,
-} from '@tabler/icons-react'
+import { Anchor, Box, Divider, Flex, Group, Image, Stack, Text, ThemeIcon, UnstyledButton, useMantineColorScheme } from '@mantine/core'
+import { IconSettings, IconHelp, IconCoinFilled } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -30,7 +14,7 @@ export function AppMenu() {
   const user = trekie.game($ => $.user)
 
   return (
-    <Stack w={isWideScreen ? 300 : 260} gap={2}>
+    <Stack w={isWideScreen ? 310 : 260} gap={2} >
       <div>
         <UserButton onClick={() => { navigate('/me') }}
           user={{
@@ -43,9 +27,9 @@ export function AppMenu() {
 
       <div style={{ marginTop: 10 }}></div>
 
-      <MenuItem icon={<IconCoinFilled />}>Premium</MenuItem>
-      <MenuItem icon={<IconHelp />}>Help Center</MenuItem>
-      <MenuItem icon={<IconSettings />}>Settings</MenuItem>
+      <MenuItem icon={<IconCoinFilled />} onClick={() => { navigate('/premium') }}>Premium</MenuItem>
+      <MenuItem icon={<IconHelp />} onClick={() => { navigate('/help') }}>Help Center</MenuItem>
+      <MenuItem icon={<IconSettings />} onClick={() => { navigate('/settings') }}>Settings</MenuItem>
 
       <div style={{ marginTop: 10 }}></div>
       <div><ColorToggle size='lg' /></div>
@@ -53,7 +37,7 @@ export function AppMenu() {
       <Divider my={8} />
 
       {Footer}
-    </Stack>
+    </Stack >
   )
 }
 
@@ -99,13 +83,18 @@ const MenuItem = ({
   icon = <></>,
   right = <></>,
   children,
+  onClick = () => { }
 }: {
   children: React.ReactNode
   icon?: JSX.Element
   right?: React.ReactNode
+  onClick?: Function
 }) => {
   return (
-    <UnstyledButton className={styles.Item}>
+    <UnstyledButton className={styles.Item} onClick={(e) => {
+      e.preventDefault()
+      onClick()
+    }}>
       <Group wrap="nowrap" justify="space-between" align="center">
         <Group gap={6}>
           <ThemeIcon variant="default" size={32}>

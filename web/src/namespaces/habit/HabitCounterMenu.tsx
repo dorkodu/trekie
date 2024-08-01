@@ -2,15 +2,7 @@ import { trekie } from "@/shared/lib/trekie"
 import { useAppStore } from '@/shared/stores/appStore'
 import { IHabit } from '@/core/commons/habit'
 import { ActionIcon, Menu } from '@mantine/core'
-import {
-  IconClipboardText,
-  IconDots,
-  IconDotsVertical,
-  IconEdit,
-  IconExclamationCircle,
-  IconShare,
-  IconTrash,
-} from '@tabler/icons-react'
+import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
 import { vanilla } from '@/styles/theme'
 
@@ -53,6 +45,7 @@ function HabitCounterMenu({ habit }: Props) {
           variant="subtle"
           color="gray"
           onClick={ev => ev.stopPropagation()}
+          size="lg"
         >
           <IconDotsVertical color={vanilla.colors.gray.lightColor} />
         </ActionIcon>
