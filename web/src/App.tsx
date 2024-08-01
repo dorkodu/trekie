@@ -3,6 +3,7 @@ import { httpBatchLink } from '@trpc/client'
 import { useEffect, useState } from 'react'
 import { ErrorBoundary } from "react-error-boundary"
 import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { FlagsProvider } from "flagged";
 
 import { theme } from '@/styles/theme'
 
@@ -18,6 +19,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ModalsProvider } from '@mantine/modals'
 import HabitEditorModal from './namespaces/habit/HabitEditorModal'
 import { useRefreshStatsDaily } from './core'
+import GoalEditorModal from './namespaces/goal/GoalEditorModal'
+
 
 function App() {
 
@@ -55,25 +58,28 @@ function App() {
       onError={onError}
       onReset={onReset}
     >
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <ColorSchemeScript defaultColorScheme="light" />
-          <MantineProvider theme={theme} defaultColorScheme="light">
-            <ModalsProvider modals={{ habitEditor: HabitEditorModal }}>
+      <FlagsProvider features={{ beta: true, premium: false }}>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <ColorSchemeScript defaultColorScheme="light" />
+            <MantineProvider theme={theme} defaultColorScheme="light">
+              <ModalsProvider modals={{ habitEditor: HabitEditorModal, goalEditor: GoalEditorModal }}>
 
-              <Notifications limit={3} position="top-center" zIndex={99999} />
-              {loading.auth && <OverlayLoader full={true} />}
-              {!loading.auth && <Outlet />}
+                <Notifications limit={3} position="top-center" zIndex={99999} />
+                {loading.auth && <OverlayLoader full={true} />}
+                {!loading.auth && <Outlet />}
 
-              {/* Modals */}
-              <UpdateSWModal />
+                {/* Modals */}
+                <UpdateSWModal />
 
-            </ModalsProvider>
-          </MantineProvider>
+              </ModalsProvider>
+            </MantineProvider>
 
-          <ScrollRestoration />
-        </QueryClientProvider>
-      </trpc.Provider>
+            <ScrollRestoration />
+          </QueryClientProvider>
+        </trpc.Provider>
+      </FlagsProvider>
+
     </ErrorBoundary>
   )
 }
