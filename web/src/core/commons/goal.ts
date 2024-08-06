@@ -1,10 +1,7 @@
-import { create } from 'zustand'
 import * as Trekie from "../Trekie"
 
 import { Maybe, Timestamp } from "@/shared/utils"
 import { db } from "@/shared/lib/db"
-import { uuid } from "@/shared/lib/id"
-
 export interface IGoal extends IGoalTemplate {
   id: string
   userId: string
@@ -12,6 +9,7 @@ export interface IGoal extends IGoalTemplate {
   createdAt: Timestamp,
   lastUpdated: Timestamp,
 }
+import { ulid } from "ulid"
 
 export interface IGoalTemplate {
   title: string
@@ -19,7 +17,7 @@ export interface IGoalTemplate {
   xpTarget: number
 }
 
-//? Interfaces
+//? COMPONENT
 
 export interface Interface {
   get: (id: IGoal["id"]) => Promise<Maybe<IGoal>>
@@ -40,7 +38,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     if (!userId) return
 
     return {
-      id: uuid().toString(),
+      id: ulid(),
       xpCurrent: 0,
       ...props,
       userId

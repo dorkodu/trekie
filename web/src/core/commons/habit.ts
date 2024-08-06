@@ -1,8 +1,9 @@
+import { ulid } from "ulid"
+
 import * as Trekie from "@/core/Trekie"
 
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { db } from "@/shared/lib/db"
-import { uuid } from '@/shared/lib/id'
 import { errors } from "@/shared/lib/errors"
 
 //? Interfaces
@@ -128,7 +129,7 @@ export const Component = Trekie.Component<Interface>((game) => ({
     return {
       ...template,
 
-      id: uuid().toString(),
+      id: ulid(),
       count: 0,
       createdAt: new Date().getTime(),
       lastUpdated: new Date().getTime(),
