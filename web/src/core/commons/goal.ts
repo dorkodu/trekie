@@ -2,20 +2,28 @@ import * as Trekie from "../Trekie"
 
 import { Maybe, Timestamp } from "@/shared/utils"
 import { db } from "@/shared/lib/db"
-export interface IGoal extends IGoalTemplate {
-  id: string
-  userId: string
-  xpCurrent: number
-  createdAt: Timestamp,
-  lastUpdated: Timestamp,
-}
+import { z } from 'zod'
 import { ulid } from "ulid"
 
-export interface IGoalTemplate {
-  title: string
-  description: string
-  xpTarget: number
-}
+//? INTERFACE
+
+export type IGoal = z.infer<typeof IGoal>
+export type IGoalTemplate = z.infer<typeof IGoalTemplate>
+
+const IGoalTemplate = z.object({
+  title: z.string(),
+  description: z.string(),
+  xpTarget: z.number()
+})
+const IGoal = IGoalTemplate.extend({
+  id: z.string().ulid(),
+  userId: z.string(),
+  xpCurrent: z.number(),
+  createdAt: z.number() satisfies z.ZodType<Timestamp>,
+  lastUpdated: z.number() satisfies z.ZodType<Timestamp>
+})
+
+export const schema = { IGoalTemplate, IGoal }
 
 //? COMPONENT
 
