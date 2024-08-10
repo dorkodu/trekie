@@ -1,11 +1,9 @@
-import { useAppStore } from '@/shared/stores/appStore'
 import { Flex, Image, Loader, Modal, Title } from '@mantine/core'
+import { ContextModalProps } from '@mantine/modals'
 import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 
-function UpdateSWModal() {
-  const updateSW = useAppStore(state => state.modals.updateSW)
-
+const UpdateSWModal = ({ context, id, innerProps }: ContextModalProps<{}>) => {
   const {
     offlineReady: [_offlineReady, _setOfflineReady],
     needRefresh: [needRefresh, _setNeedRefresh],
@@ -14,21 +12,11 @@ function UpdateSWModal() {
 
   useEffect(() => {
     if (!needRefresh) return
-    useAppStore.setState(s => {
-      s.modals.updateSW.opened = true
-    })
     setTimeout(() => updateServiceWorker(true), 500)
   }, [needRefresh])
 
   return (
-    <Modal
-      opened={updateSW.opened}
-      onClose={() => { }}
-      lockScroll={false}
-      withCloseButton={false}
-      centered
-      size={360}
-    >
+    <>
       <Flex direction="column" gap="md" align="center">
         <Image src="/favicon.svg" w={100} h={100} />
 
@@ -36,7 +24,7 @@ function UpdateSWModal() {
 
         <Loader type="dots" />
       </Flex>
-    </Modal>
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import trekie from "@/shared/lib/trekie";
-import { IUser } from "@/core/Trekie";
+import { AccountTier, IUser } from "@/core/Trekie";
 import { LogKind, log } from "@/shared/utils/log";
 
 export interface AppStoreState {
@@ -12,44 +12,13 @@ export interface AppStoreState {
     timestamp: number
   }
 
-  loading: {
-    auth: boolean;
-  }
+  loading: { auth: boolean }
 
-  segments: {}
+  accountTier: AccountTier
 
   menu: {
     opened: boolean
   },
-
-  modals: {
-    updateSW: {
-      opened: boolean;
-    }
-
-    editProfile: {
-      opened: boolean;
-    }
-
-    habitEditor: {
-      opened: boolean;
-      id?: string;
-      title: string;
-      description: string;
-      dailyTarget: number;
-    }
-    goalEditor: {
-      opened: boolean;
-      id?: string;
-      title: string;
-      description: string;
-    }
-    memoryEditor: {
-      opened: boolean;
-      id?: string;
-      description: string;
-    }
-  }
 }
 
 export interface AppStoreAction {
@@ -78,15 +47,7 @@ const initialState: AppStoreState = {
     opened: false
   },
 
-  segments: {},
-
-  modals: {
-    updateSW: { opened: false },
-    editProfile: { opened: false },
-    habitEditor: { opened: false, title: "", description: "", dailyTarget: 0 },
-    goalEditor: { opened: false, title: "", description: "" },
-    memoryEditor: { opened: false, description: "" },
-  },
+  accountTier: AccountTier.DEVELOPER
 }
 
 export const useAppStore = create(

@@ -7,16 +7,21 @@ import { Menu as styles } from '@/styles/Layout.css'
 import ColorToggle from '../misc/ColorToggle'
 import { UserButton } from '../buttons/UserButton'
 import trekie from '@/shared/lib/trekie'
+import { useAppStore } from '@/shared/stores/appStore'
 
 export function AppMenu() {
   const isWideScreen = useMediaQuery('(min-width: 768px)')
   const navigate = useNavigate()
   const user = trekie.game($ => $.user)
+  const menu = useAppStore($ => $.menu)
 
   return (
     <Stack w={isWideScreen ? 310 : 260} gap={2} >
       <div>
-        <UserButton onClick={() => { navigate('/me') }}
+        <UserButton onClick={() => {
+          menu.close()
+          navigate('/me')
+        }}
           user={{
             avatar: user?.pictureUrl,
             name: user?.name,
@@ -27,9 +32,18 @@ export function AppMenu() {
 
       <div style={{ marginTop: 10 }}></div>
 
-      <MenuItem icon={<IconCoinFilled />} onClick={() => { navigate('/premium') }}>Premium</MenuItem>
-      <MenuItem icon={<IconHelp />} onClick={() => { navigate('/help') }}>Help Center</MenuItem>
-      <MenuItem icon={<IconSettings />} onClick={() => { navigate('/settings') }}>Settings</MenuItem>
+      <MenuItem icon={<IconCoinFilled />} onClick={() => {
+        menu.close()
+        navigate('/premium')
+      }}>Premium</MenuItem>
+      <MenuItem icon={<IconHelp />} onClick={() => {
+        menu.close()
+        navigate('/help')
+      }}>Help Center</MenuItem>
+      <MenuItem icon={<IconSettings />} onClick={() => {
+        menu.close()
+        navigate('/settings')
+      }}>Settings</MenuItem>
 
       <div style={{ marginTop: 10 }}></div>
       <div><ColorToggle size='lg' /></div>

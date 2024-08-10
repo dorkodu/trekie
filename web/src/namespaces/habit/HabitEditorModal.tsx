@@ -1,152 +1,61 @@
-import { IHabit } from '@trekie/core/src/commons/habit'
+import { IHabit } from '@/core/commons/habit'
 import {
   Button,
-  Flex,
-  Modal,
-  NumberInput,
-  NumberInputHandlers,
+  Group,
+  Stack,
+  Text,
   TextInput,
-  Textarea,
 } from '@mantine/core'
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
-import { MouseEvent, useRef } from 'react'
-import { useAppStore } from '@/shared/stores/appStore'
-import trekie from '@/shared/lib/trekie'
+import { ContextModalProps } from '@mantine/modals'
+import { useForm } from '@mantine/form'
 
-function HabitEditorModal() {
-  const habitEditor = useAppStore($ => $.modals.habitEditor)
-  const close = () => {
-    useAppStore.setState($ => {
-      $.modals.habitEditor.opened = false
+interface Props {
+  opened: boolean
+  onClose: () => void
 
-      // If created/edited a habit, perform cleanup
-      if ($.modals.habitEditor.id) {
-        $.modals.habitEditor = {
-          opened: false,
-          id: undefined,
-          title: '',
-          description: '',
-          dailyTarget: 0,
-        }
-      }
-    })
-  }
+  habit: IHabit | undefined
 
-  const setTitle = (text: string) => {
-    useAppStore.setState(s => {
-      s.modals.habitEditor.title = text
-    })
-  }
-  const setDescription = (text: string) => {
-    useAppStore.setState(s => {
-      s.modals.habitEditor.description = text
-    })
-  }
-  const setDailyTarget = (target: number) => {
-    useAppStore.setState(s => {
-      s.modals.habitEditor.dailyTarget = target
-    })
-  }
+  onCreate: (front: string, back: string) => void
+  onUpdate: (id: string, front: string, back: string) => void
+  onDelete: (id: string) => void
+}
 
-  const dailyTargetRef = useRef<NumberInputHandlers>(null)
+const HabitEditorModal = ({
+  context,
+  id,
+  innerProps,
+}: ContextModalProps<{ modalBody: string }>) => {
 
-  const onCreate = () => {
-    const currentUser = trekie.game($ => $.user)
-    if (!currentUser) return
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      email: '',
+      termsOfService: false,
+    },
 
-    const habit = trekie.habit.create({
-      title: habitEditor.title,
-      description: habitEditor.description,
-      dailyTarget: habitEditor.dailyTarget,
-    })
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  });
 
-    if (!habit) return
-
-    trekie.habit.add(habit)
-
-    useAppStore.setState($ => {
-      $.modals.habitEditor.id = habit.id
-    })
-    close()
-  }
-
-  const onEdit = () => {
-    const currentUser = trekie.game($ => $.user)
-    if (!currentUser) return
-
-    if (habitEditor.id) {
-      useApiStore
-        .getState()
-        .updateHabit(
-          habitEditor.id,
-          habitEditor.title,
-          habitEditor.description,
-          habitEditor.dailyTarget
-        )
-    }
-
-    close()
-  }
-
-  return (
-    <Modal
-      opened={habitEditor.opened}
-      onClose={close}
-      lockScroll={false}
-      centered
-      size={360}
-      title="Habit editor"
-    >
-      <Flex direction="column" gap="md">
+  return (<>
+    <Text size="sm">{innerProps.modalBody}</Text>
+    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <Stack>
         <TextInput
+          withAsterisk
           label="Title"
-          placeholder="Title..."
-          value={habitEditor.title}
-          onChange={ev => setTitle(ev.currentTarget.value)}
+          placeholder="Title"
+          key={form.key('title')}
+          {...form.getInputProps('title')}
         />
 
-        <Textarea
-          label="Description"
-          placeholder="Description..."
-          value={habitEditor.description}
-          onChange={ev => setDescription(ev.currentTarget.value)}
-          autosize
-        />
-
-        <Flex gap="md" align="end">
-          <Button
-            variant="default"
-            onClick={() => dailyTargetRef.current?.decrement()}
-            onMouseDown={(ev: MouseEvent) => ev.preventDefault()}
-          >
-            <IconChevronLeft />
-          </Button>
-
-          <NumberInput
-            label="Daily Target"
-            value={habitEditor.dailyTarget}
-            onChange={value => setDailyTarget(Number(value))}
-            hideControls
-            min={0}
-            max={99}
-            handlersRef={dailyTargetRef}
-          />
-
-          <Button
-            variant="default"
-            onClick={() => dailyTargetRef.current?.increment()}
-            onMouseDown={(ev: MouseEvent) => ev.preventDefault()}
-          >
-            <IconChevronRight />
-          </Button>
-        </Flex>
-
-        <Button onClick={!habitEditor.id ? onCreate : onEdit}>
-          {!habitEditor.id ? 'Create' : 'Edit'}
-        </Button>
-      </Flex>
-    </Modal>
-  )
+        <Group justify="center" mt="md">
+          <Button type="submit" w="100%" size="md" fw={700}>CREATE</Button>
+        </Group>
+      </Stack>
+    </form>
+  </>)
 }
 
 export default HabitEditorModal

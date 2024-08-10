@@ -5,6 +5,7 @@ import { ActionIcon, Menu } from '@mantine/core'
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
 import { vanilla } from '@/styles/theme'
+import { modals } from "@mantine/modals"
 
 interface Props {
   habit: IHabit
@@ -12,6 +13,7 @@ interface Props {
 
 function HabitCounterMenu({ habit }: Props) {
   const currentUserId = trekie.game($ => $.user?.id)
+  const isHabitOwner = habit.userId === currentUserId
 
   const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
   const onClipboard = (ev: MouseEvent) => { ev.stopPropagation() }
@@ -19,12 +21,12 @@ function HabitCounterMenu({ habit }: Props) {
   const onEdit = (ev: MouseEvent) => {
     ev.stopPropagation()
 
-    useAppStore.setState($ => {
-      $.modals.habitEditor.opened = true
-      $.modals.habitEditor.id = habit.id
-      $.modals.habitEditor.title = habit.title
-      $.modals.habitEditor.description = habit.description
-      $.modals.habitEditor.dailyTarget = habit.dailyTarget
+    modals.openContextModal({
+      modal: "habitEditor",
+      title: "Edit Habit",
+      innerProps: {
+        mode: "EDIT"
+      }
     })
   }
 
@@ -66,28 +68,17 @@ function HabitCounterMenu({ habit }: Props) {
           <>
             <Menu.Divider />
 
-            {currentUserId === habit.userId ? (
-              <>
-                <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                  Edit Habit
-                </Menu.Item>
-                <Menu.Item
-                  onClick={onDelete}
-                  leftSection={<IconTrash />}
-                  c="red"
-                >
-                  Delete Habit
-                </Menu.Item>
-              </>
-            ) : (
-              <Menu.Item
-                onClick={onReport}
-                color="red"
-                leftSection={<IconExclamationCircle />}
-              >
-                Report habit
+            {isHabitOwner ? (<>
+              <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
+                Edit Habit
               </Menu.Item>
-            )}
+              <Menu.Item onClick={onDelete} leftSection={<IconTrash />} c="red">
+                Delete Habit
+              </Menu.Item>
+            </>) :
+              (<Menu.Item onClick={onReport} color="red" leftSection={<IconExclamationCircle />}>
+                Report habit
+              </Menu.Item>)}
           </>
         )}
       </Menu.Dropdown>
