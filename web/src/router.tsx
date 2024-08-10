@@ -71,14 +71,14 @@ export const router = createBrowserRouter(
         <Route path="/market" element={view('app:Market')} />
         <Route path="/me" element={view('app:Me')} />
         <Route path="/social" element={view('app:Social')} />
-
-        {/* trekie.io/@doruk */}
-        <Route path="/:path" element={<PathMiddleware />} />
-
         <Route path="/super" element={view('app:Premium')} />
         <Route path="/premium" element={view('app:Premium')} />
         <Route path="/archive" element={view('app:Archive')} />
         <Route path="/settings/*" element={view('app:Settings')} />
+        <Route path="/help/*" element={view('app:Help')} />
+
+        {/* trekie.io/@doruk */}
+        <Route path="/:path" element={<PathMiddleware />} />
       </Route>
 
       {/* User Flow */}
@@ -91,12 +91,9 @@ export const router = createBrowserRouter(
       <Route element={layout('Website')}>
         <Route path="/" element={view('website:Welcome')} />
         <Route path="/welcome" element={view('website:Welcome')} />
-
         <Route path="/about" element={view('website:About')} />
-
         <Route path="/legal/:document" element={view('website:Legal')} />
         <Route path="/legal" element={view('website:Legal')} />
-
         <Route path="/404" element={view('website:NotFound')} />
       </Route>
 

@@ -1,9 +1,9 @@
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import { httpBatchLink } from '@trpc/client'
 import { useEffect, useState } from 'react'
-import { ErrorBoundary } from "react-error-boundary"
+import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
-import { FlagsProvider } from "flagged";
+import { FlagsProvider } from 'flagged'
 
 import { theme } from '@/styles/theme'
 
@@ -20,14 +20,13 @@ import { ModalsProvider } from '@mantine/modals'
 import HabitEditorModal from './namespaces/habit/HabitEditorModal'
 import { useRefreshStatsDaily } from './core'
 import GoalEditorModal from './namespaces/goal/GoalEditorModal'
-
+import { modals } from './shared/components/modals'
 
 function App() {
-
-  const loading = useAppStore(state => state.loading)
+  const loading = useAppStore($ => $.loading)
+  const premium = true // useAppStore($ => $.accountTier === 'PREMIUM')
 
   const [queryClient] = useState(() => new QueryClient())
-
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -36,18 +35,19 @@ function App() {
           // You can pass any HTTP headers you wish here
           async headers() {
             return {
+              authorization: 'wishyouwerehere',
             }
           },
         }),
       ],
-    }))
+    })
+  )
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
     if (!loading.auth) return
     // auth.login()
   }, [loading.auth])
-
 
   // trekie hooks
   useRefreshStatsDaily()
@@ -58,28 +58,24 @@ function App() {
       onError={onError}
       onReset={onReset}
     >
-      <FlagsProvider features={{ beta: true, premium: false }}>
+      <FlagsProvider features={{ beta: true, premium }}>
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <QueryClientProvider client={queryClient}>
             <ColorSchemeScript defaultColorScheme="light" />
             <MantineProvider theme={theme} defaultColorScheme="light">
-              <ModalsProvider modals={{ habitEditor: HabitEditorModal, goalEditor: GoalEditorModal }}>
-
+              <ModalsProvider
+                modals={modals}
+                modalProps={{ centered: true, radius: 'lg' }}
+              >
                 <Notifications limit={3} position="top-center" zIndex={99999} />
                 {loading.auth && <OverlayLoader full={true} />}
                 {!loading.auth && <Outlet />}
-
-                {/* Modals */}
-                <UpdateSWModal />
-
               </ModalsProvider>
             </MantineProvider>
-
             <ScrollRestoration />
           </QueryClientProvider>
         </trpc.Provider>
       </FlagsProvider>
-
     </ErrorBoundary>
   )
 }
