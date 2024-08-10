@@ -63,17 +63,18 @@ export async function getUser(username: string): Promise<Maybe<IUser>> {
 export function Profile({ username }: { username: string }) {
   const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
-  const { isPending, error, data } = useQuery({
+  const { isPending, isError, isSuccess, error, data } = useQuery({
     queryKey: ['profile:' + username],
     queryFn: () => getUser(username),
   })
 
+  const user = data as IUser
+
   if (isPending) return 'Loading...'
 
-  if (error) {
+  if (isError) {
     errors.handle("UNKNOWN_ERROR", error)
     return <Paper>Failed to get user profile.</Paper>
-
   }
 
   const iconStyle = { width: rem(20), height: rem(20) }
@@ -127,7 +128,6 @@ export function Profile({ username }: { username: string }) {
     </Paper>
   )
 }
-
 
 export function UserHabitSummary() {
   const userId = trekie.game($ => $.user?.id)

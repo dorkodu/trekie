@@ -30,7 +30,7 @@ const Hero = () => {
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
         <Stack gap="sm">
           <div>
-            <Image src={'/images/Hero.svg'} w="80%" mx="auto" />
+            <Image src={'/images/Hero.svg'} mx="auto" maw={360} />
           </div>
 
           <Text size="lg" lh={1} fw={800} c="dimmed" ta="center">INTRODUCING TREKIE</Text>
@@ -40,15 +40,16 @@ const Hero = () => {
             lineHeight: 1.0,
             letterSpacing: -0.65,
             maxWidth: 400,
-            margin: "0 auto"
+            margin: "0 auto",
+            textAlign: "center"
           }}>
             Your social and gamified <br /> productivity companion.
           </Title>
 
           <Stack w="90%" maw={320} gap={12} mx="auto">
-            <Butt404on size="md" fw={700} onClick={() => { navigate("#join") }}>
+            <Button size="md" fw={700} onClick={() => { navigate("#join") }}>
               GET STARTED
-            </Butt404on>
+            </Button>
             <Button size="md" fw={700} variant="light" onClick={() => { navigate("/login") }}>
               I ALREADY HAVE ACCOUNT
             </Button>
@@ -56,7 +57,10 @@ const Hero = () => {
         </Stack>
 
         <BackgroundImage
-          src="https://images.unsplash.com/photo-1597200381847-30ec200eeb9a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={useThemed({
+            light: "https://images.unsplash.com/photo-1597200381847-30ec200eeb9a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            dark: "https://images.unsplash.com/photo-1672036634540-0ef7c2c71447?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          })}
           maw={540}
           mx="auto"
           my="lg"
@@ -72,23 +76,20 @@ const Hero = () => {
               mx="auto"
             >
               {[
-                [<IconTargetArrow size={28} />, 'Add Life Goals', 'Design your new life.'],
-                [<IconCopyCheck size={26} />, 'Track Habits & To-Dos', 'Never been more enjoyable.'],
-                [<IconSparkles size={26} />, 'Share Stories', 'Connect with close friends.'],
+                { icon: <IconTargetArrow size={28} />, title: 'Add Life Goals', description: 'Design your new life.' },
+                { icon: <IconCopyCheck size={26} />, title: 'Track Habits', description: 'Never been more enjoyable.' },
+                { icon: <IconSparkles size={26} />, title: 'Share Moments', description: 'Progress with close friends.' },
               ].map(x => (
-                <GlassCard key={x[1]}>
+                <GlassCard key={x.title}>
                   <Group wrap="nowrap">
                     {/* @ts-ignore */}
-                    <ThemeIcon size={40} gradient={{
-                      from: vanilla.colors.green.filledHover,
-                      to: vanilla.colors.teal.lightColor,
-                      deg: 180
-                    }} variant="gradient" radius={10}>
-                      {x[0]}
+                    <ThemeIcon gradient={{ from: vanilla.colors.green.filledHover, to: vanilla.colors.teal.lightColor, deg: 180 }}
+                      size={40} variant="gradient" radius={10}>
+                      {x.icon}
                     </ThemeIcon>
                     <Stack gap={0} pr={8}>
-                      <Text fw={700}>{x[1]}</Text>
-                      <Text>{x[2]}</Text>
+                      <Text fw={700}>{x.title}</Text>
+                      <Text>{x.description}</Text>
                     </Stack>
                   </Group>
                 </GlassCard>
@@ -235,34 +236,25 @@ const Premium = (
       <Box style={{ alignSelf: 'center', maxWidth: 380 }}>
         <List spacing="sm">
           {[
-            [
-              <IconAdOff />,
-              'Ad-free',
-              'No interruptions, full productivity.',
-            ],
-            [
-              <IconMultiplier2x />,
-              'Doubled Gains',
-              'More coins, XP and items available.',
-            ],
-            [
-              <IconUsersGroup />,
-              'Groups',
-              'Share common goals & habits with friends. Say hello to social productivity boost!',
-            ],
+            {
+              icon: <IconAdOff />,
+              title: 'Ad-free',
+              description: 'No interruptions, full productivity.'
+            },
+            {
+              icon: <IconMultiplier2x />,
+              title: 'Doubled Gains',
+              description: 'More coins, XP and items available.'
+            },
+            {
+              icon: <IconUsersGroup />,
+              title: 'Groups',
+              description: 'Share common goals & habits with friends. Say hello to social productivity boost!'
+            }
           ].map(x => (
-            <List.Item
-              key={x[1]}
-              icon={
-                <ThemeIcon variant="light" c="white" size={36}>
-                  {x[0]}
-                </ThemeIcon>
-              }
-            >
-              <Text fw={700} c="white" lh={1.1}>
-                {x[1]}
-              </Text>
-              <Text c="white">{x[2]}</Text>
+            <List.Item key={x.title} icon={<ThemeIcon variant="light" c="white" size={36}>{x.icon}</ThemeIcon>}>
+              <Text fw={700} c="white" lh={1.1}>{x.title}</Text>
+              <Text c="white">{x.description}</Text>
             </List.Item>
           ))}
         </List>
@@ -310,16 +302,17 @@ import { randomId } from '@mantine/hooks'
 import { vanilla } from '@/styles/theme'
 import { useNavigate } from 'react-router-dom'
 import Emoji from '@/shared/components/misc/Emoji'
+import { useThemed } from '@/shared/hooks'
 
 function FAQ() {
   const questions = [
     [
       'What is gamification?',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+      `It's the application of game elements and game principles in non-game contexts, which can be used to improve engagement, productivity, learning, flow and more!`,
     ],
     [
       'How much it costs?',
-      'Crisp and refreshing fruit. Apples are known for their versatility and nutritional benefits. They come in a variety of flavors and are great for snacking, baking, or adding to salads.',
+      `Trekie is free to use with basic features. For premium features, you can subscribe for $6/month. We also offer a free trial for the first week.`,
     ],
     [
       'How to get support?',
@@ -410,15 +403,16 @@ const Pricing = (
             <List icon={<ThemeIcon variant="light" color="white" size={36}><IconCircleCheckFilled /></ThemeIcon>} center>
               {
                 [
-                  ["Increased Limits", <IconInfinity />],
-                  ["No Ads", <IconAdOff />],
-                  ["Doubled Gains", <IconMultiplier2x />],
-                  ["Public Pages", <IconWorld />],
-                  ["Profile Highlights", <IconPin />],
-                  ["Communities", <IconUsersGroup />],
+                  { feature: "Increased Limits", icon: <IconInfinity /> },
+                  { feature: "No Ads", icon: <IconAdOff /> },
+                  { feature: "Doubled Gains", icon: <IconMultiplier2x /> },
+                  { feature: "Public Pages", icon: <IconWorld /> },
+                  { feature: "Profile Highlights", icon: <IconPin /> },
+                  { feature: "Communities", icon: <IconUsersGroup /> },
                 ].map(x =>
-                  <List.Item py={2} icon={<ThemeIcon variant="light" color="white" size={32}>{x[1]}</ThemeIcon>} key={x[0]}>
-                    <Text c="white" fw={500}>{x[0]}</Text>
+                  <List.Item py={2} key={x.feature}
+                    icon={<ThemeIcon variant="light" color="white" size={32}>{x.icon}</ThemeIcon>}>
+                    <Text c="white" fw={500}>{x.feature}</Text>
                   </List.Item>
                 )
               }
