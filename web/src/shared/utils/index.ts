@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 // By declaring a unique symbol, we create a distinct marker in TypeScript.
 declare const __brand: unique symbol
 
@@ -80,6 +82,10 @@ export const daystamp = {
 }
 
 export const sleep = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export function inferSchema<T extends z.ZodTypeAny>(schema: T) {
+  return schema;
+}
 
 export { format } from './format'
 
