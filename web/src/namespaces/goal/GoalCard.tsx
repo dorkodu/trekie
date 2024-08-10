@@ -1,7 +1,7 @@
 import trekie from "@/shared/lib/trekie"
 import { IGoal } from "@/core/commons/goal"
 import { Alert, Badge, Card, Center, Flex, Grid, Group, Overlay, Progress, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core"
-import { IconCalendar, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconCircleCheck, IconDiamond, IconFlagCheck, IconFlame, IconSparkles } from "@tabler/icons-react"
+import { IconArcheryArrow, IconCalendar, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconCircleCheck, IconDiamond, IconFlagCheck, IconFlame, IconSparkles, IconTarget, IconTargetArrow } from "@tabler/icons-react"
 import { useLiveQuery } from "dexie-react-hooks"
 import GoalMenu from "./GoalCardMenu"
 import { vanilla } from "@/styles/theme"
@@ -12,9 +12,11 @@ interface Props {
 
 export default function GoalCard({ id }: Props) {
   const goal = useLiveQuery(() => trekie.goal.get(id), [id])
+  const xp = trekie.game($ => $.xp)
+
   if (!goal) return GoalNotFound
 
-  let progress = (goal.xpCurrent / goal.xpTarget) * 100
+  let progress = (xp / goal.xpTarget) * 100
 
   return (
     <Card shadow="sm" p="sm" radius="lg">
@@ -39,19 +41,31 @@ export default function GoalCard({ id }: Props) {
           </Progress.Section>
         </Progress.Root>
 
-        <Badge size="lg" variant="light" color="green" pl={6}>
+        <Badge size="lg" variant="light" color="blue" pl={6}>
           <Group gap={6} h="100%" justify="center" align="center">
-            <IconChecks size={22} />
-            <Text fz={13} lh="24px" fw={700}>5</Text>
+            <IconArcheryArrow size={22} />
+            <Text fz={13} lh="24px" fw={700}>{goal.xpTarget}</Text>
           </Group>
         </Badge>
 
-        <Badge size="lg" variant="light" color="red" pl={6}>
-          <Group gap={6} h="100%" justify="center" align="center">
-            <IconCalendar size={21} />
-            <Text fz={13} lh="24px" fw={700}>30</Text>
-          </Group>
-        </Badge>
+        {
+          /*
+              <Badge size="lg" variant="light" color="green" pl={6}>
+                  <Group gap={6} h="100%" justify="center" align="center">
+                    <IconChecks size={22} />
+                    <Text fz={13} lh="24px" fw={700}>5</Text>
+                  </Group>
+                </Badge>
+        
+                <Badge size="lg" variant="light" color="red" pl={6}>
+                  <Group gap={6} h="100%" justify="center" align="center">
+                    <IconCalendar size={21} />
+                    <Text fz={13} lh="24px" fw={700}>30</Text>
+                  </Group>
+                </Badge>
+          
+          */
+        }
       </Flex>
     </Card>
   )

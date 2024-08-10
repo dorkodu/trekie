@@ -6,6 +6,7 @@ import { IGoal } from '@/core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
+import { modals } from '@mantine/modals'
 
 interface Props {
   goal: IGoal
@@ -20,11 +21,13 @@ function GoalMenu({ goal }: Props) {
 
   const onEdit = (ev: MouseEvent) => {
     ev.stopPropagation()
-    useAppStore.setState(s => {
-      s.modals.goalEditor.opened = true
-      s.modals.goalEditor.id = goal.id
-      s.modals.goalEditor.title = goal.title
-      s.modals.goalEditor.description = goal.description
+    modals.openContextModal({
+      modal: "goalEditor",
+      title: "Edit Goal",
+      innerProps: {
+        mode: "EDIT",
+        goal
+      }
     })
   }
 

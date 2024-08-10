@@ -1,7 +1,9 @@
 import { IHabit } from '@/core/commons/habit'
 import {
+  ActionIcon,
   Button,
   Checkbox,
+  Flex,
   Group,
   Stack,
   Text,
@@ -9,66 +11,80 @@ import {
   TextInput,
 } from '@mantine/core'
 import { ContextModalProps } from '@mantine/modals'
-import { useForm } from '@mantine/form'
-import { IGoal } from '@/core/commons/goal'
+import { useForm, zodResolver } from '@mantine/form'
+import { IGoal, schema as GoalSchema, IGoalTemplate } from '@/core/commons/goal'
+import { IconTrash } from '@tabler/icons-react'
 
-type GoalEditorMode = "CREATE" | "EDIT";
+type GoalEditorMode = 'CREATE' | 'EDIT'
 
 const GoalEditorModal = ({
   context,
   id,
-  innerProps,
-}: ContextModalProps<{ mode: GoalEditorMode }>) => {
+  innerProps = { mode: 'CREATE' },
+}: ContextModalProps<{ mode: GoalEditorMode, goal?: IGoal }>) => {
 
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: {
-      email: '',
-      termsOfService: false,
-    },
+    initialValues: innerProps.goal ?? {
+      title: '',
+      description: '',
+      xpTarget: 0,
+    } satisfies IGoalTemplate,
 
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-    },
-  });
+    validate: zodResolver(GoalSchema.IGoalTemplate),
+  })
 
-  return (<>
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
-      <Stack gap="sm">
-        <TextInput
-          withAsterisk
-          label="Title"
-          placeholder="Title"
-          key={form.key('title')}
-          {...form.getInputProps('title')}
-        />
+  return (
+    <>
+      <form>
+        <Stack gap="sm">
+          <TextInput
+            withAsterisk
+            label="Title"
+            placeholder="Title"
+            key={form.key('title')}
+            {...form.getInputProps('title')}
+          />
 
-        <Textarea
-          withAsterisk
-          label="Description"
-          placeholder="Description"
-          key={form.key('description')}
-          {...form.getInputProps('description')}
-        />
+          <Textarea
+            withAsterisk
+            label="Description"
+            placeholder="Description"
+            key={form.key('description')}
+            {...form.getInputProps('description')}
+          />
 
-        <TextInput
-          withAsterisk
-          label="XP Target"
-          type="number"
-          placeholder="0"
-          key={form.key('xpTarget')}
-          {...form.getInputProps('xpTarget')}
-        />
+          <TextInput
+            withAsterisk
+            label="XP Target"
+            type="number"
+            placeholder="0"
+            key={form.key('xpTarget')}
+            {...form.getInputProps('xpTarget')}
+          />
 
-        {innerProps.mode === "CREATE" && <Button type="submit" size="md">CREATE</Button>}
-        {innerProps.mode === "EDIT" && <Stack>
-          <Button type="submit" onClick={() => { }} size="md" color="red" variant="light">DELETE</Button>
-          <Button type="submit" size="md" color="blue">UPDATE</Button>
-        </Stack>}
-
-      </Stack>
-    </form>
-  </>)
+          {innerProps.mode === 'CREATE' && (
+            <Button size="md"
+              onClick={() => { form.onSubmit(values => console.log(values)) }}>
+              CREATE
+            </Button>
+          )}
+          {innerProps.mode === 'EDIT' && (
+            <Flex gap={6}>
+              <ActionIcon size="xl" color="red" variant="light" radius="lg"
+                onClick={() => { }}>
+                <IconTrash />
+              </ActionIcon>
+              <Button size="md" style={{ flexGrow: 1 }}
+                onClick={() => { }}>
+                UPDATE
+              </Button>
+            </Flex>
+          )}
+        </Stack>
+      </form >
+    </>
+  )
 }
 
 export default GoalEditorModal
