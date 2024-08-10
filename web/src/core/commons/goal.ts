@@ -11,13 +11,13 @@ export type IGoal = z.infer<typeof IGoal>
 export type IGoalTemplate = z.infer<typeof IGoalTemplate>
 
 const IGoalTemplate = z.object({
-  title: z.string(),
-  description: z.string(),
-  xpTarget: z.number()
+  title: z.string().trim().min(1).max(100),
+  description: z.string().trim().min(1).max(500),
+  xpTarget: z.number().min(1).max(1000000)
 })
 const IGoal = IGoalTemplate.extend({
   id: z.string().ulid(),
-  userId: z.string(),
+  userId: z.string().ulid(),
   xpCurrent: z.number(),
   createdAt: z.number() satisfies z.ZodType<Timestamp>,
   lastUpdated: z.number() satisfies z.ZodType<Timestamp>

@@ -26,8 +26,10 @@ export interface IAccount {
 }
 
 export enum AccountTier {
-  FREE = "free",
-  PREMIUM = "premium",
+  FREE = "FREE",
+  PREMIUM = "PREMIUM",
+  DEVELOPER = "DEVELOPER",
+  ADMIN = "ADMIN",
 }
 
 export const USERNAME_REGEX = /^@(?![_.])(?!.*[_.]{2})([a-zA-Z0-9_.]{1,16})(?<![_.])$/
