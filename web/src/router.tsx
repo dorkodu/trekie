@@ -8,55 +8,8 @@ import {
 } from 'react-router-dom'
 import CenterLoader from '@/shared/components/loaders/CenterLoader'
 import { utils } from '@/shared/utils'
-import App from './App'
-import { USERHANDLE_REGEX, USERNAME_REGEX } from './core'
-
-function view(path: string) {
-  const [folder, file] = path.split(':')
-
-  return suspenseLoader(
-    React.lazy(utils.wait(() => import(`./views/${folder}/${file}.tsx`)))
-  )
-}
-
-function layout(path: string) {
-  return suspenseLoader(
-    React.lazy(utils.wait(() => import(`./layouts/${path}.tsx`)))
-  )
-}
-
-function suspenseLoader(
-  Component: React.LazyExoticComponent<React.ComponentType<any>>
-) {
-  return (
-    <Suspense fallback={<CenterLoader />}>
-      <Component />
-    </Suspense>
-  )
-}
-
-let isLoggedIn: boolean = true
-
-function PathMiddleware() {
-  let params = useParams()
-  let path = params.path ?? ""
-
-  let isProfile = false
-  let username = null
-
-  const match = path.match(USERHANDLE_REGEX)
-
-  if (match) {
-    isProfile = true
-    username = match[1]
-  } else {
-    isProfile = false
-    username = null
-  }
-
-  if (!isProfile) return <Navigate to="/404" />
-  return view('app:Profile')
-}
+import { layout, PathMiddleware, view } from '@/shared/utils/routing'
+import App from '@/App'
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
