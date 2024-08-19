@@ -1,14 +1,5 @@
 import React, { Suspense } from 'react'
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Navigate,
-  Route,
-  useParams,
-} from 'react-router-dom'
-import CenterLoader from '@/shared/components/loaders/CenterLoader'
-import { utils } from '@/shared/utils'
-import { layout, PathMiddleware, view } from '@/shared/utils/routing'
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route, useParams } from 'react-router-dom'
 import App from '@/App'
 
 export const router = createBrowserRouter(
@@ -55,3 +46,36 @@ export const router = createBrowserRouter(
     </Route>
   )
 )
+
+//? ROUTING UTILS
+
+export function PathMiddleware() {
+  let path = useParams().path ?? ""
+
+  let isProfile = path.startsWith('@') // intended to be a user handle
+
+  if (!isProfile) return <Navigate to="/404" />
+  return view('app:Profile')
+}
+
+// ----------------------------------------------
+
+import CenterLoader from '@/shared/components/loaders/CenterLoader'
+import { utils } from '@/shared/utils'
+
+export function view(path: string) {
+  const [folder, file] = path.split(':')
+  return suspenseLoader(
+    React.lazy(utils.wait(() => import(`./views/${folder}/${file}.tsx`)))
+  )
+}
+
+export function layout(path: string) {
+  return suspenseLoader(
+    React.lazy(utils.wait(() => import(`./layouts/${path}.tsx`)))
+  )
+}
+
+export function suspenseLoader(
+  Component: React.LazyExoticComponent<React.ComponentType<any>>
+) { return <Suspense fallback={<CenterLoader />}><Component /></Suspense> }
