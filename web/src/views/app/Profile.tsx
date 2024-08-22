@@ -9,31 +9,28 @@ import trekie from '@/shared/lib/trekie'
 import { Maybe } from '@/shared/utils'
 import { relativeDateString } from '@/shared/utils/format'
 import { vanilla } from '@/styles/theme'
-import { Anchor, Badge, Box, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
+import { Alert, Anchor, Badge, Box, Loader, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck } from '@tabler/icons-react'
+import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck, IconAlertCircle } from '@tabler/icons-react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 export default function Page() {
   let location = useLocation()
-  let username = null
+  let username = location.pathname.slice(2) // '/@username' => 'username'
   let result = null
 
-  console.log(location.pathname.slice(1))
+  const handleRegexMatch = location.pathname.match(USERHANDLE_REGEX)
 
-  // const match = location.pathname.match(USERHANDLE_REGEX)
+  if (handleRegexMatch) {
 
-  /*
-    if (match)
-      result = <Text>Username Match!</Text>
-  
-    if (!username)
-      result = <Text>User not found.</Text>
-  
-    else result = <Profile username={username} />
-  */
+  }
+
+  if (!username)
+    result = <Text>User not found.</Text>
+  else result = <Profile username={username} />
+
   return (
     <Stack gap="xs" m="xs">
       {result}
@@ -70,12 +67,8 @@ export function Profile({ username }: { username: string }) {
 
   const user = data as IUser
 
-  if (isPending) return 'Loading...'
-
-  if (isError) {
-    errors.handle("UNKNOWN_ERROR", error)
-    return <Paper>Failed to get user profile.</Paper>
-  }
+  if (isPending) return <Loader />
+  if (isError) return <Alert color="red" icon={<IconAlertCircle />}>Failed to get user profile.</Alert>
 
   const iconStyle = { width: rem(20), height: rem(20) }
 

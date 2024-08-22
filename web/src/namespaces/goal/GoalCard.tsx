@@ -16,7 +16,7 @@ export default function GoalCard({ id }: Props) {
 
   if (!goal) return GoalNotFound
 
-  let progress = (xp / goal.xpTarget) * 100
+  let progress = Math.floor((xp / goal.xpTarget) * 100)
 
   return (
     <Card shadow="sm" p="sm" radius="lg">
@@ -31,7 +31,7 @@ export default function GoalCard({ id }: Props) {
       </Group>
 
       <Flex mt="xs" gap={4} justify="flex-start" align="center" direction="row" wrap="nowrap">
-        <Progress.Root color="blue" radius="lg" size={24} miw="40%">
+        <Progress.Root color="blue" radius="lg" size={24} miw="25%">
           <Progress.Section color="blue" value={progress}>
             <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
               <Center>
@@ -43,29 +43,10 @@ export default function GoalCard({ id }: Props) {
 
         <Badge size="lg" variant="light" color="blue" pl={6}>
           <Group gap={6} h="100%" justify="center" align="center">
-            <IconArcheryArrow size={22} />
-            <Text fz={13} lh="24px" fw={700}>{goal.xpTarget}</Text>
+            <IconSparkles size={22} />
+            <Text fz={13} lh="24px" fw={700}>{xp}/{goal.xpTarget}</Text>
           </Group>
         </Badge>
-
-        {
-          /*
-              <Badge size="lg" variant="light" color="green" pl={6}>
-                  <Group gap={6} h="100%" justify="center" align="center">
-                    <IconChecks size={22} />
-                    <Text fz={13} lh="24px" fw={700}>5</Text>
-                  </Group>
-                </Badge>
-        
-                <Badge size="lg" variant="light" color="red" pl={6}>
-                  <Group gap={6} h="100%" justify="center" align="center">
-                    <IconCalendar size={21} />
-                    <Text fz={13} lh="24px" fw={700}>30</Text>
-                  </Group>
-                </Badge>
-          
-          */
-        }
       </Flex>
     </Card>
   )

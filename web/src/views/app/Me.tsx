@@ -1,8 +1,6 @@
 import { Flex, Title } from '@mantine/core'
 
-export default function Page() {
-
-
+export default function Me() {
   /**
    * 
    * get self user from store
@@ -10,7 +8,6 @@ export default function Page() {
    * use profile components but with only available self actions
    * 
    */
-
 
   return (
     <Flex direction="column" m="md">
