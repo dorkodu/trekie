@@ -92,8 +92,19 @@ export function Game(state: GameState = defaultState) {
 
           get().refresh()
         },
-        calculateMomentum() {
+        averageXp() {
+          const xpHistory = get().xpHistory
+          const activeDays = Object.entries(xpHistory).filter(([_, xp]) => xp !== 0)
+          const totalXp = activeDays.reduce((sum, [, xp]) => sum + xp, 0)
+          const averageXp = Math.floor(totalXp / activeDays.length)
+          return averageXp
+        },
 
+        calculateMomentum() {
+          let averageXp = get().averageXp()
+          set($ => {
+            $.momentum = averageXp // for now, momentum is just average xp
+          })
         },
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
@@ -148,6 +159,7 @@ export interface GameActions {
   dailyProgress: () => number
   calculateStreak: () => void
   calculateMomentum: () => void
+  averageXp: () => number
   changeXp: (change: number) => void,
   reset: () => void
 }

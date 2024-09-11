@@ -53,11 +53,7 @@ function App() {
   useRefreshStatsDaily()
 
   return (
-    <ErrorBoundary
-      FallbackComponent={ApplicationError}
-      onError={onError}
-      onReset={onReset}
-    >
+    <ErrorBoundary FallbackComponent={ApplicationError} onError={onError} onReset={onReset}>
       <FlagsProvider features={{ beta: true, premium }}>
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <QueryClientProvider client={queryClient}>
