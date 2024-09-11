@@ -76,6 +76,7 @@ export function MomentumStatus() {
       icon={<Emoji emoji="🚀" size={24} />}
       kind="MOMENTUM"
       value={momentum}
+      subtext='xp/day'
       color="green"
     />
   )
