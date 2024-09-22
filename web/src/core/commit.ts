@@ -1,3 +1,4 @@
+import { ulid } from "ulid"
 
 interface ICommitStatus<T = {}> {
   id: string
@@ -47,3 +48,11 @@ export function Commitment
   }
 }
 
+const TODO = {
+  "CREATED": CommitEvent<{ message: string }>((status) => { }),
+  "GOAL_REACHED": CommitEvent<{ name: string }>((status) => { }),
+}
+
+const Commit = (name: string, events: Record<string, ICommitEvent<any>>) => Commitment<typeof events>(name, events)
+
+const Todo = Commit('Todo', TODO)
