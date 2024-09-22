@@ -8,8 +8,8 @@ export interface IStatus<TData> {
 }
 
 export interface IEvent<TData> {
-  onCreate: (data: TData) => IStatus<TData>
-  onShare: (status: IStatus<TData>) => void
+  create: (data: TData) => IStatus<TData>
+  on: (status: IStatus<TData>) => void
 }
 
 export const Event = <TData>(kind: IEvent<TData>): IEvent<TData> => kind
@@ -17,11 +17,11 @@ export const Event = <TData>(kind: IEvent<TData>): IEvent<TData> => kind
 export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
   return {
     kinds,
-    status<TKind extends keyof TKinds>(kind: TKind, data: Parameters<TKinds[TKind]["onCreate"]>[0]) {
-      return this.kinds[kind]!.onCreate(data)
+    status<TKind extends keyof TKinds>(kind: TKind, data: Parameters<TKinds[TKind]["create"]>[0]) {
+      return this.kinds[kind]!.create(data)
     },
     share(status: IStatus<any>) {
-      this.kinds[status.kind]!.onShare(status)
+      this.kinds[status.kind]!.on(status)
     }
   }
 }
@@ -35,33 +35,17 @@ export function Slice<TState>
   (initializer: StateCreator<TState, [["zustand/immer", never]], [], TState>) { return initializer }
 
 
-export class Signal<T extends any> {
-  private listeners: ((args: T) => any)[] = [];
-
-  public subscribe(receiver: (args: T) => any) {
-    this.listeners.push(receiver);
-  }
-
-  public remove(receiver: (args: T) => any) {
-    for (let i = 0; i < this.listeners.length; ++i) {
-      if (this.listeners[i] === receiver) {
-        this.listeners.splice(i, 1);
-        return;
-      }
-    }
-  }
-
-  public broadcast(args: T) {
-    for (let i = this.listeners.length - 1; i >= 0; --i) {
-      this.listeners[i]?.(args);
-    }
-  }
-
-  public clear() {
-    this.listeners = [];
-  }
-}
-
-const Supercell = { Cell, Event, Store, Slice, Signal }
+const Supercell = { Cell, Event, Store, Slice }
 export default Supercell
+
+const mind = Cell({
+  HabitCreated: Event<{ id: string }>({
+    create: (data) => ({ kind: "HabitCreated", timestamp: Date.now(), data }),
+    on: (status) => console.log(status)
+  }),
+  HabitDeleted: Event<{ time: string }>({
+    create: (data) => ({ kind: "HabitDeleted", timestamp: Date.now(), data }),
+    on: (status) => console.log(status)
+  })
+})
 
