@@ -1,57 +1,20 @@
-import {
-  Alert,
-  Badge,
-  Box,
-  Center,
-  Flex,
-  Group,
-  Image,
-  Paper,
-  SegmentedControl,
-  Skeleton,
-  Stack,
-  Tabs,
-  Text,
-  ThemeIcon,
-  darken,
-  rem,
-  rgba,
-} from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
-import {
-  IconCopyCheck,
-  IconNews,
-  IconTableRow,
-  IconTargetArrow,
-} from '@tabler/icons-react'
+import { Alert, Badge, Box, Center, Flex, SegmentedControl, Skeleton, Stack, Tabs, rem } from '@mantine/core'
+import { IconCopyCheck, IconTargetArrow } from '@tabler/icons-react'
 
 import HabitCounter from '@/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
 
-import { vanilla } from '@/styles/theme'
-
 import { trekie } from '@/shared/lib/trekie'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import GoalCard from '@/namespaces/goal/GoalCard'
 import { errors } from '@/shared/lib/errors'
 import { useState } from 'react'
-import WIPCard from '@/shared/components/cards/WIPCard'
-import { useThemed } from '@/shared/hooks'
 import { ContainerSheet } from '@/styles/shared.css'
 
 function Home() {
-  return (
-    <Stack gap="xs" m="xs">
-      <MySummary />
-    </Stack>
-  )
-}
-
-const MySummary = () => {
-  const isMobile = !useMediaQuery(vanilla.largerThan(768))
 
   const user = trekie.game($ => $.user)
   if (!user) {
@@ -64,7 +27,7 @@ const MySummary = () => {
   const [tab, setTab] = useState('habits')
 
   return (
-    <div>
+    <Box m="xs">
       <Stack gap={4}>
         <Box mb="md" hiddenFrom="sm">
           <DailyStats />
@@ -92,63 +55,36 @@ const MySummary = () => {
                 </Center>
               ),
             },
-            {
-              value: 'feed',
-              label: (
-                <Center style={{ gap: 6 }}>
-                  <IconNews style={iconStyle} />
-                  <span>Feed</span>
-                </Center>
-              ),
-            },
           ]}
         />
 
         <Tabs mt={8} color="green" variant="pills" radius="md" defaultValue="feed" value={tab}>
-          <Tabs.Panel value="feed">
-            <NewsFeed />
-          </Tabs.Panel>
           <Tabs.Panel value="habits">
-            <UserHabitSummary />
+            <HabitSummary />
           </Tabs.Panel>
           <Tabs.Panel value="goals">
             <LifeGoalSummary />
           </Tabs.Panel>
         </Tabs>
       </Stack>
-    </div>
+    </Box>
   )
 }
 
 export default Home
 
-function NewsFeed() {
-  return (
-    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
-      <Stack gap={0}>
-        <Text ta="center" my="xs" c="dimmed">
-          Nothing to see here yet.
-        </Text>
-      </Stack>
-      <Flex>
-        <Badge variant="light" color="gray" mx="auto">
-          Your Activities
-        </Badge>
-      </Flex>
-    </Box>
-  )
-}
-
-function UserHabitSummary() {
+function HabitSummary() {
   const userId = trekie.game($ => $.user?.id)
 
   if (!userId) return <NoHabitsCard />
 
-  const habits = useLiveQuery(async () => {
-    return trekie.db.habits.where('userId').equals(userId).toArray()
-  }, [userId])
+  const { data, error, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ['todos'], queryFn: async () => {
+      return trekie.db.habits.where('userId').equals(userId).toArray()
+    }
+  })
 
-  if (!habits)
+  if (isLoading)
     return (
       <>
         <Skeleton height={8} radius="xl" />
@@ -157,13 +93,13 @@ function UserHabitSummary() {
       </>
     )
 
-  const hasAnyHabits = habits?.length > 0
+  const hasAnyHabits = isSuccess && data?.length > 0
   if (!hasAnyHabits) return <NoHabitsCard />
 
   return (
     <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
       <Stack gap={0}>
-        {habits.map(habit => (
+        {data.map(habit => (
           <HabitCounter habitId={habit.id} key={habit.id} />
         ))}
       </Stack>
@@ -181,9 +117,9 @@ function LifeGoalSummary() {
 
   if (!userId) return <Box py={10} hiddenFrom="md"><NoHabitsCard /></Box>
 
-  const goals = useLiveQuery(async () => trekie.db.goals.where('userId').equals(userId).toArray(), [], 'loading')
+  const goals = useLiveQuery(async () => trekie.db.goals.where('userId').equals(userId).toArray(), [userId])
 
-  if (goals == 'loading')
+  if (!goals)
     return (<>
       <Skeleton height={8} radius="xl" />
       <Skeleton height={8} mt={8} radius="xl" />
@@ -209,3 +145,6 @@ function LifeGoalSummary() {
     </Box>
   )
 }
+
+// Confetti
+// https://www.kirilv.com/canvas-confetti
