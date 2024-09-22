@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
 import { FlagsProvider } from 'flagged'
 
-import { theme } from '@/styles/theme'
+import { cssVariablesResolver, theme } from '@/styles/theme'
 
 import OverlayLoader from '@/shared/components/loaders/OverlayLoader'
 import UpdateSWModal from '@/shared/components/modals/UpdateSWModal'
@@ -58,7 +58,7 @@ function App() {
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <QueryClientProvider client={queryClient}>
             <ColorSchemeScript defaultColorScheme="light" />
-            <MantineProvider theme={theme} defaultColorScheme="light">
+            <MantineProvider theme={theme} defaultColorScheme="light" cssVariablesResolver={cssVariablesResolver}>
               <ModalsProvider
                 modals={modals}
                 modalProps={{ centered: true, radius: 'lg' }}
