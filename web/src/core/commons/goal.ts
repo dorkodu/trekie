@@ -13,7 +13,8 @@ export type IGoalTemplate = z.infer<typeof IGoalTemplate>
 const IGoalTemplate = z.object({
   title: z.string().trim().min(1).max(100),
   description: z.string().trim().min(1).max(500),
-  xpTarget: z.number().min(1).max(1000000)
+  xpTarget: z.number().min(1),
+  commitments: z.array(z.string().ulid())
 })
 const IGoal = IGoalTemplate.extend({
   id: z.string().ulid(),

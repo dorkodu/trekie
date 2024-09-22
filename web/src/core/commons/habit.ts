@@ -5,23 +5,27 @@ import * as Trekie from "@/core/Trekie"
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { db } from "@/shared/lib/db"
 import { errors } from "@/shared/lib/errors"
+import { z } from "zod"
 
 //? Interfaces
 
-export interface IHabit extends IHabitTemplate {
-  id: string
-  count: number
-  createdAt: Timestamp
-  lastUpdated: Timestamp
-  history: Map<Daystamp, number>
-  userId: string
-}
+export type IHabit = z.infer<typeof IHabit>
+export type IHabitTemplate = z.infer<typeof IHabitTemplate>
 
-export interface IHabitTemplate {
-  title: string
-  description: string
-  dailyTarget: number
-}
+export const IHabitTemplate = z.object({
+  title: z.string(),
+  description: z.string(),
+  dailyTarget: z.number().min(1)
+})
+
+export const IHabit = IHabitTemplate.extend({
+  id: z.string().ulid(),
+  count: z.number().min(0),
+  createdAt: z.number() satisfies z.ZodType<Timestamp>,
+  lastUpdated: z.number() satisfies z.ZodType<Timestamp>,
+  history: z.map(z.string(), z.number()),
+  userId: z.string().ulid(),
+})
 
 //? Interfaces
 
@@ -77,8 +81,11 @@ export const Component = Trekie.Component<Interface>((game) => ({
     if (updateStats) {
       game.setState($ => {
         $.xp -= habitCount
-        $.xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
-        $.xpHistory[daystamp.today()] = $.xpToday
+
+        let xpToday = $.xpHistory[daystamp.today()] ?? 0
+        xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
+
+        $.xpHistory[daystamp.today()] = xpToday
         $.xpTargetDaily -= habitDailyTarget
       })
       game.getState().refresh()
