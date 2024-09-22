@@ -10,3 +10,6 @@ export * as Life from './commons/life'
 
 export * from './Trekie'
 
+export function log(status: Supercell.IStatus<unknown>) {
+  console.log(`[trekie] <${status.kind}> @ "${(new Date(status.timestamp)).toISOString()}"`)
+}
