@@ -15,7 +15,6 @@ const blankState: Trekie.GameState = {
 
   // dailies
   xpTargetDaily: 0,
-  xpToday: 0,
 
   // timestamps
   lastXp: undefined,
@@ -39,8 +38,8 @@ const initialState: Trekie.GameState = mock.game
  * now we use a clean state & mock data
  */
 
-
-function initializeTrekie() {
+type TrekieCreateConfig = { initialState?: Trekie.GameState, commitments: Record<any, Record<Trekie.ICommitment>, use?: Record<string, Trekie.GameComponent> }
+function createTrekie({ initialState, commitments, use }: TrekieCreateConfig = { initialState: blankState, commitments: {} }) {
   // initialize state
   const state = initialState ?? blankState
 
@@ -49,12 +48,14 @@ function initializeTrekie() {
 
   return {
     game: useGame,
-    goal: Goal.Component(game),
-    habit: Habit.Component(game),
+    commitments,
+    commit() {
+
+    },
+    use,
     db: db,
   }
 }
 
-export const trekie = initializeTrekie()
-
+export const trekie = createTrekie({ initialState, commits })
 export default trekie

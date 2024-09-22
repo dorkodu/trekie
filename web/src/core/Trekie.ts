@@ -10,6 +10,7 @@ import { utils } from '@/shared/utils'
 
 import { IUser } from '@/core/account'
 import { calculateStreak } from './commons/life'
+import { defaultState } from './consts'
 export * from '@/core/account'
 
 export interface GameState {
@@ -21,7 +22,6 @@ export interface GameState {
   streak: number
 
   xpTargetDaily: number
-  xpToday: number
 
   lastActive: Maybe<Timestamp>
   lastXp: Maybe<Timestamp>
@@ -29,6 +29,20 @@ export interface GameState {
   lastDailyCheck: Maybe<Timestamp>,
 
   xpHistory: { [date: Daystamp]: number }
+}
+
+export interface GameActions {
+  changeXp: (change: number) => void,
+
+  xpToday: () => number
+  dailyProgress: () => number
+  averageXp: () => number
+  calculateStreak: () => void
+  calculateMomentum: () => void
+
+  refresh: () => void
+  dailyRefresh: () => void
+  reset: () => void
 }
 
 export type VanillaGame = ReturnType<typeof Game>["game"]
@@ -39,34 +53,36 @@ export function Game(state: GameState = defaultState) {
     persist(
       immer((set, get) => ({
         ...state,
+
         dailyProgress() {
-          let ratio = get().xpToday / get().xpTargetDaily
+          let ratio = get().xpToday() / get().xpTargetDaily
           return ratio
         },
+
         calculateStreak() {
           set($ => {
             $.streak = calculateStreak($.xpHistory, $.xpTargetDaily)
           })
         },
+
+        xpToday() {
+          return get().xpHistory[daystamp.today()] ?? 0
+        },
+
         changeXp: (change: number) => {
           set($ => {
             let newTotalXp = $.xp + change
-            let newDailyXp = $.xpToday + change
+            let newDailyXp = $.xpToday() + change
 
             // prevent negative xp
             if (newTotalXp < 0)
               newTotalXp = 0
 
-            if (newDailyXp < 0 && newTotalXp)
-              $.xpToday = 0
-
             $.xp = newTotalXp
-            $.xpToday = newDailyXp
 
             // add XP to history
             $.xpHistory[daystamp.today()] = newDailyXp
-            console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
-
+            // USE LATER: console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
 
             // Handle user's last xp date
             if (!utils.isSameDay($.lastXp, Date.now()))
@@ -75,11 +91,12 @@ export function Game(state: GameState = defaultState) {
 
           get().refresh()
         },
+
         dailyRefresh() {
           set($ => {
             // first we reset stale values
             if (!utils.isSameDay($.lastActive, Date.now()))
-              $.xpToday = 0 // reset daily xp
+              $.xpHistory[daystamp.today()] = 0 // reset daily xp
 
             // then we calculate new values
             $.xpTargetDaily = 100
@@ -92,12 +109,15 @@ export function Game(state: GameState = defaultState) {
 
           get().refresh()
         },
+
         averageXp() {
           const xpHistory = get().xpHistory
           const activeDays = Object.entries(xpHistory).filter(([_, xp]) => xp !== 0)
           const totalXp = activeDays.reduce((sum, [, xp]) => sum + xp, 0)
           const averageXp = Math.floor(totalXp / activeDays.length)
-          return averageXp
+
+          if (isNaN(averageXp)) return 0
+          else return averageXp
         },
 
         calculateMomentum() {
@@ -106,6 +126,7 @@ export function Game(state: GameState = defaultState) {
             $.momentum = averageXp // for now, momentum is just average xp
           })
         },
+
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
           const user = get().user
@@ -114,7 +135,7 @@ export function Game(state: GameState = defaultState) {
           set($ => {
             // first we reset stale values
             if (!utils.isSameDay($.lastActive, Date.now()))
-              $.xpToday = 0 // reset daily xp
+              $.xpHistory[daystamp.today()] = 0 // reset daily xp
 
             $.lastActive = Date.now()
           })
@@ -124,6 +145,7 @@ export function Game(state: GameState = defaultState) {
         },
         reset() { set(defaultState) },
       })),
+
       { name: 'trekie-game' }
     ))
 
@@ -147,42 +169,5 @@ export function Component
   return (game: VanillaGame) => component(game)
 }
 
-export function log(status: Supercell.IStatus<unknown>) {
-  console.log(`[trekie] <${status.kind}> @ "${(new Date(status.timestamp)).toISOString()}"`)
-}
-
 export type TrekieStoreInterface = GameState & GameActions
 
-export interface GameActions {
-  refresh: () => void
-  dailyRefresh: () => void
-  dailyProgress: () => number
-  calculateStreak: () => void
-  calculateMomentum: () => void
-  averageXp: () => number
-  changeXp: (change: number) => void,
-  reset: () => void
-}
-
-const defaultState: GameState = {
-  // points
-  xp: 0,
-  coins: 0,
-  momentum: 0,
-  streak: 0,
-
-  // dailies
-  xpTargetDaily: 0,
-  xpToday: 0,
-
-  // timestamps
-  lastXp: undefined,
-  lastStreak: undefined,
-  lastActive: undefined,
-  lastDailyCheck: undefined,
-
-  // user
-  user: undefined,
-
-  xpHistory: {}
-}

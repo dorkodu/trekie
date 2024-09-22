@@ -1,4 +1,5 @@
 import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
+import confetti from 'canvas-confetti'
 import { format } from "@/shared/utils/format"
 import { vanilla } from '@/styles/theme'
 import trekie from '@/shared/lib/trekie'
@@ -52,15 +53,17 @@ export function DailyProgress() {
       radius="lg"
       size={20}
       styles={{ section: { transition: 'width 100ms linear 0s' } }}
-    >
+      id='daily-progress-bar'
+      onChange={(e) => {
+
+      }}>
       <Tooltip
         label={format.percentage(value)}
         arrowOffset={5}
         arrowSize={6}
         arrowRadius={2}
-        withArrow
-      >
-        <Progress.Section color={color} striped value={value} animated={haveProgressToday}>
+        withArrow>
+        <Progress.Section color={color} striped value={value}>
           <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
             <Center>
               <Text size="sm" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dimmed}` }} fw={500}>{message}</Text>

@@ -39,11 +39,6 @@ function CreateMenu({ children, popupPosition = "top-end" }: Props) {
     close()
   }
 
-  const onStory = () => {
-    close()
-    navigate('/new-story')
-  }
-
   return (
     <Menu position={popupPosition} opened={opened} onOpen={open} onClose={close}>
       <Menu.Target>
@@ -61,12 +56,6 @@ function CreateMenu({ children, popupPosition = "top-end" }: Props) {
             onClick={onGoal}>
             New Goal
           </Button>
-          <Button variant="gradient" gradient={{ deg: 45, from: "green", to: "teal" }} py={4} h="auto" styles={{ label: { flex: 1, fontSize: 14 } }} radius={12}
-            leftSection={<IconPhotoPlus size={26} />}
-            onClick={onStory}>
-            Add To Story
-          </Button>
-
         </Stack>
       </Menu.Dropdown>
     </Menu>
