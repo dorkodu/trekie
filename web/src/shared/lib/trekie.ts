@@ -1,3 +1,4 @@
+import { CommitEvent, ICommitEvent, ICommitment } from '@/core';
 import * as Trekie from '@/core/Trekie'
 
 import { db } from '@/shared/lib/db'
@@ -38,18 +39,29 @@ const initialState: Trekie.GameState = mock.game
  * now we use a clean state & mock data
  */
 
-type TrekieCreateConfig = { initialState?: Trekie.GameState, commitments: Record<any, Record<Trekie.ICommitment>, use?: Record<string, Trekie.GameComponent> }
-function createTrekie({ initialState, commitments, use }: TrekieCreateConfig = { initialState: blankState, commitments: {} }) {
-  // initialize state
-  const state = initialState ?? blankState
+type CommitmentsShortcut = Record<any, Record<any, ICommitEvent<any>>>
 
+type TrekieCreateConfig<TCommitments extends CommitmentsShortcut> = {
+  initialState?: Trekie.GameState,
+  commitments: TCommitments,
+  use?: Record<string, Trekie.GameComponent>
+}
+
+function createTrekie<T extends CommitmentsShortcut>
+  ({ initialState, commitments, use }: TrekieCreateConfig<T> = { initialState: blankState, commitments: {} as T }) {
   // initialize game
-  const { game, useGame } = Trekie.Game(state)
+  const { game, useGame } = Trekie.Game(initialState)
+
+  const cmts = new Map<string, ICommitment>()
+  // initialize commitments
+  Object.entries(commitments).map(([name, events]) => {
+    return Trekie.Commitment<typeof events>(name, events)
+  })
 
   return {
     game: useGame,
-    commitments,
-    commit() {
+    commitments: cmts,
+    commit(name: string, event: string, data: ) {
 
     },
     use,
@@ -57,5 +69,21 @@ function createTrekie({ initialState, commitments, use }: TrekieCreateConfig = {
   }
 }
 
-export const trekie = createTrekie({ initialState, commits })
+const Todo = Trekie.Commitment("Todo", {
+  'CREATE': CommitEvent<string>((status) => { }),
+  'CHECK': CommitEvent<string>((status) => { }),
+  'DONE': CommitEvent<string>((status) => { }),
+})
+
+let commitments = {
+  "Todo": Trekie.Commitment("Todo", {
+    'CREATE': CommitEvent<string>((status) => { }),
+    'CHECK': CommitEvent<string>((status) => { }),
+    'DONE': CommitEvent<string>((status) => { }),
+  }),
+}
+
+
+export const trekie = createTrekie<typeof commitments>({ initialState, commitments })
 export default trekie
+

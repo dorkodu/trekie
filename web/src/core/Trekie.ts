@@ -11,7 +11,10 @@ import { utils } from '@/shared/utils'
 import { IUser } from '@/core/account'
 import { calculateStreak } from './commons/life'
 import { defaultState } from './consts'
+
+// Trekie namespace exports
 export * from '@/core/account'
+export * from '@/core/commit'
 
 export interface GameState {
   user: Maybe<IUser>
