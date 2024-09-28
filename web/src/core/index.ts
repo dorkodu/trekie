@@ -1,3 +1,5 @@
+import { VanillaGame } from './game'
+
 export * from './hooks'
 export * from './consts'
 
@@ -8,4 +10,19 @@ export * as Habit from './commons/habit'
 export * as Social from './commons/social'
 export * as Life from './commons/life'
 
-export * from './Trekie'
+// Trekie namespace exports
+export * from './account'
+export * from './commit'
+
+export * from './game'
+
+export type ComponentInterface = {}
+
+export type GameComponent
+  = (game: VanillaGame) => ComponentInterface
+
+export function Component
+  <TInterface extends ComponentInterface>
+  (component: (game: VanillaGame) => TInterface) {
+  return (game: VanillaGame) => component(game)
+}

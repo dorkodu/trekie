@@ -1,4 +1,4 @@
-import { GameState } from "./Trekie"
+import { GameState } from "@/core"
 
 export const defaultState: GameState = {
   // points

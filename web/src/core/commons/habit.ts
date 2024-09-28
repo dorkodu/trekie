@@ -1,6 +1,6 @@
 import { ulid } from "ulid"
 
-import * as Trekie from "@/core/Trekie"
+import * as Trekie from "@/core"
 
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { db } from "@/shared/lib/db"

@@ -1,6 +1,5 @@
-import * as Trekie from '@/core/Trekie'
+import * as Trekie from '@/core'
 
-import { IUser } from "@/core/Trekie"
 import { IGoal } from "@/core/commons/goal"
 import { IHabit } from "@/core/commons/habit"
 
@@ -9,7 +8,7 @@ import { ulid } from 'ulid'
 function generate() {
   const userId = ulid()
 
-  const user: IUser = {
+  const user: Trekie.IUser = {
     id: userId,
     username: 'dorukeray',
     name: 'Doruk Eray',
@@ -57,7 +56,6 @@ function generate() {
     momentum: 0,
     streak: 0,
     xpTargetDaily: 10,
-    xpToday: 0,
     lastActive: new Date("20/02/2024 16:34").getTime(),
     lastXp: new Date("20/02/2024 16:34").getTime(),
     lastStreak: new Date("20/02/2024 16:34").getTime(),

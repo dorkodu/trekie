@@ -1,10 +1,8 @@
-import { CommitEvent, ICommitEvent, ICommitment } from '@/core';
-import * as Trekie from '@/core/Trekie'
+import { CommitEvent, ICommitEvent, ICommitment, ICommitReward } from '@/core'
+import * as Trekie from '@/core'
 
 import { db } from '@/shared/lib/db'
 
-import * as Goal from "@/core/commons/goal"
-import * as Habit from "@/core/commons/habit"
 import { mock } from './mock'
 
 const blankState: Trekie.GameState = {
@@ -39,51 +37,68 @@ const initialState: Trekie.GameState = mock.game
  * now we use a clean state & mock data
  */
 
-type CommitmentsShortcut = Record<any, Record<any, ICommitEvent<any>>>
-
-type TrekieCreateConfig<TCommitments extends CommitmentsShortcut> = {
+type TrekieCreateConfig<TCommitments extends Record<any, Trekie.ICommitment>> = {
   initialState?: Trekie.GameState,
   commitments: TCommitments,
   use?: Record<string, Trekie.GameComponent>
 }
 
-function createTrekie<T extends CommitmentsShortcut>
-  ({ initialState, commitments, use }: TrekieCreateConfig<T> = { initialState: blankState, commitments: {} as T }) {
+function createTrekie<TCommitments extends Record<any, Trekie.ICommitment>>
+  ({ initialState, commitments, use }: TrekieCreateConfig<TCommitments> = { initialState: blankState, commitments: {} as TCommitments }) {
   // initialize game
   const { game, useGame } = Trekie.Game(initialState)
 
-  const cmts = new Map<string, ICommitment>()
-  // initialize commitments
-  Object.entries(commitments).map(([name, events]) => {
-    return Trekie.Commitment<typeof events>(name, events)
-  })
+  function applyGameRewards(reward: ICommitReward) {
+    game.getState().changeXp(reward.xp)
+    game.getState().changeCoinsBalance(reward.coins)
+  }
 
+  // initialize commitments as Map and Record for utility
   return {
     game: useGame,
-    commitments: cmts,
-    commit(name: string, event: string, data: ) {
+    commit<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
+      commit: TCommitName,
+      event: TEventName,
+      data: Parameters<TCommitments[TCommitName]['events'][TEventName]>[0]['data']) {
+
+      // 1) mutate game state with commit 2) save this commit record
+      if (commitments[commit]) {
+        const commitRecord = commitments[commit]?.commit(event, data)
+        applyGameRewards(commitRecord.reward)
+        // TODO: db.commits.add(commitRecord, commitRecord.id)
+      }
 
     },
+
     use,
-    db: db,
+    db: db
   }
 }
 
 const Todo = Trekie.Commitment("Todo", {
-  'CREATE': CommitEvent<string>((status) => { }),
-  'CHECK': CommitEvent<string>((status) => { }),
-  'DONE': CommitEvent<string>((status) => { }),
+  'CREATE': CommitEvent<null>((status) => ({ xp: +1, coins: +1 })),
+  'DAILYCHECK': CommitEvent<null>(() => ({ xp: +5, coins: 0 })),
+  'DONE': CommitEvent<null>(() => ({ xp: +25, coins: +2 })),
 })
 
-let commitments = {
-  "Todo": Trekie.Commitment("Todo", {
-    'CREATE': CommitEvent<string>((status) => { }),
-    'CHECK': CommitEvent<string>((status) => { }),
-    'DONE': CommitEvent<string>((status) => { }),
-  }),
+const Habit = Trekie.Commitment("Habit", {
+  'CREATE': CommitEvent<{}>(() => ({ xp: +1, coins: +1 })),
+  'UPDATE': CommitEvent<{}>(() => ({ xp: +1, coins: +1 })),
+  'DAILY_TARGET_REACHED': CommitEvent<{}>(() => ({ xp: +5, coins: 0 })),
+  'COUNT_UP': CommitEvent<{}>(() => ({ xp: +25, coins: +2 })),
+  'COUNT_DOWN': CommitEvent<{}>(() => ({ xp: +25, coins: +2 })),
+})
+
+const CheckIn = {
+  'DAILYCHECK': { xp: +1, coins: +1 },
+  'CREATE': { xp: +1, coins: +1 },
+  'DONE': { xp: +25, coins: +2 },
 }
 
+let commitments = { Todo, Habit }
 
 export const trekie = createTrekie<typeof commitments>({ initialState, commitments })
 export default trekie
+
+trekie.commit('Todo', 'DAILYCHECK', null)
 

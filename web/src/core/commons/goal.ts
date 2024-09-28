@@ -1,4 +1,4 @@
-import * as Trekie from "../Trekie"
+import * as Trekie from '@/core'
 
 import { Maybe, Timestamp } from "@/shared/utils"
 import { db } from "@/shared/lib/db"

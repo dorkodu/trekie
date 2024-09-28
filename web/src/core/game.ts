@@ -4,17 +4,12 @@ import { immer } from 'zustand/middleware/immer'
 import { persist } from 'zustand/middleware'
 
 // misc
-import * as Supercell from '@/shared/lib/supercell'
 import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
 import { utils } from '@/shared/utils'
 
 import { IUser } from '@/core/account'
 import { calculateStreak } from './commons/life'
 import { defaultState } from './consts'
-
-// Trekie namespace exports
-export * from '@/core/account'
-export * from '@/core/commit'
 
 export interface GameState {
   user: Maybe<IUser>
@@ -36,10 +31,12 @@ export interface GameState {
 
 export interface GameActions {
   changeXp: (change: number) => void,
+  changeCoinsBalance: (change: number) => void,
 
   xpToday: () => number
   dailyProgress: () => number
   averageXp: () => number
+
   calculateStreak: () => void
   calculateMomentum: () => void
 
@@ -93,6 +90,16 @@ export function Game(state: GameState = defaultState) {
           })
 
           get().refresh()
+        },
+
+        changeCoinsBalance(change) {
+          set($ => {
+            let newTotalCoins = $.coins + change
+            // prevent negative coins
+            if (newTotalCoins < 0)
+              newTotalCoins = 0
+            $.coins = newTotalCoins
+          })
         },
 
         dailyRefresh() {
@@ -159,17 +166,6 @@ export function Game(state: GameState = defaultState) {
   }
 
   return { game, useGame }
-}
-
-export type ComponentInterface = {}
-
-export type GameComponent
-  = (game: VanillaGame) => ComponentInterface
-
-export function Component
-  <TInterface extends ComponentInterface>
-  (component: (game: VanillaGame) => TInterface) {
-  return (game: VanillaGame) => component(game)
 }
 
 export type TrekieStoreInterface = GameState & GameActions

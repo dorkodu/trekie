@@ -1,5 +1,5 @@
 import { daystamp } from "@/shared/utils"
-import { IUser, TrekieStoreInterface } from "../Trekie"
+import { IUser, TrekieStoreInterface } from "@/core"
 
 export interface ILife {
   id: string
