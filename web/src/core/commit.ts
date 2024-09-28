@@ -1,6 +1,9 @@
 import { ulid } from "ulid"
 
-interface ICommitStatus<T = {}> {
+export type ICommitReward = { xp: number, coins: number }
+
+// This is what the commitment returns
+interface ICommitStatus<T> {
   id: string
   event: string
   commitment: string
@@ -8,8 +11,13 @@ interface ICommitStatus<T = {}> {
   data: T
 }
 
-export type ICommitEvent<T> = (status: ICommitStatus<T>) => void
-export const CommitEvent = <T>(kind: ICommitEvent<T>): ICommitEvent<T> => kind
+// this is what we save to local DB and API Service
+interface ICommitRecord<T = undefined> extends ICommitStatus<T> {
+  reward: ICommitReward
+}
+
+export type ICommitEvent<T> = (status: ICommitStatus<T>) => ICommitReward
+export const CommitEvent = <T>(commitEvent: ICommitEvent<T>): ICommitEvent<T> => commitEvent
 
 export type ICommitment = ReturnType<typeof Commitment>
 export type ICommitTemplate = {
@@ -24,8 +32,7 @@ export function Commitment
     name,
     events,
     status: <TKind extends keyof TEvents>
-      (kind: TKind, data: Parameters<TEvents[TKind]>[0]['data']):
-      ICommitStatus<typeof data> =>
+      (kind: TKind, data?: Parameters<TEvents[TKind]>[0]['data']): ICommitStatus<typeof data> =>
     ({
       id: ulid(),
       event: kind.toString(),
@@ -42,8 +49,9 @@ export function Commitment
       // create status object
       let status = this.status(event, data)
       // run the action with status object as parameter
-      this.events[status.event]!(status)
-      return status
+      const reward = this.events[status.event]!(status)
+      return { ...status, reward } satisfies ICommitRecord<typeof data>
     }
   }
 }
+
