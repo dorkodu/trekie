@@ -1,4 +1,5 @@
-import { IHabit } from '@/core/commons/habit'
+import { IHabit } from '@/namespaces'
+import { schema as GoalSchema, IGoal, IGoalTemplate } from '@/namespaces/goal'
 import {
   ActionIcon,
   Button,
@@ -10,9 +11,8 @@ import {
   Textarea,
   TextInput,
 } from '@mantine/core'
-import { ContextModalProps } from '@mantine/modals'
 import { useForm, zodResolver } from '@mantine/form'
-import { IGoal, schema as GoalSchema, IGoalTemplate } from '@/core/commons/goal'
+import { ContextModalProps } from '@mantine/modals'
 import { IconTrash } from '@tabler/icons-react'
 
 type GoalEditorMode = 'CREATE' | 'EDIT'

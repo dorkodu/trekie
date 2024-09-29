@@ -1,10 +1,10 @@
+import { IGoal } from "@/namespaces/goal"
 import trekie from "@/shared/lib/trekie"
-import { IGoal } from "@/core/commons/goal"
+import { vanilla } from "@/styles/theme"
 import { Alert, Badge, Card, Center, Flex, Grid, Group, Overlay, Progress, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core"
 import { IconArcheryArrow, IconCalendar, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconCircleCheck, IconDiamond, IconFlagCheck, IconFlame, IconSparkles, IconTarget, IconTargetArrow } from "@tabler/icons-react"
 import { useLiveQuery } from "dexie-react-hooks"
 import GoalMenu from "./GoalCardMenu"
-import { vanilla } from "@/styles/theme"
 
 interface Props {
   id: IGoal["id"]

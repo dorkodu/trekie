@@ -1,4 +1,4 @@
-import { IHabit } from '@/core/commons/habit'
+import { IHabit } from '@/namespaces'
 import {
   Button,
   Group,
@@ -6,8 +6,8 @@ import {
   Text,
   TextInput,
 } from '@mantine/core'
-import { ContextModalProps } from '@mantine/modals'
 import { useForm } from '@mantine/form'
+import { ContextModalProps } from '@mantine/modals'
 
 interface Props {
   opened: boolean

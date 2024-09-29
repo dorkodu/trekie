@@ -2,9 +2,9 @@ import { ulid } from "ulid"
 
 import * as Trekie from "@/core"
 
-import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { db } from "@/shared/lib/db"
 import { errors } from "@/shared/lib/errors"
+import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { z } from "zod"
 
 //? Interfaces
@@ -149,4 +149,4 @@ export const Component = Trekie.Component<Interface>((game) => ({
   },
 }))
 
-export * as Habit from "./habit"
+export * as Habit from "."

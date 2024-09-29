@@ -1,11 +1,11 @@
+import { IHabit } from '@/namespaces'
 import { trekie } from "@/shared/lib/trekie"
 import { useAppStore } from '@/shared/stores/appStore'
-import { IHabit } from '@/core/commons/habit'
+import { vanilla } from '@/styles/theme'
 import { ActionIcon, Menu } from '@mantine/core'
+import { modals } from "@mantine/modals"
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
-import { vanilla } from '@/styles/theme'
-import { modals } from "@mantine/modals"
 
 interface Props {
   habit: IHabit

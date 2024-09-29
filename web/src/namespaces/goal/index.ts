@@ -1,22 +1,23 @@
 import * as Trekie from '@/core'
 
-import { Maybe, Timestamp } from "@/shared/utils"
 import { db } from "@/shared/lib/db"
-import { z } from 'zod'
+import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
+import { z } from 'zod'
 
 //? INTERFACE
 
 export type IGoal = z.infer<typeof IGoal>
 export type IGoalTemplate = z.infer<typeof IGoalTemplate>
 
-const IGoalTemplate = z.object({
+export const IGoalTemplate = z.object({
   title: z.string().trim().min(1).max(100),
   description: z.string().trim().min(1).max(500),
   xpTarget: z.number().min(1),
   commitments: z.array(z.string().ulid())
 })
-const IGoal = IGoalTemplate.extend({
+
+export const IGoal = IGoalTemplate.extend({
   id: z.string().ulid(),
   userId: z.string().ulid(),
   xpCurrent: z.number(),

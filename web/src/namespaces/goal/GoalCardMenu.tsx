@@ -1,12 +1,12 @@
 import { trekie } from '@/shared/lib/trekie'
 
+import { IGoal } from '@/namespaces/goal'
 import { useAppStore } from '@/shared/stores/appStore'
 import { vanilla } from '@/styles/theme'
-import { IGoal } from '@/core/commons/goal'
 import { ActionIcon, Menu } from '@mantine/core'
+import { modals } from '@mantine/modals'
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
-import { modals } from '@mantine/modals'
 
 interface Props {
   goal: IGoal
