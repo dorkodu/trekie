@@ -1,7 +1,7 @@
 import * as Trekie from '@/core'
 
-import { IGoal } from "@/core/commons/goal"
-import { IHabit } from "@/core/commons/habit"
+import { IGoal } from "@/namespaces/goal"
+import { IHabit } from "@/namespaces/habit"
 
 import { ulid } from 'ulid'
 
@@ -46,7 +46,8 @@ function generate() {
     xpCurrent: 0,
     xpTarget: 1000,
     createdAt: new Date("19/02/2024 14:00").getTime(),
-    lastUpdated: new Date("20/02/2024 12:15").getTime()
+    lastUpdated: new Date("20/02/2024 12:15").getTime(),
+    commitments: []
   }
 
   const game: Trekie.GameState = {

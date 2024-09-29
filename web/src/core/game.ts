@@ -1,18 +1,15 @@
 import { useStore } from 'zustand'
-import { createStore } from 'zustand/vanilla'
-import { immer } from 'zustand/middleware/immer'
 import { persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
+import { createStore } from 'zustand/vanilla'
 
 // misc
-import { Daystamp, Maybe, Timestamp, daystamp } from '@/shared/utils'
-import { utils } from '@/shared/utils'
+import { Daystamp, Maybe, Timestamp, daystamp, utils } from '@/shared/utils'
 
 import { IUser } from '@/core/account'
-import { calculateStreak } from './commons/life'
-import { defaultState } from './consts'
 
 export interface GameState {
-  user: Maybe<IUser>
+  user: IUser
 
   xp: number
   coins: number
@@ -45,11 +42,12 @@ export interface GameActions {
   reset: () => void
 }
 
+export type StoreInterface = GameState & GameActions
 export type VanillaGame = ReturnType<typeof Game>["game"]
 export type ReactiveGame = ReturnType<typeof Game>["useGame"]
 
-export function Game(state: GameState = defaultState) {
-  const game = createStore<TrekieStoreInterface>()(
+export function Game(state: GameState) {
+  const game = createStore<StoreInterface>()(
     persist(
       immer((set, get) => ({
         ...state,
@@ -153,20 +151,73 @@ export function Game(state: GameState = defaultState) {
           get().calculateStreak()
           get().calculateMomentum()
         },
-        reset() { set(defaultState) },
+        reset() {
+          set({
+            xp: 0,
+            coins: 0,
+            momentum: 0,
+            streak: 0,
+            xpTargetDaily: 0,
+            lastActive: undefined,
+            lastXp: undefined,
+            lastStreak: undefined,
+            lastDailyCheck: undefined,
+            xpHistory: {}
+          })
+        },
       })),
 
       { name: 'trekie-game' }
     ))
 
-  function useGame(): TrekieStoreInterface
-  function useGame<T>(selector: (state: TrekieStoreInterface) => T): T
-  function useGame<T>(selector?: (state: TrekieStoreInterface) => T) {
+  function useGame(): StoreInterface
+  function useGame<T>(selector: (state: StoreInterface) => T): T
+  function useGame<T>(selector?: (state: StoreInterface) => T) {
     return useStore(game, selector!)
   }
 
   return { game, useGame }
 }
 
-export type TrekieStoreInterface = GameState & GameActions
+export type ComponentInterface = {}
 
+export type GameComponent
+  = (game: VanillaGame) => ComponentInterface
+
+export function Component
+  <TInterface extends ComponentInterface>
+  (component: (game: VanillaGame) => TInterface) {
+  return (game: VanillaGame) => component(game)
+}
+
+// Function to calculate the current streak based on xpHistory and dailyXpTarget
+export function calculateStreak(
+  xpHistory: StoreInterface["xpHistory"], // { [date: Daystamp]: number }
+  dailyXpTarget: number
+): number {
+  let currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - 1); // Start from yesterday
+  let streak: number = 0; // Initialize the streak count
+
+  // Loop through each day in reverse, checking if the XP meets the daily target
+  while (true) {
+    const dateString = daystamp.fromDate(currentDate); // Convert the date to the required format
+    const xp = xpHistory[dateString]; // Get the XP for the current date
+
+    // If the XP meets or exceeds the daily target, increment the streak
+    if (xp && xp >= dailyXpTarget) {
+      streak++;
+      currentDate.setDate(currentDate.getDate() - 1); // Move to the previous day
+    } else {
+      break; // If the XP doesn't meet the target, break the loop
+    }
+  }
+
+  // Check if today's XP meets or exceeds the daily target
+  const todaysXp = xpHistory[daystamp.fromDate(new Date())];
+  if (todaysXp && todaysXp >= dailyXpTarget) {
+    streak++;
+  }
+
+  return streak; // Return the calculated streak
+}
