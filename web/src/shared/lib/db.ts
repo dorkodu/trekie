@@ -1,15 +1,12 @@
 import Dexie, { Table } from 'dexie'
 
-import { IUser } from '@/core/index'
+import { IUser } from '@/core'
+import { IGoal } from '@/namespaces/goal'
+import { IHabit } from '@/namespaces/habit'
 
-import { IGoal } from '@/core/commons/goal'
-import { IHabit } from '@/core/commons/habit'
 import { mock } from './mock'
-import { LogKind, log } from '../utils/log'
 
 export class TrekieDatabase extends Dexie {
-  // 'friends' is added by dexie when declaring the stores()
-  // We just tell the typing system this is the case
   users!: Table<IUser, string>
   habits!: Table<IHabit, string>
   goals!: Table<IGoal, string>
@@ -30,12 +27,11 @@ db.on("populate", populate)
 
 db.on("ready", ready)
 
-db.open().then(async function (db) {
+db.open().then(async (db) => {
   // Database opened successfully
-  log("dexie opened successfully", LogKind.INFO)
-}).catch(function (e) {
-  // Error occurred
-  log(e, LogKind.ERROR)
+  console.info("dexie opened successfully")
+}).catch((e) => {
+  console.error(e)
 });
 
 export async function populate() {
@@ -45,5 +41,5 @@ export async function populate() {
 }
 
 export async function ready() {
-  log("db is ready", LogKind.INFO)
+  console.info("db is ready")
 }

@@ -18,9 +18,9 @@ import { Notifications } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ModalsProvider } from '@mantine/modals'
 import HabitEditorModal from './namespaces/habit/HabitEditorModal'
-import { useRefreshStatsDaily } from './core'
 import GoalEditorModal from './namespaces/goal/GoalEditorModal'
 import { modals } from './shared/components/modals'
+import { useRefreshStatsDaily } from './shared/lib/trekie'
 
 function App() {
   const loading = useAppStore($ => $.loading)
