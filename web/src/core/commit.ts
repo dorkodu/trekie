@@ -1,57 +1,58 @@
+import { Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 
 export type ICommitReward = { xp: number, coins: number }
 
-// This is what the commitment returns
-interface ICommitStatus<T> {
+// this represents a single commit event message
+export interface ICommitStatus<T = undefined> {
   id: string
   event: string
   commitment: string
-  timestamp: string
+  timestamp: Timestamp
   data: T
 }
 
-// this is what we save to local DB and API Service
-interface ICommitRecord<T = undefined> extends ICommitStatus<T> {
-  reward: ICommitReward
-}
-
+// we return this to the client
+export type ICommitResult<T> = ICommitStatus<T> & { reward: ICommitReward }
+// we sync this to API as a verifiable record 
+export type ICommitRecord<T> = ICommitResult<T> & { userId: string }
+// the action that runs on commit & returns rewards
 export type ICommitEvent<T> = (status: ICommitStatus<T>) => ICommitReward
-export const CommitEvent = <T>(commitEvent: ICommitEvent<T>): ICommitEvent<T> => commitEvent
 
 export type ICommitment = ReturnType<typeof Commitment>
-export type ICommitTemplate = {
+export type ICommitmentTemplate = {
   name: string
-  events: Record<string, ICommitEvent<any>>
+  events: Record<any, ICommitEvent<any>>
 }
 
+export const CommitEvent = <T>(commitEvent: ICommitEvent<T>): ICommitEvent<T> => commitEvent
+
 export function Commitment
-  <TEvents extends Record<any, ICommitEvent<any>>>
+  <TEvents extends ICommitmentTemplate['events'], TKind extends keyof TEvents>
   (name: string, events: TEvents) {
   return {
     name,
     events,
-    status: <TKind extends keyof TEvents>
-      (kind: TKind, data?: Parameters<TEvents[TKind]>[0]['data']): ICommitStatus<typeof data> =>
+    status: (kind: TKind, data?: Parameters<TEvents[TKind]>[0]['data']): ICommitStatus<typeof data> =>
     ({
       id: ulid(),
       event: kind.toString(),
       commitment: name,
-      timestamp: new Date().toISOString(),
+      timestamp: Date.now(),
       data
     }),
 
-    share(status: ICommitStatus<any>) {
-      this.events[status.event]!(status)
-    },
+    commit
+      (event: TKind, data: Parameters<TEvents[TKind]>[0]['data'])
+      : ICommitResult<typeof data> {
 
-    commit<TEventName extends keyof TEvents>(event: TEventName, data: Parameters<TEvents[TEventName]>[0]['data']) {
       // create status object
       let status = this.status(event, data)
+
       // run the action with status object as parameter
-      const reward = this.events[status.event]!(status)
-      return { ...status, reward } satisfies ICommitRecord<typeof data>
+      let reward = events[event]!(status)
+
+      return { ...status, reward }
     }
   }
 }
-
