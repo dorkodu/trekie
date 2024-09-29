@@ -1,28 +1,5 @@
 import { GameState } from "@/core"
 
-export const defaultState: GameState = {
-  // points
-  xp: 0,
-  coins: 0,
-  momentum: 0,
-  streak: 0,
-
-  // dailies
-  xpTargetDaily: 0,
-  xpToday: 0,
-
-  // timestamps
-  lastXp: undefined,
-  lastStreak: undefined,
-  lastActive: undefined,
-  lastDailyCheck: undefined,
-
-  // user
-  user: undefined,
-
-  xpHistory: {}
-}
-
 export const actionXpGains = {
   Habit: {
     Add: +5,
