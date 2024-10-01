@@ -40,9 +40,7 @@ export interface Interface {
 
 export const Component = Trekie.Component<Interface>((game) => ({
   get: (id) => db.goals.get(id),
-
   add: (goal) => db.goals.add(goal, goal.id),
-
   create(props) {
     const userId = game.getState().user?.id
     if (!userId) return
@@ -54,7 +52,6 @@ export const Component = Trekie.Component<Interface>((game) => ({
       userId
     } as IGoal
   },
-
   update(id, props) {
     const updatedGoal = this.create(props)
     if (!updatedGoal) return
@@ -63,8 +60,6 @@ export const Component = Trekie.Component<Interface>((game) => ({
 
     return updatedGoal
   },
-
   count: () => db.goals.count(),
-
   remove: (id) => db.goals.delete(id),
 }))
