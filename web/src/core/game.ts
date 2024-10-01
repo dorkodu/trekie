@@ -27,9 +27,6 @@ export interface GameState {
 }
 
 export interface GameActions {
-  changeXp: (change: number) => void,
-  changeCoinsBalance: (change: number) => void,
-
   xpToday: () => number
   dailyProgress: () => number
   averageXp: () => number
@@ -42,9 +39,20 @@ export interface GameActions {
   reset: () => void
 }
 
+export interface GameMutations {
+  changeXp: (change: number) => void,
+  changeCoinsBalance: (change: number) => void,
+}
+
 export type StoreInterface = GameState & GameActions
 export type VanillaGame = ReturnType<typeof Game>["game"]
 export type ReactiveGame = ReturnType<typeof Game>["useGame"]
+
+export type ReadOnlyStoreInterface = Omit<StoreInterface, keyof GameMutations>;
+export type ReadOnlyVanillaGame = ReturnType<typeof Game>["readOnlyGame"];
+export type ReadOnlyReactiveGame = ReturnType<typeof Game>["useReadOnlyGame"];
+
+
 
 export function Game(state: GameState) {
   const game = createStore<StoreInterface>()(
@@ -65,39 +73,6 @@ export function Game(state: GameState) {
 
         xpToday() {
           return get().xpHistory[daystamp.today()] ?? 0
-        },
-
-        changeXp: (change: number) => {
-          set($ => {
-            let newTotalXp = $.xp + change
-            let newDailyXp = $.xpToday() + change
-
-            // prevent negative xp
-            if (newTotalXp < 0)
-              newTotalXp = 0
-
-            $.xp = newTotalXp
-
-            // add XP to history
-            $.xpHistory[daystamp.today()] = newDailyXp
-            // USE LATER: console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
-
-            // Handle user's last xp date
-            if (!utils.isSameDay($.lastXp, Date.now()))
-              $.lastXp = Date.now()
-          })
-
-          get().refresh()
-        },
-
-        changeCoinsBalance(change) {
-          set($ => {
-            let newTotalCoins = $.coins + change
-            // prevent negative coins
-            if (newTotalCoins < 0)
-              newTotalCoins = 0
-            $.coins = newTotalCoins
-          })
         },
 
         dailyRefresh() {
@@ -176,7 +151,41 @@ export function Game(state: GameState) {
     return useStore(game, selector!)
   }
 
-  return { game, useGame }
+  function changeXp(change: number) {
+    game.setState($ => {
+      let newTotalXp = $.xp + change
+      let newDailyXp = $.xpToday() + change
+
+      // prevent negative xp
+      if (newTotalXp < 0)
+        newTotalXp = 0
+
+      $.xp = newTotalXp
+
+      // add XP to history
+      $.xpHistory[daystamp.today()] = newDailyXp
+      // USE LATER: console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
+
+      // Handle user's last xp date
+      if (!utils.isSameDay($.lastXp, Date.now()))
+        $.lastXp = Date.now()
+    })
+
+    game.getState().refresh()
+  }
+
+  function changeCoinsBalance(change: number) {
+    game.setState($ => {
+      let newTotalCoins = $.coins + change
+      // prevent negative coins
+      if (newTotalCoins < 0)
+        newTotalCoins = 0
+      $.coins = newTotalCoins
+    })
+    game.getState().refresh()
+  }
+
+  return { game, useGame, change: { xp: changeXp, coinsBalance: changeCoinsBalance } }
 }
 
 export type ComponentInterface = {}
@@ -186,8 +195,8 @@ export type GameComponent
 
 export function Component
   <TInterface extends ComponentInterface>
-  (component: (game: VanillaGame) => TInterface) {
-  return (game: VanillaGame) => component(game)
+  (component: (game: ReadOnlyVanillaGame) => TInterface) {
+  return (game: ReadOnlyVanillaGame) => component(game)
 }
 
 // Function to calculate the current streak based on xpHistory and dailyXpTarget

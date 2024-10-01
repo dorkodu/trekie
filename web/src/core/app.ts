@@ -2,10 +2,10 @@ import { GameComponent, ICommitment, ICommitRecord, ICommitReward } from "."
 import { db as gameDb } from "./db"
 import { Game, GameState } from "./game"
 
-export type CreateConfig<TCommitments extends Record<any, ICommitment>> = {
+export type CreateConfig<TCommitments extends Record<any, ICommitment>, TUse extends Record<any, any>> = {
   initialState: GameState,
   commitments: TCommitments,
-  use?: Record<string, GameComponent>
+  use?: TUse
 }
 
 export type MiniApp = ReturnType<typeof createApp>
