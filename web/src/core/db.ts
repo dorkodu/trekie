@@ -7,7 +7,7 @@ export const db = new Dexie('trekie-game') as Dexie & {
 
 // Schema declaration:
 db.version(1).stores({
-  commits: 'id, userId, timestamp'
+  commits: 'id, userId, timestamp, event, commitment'
 })
 
 db.on("populate", async () => { })

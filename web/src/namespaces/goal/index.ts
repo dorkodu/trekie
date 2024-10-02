@@ -3,6 +3,7 @@ import * as Trekie from '@/core'
 import { db } from "@/shared/lib/db"
 import trekie from '@/shared/lib/trekie'
 import { Maybe, Timestamp } from "@/shared/utils"
+import { $ } from 'bun'
 import { ulid } from "ulid"
 import { z } from 'zod'
 
@@ -43,7 +44,7 @@ export const Component: Interface = {
   get: (id) => db.goals.get(id),
   add: (goal) => db.goals.add(goal, goal.id),
   create(props) {
-    const userId = trekie.commit("").getState().user?.id
+    const userId = trekie.game().user?.id
     if (!userId) return
 
     return {

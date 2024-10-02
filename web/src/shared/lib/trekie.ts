@@ -1,5 +1,5 @@
 import * as Trekie from '@/core'
-import { CommitEvent, ICommitEvent, ICommitment, ICommitReward } from '@/core'
+import { Commitment as C, CommitEvent as CE } from '@/core'
 
 import { db } from './db'
 
@@ -26,38 +26,36 @@ const CheckIn = {
 }
 
 let commitments = {
-  Todo: Trekie.Commitment("Todo", {
-    'CREATE': CommitEvent<null>((status) => ({ xp: +1, coins: +1 })),
-    'DAILYCHECK': CommitEvent<null>(() => ({ xp: +5, coins: 0 })),
-    'DONE': CommitEvent<null>(() => ({ xp: +25, coins: +2 })),
+  Todo: C("Todo", {
+    'CREATE': CE((status) => ({ xp: +1, coins: +1 })),
+    'DAILYCHECK': CE(() => ({ xp: +5, coins: 0 })),
+    'DONE': CE(() => ({ xp: +25, coins: +2 })),
   }),
 
-  Habit: Trekie.Commitment("Habit", {
-    'CREATE': CommitEvent<{}>(() => ({ xp: +1, coins: +1 })),
-    'UPDATE': CommitEvent<{}>(() => ({ xp: +1, coins: +1 })),
-    'DAILY_TARGET_REACHED': CommitEvent<{}>(() => ({ xp: +5, coins: 0 })),
-    'COUNT_UP': CommitEvent<{}>(() => ({ xp: +25, coins: +2 })),
-    'COUNT_DOWN': CommitEvent<{}>(() => ({ xp: +25, coins: +2 })),
+  Habit: C("Habit", {
+    'CREATE': CE(() => ({ xp: +1, coins: +1 })),
+    'UPDATE': CE(() => ({ xp: +1, coins: +1 })),
+    'DAILY_TARGET_REACHED': CE(() => ({ xp: +5, coins: 0 })),
+    'COUNT_UP': CE(() => ({ xp: +25, coins: +2 })),
+    'COUNT_DOWN': CE(() => ({ xp: +25, coins: +2 })),
   })
 }
 
-export const trekie = Trekie.createApp({
+export const trekie = Trekie.create({
   initialState,
   commitments,
   use: {
-    goal: Goal.Component,
+    db,
     habit: Habit.Component,
-    db
+    goal: Habit.Component,
   }
 })
 
 export default trekie
 
-trekie.commit('Todo', 'CREATE', null)
-
 export function useRefreshStatsDaily() {
   useEffect(() => {
-    const task = () => trekie.game().refresh()
+    const task = () => { trekie.game().refresh() }
 
     const today = new Date()
     const tomorrow = new Date()

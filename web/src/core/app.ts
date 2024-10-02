@@ -1,28 +1,23 @@
-import { GameComponent, ICommitment, ICommitRecord, ICommitReward } from "."
+import { ICommitment, ICommitRecord, ICommitReward } from "./commit"
 import { db as gameDb } from "./db"
 import { Game, GameState } from "./game"
 
-export type CreateConfig<TCommitments extends Record<any, ICommitment>, TUse extends Record<any, any>> = {
+export type CreateConfig<TCommitments extends Record<any, ICommitment>> = {
   initialState: GameState,
   commitments: TCommitments,
-  use?: TUse
 }
 
-export type MiniApp = ReturnType<typeof createApp>
+export type CreateTrekie = ReturnType<typeof create>
 
-export function createApp<TCommitments extends Record<any, ICommitment>>
-  ({ initialState, commitments, use }: CreateConfig<TCommitments>) {
-  // initialize game
-  const { game, useGame } = Game(initialState)
+export function create<TCommitments extends Record<any, ICommitment>>
+  ({ initialState, commitments }: CreateConfig<TCommitments>) {
 
-  function applyGameRewards(reward: ICommitReward) {
-    game.getState().changeXp(reward.xp)
-    game.getState().changeCoinsBalance(reward.coins)
-  }
+  const { game, useGame, useReadonlyGame, readOnlyGame, mutations } = Game(initialState)
 
-  // initialize commitments as Map and Record for utility
   return {
-    game: useGame,
+    use: useReadonlyGame,
+    game: readOnlyGame,
+
     commit<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
       commit: TCommitName,
       event: TEventName,
@@ -30,16 +25,19 @@ export function createApp<TCommitments extends Record<any, ICommitment>>
 
       // 1) mutate game state with commit 2) save this commit record
       if (commitments[commit]) {
+        // calculate commit event
         const commitResult = commitments[commit]?.commit(event, data)
         const commitRecord: ICommitRecord<typeof data> = {
           ...commitResult,
           userId: game.getState().user.id,
         }
-
+        // save commit record to db
         gameDb.commits.add(commitRecord, commitRecord.id)
-        applyGameRewards(commitResult.reward)
+        // apply rewards to game state
+        mutations.changeXp(commitRecord.reward.xp)
+        mutations.changeCoinsBalance(commitRecord.reward.coins)
       }
     },
-    use,
+
   }
 }

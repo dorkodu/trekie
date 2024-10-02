@@ -1,12 +1,13 @@
-import { useStore } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { immer } from 'zustand/middleware/immer'
-import { createStore } from 'zustand/vanilla'
+import { persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { createStore, StoreApi } from 'zustand/vanilla';
 
 // misc
-import { Daystamp, Maybe, Timestamp, daystamp, utils } from '@/shared/utils'
+import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils';
 
-import { IUser } from '@/core/account'
+import { IUser } from '@/core/account';
+import { useCallback } from 'react';
+import { useStore } from 'zustand';
 
 export interface GameState {
   user: IUser
@@ -24,37 +25,32 @@ export interface GameState {
   lastDailyCheck: Maybe<Timestamp>,
 
   xpHistory: { [date: Daystamp]: number }
-}
 
-export interface GameActions {
   xpToday: () => number
   dailyProgress: () => number
   averageXp: () => number
+}
 
+export interface GameActions {
   calculateStreak: () => void
   calculateMomentum: () => void
-
   refresh: () => void
   dailyRefresh: () => void
   reset: () => void
 }
 
 export interface GameMutations {
-  changeXp: (change: number) => void,
-  changeCoinsBalance: (change: number) => void,
+  changeXp: (change: number) => number,
+  changeCoinsBalance: (change: number) => number,
 }
 
 export type StoreInterface = GameState & GameActions
 export type VanillaGame = ReturnType<typeof Game>["game"]
 export type ReactiveGame = ReturnType<typeof Game>["useGame"]
-
-export type ReadOnlyStoreInterface = Omit<StoreInterface, keyof GameMutations>;
-export type ReadOnlyVanillaGame = ReturnType<typeof Game>["readOnlyGame"];
-export type ReadOnlyReactiveGame = ReturnType<typeof Game>["useReadOnlyGame"];
-
-
+export type ReadonlyStoreInterface = Omit<StoreInterface, keyof GameActions>
 
 export function Game(state: GameState) {
+
   const game = createStore<StoreInterface>()(
     persist(
       immer((set, get) => ({
@@ -151,6 +147,24 @@ export function Game(state: GameState) {
     return useStore(game, selector!)
   }
 
+  type UseReadonlyGame = <T>(selector: (state: ReadonlyStoreInterface) => T) => T;
+  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: ReadonlyStoreInterface) => T): T => {
+    return useGame(
+      useCallback(
+        (state: StoreInterface) => selector(state as ReadonlyStoreInterface),
+        [selector]
+      )
+    )
+  }
+
+  // New addition: Read-only vanilla store
+  const readOnlyGame = (() => {
+    const state = game.getState()
+    // Omit methods that mutate state
+    const { reset, calculateMomentum, calculateStreak, refresh, dailyRefresh, ...readOnlyState } = state
+    return Object.freeze(readOnlyState) satisfies ReadonlyStoreInterface
+  })
+
   function changeXp(change: number) {
     game.setState($ => {
       let newTotalXp = $.xp + change
@@ -170,8 +184,8 @@ export function Game(state: GameState) {
       if (!utils.isSameDay($.lastXp, Date.now()))
         $.lastXp = Date.now()
     })
-
     game.getState().refresh()
+    return game.getState().xp
   }
 
   function changeCoinsBalance(change: number) {
@@ -183,20 +197,12 @@ export function Game(state: GameState) {
       $.coins = newTotalCoins
     })
     game.getState().refresh()
+    return game.getState().coins
   }
 
-  return { game, useGame, change: { xp: changeXp, coinsBalance: changeCoinsBalance } }
-}
+  const mutations: GameMutations = { changeXp, changeCoinsBalance }
 
-export type ComponentInterface = {}
-
-export type GameComponent
-  = (game: VanillaGame) => ComponentInterface
-
-export function Component
-  <TInterface extends ComponentInterface>
-  (component: (game: ReadOnlyVanillaGame) => TInterface) {
-  return (game: ReadOnlyVanillaGame) => component(game)
+  return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }
 
 // Function to calculate the current streak based on xpHistory and dailyXpTarget
