@@ -1,6 +1,7 @@
 import * as Trekie from '@/core'
 
 import { db } from "@/shared/lib/db"
+import trekie from '@/shared/lib/trekie'
 import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { z } from 'zod'
@@ -38,11 +39,11 @@ export interface Interface {
   count: () => Promise<number>
 }
 
-export const Component = Trekie.Component<Interface>((game) => ({
+export const Component: Interface = {
   get: (id) => db.goals.get(id),
   add: (goal) => db.goals.add(goal, goal.id),
   create(props) {
-    const userId = game.getState().user?.id
+    const userId = trekie.commit("").getState().user?.id
     if (!userId) return
 
     return {
@@ -62,4 +63,4 @@ export const Component = Trekie.Component<Interface>((game) => ({
   },
   count: () => db.goals.count(),
   remove: (id) => db.goals.delete(id),
-}))
+}

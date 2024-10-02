@@ -6,6 +6,7 @@ import { db } from "@/shared/lib/db"
 import { errors } from "@/shared/lib/errors"
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { z } from "zod"
+import trekie from "@/shared/lib/trekie"
 
 //? Interfaces
 
@@ -39,10 +40,10 @@ export interface Interface {
   count: () => Promise<number>
 }
 
-export const Component = Trekie.Component<Interface>((game) => ({
+export const Component: Interface = {
   add(habit) {
     // make sure the user has active session
-    const currentUser = game.getState().user
+    const currentUser = trekie..user
     if (!currentUser) {
       errors.handle("NO_SESSION")
       return false
@@ -147,6 +148,6 @@ export const Component = Trekie.Component<Interface>((game) => ({
 
     } satisfies IHabit
   },
-}))
+}
 
 export * as Habit from "."
