@@ -1,23 +1,26 @@
-import { ICommitRecord, ICommitResult, IUser } from '@/core'
+import { ICommitmentInstance, ICommitRecord, ICommitResult, IUser } from '@/core'
 import Dexie, { Table } from 'dexie'
 
 export const db = new Dexie('trekie-game') as Dexie & {
-  commits: Table<ICommitRecord<any>, string>
+  statuses: Table<ICommitRecord<any>, string>
+  commits: Table<ICommitmentInstance, string>
 }
 
 // Schema declaration:
 db.version(1).stores({
-  commits: 'id, userId, timestamp, event, commitment'
+  statuses: 'id, userId, timestamp, event, commitment',
+  commits: 'id, kind, createdAt, lastActivity',
 })
 
 db.on("populate", async () => { })
 
 db.on("ready", async () => {
-  console.info("db is ready")
+  console.info("[trekie] game db is ready.")
 })
 
 db.open().then(async (db) => {
-  console.info("dexie opened successfully")
+  console.info("[trekie] db opened successfully.")
 }).catch((e) => {
+  console.error("[trekie] db open failed!")
   console.error(e)
 })

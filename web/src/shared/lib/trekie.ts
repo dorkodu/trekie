@@ -27,7 +27,7 @@ const CheckIn = {
 
 let commitments = {
   Todo: C("Todo", {
-    'CREATE': CE((status) => ({ xp: +1, coins: +1 })),
+    'CREATE': CE(() => ({ xp: +1, coins: +1 })),
     'DAILYCHECK': CE(() => ({ xp: +5, coins: 0 })),
     'DONE': CE(() => ({ xp: +25, coins: +2 })),
   }),
@@ -44,11 +44,6 @@ let commitments = {
 export const trekie = Trekie.create({
   initialState,
   commitments,
-  use: {
-    db,
-    habit: Habit.Component,
-    goal: Habit.Component,
-  }
 })
 
 export default trekie

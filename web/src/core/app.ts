@@ -1,15 +1,15 @@
-import { ICommitment, ICommitRecord, ICommitReward } from "./commit"
+import { ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
 import { db as gameDb } from "./db"
 import { Game, GameState } from "./game"
 
-export type CreateConfig<TCommitments extends Record<any, ICommitment>> = {
+export type CreateConfig<TCommitments extends Record<any, ICommitmentKind>> = {
   initialState: GameState,
   commitments: TCommitments,
 }
 
 export type CreateTrekie = ReturnType<typeof create>
 
-export function create<TCommitments extends Record<any, ICommitment>>
+export function create<TCommitments extends Record<any, ICommitmentKind>>
   ({ initialState, commitments }: CreateConfig<TCommitments>) {
 
   const { game, useGame, useReadonlyGame, readOnlyGame, mutations } = Game(initialState)
@@ -32,7 +32,7 @@ export function create<TCommitments extends Record<any, ICommitment>>
           userId: game.getState().user.id,
         }
         // save commit record to db
-        gameDb.commits.add(commitRecord, commitRecord.id)
+        gameDb.statuses.add(commitRecord, commitRecord.id)
         // apply rewards to game state
         mutations.changeXp(commitRecord.reward.xp)
         mutations.changeCoinsBalance(commitRecord.reward.coins)

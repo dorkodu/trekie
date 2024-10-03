@@ -42,6 +42,7 @@ export interface GameActions {
 export interface GameMutations {
   changeXp: (change: number) => number,
   changeCoinsBalance: (change: number) => number,
+
 }
 
 export type StoreInterface = GameState & GameActions
@@ -169,17 +170,13 @@ export function Game(state: GameState) {
     game.setState($ => {
       let newTotalXp = $.xp + change
       let newDailyXp = $.xpToday() + change
-
       // prevent negative xp
       if (newTotalXp < 0)
         newTotalXp = 0
-
       $.xp = newTotalXp
-
       // add XP to history
       $.xpHistory[daystamp.today()] = newDailyXp
       // USE LATER: console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
-
       // Handle user's last xp date
       if (!utils.isSameDay($.lastXp, Date.now()))
         $.lastXp = Date.now()
