@@ -8,6 +8,7 @@ import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils';
 import { IUser } from '@/core/account';
 import { useCallback } from 'react';
 import { useStore } from 'zustand';
+import { calculateStreak } from './misc';
 
 export interface GameState {
   user: IUser
@@ -45,14 +46,14 @@ export interface GameMutations {
 
 }
 
-export type StoreInterface = GameState & GameActions
+export type GameInterface = GameState & GameActions
 export type VanillaGame = ReturnType<typeof Game>["game"]
 export type ReactiveGame = ReturnType<typeof Game>["useGame"]
-export type ReadonlyStoreInterface = Omit<StoreInterface, keyof GameActions>
+export type ReadonlyGameInterface = Omit<GameInterface, keyof GameActions>
 
 export function Game(state: GameState) {
 
-  const game = createStore<StoreInterface>()(
+  const game = createStore<GameInterface>()(
     persist(
       immer((set, get) => ({
         ...state,
@@ -142,17 +143,17 @@ export function Game(state: GameState) {
       { name: 'trekie-game' }
     ))
 
-  function useGame(): StoreInterface
-  function useGame<T>(selector: (state: StoreInterface) => T): T
-  function useGame<T>(selector?: (state: StoreInterface) => T) {
+  function useGame(): GameInterface
+  function useGame<T>(selector: (state: GameInterface) => T): T
+  function useGame<T>(selector?: (state: GameInterface) => T) {
     return useStore(game, selector!)
   }
 
-  type UseReadonlyGame = <T>(selector: (state: ReadonlyStoreInterface) => T) => T;
-  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: ReadonlyStoreInterface) => T): T => {
+  type UseReadonlyGame = <T>(selector: (state: ReadonlyGameInterface) => T) => T;
+  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: ReadonlyGameInterface) => T): T => {
     return useGame(
       useCallback(
-        (state: StoreInterface) => selector(state as ReadonlyStoreInterface),
+        (state: GameInterface) => selector(state as ReadonlyGameInterface),
         [selector]
       )
     )
@@ -163,7 +164,7 @@ export function Game(state: GameState) {
     const state = game.getState()
     // Omit methods that mutate state
     const { reset, calculateMomentum, calculateStreak, refresh, dailyRefresh, ...readOnlyState } = state
-    return Object.freeze(readOnlyState) satisfies ReadonlyStoreInterface
+    return Object.freeze(readOnlyState) satisfies ReadonlyGameInterface
   })
 
   function changeXp(change: number) {
@@ -202,34 +203,3 @@ export function Game(state: GameState) {
   return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }
 
-// Function to calculate the current streak based on xpHistory and dailyXpTarget
-export function calculateStreak(
-  xpHistory: StoreInterface["xpHistory"], // { [date: Daystamp]: number }
-  dailyXpTarget: number
-): number {
-  let currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() - 1); // Start from yesterday
-  let streak: number = 0; // Initialize the streak count
-
-  // Loop through each day in reverse, checking if the XP meets the daily target
-  while (true) {
-    const dateString = daystamp.fromDate(currentDate); // Convert the date to the required format
-    const xp = xpHistory[dateString]; // Get the XP for the current date
-
-    // If the XP meets or exceeds the daily target, increment the streak
-    if (xp && xp >= dailyXpTarget) {
-      streak++;
-      currentDate.setDate(currentDate.getDate() - 1); // Move to the previous day
-    } else {
-      break; // If the XP doesn't meet the target, break the loop
-    }
-  }
-
-  // Check if today's XP meets or exceeds the daily target
-  const todaysXp = xpHistory[daystamp.fromDate(new Date())];
-  if (todaysXp && todaysXp >= dailyXpTarget) {
-    streak++;
-  }
-
-  return streak; // Return the calculated streak
-}
