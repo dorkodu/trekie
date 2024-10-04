@@ -4,66 +4,68 @@ import { ulid } from "ulid"
 export type ICommitReward = { xp: number, coins: number }
 
 // this represents a single commit event message
-export interface ICommitStatus<T = any> {
+export interface ICommitMessage<T = any> {
   id: string
   event: string
-  commitment: string
-  instanceId: string,
+  kind: string
+  instanceId: string
   timestamp: Timestamp
   data: T
 }
 
 // we return this to the client
-export type ICommitResult<T> = ICommitStatus<T> & { reward: ICommitReward }
+export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
 // we sync this to API as a verifiable record 
-export type ICommitRecord<T> = ICommitResult<T> & { userId: string }
+export type ICommitStatus<T> = ICommitResult<T> & { userId: string }
 // the action that runs on commit & returns rewards
-export type ICommitEvent<T> = (status: ICommitStatus<T>) => ICommitReward
+export type ICommitAction<T> = (status: ICommitMessage<T>) => ICommitReward
 
 export type ICommitmentKind = ReturnType<typeof Commitment>
-export type ICommitmentKindTemplate = {
+export type ICommitmentTemplate = {
   name: string
-  events: Record<any, ICommitEvent<any>>
-  xpGoal: number
-  xpDailyTarget: number
+  events: Record<any, ICommitAction<any>>
 }
 
-export const CommitEvent = <T>(commitEvent: ICommitEvent<T>): ICommitEvent<T> => commitEvent
+export interface ICommitmentInstanceInput {
+  xpDailyTarget: number
+  xpGoal: number
+}
 
+export const CommitEvent = <T>(action: ICommitAction<T>): ICommitAction<T> => action
 export function Commitment
-  <TEvents extends ICommitmentKindTemplate['events'], TKind extends keyof TEvents>
-  (name: string, events: TEvents, xpGoal: number, xpDailyTarget: number) {
+  <TEvents extends ICommitmentTemplate['events'], TKind extends keyof TEvents>
+  (name: string, events: TEvents) {
   return {
     name,
     events,
-    xpGoal,
-    xpDailyTarget,
 
-    status: (kind: TKind, instanceId: string, data?: Parameters<TEvents[TKind]>[0]['data']): ICommitStatus<typeof data> =>
+    status: (kind: TKind, instanceId: string, data?: Parameters<TEvents[TKind]>[0]['data']): ICommitMessage<typeof data> =>
     ({
       id: ulid(),
       event: kind.toString(),
-      commitment: name,
+      kind: name,
       instanceId,
       timestamp: Date.now(),
       data
     }),
 
-    commit(event: TKind, data: Parameters<TEvents[TKind]>[0]['data']): ICommitResult<typeof data> {
+    commit(event: TKind, instanceId: string, data: Parameters<TEvents[TKind]>[0]['data']): ICommitResult<typeof data> {
       // create status object
-      let status = this.status(event, data)
+      let status = this.status(event, instanceId, data)
       // run the action with status object as parameter
       let reward = events[event]!(status)
 
       return { ...status, reward }
     },
 
-    create(): ICommitmentInstance {
+    create({ xpDailyTarget, xpGoal }: ICommitmentInstanceInput): ICommitmentInstance {
       return {
         id: ulid(),
         kind: name,
         createdAt: Date.now(),
-        lastActivity: Date.now()
+        lastActivity: Date.now(),
+        xpDailyTarget,
+        xpGoal
       }
     }
   }
@@ -72,6 +74,13 @@ export function Commitment
 export interface ICommitmentInstance {
   id: string
   kind: string
+  xpGoal: number
+  xpDailyTarget: number
   createdAt: Timestamp
   lastActivity: Timestamp
 }
+
+const Habit = Commitment('Todo', {
+  'complete': CommitEvent(() => ({ xp: 100, coins: 10 })),
+},)
+

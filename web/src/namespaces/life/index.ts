@@ -1,4 +1,4 @@
-import { IUser, StoreInterface } from "@/core"
+import { GameInterface, IUser } from "@/core"
 import { daystamp } from "@/shared/utils"
 
 export interface ILife {

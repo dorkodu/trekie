@@ -1,8 +1,8 @@
-import { ICommitmentInstance, ICommitRecord, ICommitResult, IUser } from '@/core'
+import { ICommitmentInstance, ICommitResult, ICommitStatus, IUser } from '@/core'
 import Dexie, { Table } from 'dexie'
 
 export const db = new Dexie('trekie-game') as Dexie & {
-  statuses: Table<ICommitRecord<any>, string>
+  statuses: Table<ICommitStatus<any>, string>
   commits: Table<ICommitmentInstance, string>
 }
 

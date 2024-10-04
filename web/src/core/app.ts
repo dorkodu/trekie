@@ -1,4 +1,5 @@
-import { ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
+import { useEffect } from "react"
+import { ICommitmentKind, ICommitReward, ICommitStatus } from "./commit"
 import { db as gameDb } from "./db"
 import { Game, GameState } from "./game"
 
@@ -27,7 +28,7 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
       if (commitments[commit]) {
         // calculate commit event
         const commitResult = commitments[commit]?.commit(event, data)
-        const commitRecord: ICommitRecord<typeof data> = {
+        const commitRecord: ICommitStatus<typeof data> = {
           ...commitResult,
           userId: game.getState().user.id,
         }
@@ -39,5 +40,26 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
       }
     },
 
+    useRefreshStatsDaily() {
+      useEffect(() => {
+        const task = () => { game.getState().refresh() }
+
+        const today = new Date()
+        const tomorrow = new Date()
+        tomorrow.setDate(tomorrow.getDate() + 1)
+        tomorrow.setUTCHours(0, 0, 0, 0)
+
+        let interval: ReturnType<typeof setInterval>
+        let timeout = setTimeout(() => {
+          task()
+          interval = setInterval(task, 24 * 60 * 60 * 1000)
+        }, tomorrow.getTime() - today.getTime())
+
+        return () => {
+          clearTimeout(interval)
+          clearTimeout(timeout)
+        }
+      }, [])
+    }
   }
 }
