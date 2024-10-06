@@ -4,9 +4,9 @@ import * as Trekie from "@/core"
 
 import { db } from "@/shared/lib/db"
 import { errors } from "@/shared/lib/errors"
+import trekie from "@/shared/lib/trekie"
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { z } from "zod"
-import trekie from "@/shared/lib/trekie"
 
 //? Interfaces
 
@@ -69,7 +69,7 @@ export const Component: Interface = {
     await db.habits.delete(id)
 
     // make sure the user has active session
-    const currentUser = game.getState().user
+    const currentUser = trekie.game().user
     if (!currentUser || !removedHabit)
       return
 
@@ -151,3 +151,4 @@ export const Component: Interface = {
 }
 
 export * as Habit from "."
+

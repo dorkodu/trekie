@@ -1,18 +1,18 @@
 import { Anchor, Box, Divider, Flex, Group, Image, Stack, Text, ThemeIcon, UnstyledButton, useMantineColorScheme } from '@mantine/core'
-import { IconSettings, IconHelp, IconCoinFilled } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
+import { IconCoinFilled, IconHelp, IconSettings } from '@tabler/icons-react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { Menu as styles } from '@/styles/Layout.css'
-import ColorToggle from '../misc/ColorToggle'
-import { UserButton } from '../buttons/UserButton'
 import trekie from '@/shared/lib/trekie'
 import { useAppStore } from '@/shared/stores/appStore'
+import { Menu as styles } from '@/styles/Layout.css'
+import { UserButton } from '../buttons/UserButton'
+import ColorToggle from '../misc/ColorToggle'
 
 export function AppMenu() {
   const isWideScreen = useMediaQuery('(min-width: 768px)')
   const navigate = useNavigate()
-  const user = trekie.game($ => $.user)
+  const user = trekie.use($ => $.user)
   const menu = useAppStore($ => $.menu)
 
   return (

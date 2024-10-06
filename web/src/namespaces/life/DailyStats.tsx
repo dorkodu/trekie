@@ -1,17 +1,17 @@
+import Emoji from '@/shared/components/misc/Emoji'
+import { trekie } from "@/shared/lib/trekie"
 import {
   Paper,
   SimpleGrid,
   Stack,
 } from '@mantine/core'
-import Emoji from '@/shared/components/misc/Emoji'
-import { trekie } from "@/shared/lib/trekie"
 
-import { SumCard } from './SumCard'
 import { DailyProgress } from './DailyProgress'
+import { SumCard } from './SumCard'
 
 export function DailyStats() {
   // refresh every time daily stats is rendered
-  trekie.game($ => $.refresh())
+  trekie.use($ => $.refresh())
 
   return (
     <Paper>
@@ -30,7 +30,7 @@ export function DailyStats() {
 }
 
 export function StreakStatus() {
-  const streak = trekie.game($ => $.streak)
+  const streak = trekie.use($ => $.streak)
 
   return (
     <SumCard
@@ -43,7 +43,7 @@ export function StreakStatus() {
 }
 
 export function XPStatus() {
-  const xp = trekie.game($ => $.xp)
+  const xp = trekie.use($ => $.xp)
 
   return (
     <SumCard
@@ -56,7 +56,7 @@ export function XPStatus() {
 }
 
 export function CoinStatus() {
-  const coins = trekie.game($ => $.coins)
+  const coins = trekie.use($ => $.coins)
 
   return (
     <SumCard
@@ -69,7 +69,7 @@ export function CoinStatus() {
 }
 
 export function MomentumStatus() {
-  const momentum = trekie.game($ => $.momentum)
+  const momentum = trekie.use($ => $.momentum)
 
   return (
     <SumCard

@@ -1,11 +1,11 @@
-import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
-import confetti from 'canvas-confetti'
+import trekie from '@/shared/lib/trekie'
 import { format } from "@/shared/utils/format"
 import { vanilla } from '@/styles/theme'
-import trekie from '@/shared/lib/trekie'
+import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
+import confetti from 'canvas-confetti'
 
 export function DailyProgress() {
-  let progress = trekie.game($ => $.dailyProgress())
+  let progress = trekie.use($ => $.dailyProgress())
 
   let color: MantineColor
   let message: string

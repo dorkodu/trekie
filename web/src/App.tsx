@@ -20,7 +20,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import GoalEditorModal from './namespaces/goal/GoalEditorModal'
 import HabitEditorModal from './namespaces/habit/HabitEditorModal'
 import { modals } from './shared/components/modals'
-import { useRefreshStatsDaily } from './shared/lib/trekie'
+import trekie from './shared/lib/trekie'
 
 function App() {
   const loading = useAppStore($ => $.loading)
@@ -50,7 +50,7 @@ function App() {
   }, [loading.auth])
 
   // trekie hooks
-  useRefreshStatsDaily()
+  //  trekie.useRefreshStatsDaily()
 
   return (
     <ErrorBoundary FallbackComponent={ApplicationError} onError={onError} onReset={onReset}>

@@ -1,22 +1,22 @@
 import { Alert, Badge, Box, Center, Flex, SegmentedControl, Skeleton, Stack, Tabs, rem } from '@mantine/core'
 import { IconCopyCheck, IconTargetArrow } from '@tabler/icons-react'
 
+import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
 import HabitCounter from '@/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
-import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
 
-import { trekie } from '@/shared/lib/trekie'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { useQuery } from '@tanstack/react-query'
 import GoalCard from '@/namespaces/goal/GoalCard'
 import { errors } from '@/shared/lib/errors'
-import { useState } from 'react'
+import { trekie } from '@/shared/lib/trekie'
 import { ContainerSheet } from '@/styles/shared.css'
+import { useQuery } from '@tanstack/react-query'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { useState } from 'react'
 
 function Home() {
 
-  const user = trekie.game($ => $.user)
+  const user = trekie.use($ => $.user)
   if (!user) {
     errors.handle('NO_SESSION', new Error('Failed to load user in home page.'))
     return <Alert>Failed to load user in home page.</Alert>
@@ -74,7 +74,7 @@ function Home() {
 export default Home
 
 function HabitSummary() {
-  const userId = trekie.game($ => $.user?.id)
+  const userId = trekie.use($ => $.user?.id)
 
   if (!userId) return <NoHabitsCard />
 
@@ -113,7 +113,7 @@ function HabitSummary() {
 }
 
 function LifeGoalSummary() {
-  const userId = trekie.game($ => $.user?.id)
+  const userId = trekie.use($ => $.user?.id)
 
   if (!userId) return <Box py={10} hiddenFrom="md"><NoHabitsCard /></Box>
 

@@ -9,9 +9,9 @@ import trekie from '@/shared/lib/trekie'
 import { Maybe } from '@/shared/utils'
 import { relativeDateString } from '@/shared/utils/format'
 import { vanilla } from '@/styles/theme'
-import { Alert, Anchor, Badge, Box, Loader, Flex, Group, Image, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
+import { Alert, Anchor, Badge, Box, Flex, Group, Image, Loader, Paper, Skeleton, Stack, Tabs, Text, ThemeIcon, rem } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconCalendar, IconCake, IconBriefcase, IconMapPin, IconLink, IconTargetArrow, IconCopyCheck, IconAlertCircle } from '@tabler/icons-react'
+import { IconAlertCircle, IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconMapPin, IconTargetArrow } from '@tabler/icons-react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -123,7 +123,7 @@ export function Profile({ username }: { username: string }) {
 }
 
 export function UserHabitSummary() {
-  const userId = trekie.game($ => $.user?.id)
+  const userId = trekie.use($ => $.user?.id)
 
   if (!userId) return <Box py={10}><NoHabitsCard /></Box>
 
@@ -175,7 +175,7 @@ export function UserHabitSummary() {
 
 export function LifeGoalSummary() {
 
-  const userId = trekie.game($ => $.user?.id)
+  const userId = trekie.use($ => $.user?.id)
   if (!userId) return <Box py={10}><NoHabitsCard /></Box>
 
   const queryClient = useQueryClient()

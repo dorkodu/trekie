@@ -1,19 +1,19 @@
 import { trekie } from '@/shared/lib/trekie'
 
 import { IGoal } from '@/namespaces/goal'
-import { useAppStore } from '@/shared/stores/appStore'
 import { vanilla } from '@/styles/theme'
 import { ActionIcon, Menu } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
+import { Component as goals } from '.'
 
 interface Props {
   goal: IGoal
 }
 
 function GoalMenu({ goal }: Props) {
-  const currentUserId = trekie.game($ => $.user?.id)
+  const currentUserId = trekie.use($ => $.user.id)
 
   const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
   const onReport = (ev: MouseEvent) => { ev.stopPropagation() }
@@ -33,7 +33,7 @@ function GoalMenu({ goal }: Props) {
 
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
-    trekie.goal.remove(goal.id)
+    goals.remove(goal.id)
   }
 
   return (

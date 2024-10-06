@@ -18,7 +18,7 @@ export interface GameState {
   momentum: number
   streak: number
 
-  xpTargetDaily: number
+  xpDailyTarget: number
 
   lastActive: Maybe<Timestamp>
   lastXp: Maybe<Timestamp>
@@ -43,7 +43,7 @@ export interface GameActions {
 export interface GameMutations {
   changeXp: (change: number) => number,
   changeCoinsBalance: (change: number) => number,
-
+  changeXpDailyTarget: (target: number) => number
 }
 
 export type GameInterface = GameState & GameActions
@@ -52,20 +52,19 @@ export type ReactiveGame = ReturnType<typeof Game>["useGame"]
 export type ReadonlyGameInterface = Omit<GameInterface, keyof GameActions>
 
 export function Game(state: GameState) {
-
   const game = createStore<GameInterface>()(
     persist(
       immer((set, get) => ({
         ...state,
 
         dailyProgress() {
-          let ratio = get().xpToday() / get().xpTargetDaily
+          let ratio = get().xpToday() / get().xpDailyTarget
           return ratio
         },
 
         calculateStreak() {
           set($ => {
-            $.streak = calculateStreak($.xpHistory, $.xpTargetDaily)
+            $.streak = calculateStreak($.xpHistory, $.xpDailyTarget)
           })
         },
 
@@ -80,7 +79,7 @@ export function Game(state: GameState) {
               $.xpHistory[daystamp.today()] = 0 // reset daily xp
 
             // then we calculate new values
-            $.xpTargetDaily = 100
+            $.xpDailyTarget = 100
 
             $.xpHistory[daystamp.today()] = 0
 
@@ -130,7 +129,7 @@ export function Game(state: GameState) {
             coins: 0,
             momentum: 0,
             streak: 0,
-            xpTargetDaily: 0,
+            xpDailyTarget: 0,
             lastActive: undefined,
             lastXp: undefined,
             lastStreak: undefined,
@@ -198,7 +197,17 @@ export function Game(state: GameState) {
     return game.getState().coins
   }
 
-  const mutations: GameMutations = { changeXp, changeCoinsBalance }
+  function changeXpDailyTarget(target: number) {
+    game.setState($ => {
+      // prevent negative target
+      if (target < 0) target = 0
+      $.xpDailyTarget = target
+    })
+    game.getState().refresh()
+    return game.getState().xpDailyTarget
+  }
+
+  const mutations: GameMutations = { changeXp, changeCoinsBalance, changeXpDailyTarget }
 
   return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }

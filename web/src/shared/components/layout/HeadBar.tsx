@@ -1,19 +1,19 @@
-import { useAppStore } from "@/shared/stores/appStore"
 import { trekie } from "@/shared/lib/trekie"
+import { useAppStore } from "@/shared/stores/appStore"
 import { vanilla } from "@/styles/theme"
-import { Flex, Paper, ActionIcon, Anchor, useMantineColorScheme, Image, UnstyledButton } from "@mantine/core"
+import { ActionIcon, Anchor, Flex, Image, Paper, UnstyledButton, useMantineColorScheme } from "@mantine/core"
 import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-import { Headbar as styles } from "@/styles/Layout.css"
 import { vars } from "@/shared/vars"
+import { Headbar as styles } from "@/styles/Layout.css"
 
 export function HeadBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const { colorScheme } = useMantineColorScheme()
 
-  const user = trekie.game($ => $.user)
+  const user = trekie.use($ => $.user)
   const menu = useAppStore($ => $.menu)
 
   const menuButton = <ActionIcon

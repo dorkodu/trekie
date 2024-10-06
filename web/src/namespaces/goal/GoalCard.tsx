@@ -6,13 +6,15 @@ import { IconArcheryArrow, IconCalendar, IconCheck, IconCheckbox, IconChecks, Ic
 import { useLiveQuery } from "dexie-react-hooks"
 import GoalMenu from "./GoalCardMenu"
 
+import { Component as goals } from "."
+
 interface Props {
   id: IGoal["id"]
 }
 
 export default function GoalCard({ id }: Props) {
-  const goal = useLiveQuery(() => trekie.goal.get(id), [id])
-  const xp = trekie.game($ => $.xp)
+  const goal = useLiveQuery(() => goals.get(id), [id])
+  const xp = trekie.use($ => $.xp)
 
   if (!goal) return GoalNotFound
 
@@ -53,6 +55,18 @@ export default function GoalCard({ id }: Props) {
 }
 
 const GoalNotFound = (
+  <Alert title="Oops!">
+    Goal not found.
+  </Alert>
+)
+
+const EmptyState = (
+  <Alert title="Oops!">
+    Goal not found.
+  </Alert>
+)
+
+const ErrorState = (
   <Alert title="Oops!">
     Goal not found.
   </Alert>

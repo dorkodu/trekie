@@ -22,12 +22,13 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
     commit<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
       commit: TCommitName,
       event: TEventName,
+      id: string,
       data: Parameters<TCommitments[TCommitName]['events'][TEventName]>[0]['data']) {
 
       // 1) mutate game state with commit 2) save this commit record
       if (commitments[commit]) {
         // calculate commit event
-        const commitResult = commitments[commit]?.commit(event, data)
+        const commitResult = commitments[commit].commit(event, id, data)
         const commitRecord: ICommitStatus<typeof data> = {
           ...commitResult,
           userId: game.getState().user.id,
@@ -40,7 +41,7 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
       }
     },
 
-    useRefreshStatsDaily() {
+    useDailyRefresh() {
       useEffect(() => {
         const task = () => { game.getState().refresh() }
 

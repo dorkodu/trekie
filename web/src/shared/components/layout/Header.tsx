@@ -1,13 +1,13 @@
-import { ActionIcon, Box, Group, Image, Text, Title, useMantineColorScheme } from "@mantine/core"
-import { UserButton } from "../buttons/UserButton"
 import trekie from "@/shared/lib/trekie"
 import { useAppStore } from "@/shared/stores/appStore"
+import { ActionIcon, Box, Group, Image, Text, Title, useMantineColorScheme } from "@mantine/core"
 import { IconBell, IconMenu2, IconNotification } from "@tabler/icons-react"
 import { useNavigate } from "react-router-dom"
+import { UserButton } from "../buttons/UserButton"
 
 export function Header() {
   const { colorScheme } = useMantineColorScheme()
-  const user = trekie.game($ => $.user)
+  const user = trekie.use($ => $.user)
   const menu = useAppStore($ => $.menu)
   const navigate = useNavigate()
 

@@ -12,7 +12,7 @@ interface Props {
 }
 
 function HabitCounterMenu({ habit }: Props) {
-  const currentUserId = trekie.game($ => $.user?.id)
+  const currentUserId = trekie.use($ => $.user?.id)
   const isHabitOwner = habit.userId === currentUserId
 
   const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
