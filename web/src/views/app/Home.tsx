@@ -7,6 +7,7 @@ import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
 import { DailyStats } from '@/namespaces/life/DailyStats'
 
 import GoalCard from '@/namespaces/goal/GoalCard'
+import { db } from '@/shared/lib/db'
 import { errors } from '@/shared/lib/errors'
 import { trekie } from '@/shared/lib/trekie'
 import { ContainerSheet } from '@/styles/shared.css'
@@ -80,7 +81,7 @@ function HabitSummary() {
 
   const { data, error, isError, isLoading, isSuccess } = useQuery({
     queryKey: ['todos'], queryFn: async () => {
-      return trekie.db.habits.where('userId').equals(userId).toArray()
+      return db.habits.where('userId').equals(userId).toArray()
     }
   })
 
@@ -117,7 +118,7 @@ function LifeGoalSummary() {
 
   if (!userId) return <Box py={10} hiddenFrom="md"><NoHabitsCard /></Box>
 
-  const goals = useLiveQuery(async () => trekie.db.goals.where('userId').equals(userId).toArray(), [userId])
+  const goals = useLiveQuery(async () => db.goals.where('userId').equals(userId).toArray(), [userId])
 
   if (!goals)
     return (<>

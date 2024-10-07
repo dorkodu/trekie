@@ -1,13 +1,15 @@
-import { MouseEvent } from 'react'
+import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
 import { IconLayersSelectedBottom, IconMinus, IconPlus } from '@tabler/icons-react'
 import { useLiveQuery } from "dexie-react-hooks"
-import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
+import { MouseEvent } from 'react'
 
+import HabitCounterMenu from '@/namespaces/habit/HabitCounterMenu'
+import EnhancedText from '@/shared/components/misc/TextParser'
 import { trekie } from "@/shared/lib/trekie"
 import { truncate } from '@/styles/shared.css'
-import EnhancedText from '@/shared/components/misc/TextParser'
-import HabitCounterMenu from '@/namespaces/habit/HabitCounterMenu'
 import { vanilla } from '@/styles/theme'
+
+import { Component as habits } from '@/namespaces/habit'
 
 interface Props {
   habitId: string
@@ -17,7 +19,7 @@ interface Props {
 function HabitCounter({ habitId, onClick }: Props) {
   // get the habit yourself, fresh!
 
-  const habit = useLiveQuery(() => trekie.habit.get(habitId), [habitId])
+  const habit = useLiveQuery(() => habits.get(habitId), [habitId])
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
     ev.stopPropagation()

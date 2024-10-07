@@ -1,4 +1,4 @@
-import { Timestamp } from "@/shared/utils"
+import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 
 export type ICommitReward = { xp: number, coins: number }
@@ -64,7 +64,7 @@ export function Commitment
         kind: name,
         createdAt: Date.now(),
         lastActivity: Date.now(),
-        xpDailyTarget,
+        completedAt: undefined,
         xpGoal
       }
     }
@@ -75,12 +75,22 @@ export interface ICommitmentInstance {
   id: string
   kind: string
   xpGoal: number
-  xpDailyTarget: number
+  completedAt: Maybe<Timestamp>
   createdAt: Timestamp
   lastActivity: Timestamp
 }
 
-const Habit = Commitment('Todo', {
-  'complete': CommitEvent(() => ({ xp: 100, coins: 10 })),
+// For testing purposes
+let Habit = Commitment('Todo', {
+  'CREATE': CommitEvent(() => ({ xp: 5, coins: 0 })),
+  'CHECKED_IN': CommitEvent(() => ({ xp: 5, coins: 0 })),
+  'DAILY_GOAL_REACHED': CommitEvent(() => ({ xp: 5, coins: 0 })),
+  'COMPLETE': CommitEvent(() => ({ xp: 100, coins: 0 })),
 },)
+
+
+export interface ICommitmentSchema {
+  name: string
+  events: Record<string, ICommitReward>
+}
 

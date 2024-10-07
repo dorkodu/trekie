@@ -55,10 +55,6 @@ export const Component: Interface = {
 
     db.habits.add(habit, habit.id)
 
-    game.setState($ => {
-      $.xpTargetDaily += habit.dailyTarget
-    })
-
     return true
   },
 
@@ -80,16 +76,7 @@ export const Component: Interface = {
     const habitCount = removedHabit.count
 
     if (updateStats) {
-      game.setState($ => {
-        $.xp -= habitCount
-
-        let xpToday = $.xpHistory[daystamp.today()] ?? 0
-        xpToday -= Math.min(habitDailyCurrent, habitDailyTarget)
-
-        $.xpHistory[daystamp.today()] = xpToday
-        $.xpTargetDaily -= habitDailyTarget
-      })
-      game.getState().refresh()
+      trekie.commit()
     }
   },
 
