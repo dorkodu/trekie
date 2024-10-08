@@ -8,7 +8,6 @@ import { mock } from './mock'
 
 import * as Goal from '@/namespaces/goal'
 import * as Habit from '@/namespaces/habit'
-import { $ } from 'bun'
 
 const initialState: Trekie.GameState = mock.game
 
@@ -28,17 +27,17 @@ const CheckIn = {
 
 let commitments = {
   Todo: C("Todo", {
-    CREATE: E(() => ({ xp: +1, coins: +1 })),
-    DAILYCHECK: E(() => ({ xp: +5, coins: 0 })),
-    DONE: E(() => ({ xp: +25, coins: +2 })),
+    'CREATE': E(() => ({ xp: +1, coins: +1 })),
+    'DAILYCHECK': E(() => ({ xp: +5, coins: 0 })),
+    'DONE': E(() => ({ xp: +25, coins: +2 })),
   }),
 
   Habit: C("Habit", {
-    CREATE: E(() => ({ xp: +1, coins: +1 })),
-    UPDATE: E(() => ({ xp: +1, coins: +1 })),
-    DAILY_TARGET_REACHED: E(() => ({ xp: +5, coins: 0 })),
-    COUNT_UP: E(() => ({ xp: +25, coins: +2 })),
-    COUNT_DOWN: E(() => ({ xp: +25, coins: +2 })),
+    'CREATE': E(() => ({ xp: +1, coins: +1 })),
+    'UPDATE': E(() => ({ xp: +1, coins: +1 })),
+    'DAILY_TARGET_REACHED': E(() => ({ xp: +5, coins: 0 })),
+    'COUNT_UP': E(() => ({ xp: +25, coins: +2 })),
+    'COUNT_DOWN': E(() => ({ xp: +25, coins: +2 })),
   })
 }
 
@@ -48,6 +47,15 @@ export const trekie = Trekie.create({
 })
 
 export default trekie
+
+let habit = trekie.commitment('Habit').create()
+let todo = trekie.createCommitment('Habit')
+
+trekie.commitment('Habit').commit("UPDATE", habit.id, {})
+trekie.commit({
+  kind: "Habit",
+  event: "CREATE"
+})
 
 
 

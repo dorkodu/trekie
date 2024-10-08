@@ -26,6 +26,7 @@ export const IHabit = IHabitTemplate.extend({
   lastUpdated: z.number() satisfies z.ZodType<Timestamp>,
   history: z.map(z.string(), z.number()),
   userId: z.string().ulid(),
+  commitmentId: z.string().ulid()
 })
 
 //? Interfaces
@@ -38,12 +39,13 @@ export interface Interface {
   remove: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => Promise<number | false>
   count: () => Promise<number>
+  repository: typeof db.habits
 }
 
 export const Component: Interface = {
   add(habit) {
     // make sure the user has active session
-    const currentUser = trekie..user
+    const currentUser = trekie.game().user
     if (!currentUser) {
       errors.handle("NO_SESSION")
       return false
@@ -76,7 +78,25 @@ export const Component: Interface = {
     const habitCount = removedHabit.count
 
     if (updateStats) {
-      trekie.commit()
+      let commitment = {
+        id: removedHabit.id,
+        kind: 'Habit',
+        createdAt: 19812398123908,
+        lastActivity: 3192030910931,
+        completedAt: undefined
+      } satisfies Trekie.ICommitmentInstance
+
+
+      trekie.createCommitment('Todo')
+      trekie.deleteCommitment(removedHabit.commitmentId)
+
+
+      trekie.commit({
+        kind: 'Habit',
+        event: 'REMOVE',
+        id: removedHabit.commitmentId,
+        data: { removedHabit }
+      })
     }
   },
 
@@ -90,10 +110,7 @@ export const Component: Interface = {
     const habit = await this.get(id)
     if (!habit) return false
 
-    const user = game.getState().user
-    if (!user) return false
-
-    game.getState().refresh()
+    // TODO:  trekie refresh
 
     const todaysCount = habit.history.get(daystamp.today()) ?? 0
     const updatedCount = todaysCount + count
@@ -106,6 +123,12 @@ export const Component: Interface = {
     habit.history.set(daystamp.today(), updatedCount)
 
     db.habits.put(habit, habit.id)
+
+    trekie.commit({
+      kind: 'Habit',
+      event: 'COUNT_UP',
+      id: habit.commitmentId,
+    })
 
     game.getState().changeXp(count)
 

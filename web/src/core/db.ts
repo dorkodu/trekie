@@ -3,7 +3,7 @@ import Dexie, { Table } from 'dexie'
 
 export const db = new Dexie('trekie-game') as Dexie & {
   statuses: Table<ICommitStatus<any>, string>
-  commits: Table<ICommitmentInstance, string>
+  commitments: Table<ICommitmentInstance, string>
 }
 
 // Schema declaration:

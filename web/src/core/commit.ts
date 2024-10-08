@@ -26,11 +26,6 @@ export type ICommitmentTemplate = {
   events: Record<any, ICommitAction<any>>
 }
 
-export interface ICommitmentInstanceInput {
-  xpDailyTarget: number
-  xpGoal: number
-}
-
 export const CommitEvent = <T>(action: ICommitAction<T>): ICommitAction<T> => action
 export function Commitment
   <TEvents extends ICommitmentTemplate['events'], TKind extends keyof TEvents>
@@ -58,14 +53,13 @@ export function Commitment
       return { ...status, reward }
     },
 
-    create({ xpDailyTarget, xpGoal }: ICommitmentInstanceInput): ICommitmentInstance {
+    create(): ICommitmentInstance {
       return {
         id: ulid(),
         kind: name,
         createdAt: Date.now(),
         lastActivity: Date.now(),
         completedAt: undefined,
-        xpGoal
       }
     }
   }
@@ -74,7 +68,6 @@ export function Commitment
 export interface ICommitmentInstance {
   id: string
   kind: string
-  xpGoal: number
   completedAt: Maybe<Timestamp>
   createdAt: Timestamp
   lastActivity: Timestamp
@@ -83,13 +76,12 @@ export interface ICommitmentInstance {
 // For testing purposes
 let Habit = Commitment('Todo', {
   'CREATE': CommitEvent(() => ({ xp: 5, coins: 0 })),
-  'CHECKED_IN': CommitEvent(() => ({ xp: 5, coins: 0 })),
+  'CHECKED_IN': CommitEvent((status) => ({ xp: status.data.count, coins: 0 })),
   'DAILY_GOAL_REACHED': CommitEvent(() => ({ xp: 5, coins: 0 })),
   'COMPLETE': CommitEvent(() => ({ xp: 100, coins: 0 })),
-},)
+})
 
-
-export interface ICommitmentSchema {
+export interface ICommitmentStaticSchema {
   name: string
   events: Record<string, ICommitReward>
 }
