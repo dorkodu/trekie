@@ -1,15 +1,18 @@
-import { ICommitmentInstance, ICommitResult, ICommitStatus, IUser } from '@/core'
+import { ICommitmentInstance, ICommitRecord, ICommitResult, IUser } from '@/core'
 import Dexie, { Table } from 'dexie'
+import { IStatus } from './sync'
 
 export const db = new Dexie('trekie-game') as Dexie & {
-  statuses: Table<ICommitStatus<any>, string>
+  commitRecords: Table<ICommitRecord<any>, string>
+  statuses: Table<IStatus<any>, string>
   commitments: Table<ICommitmentInstance, string>
 }
 
 // Schema declaration:
 db.version(1).stores({
-  statuses: 'id, userId, timestamp, event, commitment',
-  commits: 'id, kind, createdAt, lastActivity',
+  commitRecords: 'id, userId, timestamp, event, commitment',
+  commitments: 'id, kind, createdAt, lastActivity',
+  statuses: 'hash'
 })
 
 db.on("populate", async () => { })

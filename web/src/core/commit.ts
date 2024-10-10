@@ -13,10 +13,21 @@ export interface ICommitMessage<T = any> {
   data: T
 }
 
+// COMMITSTATUS, Trekie:Habit:CREATE, 2021-09-01T00:00:00Z, { xp: 5, coins: 0 }
+
+let status = {
+  kind: 'COMMIT',
+  timestamp: Date.now(),
+  owner: ulid(),
+  data: {
+
+  }
+}
+
 // we return this to the client
 export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
 // we sync this to API as a verifiable record 
-export type ICommitStatus<T> = ICommitResult<T> & { userId: string }
+export type ICommitRecord<T> = ICommitResult<T> & { userId: string }
 // the action that runs on commit & returns rewards
 export type ICommitAction<T> = (status: ICommitMessage<T>) => ICommitReward
 
@@ -60,6 +71,7 @@ export function Commitment
         createdAt: Date.now(),
         lastActivity: Date.now(),
         completedAt: undefined,
+        isDeleted: false
       }
     }
   }
@@ -71,6 +83,7 @@ export interface ICommitmentInstance {
   completedAt: Maybe<Timestamp>
   createdAt: Timestamp
   lastActivity: Timestamp
+  isDeleted: boolean
 }
 
 // For testing purposes

@@ -83,15 +83,17 @@ export const Component: Interface = {
         kind: 'Habit',
         createdAt: 19812398123908,
         lastActivity: 3192030910931,
-        completedAt: undefined
+        completedAt: undefined,
+        isDeleted: false
       } satisfies Trekie.ICommitmentInstance
 
 
-      trekie.createCommitment('Todo')
-      trekie.deleteCommitment(removedHabit.commitmentId)
+      let instance = trekie.commitments.create('Todo')
+      trekie.commitments.remove(instance.id)
+      trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: instance.id, data: {} })
 
 
-      trekie.commit({
+      trekie.commitments.({
         kind: 'Habit',
         event: 'REMOVE',
         id: removedHabit.commitmentId,
