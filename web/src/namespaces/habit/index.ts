@@ -45,61 +45,35 @@ export interface Interface {
 export const Component: Interface = {
   add(habit) {
     // make sure the user has active session
-    const currentUser = trekie.game().user
-    if (!currentUser) {
+    const user = trekie.game().user
+    if (!user) {
       errors.handle("NO_SESSION")
       return false
     }
 
     // make sure the user owns the habit
-    const currentUserId = currentUser?.id
-    if (currentUserId !== habit.userId) return false
+    if (user.id !== habit.userId) return false
 
     db.habits.add(habit, habit.id)
+
+    trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: habit.commitmentId, data: {} })
 
     return true
   },
 
   async remove(id) {
-    let updateStats = false
-    let removedHabit = await this.get(id)
+    const removedHabit = await this.get(id)
+    const user = trekie.game().user
+
+    if (!user || !removedHabit || user.id != removedHabit.userId)
+      return // has no permission or habit/user does not exist
+
 
     await db.habits.delete(id)
 
-    // make sure the user has active session
-    const currentUser = trekie.game().user
-    if (!currentUser || !removedHabit)
-      return
-
-    updateStats = true
-
-    const habitDailyCurrent = removedHabit.history.get(daystamp.get(Date.now())) ?? 0
-    const habitDailyTarget = removedHabit.dailyTarget
-    const habitCount = removedHabit.count
-
-    if (updateStats) {
-      let commitment = {
-        id: removedHabit.id,
-        kind: 'Habit',
-        createdAt: 19812398123908,
-        lastActivity: 3192030910931,
-        completedAt: undefined,
-        isDeleted: false
-      } satisfies Trekie.ICommitmentInstance
-
-
-      let instance = trekie.commitments.create('Todo')
-      trekie.commitments.remove(instance.id)
-      trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: instance.id, data: {} })
-
-
-      trekie.commitments.({
-        kind: 'Habit',
-        event: 'REMOVE',
-        id: removedHabit.commitmentId,
-        data: { removedHabit }
-      })
-    }
+    let instance = trekie.commitments.create('Todo')
+    trekie.commitments.remove(instance.id)
+    trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: instance.id, data: {} })
   },
 
   repository: db.habits,

@@ -1,5 +1,6 @@
-import { ICommitRecord } from '@/core';
-import { db } from './db';
+import { ICommitRecord } from '@/core'
+import xxhash from 'xxhash-wasm'
+import { db } from './db'
 
 // this represents a single commit event message
 export interface IStatus<T = any> {
@@ -9,25 +10,26 @@ export interface IStatus<T = any> {
   data: T
 }
 
-const status: IStatus<> = {
+const status: IStatus<any> = {
   kind: 'COMMIT',
   timestamp: Date.now(),
+  userId: "lsamdasndkmsamdzöxkmdslas",
   data: {
     id: '123',
     event: 'Habit:CREATE',
   }
 }
 
-const createStatus = <T>(kind: string, data: T): IStatus<T> => {
-  return {
-    kind,
-    timestamp: Date.now(),
-    userId: '123',
-    data
-  }
-}
+const createStatus = <T>(kind: string, data: T): IStatus<T> => ({
+  kind,
+  timestamp: Date.now(),
+  userId: '123',
+  data
+})
 
-const hash = <T>(status: IStatus<any>) => murmur JSON.stringify(status)
+const { h64ToString } = await xxhash()
+
+const hash = (status: IStatus<any>) => h64ToString(JSON.stringify(status))
 
 const shareStatus = <T extends IStatus<any>>(status: T): Promise<{}> => {
   // save to local storage

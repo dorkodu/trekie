@@ -48,14 +48,9 @@ export const trekie = Trekie.create({
 
 export default trekie
 
-let habit = trekie.commitment('Habit').create()
-let todo = trekie.createCommitment('Habit')
+let habit = trekie.commitments.create('Habit')
+let todo = trekie.commitments.create('Todo')
 
-trekie.commitment('Habit').commit("UPDATE", habit.id, {})
-trekie.commit({
-  kind: "Habit",
-  event: "CREATE"
-})
-
+trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: habit.id, data: {} })
 
 
