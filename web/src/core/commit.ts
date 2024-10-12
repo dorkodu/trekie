@@ -1,5 +1,7 @@
 import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
+import { db } from "./db"
+import { GameMutations, VanillaGame } from "./game"
 
 export type ICommitReward = { xp: number, coins: number }
 
@@ -97,5 +99,53 @@ let Habit = Commitment('Todo', {
 export interface ICommitmentStaticSchema {
   name: string
   events: Record<string, ICommitReward>
+}
+
+export function createCommitmentsModule<TCommitments extends Record<any, ICommitmentKind>>
+  (game: VanillaGame, mutations: GameMutations, commitments: TCommitments) {
+
+  function act<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
+    { kind, event, id, data }: {
+      kind: TCommitName,
+      event: TEventName,
+      id: string,
+      data: Parameters<TCommitments[TCommitName]['events'][TEventName]>[0]['data']
+    }) {
+
+    // 1) mutate game state with commit 2) save this commit record
+    // calculate commit event
+    const commitResult = commitments[kind]!.commit(event, id, data)
+    const commitRecord: ICommitRecord<typeof data> = {
+      ...commitResult,
+      userId: game.getState().user.id,
+    }
+    // save commit record to db
+    db.commitRecords.add(commitRecord, commitRecord.id)
+    db.commitments.update(id, { lastActivity: Date.now() })
+    // apply rewards to game state
+    mutations.changeXp(commitRecord.reward.xp)
+    mutations.changeCoinsBalance(commitRecord.reward.coins)
+  }
+
+  function createCommitment<TCommitments extends typeof commitments, TKind extends keyof TCommitments>(kind: TKind) {
+    let instance = commitments[kind]!.create()
+    db.commitments.add(instance, instance.id)
+    return instance
+  }
+
+  function completeCommitment(id: string) {
+    db.commitments.update(id, { completedAt: Date.now() })
+  }
+
+  function deleteCommitment(id: string) {
+    db.commitments.update(id, { isDeleted: true })
+  }
+
+  return {
+    create: createCommitment,
+    act,
+    complete: completeCommitment,
+    remove: deleteCommitment,
+  }
 }
 
