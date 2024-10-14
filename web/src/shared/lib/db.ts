@@ -6,22 +6,18 @@ import { IHabit } from '@/namespaces/habit'
 
 import { mock } from './mock'
 
-export class TrekieDatabase extends Dexie {
-  users!: Table<IUser, string>
-  habits!: Table<IHabit, string>
-  goals!: Table<IGoal, string>
-
-  constructor() {
-    super('trekie')
-    this.version(1).stores({
-      users: 'id, &username',
-      habits: 'id, userId',
-      goals: 'id, userId',
-    })
-  }
+export const db = new Dexie('app') as Dexie & {
+  users: Table<IUser, string>
+  habits: Table<IHabit, string>
+  goals: Table<IGoal, string>
 }
 
-export const db = new TrekieDatabase()
+// Schema declaration:
+db.version(1).stores({
+  users: 'id, &username',
+  habits: 'id, userId',
+  goals: 'id, userId',
+})
 
 db.on("populate", populate)
 
@@ -42,4 +38,9 @@ export async function populate() {
 
 export async function ready() {
   console.info("db is ready")
+}
+
+const api = {
+  get(url: string) { },
+  post(url: string, data: any) { }
 }
