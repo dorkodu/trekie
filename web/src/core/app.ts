@@ -1,7 +1,5 @@
 import { useEffect } from "react"
-import { createCommitmentsModule, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
-import { TrekieBaseCommitment } from "./consts"
-import { db } from "./db"
+import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
 import { Game, GameState } from "./game"
 
 export type CreateConfig<TCommitments extends Record<any, ICommitmentKind>> = {
@@ -41,7 +39,7 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
   return {
     use: useReadonlyGame,
     game: readOnlyGame,
-    commitments: createCommitmentsModule(game, mutations, commitments),
+    commitments: Commitments({ game: readOnlyGame, mutations, commitments }),
     useDailyRefresh,
   }
 }

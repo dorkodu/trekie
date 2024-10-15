@@ -1,5 +1,6 @@
-import { Button, Group, Avatar, Stack, ThemeIcon, Text } from '@mantine/core'
-import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
+import { Avatar, Button, Group, Stack, Text, ThemeIcon } from '@mantine/core';
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
+import React from 'react';
 
 interface Props {
   user: { name?: string; username?: string; avatar?: string }
@@ -10,10 +11,11 @@ interface Props {
   withBorder?: boolean
 }
 
+
 export function UserButton({ user, onClick, compact = false, withBorder = true, withChevron = true }: Props) {
   let avatar = user?.avatar ?? '/images/avatar.webp'
   let name = user?.name ?? "Anonymous"
-  let username = "@" + user?.username ?? ''
+  let username = user?.username ? `@${user.username}` : '~anonymous'
 
   return (
     <Button

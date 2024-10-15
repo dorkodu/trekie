@@ -75,12 +75,12 @@ function Home() {
 export default Home
 
 function HabitSummary() {
-  const userId = trekie.use($ => $.user?.id)
+  const userId = trekie.use($ => $.user.id)
 
   if (!userId) return <NoHabitsCard />
 
   const { data, error, isError, isLoading, isSuccess } = useQuery({
-    queryKey: ['todos'], queryFn: async () => {
+    queryKey: ['habits'], queryFn: async () => {
       return db.habits.where('userId').equals(userId).toArray()
     }
   })
