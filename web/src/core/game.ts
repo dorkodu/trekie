@@ -8,7 +8,8 @@ import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils';
 import { IUser } from '@/core/account';
 import { useCallback } from 'react';
 import { useStore } from 'zustand';
-import { calculateStreak } from './misc';
+import { ICommitmentKind } from './commit';
+import { calculateStreak } from './lib';
 
 export interface GameState {
   user: IUser
@@ -47,9 +48,10 @@ export interface GameMutations {
 }
 
 export type GameInterface = GameState & GameActions
-export type VanillaGame = ReturnType<typeof Game>["game"]
-export type ReactiveGame = ReturnType<typeof Game>["useGame"]
-export type ReadonlyGameInterface = Omit<GameInterface, keyof GameActions>
+export type Game = ReturnType<typeof Game>["game"]
+export type ReactiveGame = ReturnType<typeof Game>['useGame']
+export type ReadOnlyGame = ReturnType<typeof Game>['readOnlyGame']
+export type StaticGameInterface = Omit<GameInterface, keyof GameActions>
 
 export function Game(state: GameState) {
   const game = createStore<GameInterface>()(
@@ -148,11 +150,11 @@ export function Game(state: GameState) {
     return useStore(game, selector!)
   }
 
-  type UseReadonlyGame = <T>(selector: (state: ReadonlyGameInterface) => T) => T;
-  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: ReadonlyGameInterface) => T): T => {
+  type UseReadonlyGame = <T>(selector: (state: StaticGameInterface) => T) => T;
+  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: StaticGameInterface) => T): T => {
     return useGame(
       useCallback(
-        (state: GameInterface) => selector(state as ReadonlyGameInterface),
+        (state: GameInterface) => selector(state as StaticGameInterface),
         [selector]
       )
     )
@@ -163,7 +165,7 @@ export function Game(state: GameState) {
     const state = game.getState()
     // Omit methods that mutate state
     const { reset, calculateMomentum, calculateStreak, refresh, dailyRefresh, ...readOnlyState } = state
-    return Object.freeze(readOnlyState) satisfies ReadonlyGameInterface
+    return Object.freeze(readOnlyState) satisfies StaticGameInterface
   })
 
   function changeXp(change: number) {
@@ -212,3 +214,6 @@ export function Game(state: GameState) {
   return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }
 
+export type GameComponent = ReturnType<typeof GameComponent>
+export type GameComponentProps = { game: ReadOnlyGame, mutations: GameMutations, commitments: Record<any, ICommitmentKind> }
+export const GameComponent = <T>(component: (p: GameComponentProps) => T) => (p: GameComponentProps) => component(p)

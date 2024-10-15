@@ -1,7 +1,7 @@
 import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { db } from "./db"
-import { GameMutations, VanillaGame } from "./game"
+import { GameComponent as Component, Game, GameMutations } from "./game"
 
 export type ICommitReward = { xp: number, coins: number }
 
@@ -16,15 +16,6 @@ export interface ICommitMessage<T = any> {
 }
 
 // COMMITSTATUS, Trekie:Habit:CREATE, 2021-09-01T00:00:00Z, { xp: 5, coins: 0 }
-
-let status = {
-  kind: 'COMMIT',
-  timestamp: Date.now(),
-  owner: ulid(),
-  data: {
-
-  }
-}
 
 // we return this to the client
 export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
@@ -88,23 +79,14 @@ export interface ICommitmentInstance {
   isDeleted: boolean
 }
 
-// For testing purposes
-let Habit = Commitment('Todo', {
-  'CREATE': CommitEvent(() => ({ xp: 5, coins: 0 })),
-  'CHECKED_IN': CommitEvent((status) => ({ xp: status.data.count, coins: 0 })),
-  'DAILY_GOAL_REACHED': CommitEvent(() => ({ xp: 5, coins: 0 })),
-  'COMPLETE': CommitEvent(() => ({ xp: 100, coins: 0 })),
-})
-
 export interface ICommitmentStaticSchema {
   name: string
   events: Record<string, ICommitReward>
 }
 
-export function createCommitmentsModule<TCommitments extends Record<any, ICommitmentKind>>
-  (game: VanillaGame, mutations: GameMutations, commitments: TCommitments) {
+export const Commitments = Component(({ game, mutations, commitments }) => ({
 
-  function act<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
+  act<TCommitments extends typeof commitments, TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
     { kind, event, id, data }: {
       kind: TCommitName,
       event: TEventName,
@@ -117,7 +99,7 @@ export function createCommitmentsModule<TCommitments extends Record<any, ICommit
     const commitResult = commitments[kind]!.commit(event, id, data)
     const commitRecord: ICommitRecord<typeof data> = {
       ...commitResult,
-      userId: game.getState().user.id,
+      userId: game().user.id,
     }
     // save commit record to db
     db.commitRecords.add(commitRecord, commitRecord.id)
@@ -125,27 +107,20 @@ export function createCommitmentsModule<TCommitments extends Record<any, ICommit
     // apply rewards to game state
     mutations.changeXp(commitRecord.reward.xp)
     mutations.changeCoinsBalance(commitRecord.reward.coins)
-  }
+  },
 
-  function createCommitment<TCommitments extends typeof commitments, TKind extends keyof TCommitments>(kind: TKind) {
+  create<TCommitments extends typeof commitments, TKind extends keyof TCommitments>(kind: TKind) {
     let instance = commitments[kind]!.create()
     db.commitments.add(instance, instance.id)
     return instance
-  }
+  },
 
-  function completeCommitment(id: string) {
+  complete(id: string) {
     db.commitments.update(id, { completedAt: Date.now() })
-  }
+  },
 
-  function deleteCommitment(id: string) {
+  delete(id: string) {
     db.commitments.update(id, { isDeleted: true })
-  }
 
-  return {
-    create: createCommitment,
-    act,
-    complete: completeCommitment,
-    remove: deleteCommitment,
-  }
-}
-
+  },
+}))
