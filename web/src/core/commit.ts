@@ -1,7 +1,7 @@
 import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { db } from "./db"
-import { GameComponent as Component, Game, GameMutations, ReadOnlyGame } from "./game"
+import { Game, GameMutations, ReadOnlyGame } from "./game"
 import { status, Sync } from "./sync"
 
 export type ICommitReward = { xp: number, coins: number }
@@ -87,16 +87,16 @@ export interface ICommitmentStaticSchema {
 
 export function Commitments<TCommitments extends Record<any, ICommitmentKind>>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
   return {
-    act<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
+    act<TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(
       { kind, event, id, data }: {
-        kind: TCommitName,
-        event: TEventName,
+        kind: TKind,
+        event: TEvent,
         id: string,
-        data: Parameters<TCommitments[TCommitName]['events'][TEventName]>[0]['data']
+        data: Parameters<TCommitments[TKind]['events'][TEvent]>[0]['data']
       }) {
       // 1) mutate game state with commit 2) save this commit record
       // calculate commit event
-      const commitResult = commitments[kind].commit(event, id, data)
+      const commitResult = commitments[kind]!.commit(event, id, data)
       const commitRecord: ICommitRecord<typeof data> = {
         ...commitResult,
         userId: game().user.id,
@@ -112,7 +112,7 @@ export function Commitments<TCommitments extends Record<any, ICommitmentKind>>(g
     },
 
     create(kind: keyof typeof commitments) {
-      let instance = commitments[kind].create()
+      let instance = commitments[kind]!.create()
       db.commitments.add(instance, instance.id)
       return status('COMMITMENT:CREATE', game().user.id, { instance })
     },
