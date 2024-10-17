@@ -6,9 +6,6 @@ import { db } from './db'
 import { useEffect } from 'react'
 import { mock } from './mock'
 
-import * as Goal from '@/namespaces/goal'
-import * as Habit from '@/namespaces/habit'
-
 const initialState: Trekie.GameState = mock.game
 
 /**
@@ -19,25 +16,22 @@ const initialState: Trekie.GameState = mock.game
  * now we use a clean state & mock data
  */
 
-const CheckIn = {
-  'DAILYCHECK': { xp: +1, coins: +1 },
-  'CREATE': { xp: +1, coins: +1 },
-  'DONE': { xp: +25, coins: +2 },
-}
-
 let commitments = {
   Todo: C("Todo", {
     'CREATE': E(() => ({ xp: +1, coins: +1 })),
     'DAILYCHECK': E(() => ({ xp: +5, coins: 0 })),
     'DONE': E(() => ({ xp: +25, coins: +2 })),
   }),
-
   Habit: C("Habit", {
     'CREATE': E(() => ({ xp: +1, coins: +1 })),
     'UPDATE': E(() => ({ xp: +1, coins: +1 })),
-    'DAILY_TARGET_REACHED': E(() => ({ xp: +5, coins: 0 })),
-    'COUNT_UP': E(() => ({ xp: +25, coins: +2 })),
-    'COUNT_DOWN': E(() => ({ xp: +25, coins: +2 })),
+    'DAILYCHECK': E(() => ({ xp: +5, coins: 0 })),
+    'COUNT_UP': E(() => ({ xp: 0, coins: 0 })),
+    'COUNT_DOWN': E(() => ({ xp: 0, coins: 0 })),
+  }),
+  Exam: C("Exam", {
+    'PASS': E(() => ({ xp: +100, coins: +10 })),
+    'FAIL': E(() => ({ xp: +100, coins: -5 })),
   })
 }
 
@@ -48,9 +42,5 @@ export const trekie = Trekie.create({
 
 export default trekie
 
-let habit = trekie.commitments.create('Habit')
-let todo = trekie.commitments.create('Todo')
 
-trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: habit.id, data: {} })
-
-
+const ED221_Midterm = trekie.commitments.create<number>()  

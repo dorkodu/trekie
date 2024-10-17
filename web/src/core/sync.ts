@@ -1,4 +1,3 @@
-import { Game, GameComponent, ICommitRecord } from '@/core'
 import xxhash from 'xxhash-wasm'
 import { db } from './db'
 
@@ -8,34 +7,34 @@ export interface IStatus<T = any> {
   createdAt: number
   userId: string
   data: T
-  hash: string
 }
-export type IStatusTemplate<T> = Pick<IStatus<T>, 'kind' | 'data' | 'createdAt' | 'userId'>
 
 // hash utility
 const { h64ToString } = await xxhash()
-const hash = (status: IStatusTemplate<any>) => h64ToString(JSON.stringify(status))
+const hash = (status: IStatus<any>) => h64ToString(JSON.stringify(status))
 
-export const Status = {
-  create<T>(kind: string, author: string, data: T): IStatus<T> {
-    let template: IStatusTemplate<T> = {
+export const Sync = {
+  queue: [] as Array<string>,
+
+  status<T>(kind: string, userId: string, data: T): IStatus<T> {
+    let status: IStatus<T> = {
       kind,
       createdAt: Date.now(),
-      userId: author,
+      userId: userId,
       data
     }
-    return { ...template, hash: hash(template) }
+    return status
+  },
+
+  async syncToServer() {
+    const statusesToSend = db.statuses.bulkGet(this.queue)
+    // Clear the queue after sending
+    // this.queue = [];
   },
 
   async share<T extends IStatus<any>>(status: T) {
-    // save to local storage
-    this.add(status)
-    // add status id to queue
-    // send queue to server
-    // return response for this specific status
-    return new Promise((resolve, reject) => {
-      resolve({})
-    })
+    this.add(status) // save to local storage
+    this.queue.push(hash(status)) // add status id to queue
   },
 
   get: (hash: string) => db.statuses.get(hash),
@@ -43,4 +42,10 @@ export const Status = {
   remove: (hash: string) => db.statuses.delete(hash),
 
   match: <T extends IStatus<any>>(claimed: string, status: T): boolean => (claimed === hash(status))
+}
+
+export const status = <T>(kind: string, userId: string, data: T) => {
+  let s = Sync.status(kind, userId, data)
+  Sync.share(s)
+  return s
 }

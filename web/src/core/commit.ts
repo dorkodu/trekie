@@ -1,7 +1,8 @@
 import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { db } from "./db"
-import { GameComponent as Component, Game, GameMutations } from "./game"
+import { GameComponent as Component, Game, GameMutations, ReadOnlyGame } from "./game"
+import { status, Sync } from "./sync"
 
 export type ICommitReward = { xp: number, coins: number }
 
@@ -84,43 +85,46 @@ export interface ICommitmentStaticSchema {
   events: Record<string, ICommitReward>
 }
 
-export const Commitments = Component(({ game, mutations, commitments }) => ({
+export function Commitments<TCommitments extends Record<any, ICommitmentKind>>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
+  return {
+    act<TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
+      { kind, event, id, data }: {
+        kind: TCommitName,
+        event: TEventName,
+        id: string,
+        data: Parameters<TCommitments[TCommitName]['events'][TEventName]>[0]['data']
+      }) {
+      // 1) mutate game state with commit 2) save this commit record
+      // calculate commit event
+      const commitResult = commitments[kind].commit(event, id, data)
+      const commitRecord: ICommitRecord<typeof data> = {
+        ...commitResult,
+        userId: game().user.id,
+      }
+      // save commit record to db
+      db.commitRecords.add(commitRecord, commitRecord.id)
+      db.commitments.update(id, { lastActivity: Date.now() })
+      // apply rewards to game state
+      mutations.changeXp(commitRecord.reward.xp)
+      mutations.changeCoinsBalance(commitRecord.reward.coins)
 
-  act<TCommitments extends typeof commitments, TCommitName extends keyof TCommitments, TEventName extends keyof TCommitments[TCommitName]['events']>(
-    { kind, event, id, data }: {
-      kind: TCommitName,
-      event: TEventName,
-      id: string,
-      data: Parameters<TCommitments[TCommitName]['events'][TEventName]>[0]['data']
-    }) {
+      return status('COMMITMENT:ACT', game().user.id, { commit: commitRecord })
+    },
 
-    // 1) mutate game state with commit 2) save this commit record
-    // calculate commit event
-    const commitResult = commitments[kind]!.commit(event, id, data)
-    const commitRecord: ICommitRecord<typeof data> = {
-      ...commitResult,
-      userId: game().user.id,
-    }
-    // save commit record to db
-    db.commitRecords.add(commitRecord, commitRecord.id)
-    db.commitments.update(id, { lastActivity: Date.now() })
-    // apply rewards to game state
-    mutations.changeXp(commitRecord.reward.xp)
-    mutations.changeCoinsBalance(commitRecord.reward.coins)
-  },
+    create(kind: keyof typeof commitments) {
+      let instance = commitments[kind].create()
+      db.commitments.add(instance, instance.id)
+      return status('COMMITMENT:CREATE', game().user.id, { instance })
+    },
 
-  create<TCommitments extends typeof commitments, TKind extends keyof TCommitments>(kind: TKind) {
-    let instance = commitments[kind]!.create()
-    db.commitments.add(instance, instance.id)
-    return instance
-  },
+    complete(id: string) {
+      db.commitments.update(id, { completedAt: Date.now() })
+      return status('COMMITMENT:COMPLETE', game().user.id, { id })
+    },
 
-  complete(id: string) {
-    db.commitments.update(id, { completedAt: Date.now() })
-  },
-
-  delete(id: string) {
-    db.commitments.update(id, { isDeleted: true })
-
-  },
-}))
+    delete(id: string) {
+      db.commitments.update(id, { isDeleted: true })
+      return status('COMMITMENT:DELETE', game().user.id, { id })
+    },
+  }
+} 

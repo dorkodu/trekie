@@ -1,3 +1,4 @@
+import { CommitEvent } from '@/core';
 import { useEffect } from "react"
 import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
 import { Game, GameState } from "./game"
@@ -39,7 +40,7 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
   return {
     use: useReadonlyGame,
     game: readOnlyGame,
-    commitments: Commitments({ game: readOnlyGame, mutations, commitments }),
+    commitments: Commitments(readOnlyGame, mutations, commitments),
     useDailyRefresh,
   }
 }

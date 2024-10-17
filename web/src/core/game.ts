@@ -213,7 +213,3 @@ export function Game(state: GameState) {
 
   return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }
-
-export type GameComponent = ReturnType<typeof GameComponent>
-export type GameComponentProps = { game: ReadOnlyGame, mutations: GameMutations, commitments: Record<any, ICommitmentKind> }
-export const GameComponent = <T>(component: (p: GameComponentProps) => T) => (p: GameComponentProps) => component(p)
