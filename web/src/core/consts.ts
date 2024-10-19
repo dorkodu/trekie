@@ -29,13 +29,4 @@ export const actionXpGains = {
   App: {}
 }
 
-export const TrekieBaseCommitment = Commitment('Trekie', {
-  'COMMITMENT:START': CommitEvent(() => ({ xp: +1, coins: 0 })),
-  'COMMITMENT:COMPLETE': CommitEvent(() => ({ xp: +100, coins: +10 })),
-  'COMMITMENT:CHECKIN': CommitEvent(() => ({ xp: +2, coins: +1 })),
-  'COMMITMENT:GIVEUP': CommitEvent(() => ({ xp: -10, coins: 0 })),
-})
-
-
-
 
