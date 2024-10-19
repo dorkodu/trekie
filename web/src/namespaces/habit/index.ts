@@ -1,33 +1,13 @@
 import { ulid } from "ulid"
 
 import * as Trekie from "@/core"
+import { CommitEvent, Commitment } from "@/core"
 
 import { db } from "@/shared/lib/db"
 import { errors } from "@/shared/lib/errors"
 import trekie from "@/shared/lib/trekie"
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
-import { z } from "zod"
-
-//? Interfaces
-
-export type IHabit = z.infer<typeof IHabit>
-export type IHabitTemplate = z.infer<typeof IHabitTemplate>
-
-export const IHabitTemplate = z.object({
-  title: z.string(),
-  description: z.string(),
-  dailyTarget: z.number().min(1)
-})
-
-export const IHabit = IHabitTemplate.extend({
-  id: z.string().ulid(),
-  count: z.number().min(0),
-  createdAt: z.number() satisfies z.ZodType<Timestamp>,
-  lastUpdated: z.number() satisfies z.ZodType<Timestamp>,
-  history: z.map(z.string(), z.number()),
-  userId: z.string().ulid(),
-  commitmentId: z.string().ulid()
-})
+import { IHabit, IHabitTemplate } from "./schema"
 
 //? Interfaces
 
@@ -41,6 +21,14 @@ export interface Interface {
   count: () => Promise<number>
   repository: typeof db.habits
 }
+
+export const commitment = Commitment("Habit", {
+  'CREATE': CommitEvent(() => ({ xp: +1, coins: +1 })),
+  'UPDATE': CommitEvent(() => ({ xp: +1, coins: +1 })),
+  'DAILYCHECK': CommitEvent(() => ({ xp: +5, coins: 0 })),
+  'COUNT_UP': CommitEvent(() => ({ xp: 0, coins: 0 })),
+  'COUNT_DOWN': CommitEvent(() => ({ xp: 0, coins: 0 })),
+})
 
 export const Component: Interface = {
   add(habit) {
@@ -71,8 +59,8 @@ export const Component: Interface = {
 
     await db.habits.delete(id)
 
-    let instance = trekie.commitments.create('Todo')
-    trekie.commitments.remove(instance.id)
+    let { instance } = trekie.commitments.create('Habit')
+    trekie.commitments.delete(instance)
     trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: instance.id, data: {} })
   },
 
@@ -100,10 +88,11 @@ export const Component: Interface = {
 
     db.habits.put(habit, habit.id)
 
-    trekie.commit({
+    trekie.commitments.act({
       kind: 'Habit',
       event: 'COUNT_UP',
       id: habit.commitmentId,
+      data: { count: updatedCount }
     })
 
     game.getState().changeXp(count)
@@ -135,6 +124,7 @@ export const Component: Interface = {
     } satisfies IHabit
   },
 }
+export const habits = Component
 
 export * as Habit from "."
 

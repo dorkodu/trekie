@@ -3,6 +3,7 @@ import { Commitment as C, CommitEvent as E } from '@/core'
 
 import { db } from './db'
 
+import { Habit } from '@/namespaces/habit'
 import { useEffect } from 'react'
 import { mock } from './mock'
 
@@ -17,22 +18,8 @@ const initialState: Trekie.GameState = mock.game
  */
 
 let commitments = {
-  Todo: C("Todo", {
-    'CREATE': E(() => ({ xp: +1, coins: +1 })),
-    'DAILYCHECK': E(() => ({ xp: +5, coins: 0 })),
-    'DONE': E(() => ({ xp: +25, coins: +2 })),
-  }),
-  Habit: C("Habit", {
-    'CREATE': E(() => ({ xp: +1, coins: +1 })),
-    'UPDATE': E(() => ({ xp: +1, coins: +1 })),
-    'DAILYCHECK': E(() => ({ xp: +5, coins: 0 })),
-    'COUNT_UP': E(() => ({ xp: 0, coins: 0 })),
-    'COUNT_DOWN': E(() => ({ xp: 0, coins: 0 })),
-  }),
-  Exam: C("Exam", {
-    'PASS': E(() => ({ xp: +100, coins: +10 })),
-    'FAIL': E(() => ({ xp: +100, coins: -5 })),
-  })
+  Habit: Habit.commitment,
+  Goal: Goal.commitment,
 }
 
 export const trekie = Trekie.create({
@@ -41,6 +28,3 @@ export const trekie = Trekie.create({
 })
 
 export default trekie
-
-
-const ED221_Midterm = trekie.commitments.create<number>()  
