@@ -2,7 +2,7 @@ import { Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { db } from "./db"
 import { Game, GameMutations, ReadOnlyGame } from "./game"
-import { status, Sync } from "./sync"
+import { IStatus, status, Sync } from "./sync"
 
 export type ICommitReward = { xp: number, coins: number }
 
@@ -20,10 +20,12 @@ export interface ICommitMessage<T = any> {
 
 // we return this to the client
 export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
-// we sync this to API as a verifiable record 
+// we sync this to API as a verifiable record
 export type ICommitRecord<T> = ICommitResult<T> & { userId: string }
 // the action that runs on commit & returns rewards
 export type ICommitAction<T> = (status: ICommitMessage<T>) => ICommitReward
+// a status object for a commit event
+export type ICommitStatus<T> = IStatus<ICommitRecord<T>>
 
 export type ICommitmentKind = ReturnType<typeof Commitment>
 export type ICommitmentTemplate = {
@@ -85,9 +87,9 @@ export interface ICommitmentStaticSchema {
   events: Record<string, ICommitReward>
 }
 
-export function Commitments<TCommitments extends Record<any, ICommitmentKind>>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
+export function Commitments<TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
   return {
-    act<TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(
+    act(
       { kind, event, id, data }: {
         kind: TKind,
         event: TEvent,
@@ -108,10 +110,10 @@ export function Commitments<TCommitments extends Record<any, ICommitmentKind>>(g
       mutations.changeXp(commitRecord.reward.xp)
       mutations.changeCoinsBalance(commitRecord.reward.coins)
 
-      return status('COMMITMENT:ACT', game().user.id, { commit: commitRecord })
+      return status('COMMITMENT:ACT', game().user.id, commitRecord)
     },
 
-    create(kind: keyof typeof commitments) {
+    create(kind: TKind) {
       let instance = commitments[kind]!.create()
       db.commitments.add(instance, instance.id)
       return status('COMMITMENT:CREATE', game().user.id, { instance })
