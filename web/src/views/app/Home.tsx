@@ -146,6 +146,3 @@ function LifeGoalSummary() {
     </Box>
   )
 }
-
-// Confetti
-// https://www.kirilv.com/canvas-confetti

@@ -22,8 +22,8 @@ export interface Interface {
   repository: typeof db.habits
 }
 
-export const commitment = Commitment("Habit", {
-  'CREATE': CommitEvent(() => ({ xp: +1, coins: +1 })),
+export const commitment = Commitment('Habit', {
+  'CREATE': CommitEvent(() => ({ xp: +5, coins: +1 })),
   'UPDATE': CommitEvent(() => ({ xp: +1, coins: +1 })),
   'DAILYCHECK': CommitEvent(() => ({ xp: +5, coins: 0 })),
   'COUNT_UP': CommitEvent(() => ({ xp: 0, coins: 0 })),
@@ -34,34 +34,29 @@ export const Component: Interface = {
   add(habit) {
     // make sure the user has active session
     const user = trekie.game().user
-    if (!user) {
-      errors.handle("NO_SESSION")
-      return false
-    }
+
+    if (!user) errors.handle("NO_SESSION")
 
     // make sure the user owns the habit
-    if (user.id !== habit.userId) return false
+    if (user.id !== habit.userId) errors.handle("NOT_AUTHORIZED")
 
     db.habits.add(habit, habit.id)
 
     trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: habit.commitmentId, data: {} })
-
-    return true
   },
 
   async remove(id) {
     const removedHabit = await this.get(id)
     const user = trekie.game().user
 
-    if (!user || !removedHabit || user.id != removedHabit.userId)
+    if (!user || !removedHabit || user.id != removedHabit.userId) {
+      errors.handle("NOT_AUTHORIZED")
       return // has no permission or habit/user does not exist
+    }
 
+    trekie.commitments.delete(removedHabit.commitmentId)
 
     await db.habits.delete(id)
-
-    let { instance } = trekie.commitments.create('Habit')
-    trekie.commitments.delete(instance)
-    trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: instance.id, data: {} })
   },
 
   repository: db.habits,
@@ -124,7 +119,7 @@ export const Component: Interface = {
     } satisfies IHabit
   },
 }
-export const habits = Component
 
+export const habits = Component
 export * as Habit from "."
 

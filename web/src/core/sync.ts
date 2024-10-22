@@ -44,7 +44,7 @@ export const Sync = {
   match: <T extends IStatus<any>>(claimed: string, status: T): boolean => (claimed === hash(status))
 }
 
-export const status = <T>(kind: string, userId: string, data: T) => {
+export function status<T>(kind: string, userId: string, data: T) {
   let s = Sync.status(kind, userId, data)
   Sync.share(s)
   return s

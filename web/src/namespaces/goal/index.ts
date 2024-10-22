@@ -1,33 +1,22 @@
-import * as Trekie from '@/core'
-
+import { CommitEvent, Commitment } from "@/core"
 import { db } from "@/shared/lib/db"
 import trekie from '@/shared/lib/trekie'
 import { Maybe, Timestamp } from "@/shared/utils"
-import { $ } from 'bun'
 import { ulid } from "ulid"
-import { z } from 'zod'
+import { IGoal, IGoalTemplate, schema } from './schema'
+export * as Goal from "."
+export { schema } from './schema'
 
-//? INTERFACE
-
-export type IGoal = z.infer<typeof IGoal>
-export type IGoalTemplate = z.infer<typeof IGoalTemplate>
-
-export const IGoalTemplate = z.object({
-  title: z.string().trim().min(1).max(100),
-  description: z.string().trim().min(1).max(500),
-  xpTarget: z.number().min(1),
-  commitments: z.array(z.string().ulid())
+export const commitment = Commitment('Goal', {
+  'START': CommitEvent(() => ({ xp: +25, coins: 0 })),
+  'PROGRESS_BEGIN': CommitEvent(() => ({ xp: +100, coins: 0 })),
+  'PROGRESS_HALFWAY': CommitEvent(() => ({ xp: +100, coins: 0 })),
+  'PROGRESS_ALMOST': CommitEvent(() => ({ xp: +100, coins: 0 })),
+  'PROGRESS_DONE': CommitEvent(() => ({ xp: +100, coins: 0 })),
+  'COMMITMENT_ADD': CommitEvent(() => ({ xp: +1, coins: 0 })),
+  'COMMITMENT_DROP': CommitEvent(() => ({ xp: -1, coins: 0 })),
+  '': CommitEvent(() => ({ xp: +1000, coins: +25 })),
 })
-
-export const IGoal = IGoalTemplate.extend({
-  id: z.string().ulid(),
-  userId: z.string().ulid(),
-  xpCurrent: z.number(),
-  createdAt: z.number() satisfies z.ZodType<Timestamp>,
-  lastUpdated: z.number() satisfies z.ZodType<Timestamp>
-})
-
-export const schema = { IGoalTemplate, IGoal }
 
 //? COMPONENT
 
@@ -42,17 +31,23 @@ export interface Interface {
 
 export const Component: Interface = {
   get: (id) => db.goals.get(id),
-  add: (goal) => db.goals.add(goal, goal.id),
+  add: (goal) => {
+    return db.goals.add(goal, goal.id)
+  },
   create(props) {
     const userId = trekie.game().user?.id
     if (!userId) return
+    let status = trekie.commitments.create('Habit')
 
     return {
+      ...props,
       id: ulid(),
       xpCurrent: 0,
-      ...props,
-      userId
-    } as IGoal
+      userId,
+      createdAt: Date.now(),
+      lastUpdated: Date.now(),
+      commitmentId: status.data.instance.id,
+    } satisfies IGoal
   },
   update(id, props) {
     const updatedGoal = this.create(props)
@@ -65,3 +60,7 @@ export const Component: Interface = {
   count: () => db.goals.count(),
   remove: (id) => db.goals.delete(id),
 }
+
+export const goals = Component
+
+
