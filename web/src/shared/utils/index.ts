@@ -87,6 +87,12 @@ export function inferSchema<T extends z.ZodTypeAny>(schema: T) {
   return schema;
 }
 
+export function arrayRemoveItem<T>(arr: Array<T>, value: T): Array<T> {
+  const index = arr.indexOf(value)
+  if (index > -1) arr.splice(index, 1)
+  return arr
+}
+
 export { format } from './format'
 
 export * as utils from '.'
