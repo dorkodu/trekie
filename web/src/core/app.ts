@@ -17,7 +17,7 @@ export function create<TCommitments extends Record<any, ICommitmentKind>>
 
   function useDailyRefresh() {
     useEffect(() => {
-      const task = () => { game.getState().refresh() }
+      const task = () => { game.getState().dailyRefresh() }
 
       const today = new Date()
       const tomorrow = new Date()
