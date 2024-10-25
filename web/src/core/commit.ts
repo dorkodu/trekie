@@ -33,6 +33,20 @@ export type ICommitmentTemplate = {
   events: Record<any, ICommitAction<any>>
 }
 
+export interface ICommitmentInstance {
+  id: string
+  kind: string
+  completedAt: Maybe<Timestamp>
+  createdAt: Timestamp
+  lastActivity: Timestamp
+  isDeleted: boolean
+}
+
+export interface ICommitmentStaticSchema {
+  name: string
+  events: Record<string, ICommitReward>
+}
+
 export const CommitEvent = <T>(action: ICommitAction<T>): ICommitAction<T> => action
 export function Commitment
   <TEvents extends ICommitmentTemplate['events'], TKind extends keyof TEvents>
@@ -73,23 +87,9 @@ export function Commitment
   }
 }
 
-export interface ICommitmentInstance {
-  id: string
-  kind: string
-  completedAt: Maybe<Timestamp>
-  createdAt: Timestamp
-  lastActivity: Timestamp
-  isDeleted: boolean
-}
-
-export interface ICommitmentStaticSchema {
-  name: string
-  events: Record<string, ICommitReward>
-}
-
-export function Commitments<TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
+export function Commitments<TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
   return {
-    act(
+    act<TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(
       { kind, event, id, data }: {
         kind: TKind,
         event: TEvent,
@@ -113,20 +113,23 @@ export function Commitments<TCommitments extends Record<any, ICommitmentKind>, T
       return status('COMMITMENT:ACT', game().user.id, commitRecord)
     },
 
+    get: (id: string) => db.commitments.get(id),
+
     create(kind: TKind) {
       let instance = commitments[kind]!.create()
       db.commitments.add(instance, instance.id)
-      return status('COMMITMENT:CREATE', game().user.id, { instance })
+      status('COMMITMENT:CREATE', game().user.id, { instance })
+      return instance
     },
 
     complete(id: string) {
       db.commitments.update(id, { completedAt: Date.now() })
-      return status('COMMITMENT:COMPLETE', game().user.id, { id })
+      status('COMMITMENT:COMPLETE', game().user.id, { id })
     },
 
     delete(id: string) {
       db.commitments.update(id, { isDeleted: true })
-      return status('COMMITMENT:DELETE', game().user.id, { id })
+      status('COMMITMENT:DELETE', game().user.id, { id })
     },
   }
 } 

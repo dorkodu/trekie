@@ -3,6 +3,7 @@ import { Commitment as C, CommitEvent as E } from '@/core'
 
 import { db } from './db'
 
+import { Goal } from '@/namespaces/goal'
 import { Habit } from '@/namespaces/habit'
 import { useEffect } from 'react'
 import { mock } from './mock'
