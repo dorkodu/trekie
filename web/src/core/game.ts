@@ -8,7 +8,6 @@ import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils';
 import { IUser } from '@/core/account';
 import { useCallback } from 'react';
 import { useStore } from 'zustand';
-import { ICommitmentKind } from './commit';
 import { calculateStreak } from './lib';
 
 export interface GameState {

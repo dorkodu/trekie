@@ -24,25 +24,23 @@ export interface Interface {
 
 export const commitment = Commitment('Habit', {
   'CREATE': CommitEvent(() => ({ xp: +5, coins: +1 })),
-  'UPDATE': CommitEvent(() => ({ xp: +1, coins: +1 })),
-  'DAILYCHECK': CommitEvent(() => ({ xp: +5, coins: 0 })),
+  'UPDATE': CommitEvent(() => ({ xp: +1, coins: 0 })),
+  'DAILYCHECK': CommitEvent(() => ({ xp: +3, coins: 0 })),
   'COUNT_UP': CommitEvent(() => ({ xp: 0, coins: 0 })),
   'COUNT_DOWN': CommitEvent(() => ({ xp: 0, coins: 0 })),
 })
 
 export const Component: Interface = {
   add(habit) {
-    // make sure the user has active session
     const user = trekie.game().user
 
-    if (!user) errors.handle("NO_SESSION")
-
     // make sure the user owns the habit
-    if (user.id !== habit.userId) errors.handle("NOT_AUTHORIZED")
+    if (user.id !== habit.userId) {
+      errors.handle("NOT_AUTHORIZED")
+      return
+    }
 
     db.habits.add(habit, habit.id)
-
-    trekie.commitments.act({ kind: 'Habit', event: 'CREATE', id: habit.commitmentId, data: {} })
   },
 
   async remove(id) {
@@ -69,8 +67,6 @@ export const Component: Interface = {
     const habit = await this.get(id)
     if (!habit) return false
 
-    // TODO:  trekie refresh
-
     const todaysCount = habit.history.get(daystamp.today()) ?? 0
     const updatedCount = todaysCount + count
 
@@ -90,10 +86,6 @@ export const Component: Interface = {
       data: { count: updatedCount }
     })
 
-    game.getState().changeXp(count)
-
-    game.getState().refresh()
-
     return habit.count
   },
 
@@ -103,23 +95,27 @@ export const Component: Interface = {
   },
 
   create(template) {
-    const userId = game.getState().user?.id
+    const userId = trekie.game().user.id
     if (!userId) return
+
+    let instance = trekie.commitments.create('Habit')
 
     return {
       ...template,
+      commitmentId: instance.id,
 
       id: ulid(),
+      userId,
       count: 0,
       createdAt: new Date().getTime(),
       lastUpdated: new Date().getTime(),
       history: new Map<Daystamp, number>(),
-      userId,
-
     } satisfies IHabit
   },
 }
 
 export const habits = Component
 export * as Habit from "."
+export * from "./schema"
+
 

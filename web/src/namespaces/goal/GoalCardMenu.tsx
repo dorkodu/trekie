@@ -6,7 +6,7 @@ import { ActionIcon, Menu } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
 import { MouseEvent } from 'react'
-import { Component as goals } from '.'
+import { goals } from '.'
 
 interface Props {
   goal: IGoal

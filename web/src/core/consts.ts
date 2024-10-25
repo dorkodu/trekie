@@ -1,6 +1,6 @@
 import { CommitEvent, Commitment, GameState } from "@/core"
 
-export const actionXpGains = {
+export const XpGains = {
   Habit: {
     Add: +5,
     Complete: +50,

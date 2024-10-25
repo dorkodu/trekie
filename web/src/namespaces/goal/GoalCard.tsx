@@ -6,7 +6,7 @@ import { IconArcheryArrow, IconCalendar, IconCheck, IconCheckbox, IconChecks, Ic
 import { useLiveQuery } from "dexie-react-hooks"
 import GoalMenu from "./GoalCardMenu"
 
-import { Component as goals } from "."
+import { goals } from "."
 
 interface Props {
   id: IGoal["id"]
