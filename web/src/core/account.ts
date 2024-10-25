@@ -28,8 +28,6 @@ export interface IAccount {
 export enum AccountTier {
   FREE = "FREE",
   PREMIUM = "PREMIUM",
-  DEVELOPER = "DEVELOPER",
-  ADMIN = "ADMIN",
 }
 
 const username = z.string().trim().regex(/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])$/)
