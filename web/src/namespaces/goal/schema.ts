@@ -15,6 +15,8 @@ export const IGoal = IGoalTemplate.extend({
   userId: z.string().ulid(),
   xpCurrent: z.number(),
   createdAt: z.number(),
+  completedAt: z.nullable(z.number()),
+  giveupAt: z.nullable(z.number()),
   lastUpdated: z.number(),
   commitmentId: z.string().ulid(),
 })
