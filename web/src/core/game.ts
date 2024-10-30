@@ -26,13 +26,13 @@ export interface GameState {
   lastDailyCheck: Maybe<Timestamp>,
 
   xpHistory: { [date: Daystamp]: number }
-
-  xpToday: () => number
-  dailyProgress: () => number
-  averageXp: () => number
 }
 
 export interface GameActions {
+  xpToday: () => number
+  dailyProgress: () => number
+  averageXp: () => number
+
   calculateStreak: () => void
   calculateMomentum: () => void
   refresh: () => void

@@ -1,15 +1,15 @@
 import * as Trekie from '@/core'
 
-import { IGoal } from "@/namespaces/goal"
-import { IHabit } from "@/namespaces/habit"
+import { goals, IGoal } from "@/namespaces/goal"
+import { habits, IHabit } from "@/namespaces/habit"
 
 import { ulid } from 'ulid'
+import trekie from './trekie'
 
-function generate() {
+export function generate() {
   const userId = ulid()
 
-  const user: Trekie.IUser = {
-    id: userId,
+  const user = Trekie.createUser({
     username: 'dorukeray',
     name: 'Doruk Eray',
     bio: `✦ Founder & Chief @dorkodu
@@ -24,31 +24,20 @@ function generate() {
     url: "https://doruk.dorkodu.com",
     joinedAt: new Date("19/02/2024 10:50").getTime(),
     birthday: new Date("03/08/2004 09:45 AM").getTime(),
-  }
+  })
 
-  const habit: IHabit = {
-    id: ulid(),
+  habits.create({
     title: "Daily Guitar Practice",
     description: "At least 30 minutes per day.",
-    count: 0,
-    createdAt: new Date("20/02/2024 16:30").getTime(),
-    dailyTarget: 10,
-    history: new Map(),
-    userId: userId,
-    lastUpdated: new Date("20/02/2024 16:34").getTime()
-  }
+    dailyTarget: 30,
+  })
 
-  const goal: IGoal = {
-    id: ulid(),
+  goals.create({
     title: "Be An Indie Rockstar",
     description: "A thousand true fans & a million streams.",
-    userId: userId,
-    xpCurrent: 0,
-    xpTarget: 1000,
-    createdAt: new Date("19/02/2024 14:00").getTime(),
-    lastUpdated: new Date("20/02/2024 12:15").getTime(),
+    xpTarget: 100,
     commitments: []
-  }
+  })
 
   const game: Trekie.GameState = {
     user,
@@ -64,7 +53,5 @@ function generate() {
     lastDailyCheck: undefined,
   }
 
-  return { user, game, goal, habit };
+  return { user, game }
 }
-
-export const mock = generate()

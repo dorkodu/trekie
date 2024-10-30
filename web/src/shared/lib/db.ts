@@ -25,22 +25,15 @@ db.on("ready", ready)
 
 db.open().then(async (db) => {
   // Database opened successfully
-  console.info("dexie opened successfully")
+  console.info("[app] dexie opened successfully.")
 }).catch((e) => {
   console.error(e)
 });
 
 export async function populate() {
-  await db.habits.add(mock.habit, mock.habit.id)
   await db.users.add(mock.user, mock.user.id)
-  await db.goals.add(mock.goal, mock.goal.id)
 }
 
 export async function ready() {
-  console.info("db is ready")
-}
-
-const api = {
-  get(url: string) { },
-  post(url: string, data: any) { }
+  console.info("[app] db is ready.")
 }

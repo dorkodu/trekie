@@ -1,12 +1,11 @@
 import { ActionIcon, Button, Flex, Group, Paper, Text, px } from "@mantine/core"
 import { useNavigate } from "react-router-dom"
 
-import { navLinks } from "@/layouts/App"
-
 import CreateMenu from "@/shared/components/menus/CreateMenu"
 import * as LayoutStyles from '@/styles/Layout.css'
 import { NavigationBar as styles } from '@/styles/Layout.css'
 import { IconPlus } from "@tabler/icons-react"
+import { navLinks } from "./Nav"
 
 export function NavigationBar() {
   const navigate = useNavigate()

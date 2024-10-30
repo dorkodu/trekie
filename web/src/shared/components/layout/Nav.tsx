@@ -1,10 +1,10 @@
 import {
-  Text,
-  Button,
-  Stack,
-  UnstyledButton,
-  Group,
   Box,
+  Button,
+  Group,
+  Stack,
+  Text,
+  UnstyledButton,
 } from '@mantine/core'
 import {
   IconPlus
@@ -12,8 +12,16 @@ import {
 
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import styles from '@/styles/components/NavBar.css'
 import CreateMenu from '@/shared/components/menus/CreateMenu'
+import styles from '@/styles/components/NavBar.css'
+import Emoji from '../misc/Emoji'
+
+export const navLinks = [
+  { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
+  { icon: <Emoji emoji="🌎" size={24} />, text: 'Explore', path: '/explore' },
+  { icon: <Emoji emoji="👥" size={24} />, text: 'Social', path: '/social' },
+  { icon: <Emoji emoji="💸" size={24} />, text: 'Market', path: '/market' },
+]
 
 export function Bar({
   links,

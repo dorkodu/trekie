@@ -19,7 +19,6 @@ export interface Interface {
   remove: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => Promise<number | false>
   count: () => Promise<number>
-  repository: typeof db.habits
 }
 
 export const commitment = Commitment('Habit', {
@@ -56,8 +55,6 @@ export const Component: Interface = {
 
     await db.habits.delete(id)
   },
-
-  repository: db.habits,
 
   get: (id) => db.habits.get(id),
 

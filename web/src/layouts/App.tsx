@@ -1,29 +1,21 @@
-import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, ThemeIcon, useMantineColorScheme, }
-  from '@mantine/core'
-import { Link, Outlet } from 'react-router-dom'
+import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, ThemeIcon, useMantineColorScheme, } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
+import { Link, Outlet } from 'react-router-dom'
 
-import * as Nav from '@/shared/components/layout/Nav'
 import { AppMenu } from '@/shared/components/cards/Menu'
+import * as Nav from '@/shared/components/layout/Nav'
 
 import Emoji from '@/shared/components/misc/Emoji'
 
-import { useAppStore } from '@/shared/stores/appStore'
 import { DailyStats } from '@/namespaces/life/DailyStats'
+import { useAppStore } from '@/shared/stores/appStore'
 
-import { Header } from '@/shared/components/layout/Header'
 import { HeadBar } from '@/shared/components/layout/HeadBar'
+import { Header } from '@/shared/components/layout/Header'
 import { NavigationBar } from '@/shared/components/layout/NavigationBar'
 
-import * as styles from '@/styles/Layout.css'
 import { DailyHintCard } from '@/shared/components/cards/DailyHintCard'
-
-export const navLinks = [
-  { icon: <Emoji emoji="🏡" size={24} />, text: 'Home', path: '/home' },
-  { icon: <Emoji emoji="🌎" size={24} />, text: 'Explore', path: '/explore' },
-  { icon: <Emoji emoji="👥" size={24} />, text: 'Social', path: '/social' },
-  { icon: <Emoji emoji="💸" size={24} />, text: 'Market', path: '/market' },
-]
+import * as styles from '@/styles/Layout.css'
 
 function AppLayout() {
   return (
@@ -38,7 +30,7 @@ function AppLayout() {
         <Menu />
 
         <nav className={styles.Layout.Nav}>
-          <Nav.Bar links={navLinks} />
+          <Nav.Bar links={Nav.navLinks} />
         </nav>
 
         <main className={styles.Layout.Main}>

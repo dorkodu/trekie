@@ -1,7 +1,7 @@
-import { CommitEvent } from '@/core';
-import { useEffect } from "react";
-import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit";
-import { Game, GameState } from "./game";
+import { CommitEvent } from "@/core"
+import { useEffect } from "react"
+import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
+import { Game, GameState } from "./game"
 
 export type CreateConfig<TCommitments extends Record<any, ICommitmentKind>> = {
   initialState: GameState,

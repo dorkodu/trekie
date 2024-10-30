@@ -36,7 +36,9 @@ export interface Interface {
 
 export const Component: Interface = {
   get: (id) => db.goals.get(id),
+
   add: (goal) => db.goals.add(goal, goal.id),
+
   async create(props) {
     let instance = trekie.commitments.create('Habit')
 
@@ -63,6 +65,7 @@ export const Component: Interface = {
 
     return goal
   },
+
   async giveup(id) {
     const goal = await db.goals.get(id)
     if (!goal) return false
@@ -81,6 +84,7 @@ export const Component: Interface = {
 
     return true
   },
+
   async addCommitment(goalId, commitmentId) {
     const goal = await this.get(goalId)
     if (!goal) return false
@@ -106,6 +110,7 @@ export const Component: Interface = {
 
     return true
   },
+
   async dropCommitment(goalId, commitmentId) {
     const goal = await db.goals.get(goalId)
     if (!goal) return false
@@ -129,8 +134,11 @@ export const Component: Interface = {
 
     return true
   },
+
   update: (id, props) => db.goals.update(id, { ...props }),
+
   count: () => db.goals.count(),
+
   remove: async (id) => {
     let goal = await db.goals.get(id)
     if (!goal) return
