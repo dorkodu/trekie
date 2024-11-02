@@ -27,7 +27,7 @@ export interface Interface {
   create: (template: IGoalTemplate) => Promise<Maybe<IGoal>>
   add: (goal: IGoal) => Promise<string>
   update: (id: IGoal["id"], props: IGoalTemplate) => Promise<number>
-  remove: (id: IGoal["id"]) => void
+  delete: (id: IGoal["id"]) => void
   giveup: (id: IGoal["id"]) => void
   count: () => Promise<number>
   addCommitment: (goalId: IGoal['id'], commitmentId: ICommitmentInstance['id']) => Promise<boolean>
@@ -36,8 +36,16 @@ export interface Interface {
 
 export const Component: Interface = {
   get: (id) => db.goals.get(id),
-
   add: (goal) => db.goals.add(goal, goal.id),
+  update: (id, props) => db.goals.update(id, { ...props }),
+  count: () => db.goals.count(),
+  delete: async (id) => {
+    let goal = await db.goals.get(id)
+    if (!goal) return
+
+    trekie.commitments.delete(goal.commitmentId)
+    await db.goals.delete(id)
+  },
 
   async create(props) {
     let instance = trekie.commitments.create('Habit')
@@ -135,17 +143,7 @@ export const Component: Interface = {
     return true
   },
 
-  update: (id, props) => db.goals.update(id, { ...props }),
 
-  count: () => db.goals.count(),
-
-  remove: async (id) => {
-    let goal = await db.goals.get(id)
-    if (!goal) return
-
-    trekie.commitments.delete(goal.commitmentId)
-    await db.goals.delete(id)
-  }
 }
 
 export const goals = Component

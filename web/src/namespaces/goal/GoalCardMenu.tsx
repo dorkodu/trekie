@@ -33,7 +33,7 @@ function GoalMenu({ goal }: Props) {
 
   const onDelete = (ev: MouseEvent) => {
     ev.stopPropagation()
-    goals.remove(goal.id)
+    goals.delete(goal.id)
   }
 
   return (

@@ -16,34 +16,25 @@ export interface Interface {
   create: (template: IHabitTemplate) => Maybe<IHabit>
   get: (id: IHabit["id"]) => Promise<Maybe<IHabit>>
   update: (id: IHabit["id"], props: IHabitTemplate) => Promise<Maybe<IHabit>>
-  remove: (id: IHabit["id"]) => void
+  delete: (id: IHabit["id"]) => void
   commit: (id: IHabit["id"], count: number) => Promise<number | false>
   count: () => Promise<number>
 }
 
 export const commitment = Commitment('Habit', {
-  'CREATE': CommitEvent(() => ({ xp: +5, coins: +1 })),
-  'UPDATE': CommitEvent(() => ({ xp: +1, coins: 0 })),
-  'DAILYCHECK': CommitEvent(() => ({ xp: +3, coins: 0 })),
+  'START': CommitEvent(() => ({ xp: +5, coins: 0 })),
   'COUNT_UP': CommitEvent(() => ({ xp: 0, coins: 0 })),
   'COUNT_DOWN': CommitEvent(() => ({ xp: 0, coins: 0 })),
+  'DAILYCHECK': CommitEvent(() => ({ xp: +3, coins: 0 })),
+  'GIVEUP': CommitEvent(() => ({ xp: 0, coins: -1 })),
 })
 
 export const Component: Interface = {
-  add(habit) {
-    const user = trekie.game().user
-
-    // make sure the user owns the habit
-    if (user.id !== habit.userId) {
-      errors.handle("NOT_AUTHORIZED")
-      return
-    }
-
-    db.habits.add(habit, habit.id)
-  },
-
-  async remove(id) {
-    const removedHabit = await this.get(id)
+  get: (id) => db.habits.get(id),
+  add: (habit) => db.habits.add(habit, habit.id),
+  count: () => db.habits.count(),
+  delete: async (id) => {
+    const removedHabit = await db.habits.get(id)
     const user = trekie.game().user
 
     if (!user || !removedHabit || user.id != removedHabit.userId) {
@@ -51,14 +42,17 @@ export const Component: Interface = {
       return // has no permission or habit/user does not exist
     }
 
+    await db.transaction('rw', db.habits, trekie.commitments., async () => {
+      const friend = await db.friends.get({ name: "David" });
+      ++friend.age;
+      await db.friends.put(friend);
+    })
+
     trekie.commitments.delete(removedHabit.commitmentId)
 
     await db.habits.delete(id)
   },
 
-  get: (id) => db.habits.get(id),
-
-  count: () => db.habits.count(),
 
   async commit(id, count) {
     const habit = await this.get(id)
@@ -114,5 +108,4 @@ export const Component: Interface = {
 export const habits = Component
 export * as Habit from "."
 export * from "./schema"
-
 
