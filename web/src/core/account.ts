@@ -1,6 +1,7 @@
 import { Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { z } from "zod"
+import { DEFAULT_AVATAR } from "./consts"
 
 export type IAccount = z.infer<typeof IAccount>
 export type IProfile = z.infer<typeof IProfile>
@@ -31,37 +32,36 @@ const IAccount = z.object({
 
 export const IUser = IAccount.merge(IProfile)
 
-export function createUser(input: {
-  username: string
-  name: string
-  email: string
-  pictureUrl: string
-  tier: AccountTier
-  category: string
-  location: string
-  url: string
-  birthDate: number
-}): IUser {
+const ICreateUserInput = IUser.partial({
+  pictureUrl: true,
+  location: true,
+  url: true,
+  bio: true,
+})
+export type ICreateUserInput = z.infer<typeof ICreateUserInput>
+
+export function createUser(input: ICreateUserInput): IUser | false {
+
+  let { success, data } = ICreateUserInput.safeParse(input)
+  if (!success || !data) throw new Error
+
   return {
     id: ulid(),
-    username: 'dorukeray',
-    name: 'Doruk Eray',
-    bio: `✦ Founder & Chief @dorkodu
-    ✦ Polymath • Software Craftsman • Designer
-    ✦ Boğaziçi Uni. • Vefa Lisesi
-    ✦ ENFJ • ♓ • 3w2 • E/Acc • Techno-optimist`,
-    email: 'doruk@dorkodu.com',
-    pictureUrl: '/images/doruk--green.png',
-    tier: AccountTier.SUPERFAN,
-    location: "Istanbul, TR",
-    url: "https://doruk.dorkodu.com",
-    joinedAt: new Date("19/02/2024 10:50").getTime(),
-    birthDate: new Date("03/08/2004 09:45 AM").getTime(),
-  } satisfies IUser
+    username: data.username,
+    name: data.name,
+    bio: data.bio ?? ``,
+    email: data.email,
+    pictureUrl: data.pictureUrl ?? DEFAULT_AVATAR,
+    tier: data.tier,
+    location: data.location ?? ``,
+    url: data.url ?? ``,
+    joinedAt: Date.now(),
+    birthDate: data.birthDate,
+  }
 }
 
-export function createAccount() {
-
+export function registerAccount() {
+  // create 
 }
 
 

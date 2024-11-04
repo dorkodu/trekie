@@ -1,5 +1,7 @@
 import { CommitEvent, Commitment, GameState } from "@/core"
 
+export const DEFAULT_AVATAR = '/images/avatar.png'
+
 export const XpGains = {
   Habit: {
     Add: +5,
