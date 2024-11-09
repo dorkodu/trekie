@@ -42,17 +42,11 @@ export const Component: Interface = {
       return // has no permission or habit/user does not exist
     }
 
-    await db.transaction('rw', db.habits, trekie.commitments., async () => {
-      const friend = await db.friends.get({ name: "David" });
-      ++friend.age;
-      await db.friends.put(friend);
+    await db.transaction('rw', db.habits, trekie.commitments.table, async () => {
+      await db.habits.delete(id)
+      await trekie.commitments.table.delete(removedHabit.commitmentId)
     })
-
-    trekie.commitments.delete(removedHabit.commitmentId)
-
-    await db.habits.delete(id)
   },
-
 
   async commit(id, count) {
     const habit = await this.get(id)

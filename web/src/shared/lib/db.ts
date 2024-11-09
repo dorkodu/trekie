@@ -4,7 +4,7 @@ import { IUser } from '@/core'
 import { IGoal } from '@/namespaces/goal'
 import { IHabit } from '@/namespaces/habit'
 
-import { mock } from './mock'
+import { } from './mock'
 
 export const db = new Dexie('app') as Dexie & {
   users: Table<IUser, string>

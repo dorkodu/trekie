@@ -89,6 +89,7 @@ export function Commitment
 
 export function Commitments<TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
   return {
+    table: db.commitments,
     act<TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(
       { kind, event, id, data }: {
         kind: TKind,

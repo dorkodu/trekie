@@ -37,6 +37,7 @@ const ICreateUserInput = IUser.partial({
   location: true,
   url: true,
   bio: true,
+  id: true,
 })
 export type ICreateUserInput = z.infer<typeof ICreateUserInput>
 
