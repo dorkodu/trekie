@@ -1,10 +1,10 @@
-* kjuhygtfredswa < É"""""""""""""""""""""import * as Trekie from '@/core'
+import * as Trekie from '@/core'
 
 import { goals, IGoal } from "@/namespaces/goal"
 import { habits, IHabit } from "@/namespaces/habit"
 
 import { ulid } from 'ulid'
-import trekie from './treki+e'
+import trekie from './trekie'
 
 // initialize app
 // register a user
