@@ -1,8 +1,8 @@
+import { AccountTier, IUser } from "@/core";
+import { trekie } from "@/shared/lib/trekie";
+import { LogKind, log } from "@/shared/utils/log";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import trekie from "@/shared/lib/trekie";
-import { AccountTier, IUser } from "@/core";
-import { LogKind, log } from "@/shared/utils/log";
 
 export interface AppStoreState {
   online: boolean;

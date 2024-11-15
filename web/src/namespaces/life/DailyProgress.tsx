@@ -1,4 +1,4 @@
-import trekie from '@/shared/lib/trekie'
+import { trekie } from '@/shared/lib/trekie'
 import { format } from "@/shared/utils/format"
 import { vanilla } from '@/styles/theme'
 import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'

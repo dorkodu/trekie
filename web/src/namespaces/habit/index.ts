@@ -5,7 +5,7 @@ import { CommitEvent, Commitment } from "@/core"
 
 import { db } from "@/shared/lib/db"
 import { errors } from "@/shared/lib/errors"
-import trekie from "@/shared/lib/trekie"
+import { trekie } from "@/shared/lib/trekie"
 import { Daystamp, Maybe, Timestamp, daystamp, getDayDiff } from "@/shared/utils"
 import { IHabit, IHabitTemplate } from "./schema"
 

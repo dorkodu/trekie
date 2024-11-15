@@ -6,16 +6,15 @@ import { db } from './db'
 import { Goal } from '@/namespaces/goal'
 import { Habit } from '@/namespaces/habit'
 import { useEffect } from 'react'
-import { mock } from './mock'
+import { fillMockUserData, generateMockGameState, generateMockUser } from './mock'
 
-const initialState: Trekie.GameState = mock.game
+const initialState: Trekie.GameState = generateMockGameState()
 
 /**
  * TODO: add importing existing state NOT BLANK/MOCK EVERY TIME 
- * 1) local for restoring session 
- * 2) remote after new login
- * 
- * now we use a clean state & mock data
+ * TODO: local for restoring session 
+ * TODO: remote after new login
+ * ? now we use a clean state & mock data
  */
 
 let commitments = {
@@ -28,4 +27,5 @@ export const trekie = Trekie.create({
   commitments,
 })
 
-export default trekie
+// after creating the store, fill it with mock data
+fillMockUserData()

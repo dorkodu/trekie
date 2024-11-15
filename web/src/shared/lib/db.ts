@@ -4,7 +4,8 @@ import { IUser } from '@/core'
 import { IGoal } from '@/namespaces/goal'
 import { IHabit } from '@/namespaces/habit'
 
-import { } from './mock'
+import { fillMockUserData } from './mock'
+import { trekie } from './trekie'
 
 export const db = new Dexie('app') as Dexie & {
   users: Table<IUser, string>
@@ -31,7 +32,9 @@ db.open().then(async (db) => {
 });
 
 export async function populate() {
-  await db.users.add(mock.user, mock.user.id)
+  const user = trekie.game().user
+  await db.users.add(user, user.id)
+  fillMockUserData()
 }
 
 export async function ready() {

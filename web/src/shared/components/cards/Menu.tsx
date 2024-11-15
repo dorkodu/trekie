@@ -3,7 +3,7 @@ import { useMediaQuery } from '@mantine/hooks'
 import { IconCoinFilled, IconHelp, IconSettings } from '@tabler/icons-react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import trekie from '@/shared/lib/trekie'
+import { trekie } from '@/shared/lib/trekie'
 import { useAppStore } from '@/shared/stores/appStore'
 import { Menu as styles } from '@/styles/Layout.css'
 import { UserButton } from '../buttons/UserButton'

@@ -1,5 +1,5 @@
 import { IGoal } from "@/namespaces/goal"
-import trekie from "@/shared/lib/trekie"
+import { trekie } from "@/shared/lib/trekie"
 import { vanilla } from "@/styles/theme"
 import { Alert, Badge, Card, Center, Flex, Grid, Group, Overlay, Progress, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core"
 import { IconArcheryArrow, IconCalendar, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconCircleCheck, IconDiamond, IconFlagCheck, IconFlame, IconSparkles, IconTarget, IconTargetArrow } from "@tabler/icons-react"

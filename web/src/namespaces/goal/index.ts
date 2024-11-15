@@ -1,6 +1,6 @@
 import { CommitEvent, Commitment, ICommitmentInstance, ICommitmentKind } from "@/core"
 import { db } from "@/shared/lib/db"
-import trekie from '@/shared/lib/trekie'
+import { trekie } from '@/shared/lib/trekie'
 import { arrayRemoveItem, Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
 import { IGoal, IGoalTemplate, schema } from './schema'

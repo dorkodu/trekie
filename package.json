@@ -3,7 +3,9 @@
   "private": "true",
   "module": "index.ts",
   "type": "module",
-  "workspaces": ["./*"],
+  "workspaces": [
+    "./*"
+  ],
   "scripts": {
     "clean": "rm -rf node_modules packages/a/node_modules packages/b/node_modules bun.lockb packages/a/bun.lockb packages/b/bun.lockb",
     "docker:build:prod": "docker compose -f docker-compose.prod.yml build",
@@ -12,8 +14,5 @@
     "docker:dev:api": "docker exec -it trekie_dev-trekie_api-1 /bin/sh",
     "docker:dev:web": "docker exec -it trekie_dev-trekie_web-1 /bin/sh",
     "docker:dev:postgres": "docker exec -it trekie_dev-trekie_postgres-1 psql -U postgres"
-  },
-  "dependencies": {
-    "js-xxhash": "^4.0.0"
   }
 }

@@ -8,7 +8,6 @@ import { Outlet, ScrollRestoration } from 'react-router-dom'
 import { cssVariablesResolver, theme } from '@/styles/theme'
 
 import OverlayLoader from '@/shared/components/loaders/OverlayLoader'
-import UpdateSWModal from '@/shared/components/modals/UpdateSWModal'
 
 import ApplicationError from '@/shared/components/misc/ApplicationError'
 import { onError, onReset } from '@/shared/lib/errors'
@@ -17,10 +16,7 @@ import { useAppStore } from '@/shared/stores/appStore'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import GoalEditorModal from './namespaces/goal/GoalEditorModal'
-import HabitEditorModal from './namespaces/habit/HabitEditorModal'
 import { modals } from './shared/components/modals'
-import trekie from './shared/lib/trekie'
 
 function App() {
   const loading = useAppStore($ => $.loading)
