@@ -12,7 +12,7 @@ export const db = new Dexie('trekie') as Dexie & {
 db.version(1).stores({
   commitRecords: 'id, userId, timestamp, event, commitment',
   commitments: 'id, kind, createdAt, lastActivity',
-  statuses: 'hash'
+  statuses: ''
 })
 
 db.on("populate", async () => { })
