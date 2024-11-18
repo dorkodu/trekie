@@ -7,7 +7,7 @@ export const createContext = ({
   res,
 }: trpcExpress.CreateExpressContextOptions) => {
   return {}
-};
+}
 
 type Context = Awaited<ReturnType<typeof createContext>>
 
