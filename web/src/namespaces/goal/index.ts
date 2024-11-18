@@ -1,5 +1,6 @@
 import { CommitEvent, Commitment, ICommitmentInstance, ICommitmentKind } from "@/core"
 import { db } from "@/shared/lib/db"
+import { errors } from "@/shared/lib/errors"
 import { trekie } from '@/shared/lib/trekie'
 import { arrayRemoveItem, Maybe, Timestamp } from "@/shared/utils"
 import { ulid } from "ulid"
@@ -40,10 +41,21 @@ export const Component: Interface = {
   update: (id, props) => db.goals.update(id, { ...props }),
   count: () => db.goals.count(),
   delete: async (id) => {
-    let goal = await db.goals.get(id)
-    if (!goal) return
+    const removedGoal = await db.goals.get(id)
+    const user = trekie.game().user
 
-    trekie.commitments.delete(goal.commitmentId)
+    if (!removedGoal) {
+      errors.handle("ITEM_NOT_FOUND")
+      return // does not exist
+    }
+
+    if (user.id != removedGoal.userId) {
+      errors.handle("NOT_AUTHORIZED")
+      return // has no permission or habit/user does not exist
+    }
+
+    trekie.commitments.delete(removedGoal.commitmentId)
+
     await db.goals.delete(id)
   },
 

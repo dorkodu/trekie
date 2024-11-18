@@ -26,6 +26,3 @@ export const trekie = Trekie.create({
   initialState,
   commitments,
 })
-
-// after creating the store, fill it with mock data
-fillMockUserData()

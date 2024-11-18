@@ -12,12 +12,12 @@ import { IHabit, IHabitTemplate } from "./schema"
 //? Interfaces
 
 export interface Interface {
-  add: (habit: IHabit) => void
-  create: (template: IHabitTemplate) => Maybe<IHabit>
+  add: (habit: IHabit) => Promise<string>
+  create: (template: IHabitTemplate) => Promise<Maybe<IHabit>>
   get: (id: IHabit["id"]) => Promise<Maybe<IHabit>>
   update: (id: IHabit["id"], props: IHabitTemplate) => Promise<Maybe<IHabit>>
   delete: (id: IHabit["id"]) => void
-  commit: (id: IHabit["id"], count: number) => Promise<number | false>
+  changeCount: (id: IHabit["id"], count: number) => Promise<number | false>
   count: () => Promise<number>
 }
 
@@ -37,18 +37,22 @@ export const Component: Interface = {
     const removedHabit = await db.habits.get(id)
     const user = trekie.game().user
 
-    if (!user || !removedHabit || user.id != removedHabit.userId) {
+    if (!removedHabit) {
+      errors.handle("ITEM_NOT_FOUND")
+      return // habit does not exist
+    }
+
+
+    if (!removedHabit || user.id != removedHabit.userId) {
       errors.handle("NOT_AUTHORIZED")
       return // has no permission or habit/user does not exist
     }
 
-    await db.transaction('rw', db.habits, trekie.commitments.table, async () => {
-      await db.habits.delete(id)
-      await trekie.commitments.table.delete(removedHabit.commitmentId)
-    })
+    await db.habits.delete(id)
+    await trekie.commitments.table.delete(removedHabit.commitmentId)
   },
 
-  async commit(id, count) {
+  async changeCount(id, count) {
     const habit = await this.get(id)
     if (!habit) return false
 
@@ -79,13 +83,13 @@ export const Component: Interface = {
     return await db.habits.get(id)
   },
 
-  create(template) {
+  async create(template) {
     const userId = trekie.game().user.id
     if (!userId) return
 
     let instance = trekie.commitments.create('Habit')
 
-    return {
+    let habit = {
       ...template,
       commitmentId: instance.id,
 
@@ -96,6 +100,17 @@ export const Component: Interface = {
       lastUpdated: new Date().getTime(),
       history: new Map<Daystamp, number>(),
     } satisfies IHabit
+
+    await this.add(habit)
+
+    trekie.commitments.act({
+      kind: 'Habit',
+      event: 'START',
+      id: habit.commitmentId,
+      data: { habitId: habit.id }
+    })
+
+    return habit
   },
 }
 
