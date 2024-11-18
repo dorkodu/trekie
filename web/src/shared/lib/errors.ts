@@ -3,8 +3,8 @@
  *  If we encounter an error, function will ,fail and call this handler with the error  
  */
 
-import { ErrorInfo } from "react"
 import { LogKind, log, reportToRemote } from "@/shared/utils/log"
+import { ErrorInfo } from "react"
 import { notifications } from "./notifications"
 
 /**
@@ -56,6 +56,13 @@ export const kinds = {
     message: "No active user session found. Please login first.",
     action(err, data) {
       notifications.error("No Active User", this.message)
+    }
+  }),
+  ITEM_NOT_FOUND: AppError({
+    code: "ITEM_NOT_FOUND",
+    message: "You tried something on a thing that does not exist.",
+    action(err, data) {
+      notifications.error("Thing Not Found", this.message)
     }
   }),
   NOT_AUTHORIZED: AppError({
