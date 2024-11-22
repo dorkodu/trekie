@@ -1,29 +1,39 @@
-import { appRouter } from '@/router'
-import { createContext } from '@/trpc'
-import express from "express"
-import * as trpcExpress from '@trpc/server/adapters/express'
+import { createExpressMiddleware } from "@trpc/server/adapters/express"
+import { config } from "./config"
+import { express } from "./lib/express"
+import { passport } from "./lib/passport"
+import { authService } from "./modules/auth/service"
+import { tokenUtil } from "./modules/auth/token-util"
+import { appRouter } from "./router"
 
-const app = express()
-const port = 4000
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-// Connect tRPC to Express
-app.get("/", (req, res) => {
-  res.send("✪ Welcome to the Trekie API!")
-})
-
-// Connect tRPC to Express
-app.use(
-  '/trpc',
-  trpcExpress.createExpressMiddleware({
+express.use(
+  "/api/trpc",
+  createExpressMiddleware({
     router: appRouter,
-    createContext,
-  }),
+    createContext: ({ req, res }) => ({ req, res }),
+  })
 )
 
-app.listen(port, () => {
-  console.log(`TREKIE API ▶ Starting...`)
-  console.log(`TREKIE API ▶ Listening on http://localhost:${port}`)
+express.get(
+  "/api/oauth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+)
+
+express.get(
+  "/api/oauth/google/callback",
+  passport.authenticate("google", { session: false, failureRedirect: "/" }),
+  async (req, res) => {
+    const userId = (req.user as any).id as string | undefined
+
+    if (userId) {
+      const session = await authService.createSession(userId)
+      if (session) tokenUtil.setSession(res, session.token, session.expiresAt)
+    }
+
+    res.redirect("/")
+  }
+)
+
+express.listen(config.port, () => {
+  console.log(`Server has started on port ${config.port}`)
 })
