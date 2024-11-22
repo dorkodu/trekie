@@ -1,19 +1,12 @@
-import { z } from 'zod'
-import { router, publicProcedure } from './trpc.js'
+import { Router } from "@/lib/trpc"
+import { authRouter } from "@/namespaces/auth/router"
+import { gameRouter } from "@/namespaces/game/router"
+import { userRouter } from "@/namespaces/user/router"
 
-export const appRouter = router({
-  userList: publicProcedure
-    .query(async () => { }),
-
-  userById: publicProcedure
-    .input(z.string())
-    .query(async (opts) => { }),
-
-  userCreate: publicProcedure
-    .input(z.object({ name: z.string() }))
-    .mutation(async (opts) => { }),
+export const appRouter = Router({
+  auth: authRouter,
+  user: userRouter,
+  game: gameRouter,
 })
 
-// Export type router type signature,
-// NOT the router itself.
 export type AppRouter = typeof appRouter
