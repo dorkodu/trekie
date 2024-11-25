@@ -1,18 +1,16 @@
+import { config } from "@/config"
 import postgres from "postgres"
-import { config } from "../config.js"
 
 export const pg = postgres({
   host: config.postgresHost,
   port: config.postgresPort,
   user: config.postgresUser,
   password: config.postgresPassword,
-  database: config.postgresName,
+  database: config.postgresDatabase,
   transform: postgres.camel,
 })
 
 /* 
-
-
   Berk, [5/3/24 4:15 PM]
 
   const [result]: [{createdAt:number}?] = await pg`SELECT created_at FROM users WHERE id=31`
