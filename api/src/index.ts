@@ -1,10 +1,10 @@
+import { config } from "@/config"
+import { express } from "@/lib/express"
+import { passport } from "@/lib/passport"
+import { authService } from "@/namespaces/auth/service"
+import { tokenUtil } from "@/namespaces/auth/token-util"
+import { appRouter } from "@/router"
 import { createExpressMiddleware } from "@trpc/server/adapters/express"
-import { config } from "./config"
-import { express } from "./lib/express"
-import { passport } from "./lib/passport"
-import { authService } from "./modules/auth/service"
-import { tokenUtil } from "./modules/auth/token-util"
-import { appRouter } from "./router"
 
 express.use(
   "/api/trpc",
