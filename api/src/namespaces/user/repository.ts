@@ -1,5 +1,5 @@
 import { pg } from "@/lib/pg"
-import type { IUser } from "@/types/user"
+import type { IUser } from "@trekie/web/src/core/user"
 import { TRPCError } from "@trpc/server"
 import type { z } from "zod"
 import type { userSchemas } from "./schema"

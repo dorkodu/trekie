@@ -15,7 +15,8 @@
     "forceConsistentCasingInFileNames": true,
 
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@web/*": ["../web/src/*"]
     }
   },
   "include": ["src", "src/index.ts", "../web/src/core/Trekie.ts", "src/config.ts"],
