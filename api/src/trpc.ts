@@ -1,5 +1,5 @@
-import { initTRPC } from '@trpc/server';
-import * as trpcExpress from '@trpc/server/adapters/express';
+import { initTRPC } from '@trpc/server'
+import * as trpcExpress from '@trpc/server/adapters/express'
 
 // created for each request
 export const createContext = ({
@@ -22,4 +22,4 @@ const t = initTRPC.context<Context>().create()
  * that can be used throughout the router
  */
 export const router = t.router
-export const publicProcedure = t.procedure
+export const publicProcedure = t.procedure 

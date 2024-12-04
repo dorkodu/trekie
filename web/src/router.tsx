@@ -1,6 +1,6 @@
+import App from '@/App'
 import React, { Suspense } from 'react'
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, useParams } from 'react-router-dom'
-import App from '@/App'
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
