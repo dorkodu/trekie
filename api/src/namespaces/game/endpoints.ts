@@ -1,8 +1,15 @@
-import { authRequiredProcedure, Router } from "@/lib/trpc"
+import { authOptionalProcedure, authRequiredProcedure, Router } from "@/lib/trpc"
+import { z } from "zod"
 import { gameService } from "./service"
 
+const helloSchema = z.object({ message: z.string() })
+
 export const router = Router({
-  // here comes all procedures
+  "hello": authOptionalProcedure
+    .input(helloSchema)
+    .query((opts) =>
+      `Hello, ${opts.input.message ?? "world"}!`
+    ),
 })
 
 export * as gameEndpoints from "./endpoints"
