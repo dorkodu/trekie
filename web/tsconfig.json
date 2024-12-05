@@ -32,6 +32,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/shared/lib/errors.ts", "src/shared/lib/db.ts", "src/shared/lib/notifications.ts"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

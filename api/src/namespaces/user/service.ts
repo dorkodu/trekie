@@ -1,8 +1,8 @@
 import { pg } from "@/lib/pg"
 import type { IGoogleAccount } from "@/types/account"
-import type { IUser } from "@/types/user"
 import { TRPCError } from "@trpc/server"
 import { ulid } from "ulidx"
+import { IUser } from "../../../../web/src/core/user"
 
 export async function createUserWithGoogle(
   username: string,
