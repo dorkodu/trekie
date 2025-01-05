@@ -1,5 +1,5 @@
-import postgres from "postgres";
-import { config } from "../config";
+import postgres from "postgres"
+import { config } from "../config"
 
 export const pg = postgres({
   host: config.postgresHost,
@@ -8,4 +8,4 @@ export const pg = postgres({
   user: config.postgresUser,
   password: config.postgresPassword,
   transform: postgres.camel,
-});
+})
