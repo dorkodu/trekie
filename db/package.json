@@ -1,0 +1,10 @@
+{
+  "name": "@trekie/db",
+  "private": true,
+  "scripts": {
+    "run": "bun run --hot ./src/index.ts"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
