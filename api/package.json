@@ -7,10 +7,13 @@
     "dev": "bun run --hot ./src/index.ts"
   },
   "dependencies": {
+    "@langchain/core": "^0.3.27",
+    "@langchain/langgraph": "^0.2.39",
     "@trpc/server": "^11.0.0-rc.528",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.1",
     "knex": "^3.1.0",
+    "langchain": "^0.3.10",
     "nanoid": "^5.0.9",
     "nodemailer": "^6.9.16",
     "passport": "^0.7.0",
