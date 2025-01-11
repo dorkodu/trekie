@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: config.googleClientId,
       clientSecret: config.googleClientSecret,
-      callbackURL: `${config.origin}/api/oauth/google/callback`,
+      callbackURL: `${config.origin}/oauth/google/callback`,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       const oauthId = profile._json.sub
@@ -38,3 +38,4 @@ passport.use(
     }
   )
 )
+

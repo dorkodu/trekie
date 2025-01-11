@@ -7,7 +7,7 @@ import { appRouter } from "@/router"
 import { createExpressMiddleware } from "@trpc/server/adapters/express"
 
 express.use(
-  "/api/trpc",
+  "/trpc",
   createExpressMiddleware({
     router: appRouter,
     createContext: ({ req, res }) => ({ req, res }),
@@ -15,12 +15,12 @@ express.use(
 )
 
 express.get(
-  "/api/oauth/google",
+  "/oauth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 )
 
 express.get(
-  "/api/oauth/google/callback",
+  "/oauth/google/callback",
   passport.authenticate("google", { session: false, failureRedirect: "/" }),
   async (req, res) => {
     const userId = (req.user as any).id as string | undefined
