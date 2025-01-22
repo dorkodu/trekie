@@ -1,12 +1,9 @@
 import * as Trekie from '@/core'
-import { Commitment as C, CommitEvent as E } from '@/core'
 
-import { db } from './db'
-
-import { Goal } from '@/namespaces/goal'
-import { Habit } from '@/namespaces/habit'
+import { goalCommitment } from '@/namespaces/goal/commitment'
+import { habitCommitment } from '@/namespaces/habit/commitment'
 import { useEffect } from 'react'
-import { fillMockUserData, generateMockGameState, generateMockUser } from './mock'
+import { generateMockGameState } from './mock'
 
 const initialState: Trekie.GameState = generateMockGameState()
 
@@ -17,12 +14,12 @@ const initialState: Trekie.GameState = generateMockGameState()
  * ? now we use a clean state & mock data
  */
 
-let commitments = {
-  Habit: Habit.commitment,
-  Goal: Goal.commitment,
+const commitments = {
+  'Habit': habitCommitment,
+  'Goal': goalCommitment,
 }
 
 export const trekie = Trekie.create({
   initialState,
-  commitments,
+  commitments
 })

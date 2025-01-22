@@ -1,11 +1,11 @@
-import { AccountTier, IUser } from "@/core";
-import { trekie } from "@/shared/lib/trekie";
-import { LogKind, log } from "@/shared/utils/log";
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { AccountTier, IUser } from "@/core"
+import { trekie } from "@/shared/lib/trekie"
+import { LogKind, log } from "@/shared/utils/log"
+import { create } from "zustand"
+import { immer } from "zustand/middleware/immer"
 
 export interface AppStoreState {
-  online: boolean;
+  online: boolean
 
   session?: {
     userId: string
@@ -13,8 +13,6 @@ export interface AppStoreState {
   }
 
   loading: { auth: boolean }
-
-  accountTier: AccountTier
 
   menu: {
     opened: boolean
@@ -46,8 +44,6 @@ const initialState: AppStoreState = {
   menu: {
     opened: false
   },
-
-  accountTier: AccountTier.DEVELOPER
 }
 
 export const useAppStore = create(
@@ -83,6 +79,17 @@ export const useAppStore = create(
         // - auth will fail
         // - loader will be removed
         // - browser will navigate to join
+        useAppStore.setState($ => {
+          $.loading.auth = true
+        })
+
+        if (!user) {
+          useAppStore.setState($ => {
+            $.loading.auth = false
+          })
+          window.location.href = "/join"
+          return false
+        }
         try {
           if (user) {
             set($ => {
@@ -91,8 +98,6 @@ export const useAppStore = create(
                 timestamp: Date.now()
               }
             })
-
-            trekie.db.users.add(user)
           }
 
           useAppStore.setState($ => {
@@ -116,4 +121,4 @@ export const useAppStore = create(
       },
     }
   }))
-);
+)
