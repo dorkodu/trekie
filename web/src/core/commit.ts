@@ -1,5 +1,5 @@
 import { Maybe, Timestamp } from "@/shared/utils"
-import { ulid } from "ulid"
+import { ulid } from "ulidx"
 import { db } from "./db"
 import { Game, GameMutations, ReadOnlyGame } from "./game"
 import { IStatus, status, Sync } from "./sync"
