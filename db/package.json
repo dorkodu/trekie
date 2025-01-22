@@ -2,7 +2,8 @@
   "name": "@trekie/db",
   "private": true,
   "scripts": {
-    "run": "bun run --hot ./src/index.ts"
+    "up": "docker compose -f compose.yml up",
+    "repl": "docker exec -it trekie-postgres-1 psql -U postgres"
   },
   "publishConfig": {
     "access": "restricted"
