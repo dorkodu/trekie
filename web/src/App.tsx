@@ -14,10 +14,11 @@ import { FlagsProvider } from 'flagged'
 import { useEffect, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { trekie } from './shared/lib/trekie'
 
 function App() {
   const loading = useAppStore($ => $.loading)
-  const premium = true // useAppStore($ => $.accountTier === 'PREMIUM')
+  const premium = useAppStore($ => $.accountTier === 'PREMIUM')
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
@@ -26,7 +27,7 @@ function App() {
   }, [loading.auth])
 
   // trekie hooks
-  //  trekie.useRefreshStatsDaily()
+  trekie.useDailyRefresh()
 
   return (
     <ErrorBoundary FallbackComponent={ApplicationError} onError={onError} onReset={onReset}>

@@ -1,14 +1,14 @@
-import { persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import { createStore, StoreApi } from 'zustand/vanilla';
+import { persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
+import { createStore, StoreApi } from 'zustand/vanilla'
 
 // misc
-import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils';
+import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils'
 
-import { IUser } from '@/core/account';
-import { useCallback } from 'react';
-import { useStore } from 'zustand';
-import { calculateStreak } from './lib';
+import { IUser } from '@/core/account'
+import { useCallback } from 'react'
+import { useStore } from 'zustand'
+import { calculateStreak } from './lib'
 
 export interface GameState {
   user: IUser
@@ -41,8 +41,8 @@ export interface GameActions {
 }
 
 export interface GameMutations {
-  changeXp: (change: number) => number,
-  changeCoinsBalance: (change: number) => number,
+  changeXp: (change: number) => number
+  changeCoinsBalance: (change: number) => number
   changeDailyTarget: (target: number) => number
 }
 
@@ -50,7 +50,6 @@ export type GameInterface = GameState & GameActions
 export type Game = ReturnType<typeof Game>["game"]
 export type ReactiveGame = ReturnType<typeof Game>['useGame']
 export type ReadOnlyGame = ReturnType<typeof Game>['readOnlyGame']
-export type StaticGameInterface = Omit<GameInterface, keyof GameActions>
 
 export function Game(state: GameState) {
   const game = createStore<GameInterface>()(
@@ -67,6 +66,14 @@ export function Game(state: GameState) {
           set($ => {
             $.streak = calculateStreak($.xpHistory, $.dailyTarget)
           })
+        },
+
+        calculateMomentum() {
+          let averageXp = get().averageXp()
+          set($ => {
+            $.momentum = averageXp // for now, momentum is just average xp
+          })
+          return get().momentum
         },
 
         xpToday() {
@@ -101,12 +108,7 @@ export function Game(state: GameState) {
           else return averageXp
         },
 
-        calculateMomentum() {
-          let averageXp = get().averageXp()
-          set($ => {
-            $.momentum = averageXp // for now, momentum is just average xp
-          })
-        },
+
 
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */
@@ -149,11 +151,11 @@ export function Game(state: GameState) {
     return useStore(game, selector!)
   }
 
-  type UseReadonlyGame = <T>(selector: (state: StaticGameInterface) => T) => T;
-  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: StaticGameInterface) => T): T => {
+  type UseReadonlyGame = <T>(selector: (state: GameInterface) => T) => T
+  const useReadonlyGame: UseReadonlyGame = <T>(selector: (state: GameInterface) => T): T => {
     return useGame(
       useCallback(
-        (state: GameInterface) => selector(state as StaticGameInterface),
+        (state: GameInterface) => selector(state as GameInterface),
         [selector]
       )
     )
@@ -162,9 +164,7 @@ export function Game(state: GameState) {
   // New addition: Read-only vanilla store
   const readOnlyGame = (() => {
     const state = game.getState()
-    // Omit methods that mutate state
-    const { reset, calculateMomentum, calculateStreak, refresh, dailyRefresh, ...readOnlyState } = state
-    return Object.freeze(readOnlyState) satisfies StaticGameInterface
+    return Object.freeze(state) satisfies GameInterface
   })
 
   function changeXp(change: number) {
