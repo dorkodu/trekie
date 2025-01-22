@@ -11,7 +11,7 @@ import { SumCard } from './SumCard'
 
 export function DailyStats() {
   // refresh every time daily stats is rendered
-  trekie.use($ => $.refresh())
+  trekie.game().refresh()
 
   return (
     <Paper>
