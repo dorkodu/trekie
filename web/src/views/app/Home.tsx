@@ -43,7 +43,7 @@ function Home() {
               label: (
                 <Center style={{ gap: 6 }}>
                   <IconCopyCheck style={iconStyle} />
-                  <span>Habits</span>
+                  <span>Commitments</span>
                 </Center>
               ),
             },
@@ -77,8 +77,6 @@ export default Home
 function HabitSummary() {
   const userId = trekie.use($ => $.user.id)
 
-  if (!userId) return <NoHabitsCard />
-
   const { data, error, isError, isLoading, isSuccess } = useQuery({
     queryKey: ['habits'], queryFn: async () => {
       return db.habits.where('userId').equals(userId).toArray()
@@ -87,18 +85,18 @@ function HabitSummary() {
 
   if (isLoading)
     return (
-      <>
+      <Box h={250}>
         <Skeleton height={8} radius="xl" />
         <Skeleton height={8} mt={8} radius="xl" />
         <Skeleton height={8} mt={8} width="70%" radius="xl" />
-      </>
+      </Box>
     )
 
   const hasAnyHabits = isSuccess && data?.length > 0
   if (!hasAnyHabits) return <NoHabitsCard />
 
   return (
-    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
+    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet} h="auto" mih={150}>
       <Stack gap={0}>
         {data.map(habit => (
           <HabitCounter habitId={habit.id} key={habit.id} />

@@ -1,7 +1,5 @@
-import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, TextInput, ThemeIcon, Title, rem }
-  from '@mantine/core'
-import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLockAccess, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconRocket, IconSparkles, IconTargetArrow, IconUserCheck, IconUsersGroup, IconWorld, }
-  from '@tabler/icons-react'
+import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, TextInput, ThemeIcon, Title, rem } from '@mantine/core'
+import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLockAccess, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconRocket, IconSparkles, IconTargetArrow, IconUserCheck, IconUsersGroup, IconWorld, } from '@tabler/icons-react'
 
 import GlassCard from '@/shared/components/cards/GlassCard'
 
@@ -47,7 +45,7 @@ const Hero = () => {
           </Title>
 
           <Stack w="90%" maw={320} gap={12} mx="auto">
-            <Button size="md" fw={700} onClick={() => { navigate("#join") }}>
+            <Button size="md" fw={700} onClick={() => { navigate("/join") }}>
               GET STARTED
             </Button>
             <Button size="md" fw={700} variant="light" onClick={() => { navigate("/login") }}>
@@ -298,11 +296,11 @@ const Join = (
 )
 
 
-import { randomId } from '@mantine/hooks'
-import { vanilla } from '@/styles/theme'
-import { useNavigate } from 'react-router-dom'
 import Emoji from '@/shared/components/misc/Emoji'
 import { useThemed } from '@/shared/hooks'
+import { vanilla } from '@/styles/theme'
+import { randomId } from '@mantine/hooks'
+import { useNavigate } from 'react-router-dom'
 
 function FAQ() {
   const questions = [

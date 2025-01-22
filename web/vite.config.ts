@@ -2,11 +2,11 @@ import { defineConfig } from 'vite'
 
 import path from "path"
 
-import react from '@vitejs/plugin-react-swc'
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
+import react from '@vitejs/plugin-react-swc'
 import viteCompression from "vite-plugin-compression"
-import { VitePWA as vitePWA } from "vite-plugin-pwa"
 import { createHtmlPlugin as html } from "vite-plugin-html"
+import { VitePWA as vitePWA } from "vite-plugin-pwa"
 
 import postCSSPresetMantine from "postcss-preset-mantine"
 

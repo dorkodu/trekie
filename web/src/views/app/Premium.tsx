@@ -1,10 +1,12 @@
 import WIPCard from '@/shared/components/cards/WIPCard'
-import { Flex } from '@mantine/core'
+import { Divider, Flex, Text, Title } from '@mantine/core'
 
 function Premium() {
   return (
     <Flex direction="column" m="md">
-      <WIPCard />
+      <Title size="h2" order={1}>Premium</Title>
+      <Divider />
+      <Text my={10}>Manage your Trekie Super subscription.</Text>
     </Flex>
   )
 }

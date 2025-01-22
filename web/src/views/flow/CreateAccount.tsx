@@ -6,19 +6,25 @@ function CreateAccount() {
 
   return (
     <Stack maw={460} mx="auto" p={10} mt={"5vw"} mb={"10vw"}>
-      <Flex direction="column" align="center">
-        <Title fw={900} fz={"15vw"} c="dimmed" opacity={0.25} lh={1}>Create Account</Title>
-        <Title fw={900} lh={1} lts={-1}>Not Found</Title>
-      </Flex>
 
-      <Text size="xl" maw={460} ta="center" mx="auto" lh={1.25}>
-        The page you are looking for was moved, removed, renamed or may have
-        never existed.
+      <Title align="center">Create Account</Title>
+      <Text align="center" color="dimmed" size="sm">
+        Already have an account?{' '}
+        <Anchor component={Link} to="/login" size="sm">
+          Log in
+        </Anchor>
       </Text>
 
-      <Button component={Link} to="/" size="lg" radius="lg" rightSection={<IconArrowRight />}>
-        Go Back Home
-      </Button>
+      <form>
+        <Stack>
+          <input type="text" placeholder="Username" required />
+          <input type="email" placeholder="Email" required />
+          <input type="password" placeholder="Password" required />
+          <Button type="submit" rightIcon={<IconArrowRight size={18} />}>
+            Sign Up
+          </Button>
+        </Stack>
+      </form>
     </Stack>
   )
 }
