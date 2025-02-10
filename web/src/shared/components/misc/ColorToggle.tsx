@@ -1,15 +1,15 @@
 import { theme, vanilla } from '@/styles/theme'
 import {
-  SegmentedControl,
   Center,
-  useMantineColorScheme,
-  MantineSize,
   MantineColorScheme,
-  useComputedColorScheme,
+  MantineSize,
   rem,
+  SegmentedControl,
   Switch,
+  useComputedColorScheme,
+  useMantineColorScheme,
 } from '@mantine/core'
-import { IconSun, IconMoon, IconMoonFilled, IconMoonStars } from '@tabler/icons-react'
+import { IconMoon, IconMoonFilled, IconMoonStars, IconSun } from '@tabler/icons-react'
 import { useState } from 'react'
 
 function ColorToggle({ size = 'xs' }: { size?: MantineSize }) {
@@ -26,7 +26,7 @@ function ColorToggle({ size = 'xs' }: { size?: MantineSize }) {
       stroke={2.5}
       color={vanilla.colors.gray[6]}
     />
-  );
+  )
 
   const moonIcon = (
     <IconMoon
@@ -34,7 +34,7 @@ function ColorToggle({ size = 'xs' }: { size?: MantineSize }) {
       stroke={2.5}
       color={vanilla.colors.gray[4]}
     />
-  );
+  )
 
   return <Switch
     size={size} color="dark.5" onLabel={moonIcon} offLabel={sunIcon}

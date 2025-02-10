@@ -17,10 +17,10 @@ export const theme = createTheme({
       'hsl(220, 5%, 34%)',
       'hsl(220, 5%, 23.5%)',
       'hsl(220, 5%, 15%)',
-      'hsl(220, 5%, 13%)',
-      'hsl(220, 5%, 8%)',
-      'hsl(220, 5%, 6.5%)',
-      'hsl(220, 5%, 4%)',
+      'hsl(225, 5%, 13%)',
+      'hsl(225, 5%, 6%)',
+      'hsl(230, 5%, 4%)',
+      'hsl(230, 5%, 2%)',
     ],
     blue: [
       'hsl(207, 100%, 95%)',
@@ -69,4 +69,4 @@ export const cssVariablesResolver: CSSVariablesResolver = (theme) => ({
   },
   dark: {
   },
-});
+})

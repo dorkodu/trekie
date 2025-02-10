@@ -1,11 +1,9 @@
-import { ActionIcon, Alert, Anchor, Box, Container, Group, SimpleGrid, Stack, Text, Title }
-  from '@mantine/core'
-import { IconBrandGithub, IconBrandInstagram, IconBrandTelegram, IconBrandX, IconInfoCircle, }
-  from '@tabler/icons-react'
+import { ActionIcon, Alert, Anchor, Box, Container, Group, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { IconBrandGithub, IconBrandInstagram, IconBrandTelegram, IconBrandX, IconInfoCircle, } from '@tabler/icons-react'
 
-import { useParams } from 'react-router-dom'
-import { IconBrandYoutube } from '@tabler/icons-react'
 import Emoji from '@/shared/components/misc/Emoji'
+import { IconBrandYoutube } from '@tabler/icons-react'
+import { useParams } from 'react-router-dom'
 
 export default function Legal() {
 
@@ -92,6 +90,7 @@ const Terms = () => {
 const Privacy = () => {
   return (
     <Container size={760}>
+
       <Group wrap="nowrap">
         <Emoji emoji='🔐' size={36} />
         <Stack gap={0}>
@@ -104,7 +103,6 @@ const Privacy = () => {
           </Title>
         </Stack>
       </Group>
-
 
       <p>Last updated: <i>March 05, 2024</i></p>
       <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
