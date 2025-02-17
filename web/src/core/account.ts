@@ -22,7 +22,7 @@ const IProfile = z.object({
 const IAccount = z.object({
   id: z.string().ulid(),
   username: z.string().trim().regex(/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9_.]{1,16}(?<![_.])$/),
-  name: z.string().trim().min(1).max(64),
+  name: z.string().trim().min(1).max(48),
   email: z.string().trim().email().max(320),
   pictureUrl: z.string().trim().url(),
   joinedAt: z.number(),

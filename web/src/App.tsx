@@ -9,16 +9,17 @@ import { cssVariablesResolver, theme } from '@/styles/theme'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { FlagsProvider } from 'flagged'
 import { useEffect, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { AccountTier } from './core'
 import { trekie } from './shared/lib/trekie'
 
 function App() {
   const loading = useAppStore($ => $.loading)
-  const premium = useAppStore($ => $.accountTier === 'PREMIUM')
+  const premium = trekie.use($ => $.user.tier !== AccountTier.FREE)
 
   useEffect(() => {
     // TODO: Perform authorization logic by sending a request to the API
