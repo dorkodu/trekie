@@ -22,4 +22,3 @@ export const router = Router({
     ),
 })
 
-export * as userEndpoints from "./endpoints"

@@ -13,11 +13,9 @@ export async function createUserWithGoogle(
     const result = await pg.begin(async (pg) => {
       const user: IUser = {
         id: ulid(),
-        joinedAt: Date.now().toString(),
+        joinedAt: Date.now(),
         username,
-        streaks: 0,
-        lastStreakAt: "0",
-        premium: false,
+
       }
 
       const result0 = await pg`INSERT INTO users ${pg(user)}`
