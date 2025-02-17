@@ -21,6 +21,7 @@ const knexConfig: { [key: string]: Knex.Config } = {
       tableName: "knex_migrations",
     },
   },
+
   //staging: {
   //  client: "postgresql",
   //  connection: {
@@ -36,6 +37,7 @@ const knexConfig: { [key: string]: Knex.Config } = {
   //    tableName: "knex_migrations",
   //  },
   //},
+
   production: {
     client: "postgresql",
     connection: {
@@ -55,4 +57,4 @@ const knexConfig: { [key: string]: Knex.Config } = {
   },
 }
 
-module.exports = knexConfig
+export default knexConfig
