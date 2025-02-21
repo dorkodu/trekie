@@ -35,10 +35,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <ColorSchemeScript defaultColorScheme="light" />
           <MantineProvider theme={theme} defaultColorScheme="light" cssVariablesResolver={cssVariablesResolver}>
-            <ModalsProvider
-              modals={modals}
-              modalProps={{ centered: true, radius: 'lg' }}
-            >
+            <ModalsProvider modals={modals} modalProps={{ centered: true, radius: 'lg' }}>
               <Notifications limit={3} position="top-center" zIndex={99999} />
               {loading.auth && <OverlayLoader full={true} />}
               {!loading.auth && <Outlet />}

@@ -5,7 +5,7 @@ import { ActionIcon, Anchor, Flex, Image, Paper, UnstyledButton, useMantineColor
 import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-import { vars } from "@/shared/vars"
+import { config } from "@/config"
 import { Headbar as styles } from "@/styles/Layout.css"
 
 export function HeadBar() {
@@ -31,7 +31,7 @@ export function HeadBar() {
     c="var(--text-color)"><IconArrowLeft size={26} /></ActionIcon>
 
   const profileButton = <UnstyledButton onClick={() => navigate("/me")}>
-    <Image src={user?.pictureUrl ?? vars.defaultAvatarUrl} width={40} height={40} radius="xl" />
+    <Image src={user?.pictureUrl ?? config.defaultAvatarUrl} width={40} height={40} radius="xl" />
   </UnstyledButton>
 
   return (

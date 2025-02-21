@@ -1,4 +1,4 @@
-import { trpcApiUrl } from "@/shared/vars"
+import { trpcApiUrl } from "@/config"
 import type { AppRouter } from "@api/router"
 import { createTRPCClient, httpBatchLink } from "@trpc/client"
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
