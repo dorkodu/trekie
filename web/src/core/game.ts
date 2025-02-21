@@ -73,7 +73,6 @@ export function Game(state: GameState) {
           set($ => {
             $.momentum = averageXp // for now, momentum is just average xp
           })
-          return get().momentum
         },
 
         xpToday() {
@@ -107,8 +106,6 @@ export function Game(state: GameState) {
           if (isNaN(averageXp)) return 0
           else return averageXp
         },
-
-
 
         refresh() {
           /* reconcile, align all values together, 'cuz some depend on each other for calculations. */

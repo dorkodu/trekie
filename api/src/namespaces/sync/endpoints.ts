@@ -6,8 +6,6 @@ import {
 import * as userRepository from "@/namespaces/user/repository"
 import * as syncSchema from "./schema"
 
-export function getUser() { }
-
 export const router = Router({
   send: authRequiredProcedure
     .input(syncSchema.send)
