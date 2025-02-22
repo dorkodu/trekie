@@ -9,7 +9,7 @@ import { trekie } from "@/shared/lib/trekie"
 import { truncate } from '@/styles/shared.css'
 import { vanilla } from '@/styles/theme'
 
-import { Component as habits } from '@/namespaces/habit'
+import { habits } from '@/namespaces/habit'
 
 interface Props {
   habitId: string
@@ -39,13 +39,14 @@ function HabitCounter({ habitId, onClick }: Props) {
       shadow="sm">
       <Button.Group mih={80}>
         <Button
-          color="green"
+          variant="gradient"
+          gradient={{ from: "hsl(135, 95%, 30%)", to: "hsl(170, 95%, 35%)", deg: 45 }}
           h="auto"
           onClick={ev => onChangeCount(ev, +1)}
           px="xs">
           <Flex
             style={{
-              background: 'rgba(255,255,255,0.25)',
+              background: 'rgba(255,255,255,0.3)',
               width: 32,
               height: 32,
               display: 'flex',
@@ -91,7 +92,8 @@ function HabitCounter({ habitId, onClick }: Props) {
         </Flex>
 
         <Button
-          color="red"
+          variant="gradient"
+          gradient={{ to: "hsl(0, 96%, 45%)", from: "hsl(15, 90%, 60%)", deg: 135 }}
           h="auto"
           onClick={ev => onChangeCount(ev, -1)}
           px="xs"

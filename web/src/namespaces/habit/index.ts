@@ -20,5 +20,4 @@ export * from "./commitment"
 export * from "./component"
 export * from "./schema"
 
-export * from "./schema"
 

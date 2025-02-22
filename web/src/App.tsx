@@ -1,8 +1,10 @@
+import { AccountTier } from '@/core'
 import OverlayLoader from '@/shared/components/loaders/OverlayLoader'
 import ApplicationError from '@/shared/components/misc/ApplicationError'
 import { modals } from '@/shared/components/modals'
 import { onError, onReset } from '@/shared/lib/errors'
 import { queryClient } from "@/shared/lib/react-query"
+import { trekie } from '@/shared/lib/trekie'
 import { useAppStore } from '@/shared/stores/appStore'
 import { cssVariablesResolver, theme } from '@/styles/theme'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
@@ -13,8 +15,6 @@ import { FlagsProvider } from 'flagged'
 import { useEffect, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
-import { AccountTier } from './core'
-import { trekie } from './shared/lib/trekie'
 
 function App() {
   const loading = useAppStore($ => $.loading)
