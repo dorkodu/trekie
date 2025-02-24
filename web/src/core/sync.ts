@@ -29,7 +29,10 @@ export const Sync = {
 
   async syncToServer() {
     const statusesToSend = db.statuses.bulkGet(this.queue)
-    // Clear the queue after sending
+
+
+
+    // Clear the queue after sending has verified
     // this.queue = [];
   },
 

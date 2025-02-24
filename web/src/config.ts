@@ -6,7 +6,6 @@ export const prod = import.meta.env.MODE === "production"
 
 export const origin = import.meta.env.VITE_ORIGIN || "http://localhost:5173"
 
-
 export const trpcApiUrl = dev ? "http://localhost:8000/trpc" : "https://api.trekie.io/trpc"
 
 export * as config from "./config"

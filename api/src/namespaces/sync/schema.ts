@@ -11,3 +11,6 @@ export const getStatus = z.strictObject({
 export const pullStatuses = z.strictObject({
   hash: z.string(),
 })
+
+
+export * as syncSchema from "./schema"

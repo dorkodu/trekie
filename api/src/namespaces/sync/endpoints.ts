@@ -3,8 +3,8 @@ import {
   authRequiredProcedure,
   Router,
 } from "@/lib/trpc"
-import * as userRepository from "@/namespaces/user/repository"
-import * as syncSchema from "./schema"
+import { userRepository } from "@/namespaces/user/repository"
+import { syncSchema } from "./schema"
 
 export const router = Router({
   send: authRequiredProcedure

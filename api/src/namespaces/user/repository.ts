@@ -1,6 +1,6 @@
 import { pg } from "@/lib/pg"
-import type { IUser } from "../../../../web/src/core/user"
 import { TRPCError } from "@trpc/server"
+import type { IUser } from "@web/core/account"
 import type { z } from "zod"
 import type { userSchemas } from "./schema"
 
