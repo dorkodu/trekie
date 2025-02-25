@@ -13,10 +13,6 @@
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["./src/*"],
-      "@web/*": ["../web/src/*"],
-    }
   },
   "include": ["src"],
   "exclude": ["node_modules"]
