@@ -1,4 +1,4 @@
-import { authOptionalProcedure, authRequiredProcedure, Router } from "../../lib/trpc"
+import { authOptionalProcedure, authRequiredProcedure, Router } from "@/lib/trpc"
 import { z } from "zod"
 import { gameService } from "./service"
 

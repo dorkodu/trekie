@@ -1,4 +1,4 @@
-import { authRequiredProcedure, Router } from "../../lib/trpc"
+import { authRequiredProcedure, Router } from "@/lib/trpc"
 import { authService } from "./service"
 
 export const router = Router({
