@@ -4,6 +4,7 @@ import {
   Router,
 } from "@/lib/trpc"
 import { userRepository } from "@/namespaces/user/repository"
+import { z } from "zod"
 import { syncSchema } from "./schema"
 
 export const router = Router({
@@ -12,5 +13,13 @@ export const router = Router({
     .query((opts) =>
       userRepository.getUser(opts.ctx.session?.userId, opts.input)
     ),
+
+  hello: authOptionalProcedure
+    .input(z.object({ name: z.string() }))
+    .query((opts) =>
+      "hello " + opts.input.name
+    ),
 })
+
+export * as syncEndpoints from "./endpoints"
 
