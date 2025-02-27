@@ -1,21 +1,27 @@
 import { Alert, Badge, Box, Center, Flex, SegmentedControl, Skeleton, Stack, Tabs, rem } from '@mantine/core'
 import { IconCopyCheck, IconTargetArrow } from '@tabler/icons-react'
 
-import NoGoalsCard from '@/namespaces/goal/NoGoalsCard'
-import HabitCounter from '@/namespaces/habit/HabitCounter'
-import NoHabitsCard from '@/namespaces/habit/NoHabitsCard'
-import { DailyStats } from '@/namespaces/life/DailyStats'
+import NoGoalsCard from '@web/namespaces/goal/NoGoalsCard'
+import HabitCounter from '@web/namespaces/habit/HabitCounter'
+import NoHabitsCard from '@web/namespaces/habit/NoHabitsCard'
+import { DailyStats } from '@web/namespaces/life/DailyStats'
 
-import GoalCard from '@/namespaces/goal/GoalCard'
-import { db } from '@/shared/lib/db'
-import { errors } from '@/shared/lib/errors'
-import { trekie } from '@/shared/lib/trekie'
-import { ContainerSheet } from '@/styles/shared.css'
 import { useQuery } from '@tanstack/react-query'
+import GoalCard from '@web/namespaces/goal/GoalCard'
+import { db } from '@web/shared/lib/db'
+import { errors } from '@web/shared/lib/errors'
+import { trekie } from '@web/shared/lib/trekie'
+import { trpc } from '@web/shared/lib/trpc'
+import { ContainerSheet } from '@web/styles/shared.css'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useState } from 'react'
 
 function Home() {
+
+  const greetingQuery = useQuery({
+    ...trpc.greeting.queryOptions({ name: 'Jerry' })
+  })
+
 
   const user = trekie.use($ => $.user)
   if (!user) {

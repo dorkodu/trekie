@@ -3,7 +3,7 @@
  *  If we encounter an error, function will ,fail and call this handler with the error  
  */
 
-import { LogKind, log, reportToRemote } from "@/shared/utils/log"
+import { LogKind, log, reportToRemote } from "@web/shared/utils/log"
 import { ErrorInfo } from "react"
 import { notifications } from "./notifications"
 

@@ -1,7 +1,7 @@
-import { IGoal } from "@/namespaces/goal"
-import { trekie } from "@/shared/lib/trekie"
 import { Alert, Badge, Card, Center, Flex, Grid, Group, Overlay, Progress, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core"
 import { IconCalendar, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconCircleCheck, IconDiamond, IconFlagCheck, IconFlame, IconSparkles } from "@tabler/icons-react"
+import { IGoal } from "@web/namespaces/goal"
+import { trekie } from "@web/shared/lib/trekie"
 import { useLiveQuery } from "dexie-react-hooks"
 
 interface Props {

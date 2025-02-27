@@ -1,8 +1,8 @@
 import { ActionIcon, Alert, Anchor, Box, Container, Group, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { IconBrandGithub, IconBrandInstagram, IconBrandTelegram, IconBrandX, IconInfoCircle, } from '@tabler/icons-react'
 
-import Emoji from '@/shared/components/misc/Emoji'
 import { IconBrandYoutube } from '@tabler/icons-react'
+import Emoji from '@web/shared/components/misc/Emoji'
 import { useParams } from 'react-router-dom'
 
 export default function Legal() {

@@ -1,4 +1,4 @@
-import { Maybe } from "@/shared/utils"
+import { Maybe } from "@web/shared/utils"
 import { Component } from "./component"
 import { IHabit, IHabitTemplate } from "./schema"
 

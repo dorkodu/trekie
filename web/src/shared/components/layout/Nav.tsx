@@ -12,8 +12,8 @@ import {
 
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import CreateMenu from '@/shared/components/menus/CreateMenu'
-import styles from '@/styles/components/NavBar.css'
+import CreateMenu from '@web/shared/components/menus/CreateMenu'
+import styles from '@web/styles/components/NavBar.css'
 import Emoji from '../misc/Emoji'
 
 export const navLinks = [

@@ -1,4 +1,3 @@
-import { theme, vanilla } from '@/styles/theme'
 import {
   Center,
   MantineColorScheme,
@@ -10,6 +9,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core'
 import { IconMoon, IconMoonFilled, IconMoonStars, IconSun } from '@tabler/icons-react'
+import { theme, vanilla } from '@web/styles/theme'
 import { useState } from 'react'
 
 function ColorToggle({ size = 'xs' }: { size?: MantineSize }) {

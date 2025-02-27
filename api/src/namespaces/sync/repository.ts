@@ -1,4 +1,4 @@
-import { pg } from "@/lib/pg"
+import { pg } from "@api/lib/pg"
 import { TRPCError } from "@trpc/server"
 import { IStatus } from "@web/core/sync"
 import type { z } from "zod"

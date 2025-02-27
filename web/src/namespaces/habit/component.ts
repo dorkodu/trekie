@@ -1,9 +1,9 @@
 import { ulid } from "ulidx"
 
-import { db } from "@/shared/lib/db"
-import { errors } from "@/shared/lib/errors"
-import { trekie } from "@/shared/lib/trekie"
-import { Daystamp, daystamp } from "@/shared/utils"
+import { db } from "@web/shared/lib/db"
+import { errors } from "@web/shared/lib/errors"
+import { trekie } from "@web/shared/lib/trekie"
+import { Daystamp, daystamp } from "@web/shared/utils"
 import { IHabit } from "./schema"
 
 import { Interface } from "."

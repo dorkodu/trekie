@@ -1,4 +1,4 @@
-import { pg } from "@/lib/pg"
+import { pg } from "@api/lib/pg"
 import { TRPCError } from "@trpc/server"
 import type { IUser } from "@web/core/account"
 import type { z } from "zod"

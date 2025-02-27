@@ -1,9 +1,9 @@
-import { config } from "@/config"
-import { express } from "@/lib/express"
-import { passport } from "@/lib/passport"
-import { authService } from "@/namespaces/auth/service"
-import { tokenUtil } from "@/namespaces/auth/token-util"
-import { appRouter } from "@/router"
+import { config } from "@api/config"
+import { express } from "@api/lib/express"
+import { passport } from "@api/lib/passport"
+import { authService } from "@api/namespaces/auth/service"
+import { tokenUtil } from "@api/namespaces/auth/token-util"
+import { appRouter } from "@api/router"
 import { createExpressMiddleware } from "@trpc/server/adapters/express"
 
 express.use(

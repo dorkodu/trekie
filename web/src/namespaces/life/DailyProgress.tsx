@@ -1,7 +1,7 @@
-import { trekie } from '@/shared/lib/trekie'
-import { format } from "@/shared/utils/format"
-import { vanilla } from '@/styles/theme'
 import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
+import { trekie } from '@web/shared/lib/trekie'
+import { format } from "@web/shared/utils/format"
+import { vanilla } from '@web/styles/theme'
 import confetti from 'canvas-confetti'
 
 export function DailyProgress() {

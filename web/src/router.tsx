@@ -1,4 +1,4 @@
-import App from '@/App'
+import App from '@web/App'
 import React, { Suspense } from 'react'
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, useParams } from 'react-router-dom'
 
@@ -60,8 +60,8 @@ export function PathMiddleware() {
 
 // ----------------------------------------------
 
-import CenterLoader from '@/shared/components/loaders/CenterLoader'
-import { utils } from '@/shared/utils'
+import CenterLoader from '@web/shared/components/loaders/CenterLoader'
+import { utils } from '@web/shared/utils'
 
 export function view(path: string) {
   const [folder, file] = path.split(':')

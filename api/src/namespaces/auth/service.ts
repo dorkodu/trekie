@@ -1,5 +1,5 @@
-import { pg } from "@/lib/pg" // paul graham tweet generator lol lmao xd
-import type { ISession } from "@/types/session"
+import { pg } from "@api/lib/pg" // paul graham tweet generator lol lmao xd
+import type { ISession } from "@api/types/session"
 import { createHash } from "crypto"
 import type { Response } from "express"
 import { ulid } from "ulidx"

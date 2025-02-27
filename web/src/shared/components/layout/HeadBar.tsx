@@ -1,12 +1,12 @@
-import { trekie } from "@/shared/lib/trekie"
-import { useAppStore } from "@/shared/stores/appStore"
-import { vanilla } from "@/styles/theme"
 import { ActionIcon, Anchor, Flex, Image, Paper, UnstyledButton, useMantineColorScheme } from "@mantine/core"
 import { IconArrowLeft, IconMenu2 } from "@tabler/icons-react"
+import { trekie } from "@web/shared/lib/trekie"
+import { useAppStore } from "@web/shared/stores/appStore"
+import { vanilla } from "@web/styles/theme"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
-import { config } from "@/config"
-import { Headbar as styles } from "@/styles/Layout.css"
+import { config } from "@web/config"
+import { Headbar as styles } from "@web/styles/Layout.css"
 
 export function HeadBar() {
   const navigate = useNavigate()

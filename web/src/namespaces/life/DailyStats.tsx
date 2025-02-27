@@ -1,10 +1,10 @@
-import Emoji from '@/shared/components/misc/Emoji'
-import { trekie } from "@/shared/lib/trekie"
 import {
   Paper,
   SimpleGrid,
   Stack,
 } from '@mantine/core'
+import Emoji from '@web/shared/components/misc/Emoji'
+import { trekie } from "@web/shared/lib/trekie"
 
 import { DailyProgress } from './DailyProgress'
 import { SumCard } from './SumCard'

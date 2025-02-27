@@ -1,5 +1,5 @@
-import WIPCard from '@/shared/components/cards/WIPCard'
 import { Flex } from '@mantine/core'
+import WIPCard from '@web/shared/components/cards/WIPCard'
 
 function Page() {
   return (

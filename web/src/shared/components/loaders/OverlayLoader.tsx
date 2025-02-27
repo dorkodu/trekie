@@ -1,5 +1,5 @@
 import { LoadingOverlay } from "@mantine/core"
-import { useDelay } from "@/shared/hooks"
+import { useDelay } from "@web/shared/hooks"
 
 interface Props {
   full?: boolean

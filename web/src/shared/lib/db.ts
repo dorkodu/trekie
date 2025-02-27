@@ -1,8 +1,8 @@
 import Dexie, { Table } from 'dexie'
 
-import { IUser } from '@/core'
-import { IGoal } from '@/namespaces/goal'
-import { IHabit } from '@/namespaces/habit'
+import { IUser } from '@web/core'
+import { IGoal } from '@web/namespaces/goal'
+import { IHabit } from '@web/namespaces/habit'
 
 import { fillMockUserData } from './mock'
 import { trekie } from './trekie'
@@ -29,7 +29,7 @@ db.open().then(async (db) => {
   console.info("[app] dexie opened successfully.")
 }).catch((e) => {
   console.error(e)
-});
+})
 
 export async function populate() {
   const user = trekie.game().user

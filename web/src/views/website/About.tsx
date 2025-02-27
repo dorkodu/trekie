@@ -1,5 +1,3 @@
-import WIPCard from '@/shared/components/cards/WIPCard'
-import Emoji from '@/shared/components/misc/Emoji'
 import {
   Container,
   Divider,
@@ -11,6 +9,8 @@ import {
   Text,
   Title,
 } from '@mantine/core'
+import WIPCard from '@web/shared/components/cards/WIPCard'
+import Emoji from '@web/shared/components/misc/Emoji'
 
 function About() {
   return (

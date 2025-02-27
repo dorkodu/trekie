@@ -1,9 +1,5 @@
-import {
-  authOptionalProcedure,
-  authRequiredProcedure,
-  Router,
-} from "@/lib/trpc"
-import { userRepository } from "@/namespaces/user/repository"
+import { authOptionalProcedure, authRequiredProcedure, Router } from "@api/lib/trpc"
+import { userRepository } from "@api/namespaces/user/repository"
 import { z } from "zod"
 import { syncSchema } from "./schema"
 

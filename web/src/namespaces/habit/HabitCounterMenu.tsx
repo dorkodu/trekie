@@ -1,10 +1,10 @@
-import { IHabit } from '@/namespaces/habit'
-import { trekie } from "@/shared/lib/trekie"
-import { useAppStore } from '@/shared/stores/appStore'
-import { vanilla } from '@/styles/theme'
 import { ActionIcon, Menu } from '@mantine/core'
 import { modals } from "@mantine/modals"
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
+import { IHabit } from '@web/namespaces/habit'
+import { trekie } from "@web/shared/lib/trekie"
+import { useAppStore } from '@web/shared/stores/appStore'
+import { vanilla } from '@web/styles/theme'
 import { MouseEvent } from 'react'
 import { habits } from '.'
 

@@ -3,9 +3,9 @@ import { immer } from 'zustand/middleware/immer'
 import { createStore, StoreApi } from 'zustand/vanilla'
 
 // misc
-import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@/shared/utils'
+import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@web/shared/utils'
 
-import { IUser } from '@/core/account'
+import { IUser } from '@web/core/account'
 import { useCallback } from 'react'
 import { useStore } from 'zustand'
 import { calculateStreak } from './lib'

@@ -1,4 +1,4 @@
-import { Maybe, Timestamp } from "@/shared/utils"
+import { Maybe, Timestamp } from "@web/shared/utils"
 import { ulid } from "ulidx"
 import { db } from "./db"
 import { Game, GameMutations, ReadOnlyGame } from "./game"

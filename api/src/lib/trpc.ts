@@ -1,5 +1,5 @@
-import { authRepository } from "@/namespaces/auth/repository"
-import { tokenUtil } from "@/namespaces/auth/token-util"
+import { authRepository } from "@api/namespaces/auth/repository"
+import { tokenUtil } from "@api/namespaces/auth/token-util"
 import { initTRPC, TRPCError } from "@trpc/server"
 import type { Request, Response } from "express"
 

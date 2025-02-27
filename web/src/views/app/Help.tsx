@@ -1,6 +1,6 @@
-import OnlyPremium from '@/shared/components/cards/OnlyPremium'
-import WIPCard from '@/shared/components/cards/WIPCard'
 import { Flex, Image, Title } from '@mantine/core'
+import OnlyPremium from '@web/shared/components/cards/OnlyPremium'
+import WIPCard from '@web/shared/components/cards/WIPCard'
 
 export default function Help() {
   return (

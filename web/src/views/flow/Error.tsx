@@ -1,5 +1,5 @@
 import { Container, Text, Title } from '@mantine/core'
-import { log } from '@/shared/utils/log'
+import { log } from '@web/shared/utils/log'
 import { useRouteError } from 'react-router-dom'
 
 export default function ErrorPage() {

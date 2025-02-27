@@ -1,6 +1,6 @@
-import { AccountTier, IUser } from "@/core"
-import { trekie } from "@/shared/lib/trekie"
-import { LogKind, log } from "@/shared/utils/log"
+import { AccountTier, IUser } from "@web/core"
+import { trekie } from "@web/shared/lib/trekie"
+import { LogKind, log } from "@web/shared/utils/log"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
 

@@ -1,4 +1,4 @@
-import { config } from "@/config"
+import { config } from "@api/config"
 import { createHash, randomBytes } from "crypto"
 import type { Request, Response } from "express"
 

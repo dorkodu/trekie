@@ -1,6 +1,6 @@
-import { IUser } from "@/core"
-import { db } from "@/shared/lib/db"
-import { Maybe } from "@/shared/utils"
+import { IUser } from "@web/core"
+import { db } from "@web/shared/lib/db"
+import { Maybe } from "@web/shared/utils"
 
 export async function getAccount(username: string): Promise<Maybe<IUser>> {
   // 1) ask db 2) if not found, ask server 3) if not found, return null

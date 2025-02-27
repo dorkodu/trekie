@@ -1,5 +1,5 @@
 import { Flex, Loader } from "@mantine/core"
-import { useDelay } from "@/shared/hooks"
+import { useDelay } from "@web/shared/hooks"
 
 export default function CenterLoader() {
   const delay = useDelay()

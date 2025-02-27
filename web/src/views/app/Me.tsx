@@ -1,6 +1,6 @@
-import CenterLoader from '@/shared/components/loaders/CenterLoader'
-import { trekie } from '@/shared/lib/trekie'
 import { Flex, Text, Title } from '@mantine/core'
+import CenterLoader from '@web/shared/components/loaders/CenterLoader'
+import { trekie } from '@web/shared/lib/trekie'
 import { useEffect, useState } from 'react'
 
 export default function Me() {

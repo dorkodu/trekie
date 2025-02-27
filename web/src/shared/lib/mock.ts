@@ -1,7 +1,7 @@
-import * as Trekie from '@/core'
+import * as Trekie from '@web/core'
 
-import { goals, IGoal } from "@/namespaces/goal"
-import { habits, IHabit } from "@/namespaces/habit"
+import { goals, IGoal } from "@web/namespaces/goal"
+import { habits, IHabit } from "@web/namespaces/habit"
 
 import { ulid } from 'ulidx'
 

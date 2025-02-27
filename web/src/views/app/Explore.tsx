@@ -1,6 +1,6 @@
-import WIPCard from '@/shared/components/cards/WIPCard'
 import { Divider, Flex, Group, Space, Text, TextInput, Title } from '@mantine/core'
 import { IconSearch, IconSocial, IconTrendingUp, IconTrendingUp2, IconTrendingUp3, IconUsers, IconUsersGroup } from '@tabler/icons-react'
+import WIPCard from '@web/shared/components/cards/WIPCard'
 
 function Explore() {
   return (

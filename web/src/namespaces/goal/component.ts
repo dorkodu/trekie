@@ -1,7 +1,7 @@
-import { db } from "@/shared/lib/db"
-import { errors } from "@/shared/lib/errors"
-import { trekie } from "@/shared/lib/trekie"
-import { arrayRemoveItem } from "@/shared/utils"
+import { db } from "@web/shared/lib/db"
+import { errors } from "@web/shared/lib/errors"
+import { trekie } from "@web/shared/lib/trekie"
+import { arrayRemoveItem } from "@web/shared/utils"
 import { ulid } from "ulidx"
 import { IGoal, Interface } from "."
 

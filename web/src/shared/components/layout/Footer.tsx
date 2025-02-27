@@ -1,15 +1,15 @@
 import { Anchor, Flex } from "@mantine/core"
+import ColorToggle from "@web/shared/components/misc/ColorToggle"
+import LanguagePicker from "@web/shared/components/misc/LanguagePicker"
 import { useNavigate } from "react-router-dom"
-import ColorToggle from "@/shared/components/misc/ColorToggle"
-import LanguagePicker from "@/shared/components/misc/LanguagePicker"
 
 function Footer() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const preventNavigate = (ev: React.MouseEvent, route: string) => {
-    ev.preventDefault();
-    navigate(route);
-  };
+    ev.preventDefault()
+    navigate(route)
+  }
 
   return (
     <>
@@ -43,7 +43,7 @@ function Footer() {
         <ColorToggle size="xs" />
       </Flex>
     </>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

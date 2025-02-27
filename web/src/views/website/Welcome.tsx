@@ -1,9 +1,9 @@
 import { Anchor, BackgroundImage, Box, Button, Card, Divider, Flex, Group, Image, List, Paper, SimpleGrid, Stack, Text, TextInput, ThemeIcon, Title, rem } from '@mantine/core'
 import { IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLockAccess, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconRocket, IconSparkles, IconTargetArrow, IconUserCheck, IconUsersGroup, IconWorld, } from '@tabler/icons-react'
 
-import GlassCard from '@/shared/components/cards/GlassCard'
+import GlassCard from '@web/shared/components/cards/GlassCard'
 
-import * as PremiumStyles from '@/styles/views/Premium.css'
+import * as PremiumStyles from '@web/styles/views/Premium.css'
 
 export default function Welcome() {
   return (
@@ -296,10 +296,10 @@ const Join = (
 )
 
 
-import Emoji from '@/shared/components/misc/Emoji'
-import { useThemed } from '@/shared/hooks'
-import { vanilla } from '@/styles/theme'
 import { randomId } from '@mantine/hooks'
+import Emoji from '@web/shared/components/misc/Emoji'
+import { useThemed } from '@web/shared/hooks'
+import { vanilla } from '@web/styles/theme'
 import { useNavigate } from 'react-router-dom'
 
 function FAQ() {

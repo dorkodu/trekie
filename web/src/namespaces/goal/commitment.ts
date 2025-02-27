@@ -1,4 +1,4 @@
-import { CommitEvent, Commitment } from "@/core"
+import { CommitEvent, Commitment } from "@web/core"
 
 export const goalCommitment = Commitment(
   'Goal',

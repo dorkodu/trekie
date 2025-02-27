@@ -1,6 +1,6 @@
-import { vanilla } from '@/styles/theme';
-import { rem } from '@mantine/core';
-import { style } from '@vanilla-extract/css';
+import { rem } from '@mantine/core'
+import { style } from '@vanilla-extract/css'
+import { vanilla } from '@web/styles/theme'
 
 export const label = style({
   fontWeight: 800,
@@ -19,7 +19,7 @@ export const label = style({
       color: vanilla.colors.dark[4],
     },
   },
-});
+})
 
 export const title = style({
   fontWeight: 800,
@@ -37,11 +37,11 @@ export const title = style({
       color: "white",
     },
   },
-});
+})
 
 export const description = style({
   maxWidth: rem(450),
   fontWeight: 500,
   textAlign: "center",
   lineHeight: 1,
-});
+})

@@ -1,4 +1,4 @@
-import { Timestamp } from "@/shared/utils"
+import { Timestamp } from "@web/shared/utils"
 import { ulid } from "ulidx"
 import { z } from "zod"
 import { DEFAULT_AVATAR } from "./consts"

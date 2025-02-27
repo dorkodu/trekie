@@ -1,19 +1,9 @@
-import { IHabit } from '@/namespaces'
-import { schema as GoalSchema, IGoal, IGoalTemplate } from '@/namespaces/goal'
-import {
-  ActionIcon,
-  Button,
-  Checkbox,
-  Flex,
-  Group,
-  Stack,
-  Text,
-  Textarea,
-  TextInput,
-} from '@mantine/core'
+import { ActionIcon, Button, Checkbox, Flex, Group, Stack, Text, Textarea, TextInput, } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 import { ContextModalProps } from '@mantine/modals'
 import { IconTrash } from '@tabler/icons-react'
+import { schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespaces/goal'
+import { IHabit } from '@web/namespaces/habit'
 
 type GoalEditorMode = 'CREATE' | 'EDIT'
 
@@ -31,7 +21,7 @@ const GoalEditorModal = ({
       xpTarget: 0,
     } satisfies IGoalTemplate,
 
-    validate: zodResolver(GoalSchema.IGoalTemplate),
+    validate: zodResolver(GoalSchema.GoalTemplate),
   })
 
   return (

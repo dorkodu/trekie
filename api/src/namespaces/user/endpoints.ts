@@ -2,7 +2,7 @@ import {
   authOptionalProcedure,
   authRequiredProcedure,
   Router,
-} from "@/lib/trpc"
+} from "@api/lib/trpc"
 import * as userRepository from "./repository"
 import { userSchemas } from "./schema"
 

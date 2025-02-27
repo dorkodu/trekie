@@ -1,10 +1,10 @@
-import { trekie } from '@/shared/lib/trekie'
+import { trekie } from '@web/shared/lib/trekie'
 
-import { IGoal } from '@/namespaces/goal'
-import { vanilla } from '@/styles/theme'
 import { ActionIcon, Menu } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
+import { IGoal } from '@web/namespaces/goal'
+import { vanilla } from '@web/styles/theme'
 import { MouseEvent } from 'react'
 import { goals } from '.'
 

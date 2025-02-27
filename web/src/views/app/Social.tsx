@@ -1,7 +1,7 @@
-import OnlyPremium from '@/shared/components/cards/OnlyPremium'
-import WIPCard from '@/shared/components/cards/WIPCard'
-import { ContainerSheet } from '@/styles/shared.css'
 import { Badge, Box, Flex, Image, Stack, Text } from '@mantine/core'
+import OnlyPremium from '@web/shared/components/cards/OnlyPremium'
+import WIPCard from '@web/shared/components/cards/WIPCard'
+import { ContainerSheet } from '@web/styles/shared.css'
 import { Feature, useFeature } from 'flagged'
 
 function Social() {

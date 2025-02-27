@@ -10,17 +10,17 @@ import {
   Text,
 } from '@mantine/core'
 
-import { Link, Outlet } from 'react-router-dom'
 import { useMediaQuery } from '@mantine/hooks'
+import { Link, Outlet } from 'react-router-dom'
 
 
-import * as LayoutStyle from '@/styles/Layout.css'
-import * as WebsiteStyle from '@/styles/website/Website.css'
+import * as LayoutStyle from '@web/styles/Layout.css'
+import * as WebsiteStyle from '@web/styles/website/Website.css'
 
-import { vanilla } from '@/styles/theme'
-import ColorToggle from '@/shared/components/misc/ColorToggle'
-import { socialLinks } from '@/shared/website'
-import { useThemed } from '@/shared/hooks'
+import ColorToggle from '@web/shared/components/misc/ColorToggle'
+import { useThemed } from '@web/shared/hooks'
+import { socialLinks } from '@web/shared/website'
+import { vanilla } from '@web/styles/theme'
 
 function WebsiteLayout() {
   return (

@@ -1,4 +1,4 @@
-import { pg } from "@/lib/pg"
+import { pg } from "@api/lib/pg"
 import { tokenUtil } from "./token-util"
 
 export async function getSessionByToken(

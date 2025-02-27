@@ -1,3 +1,21 @@
+import { getUser } from "@api/namespaces/user/repository"
+import { Alert, Anchor, Badge, Box, Flex, Group, Image, Paper, rem, Skeleton, Stack, Tabs, Text, ThemeIcon } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
+import { IconAlertCircle, IconBriefcase, IconCake, IconCalendar, IconCopyCheck, IconLink, IconMapPin, IconTargetArrow } from "@tabler/icons-react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { IUser } from "@web/core"
+import GoalCard from "@web/namespaces/goal/GoalCard"
+import NoGoalsCard from "@web/namespaces/goal/NoGoalsCard"
+import HabitCounter from "@web/namespaces/habit/HabitCounter"
+import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard"
+import { DailyStats } from "@web/namespaces/life/DailyStats"
+import CenterLoader from "@web/shared/components/loaders/CenterLoader"
+import { db } from "@web/shared/lib/db"
+import { trekie } from "@web/shared/lib/trekie"
+import { relativeDateString } from "@web/shared/utils/format"
+import { vanilla } from "@web/styles/theme"
+import { useLiveQuery } from "dexie-react-hooks"
+import { getProfile } from "./getProfile"
 
 
 export const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
@@ -12,12 +30,13 @@ export function Profile({ username }: { username: string }) {
 
   const { isPending, isError, isSuccess, error, data } = useQuery({
     queryKey: ['profile:' + username],
-    queryFn: () => getUser(username),
+    queryFn: () => getProfile(username),
   })
 
+  // TODO: remove this forced type, let trpc handle it
   const user = data as IUser
 
-  if (isPending) return <Loader />
+  if (isPending) return <CenterLoader />
   if (isError) return <Alert color="red" icon={<IconAlertCircle />}>Failed to get user profile.</Alert>
 
   const iconStyle = { width: rem(20), height: rem(20) }
@@ -40,8 +59,7 @@ export function Profile({ username }: { username: string }) {
 
         <Group gap={4} pb={8}>
           <ProfileEntry icon={<IconCalendar size={24} />} text={`Joined ${relativeDateString(user.joinedAt)}`} />
-          {user.birthday && <ProfileEntry icon={<IconCake size={24} />} text={`Born ${relativeDateString(user.birthday)}`} />}
-          {user.category && <ProfileEntry icon={<IconBriefcase size={24} />} text={user.category} />}
+          {user.birthDate && <ProfileEntry icon={<IconCake size={24} />} text={`Born ${relativeDateString(user.birthday)}`} />}
           {user.location && <ProfileEntry icon={<IconMapPin size={24} />} text={user.location} />}
           {user.url && <ProfileEntry icon={<IconLink size={24} />} text={<Anchor href={user.url} referrerPolicy="no-referrer" target="_blank">{user.url}</Anchor>} />}
         </Group>
@@ -79,7 +97,7 @@ export function UserHabitSummary() {
 
   const habits = useLiveQuery(
     async () => {
-      return trekie.db.habits
+      return db.habits
         .where('userId')
         .equals(userId)
         .toArray()
@@ -87,12 +105,8 @@ export function UserHabitSummary() {
     [userId]
   )
 
-  if (!habits)
-    return <>
-      <Skeleton height={8} radius="xl" />
-      <Skeleton height={8} mt={8} radius="xl" />
-      <Skeleton height={8} mt={8} width="70%" radius="xl" />
-    </>
+  // TODO: maybe add skeleton?? needed? not sure.
+  if (!habits) return <></>
 
   const hasAnyHabits = habits?.length > 0
   if (!hasAnyHabits)
@@ -156,3 +170,4 @@ export function LifeGoalSummary() {
     </Box>
   )
 }
+

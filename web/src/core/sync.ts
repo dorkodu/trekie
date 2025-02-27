@@ -1,4 +1,4 @@
-import { trpc } from '@/shared/lib/trpc'
+import { trpc } from '@web/shared/lib/trpc'
 import xxhash from 'xxhash-wasm'
 import { db } from './db'
 

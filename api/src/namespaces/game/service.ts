@@ -14,4 +14,3 @@ function updateCoinsBalance() { }
 
 
 export * as gameService from "./service"
-+

@@ -1,4 +1,4 @@
-import { CommitEvent } from "@/core"
+import { CommitEvent } from "@web/core"
 import { useEffect } from "react"
 import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
 import { Game, GameState } from "./game"

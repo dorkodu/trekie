@@ -2,20 +2,20 @@ import { Anchor, Card, Divider, Group, Image, Modal, Paper, Stack, ThemeIcon, us
 import { useMediaQuery } from '@mantine/hooks'
 import { Link, Outlet } from 'react-router-dom'
 
-import { AppMenu } from '@/shared/components/cards/Menu'
-import * as Nav from '@/shared/components/layout/Nav'
+import { AppMenu } from '@web/shared/components/cards/Menu'
+import * as Nav from '@web/shared/components/layout/Nav'
 
-import Emoji from '@/shared/components/misc/Emoji'
+import Emoji from '@web/shared/components/misc/Emoji'
 
-import { DailyStats } from '@/namespaces/life/DailyStats'
-import { useAppStore } from '@/shared/stores/appStore'
+import { DailyStats } from '@web/namespaces/life/DailyStats'
+import { useAppStore } from '@web/shared/stores/appStore'
 
-import { HeadBar } from '@/shared/components/layout/HeadBar'
-import { Header } from '@/shared/components/layout/Header'
-import { NavigationBar } from '@/shared/components/layout/NavigationBar'
+import { HeadBar } from '@web/shared/components/layout/HeadBar'
+import { Header } from '@web/shared/components/layout/Header'
+import { NavigationBar } from '@web/shared/components/layout/NavigationBar'
 
-import { DailyHintCard } from '@/shared/components/cards/DailyHintCard'
-import * as styles from '@/styles/Layout.css'
+import { DailyHintCard } from '@web/shared/components/cards/DailyHintCard'
+import * as styles from '@web/styles/Layout.css'
 
 function AppLayout() {
   return (

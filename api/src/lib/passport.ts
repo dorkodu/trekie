@@ -1,7 +1,7 @@
-import { config } from "@/config"
-import { generateUsername } from "@/namespaces/user/generate-username"
-import { userRepository } from "@/namespaces/user/repository"
-import { userService } from "@/namespaces/user/service"
+import { config } from "@api/config"
+import { generateUsername } from "@api/namespaces/user/generate-username"
+import { userRepository } from "@api/namespaces/user/repository"
+import { userService } from "@api/namespaces/user/service"
 import { Passport } from "passport"
 import { Strategy as GoogleStrategy } from "passport-google-oauth20"
 

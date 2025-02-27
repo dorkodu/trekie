@@ -3,13 +3,13 @@ import { IconLayersSelectedBottom, IconMinus, IconPlus } from '@tabler/icons-rea
 import { useLiveQuery } from "dexie-react-hooks"
 import { MouseEvent } from 'react'
 
-import HabitCounterMenu from '@/namespaces/habit/HabitCounterMenu'
-import EnhancedText from '@/shared/components/misc/TextParser'
-import { trekie } from "@/shared/lib/trekie"
-import { truncate } from '@/styles/shared.css'
-import { vanilla } from '@/styles/theme'
+import HabitCounterMenu from '@web/namespaces/habit/HabitCounterMenu'
+import EnhancedText from '@web/shared/components/misc/TextParser'
+import { trekie } from "@web/shared/lib/trekie"
+import { truncate } from '@web/styles/shared.css'
+import { vanilla } from '@web/styles/theme'
 
-import { habits } from '@/namespaces/habit'
+import { habits } from '@web/namespaces/habit'
 
 interface Props {
   habitId: string

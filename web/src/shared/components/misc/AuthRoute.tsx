@@ -1,5 +1,5 @@
+import { useAppStore } from '@web/shared/stores/appStore'
 import { Navigate, Outlet } from 'react-router-dom'
-import { useAppStore } from '@/shared/stores/appStore'
 
 function isAuthed() {
   return !useAppStore.getState().session

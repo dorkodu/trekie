@@ -1,4 +1,3 @@
-import { IHabit } from '@/namespaces'
 import {
   Button,
   Group,
@@ -8,6 +7,7 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { ContextModalProps } from '@mantine/modals'
+import { IHabit } from '@web/namespaces'
 
 interface Props {
   opened: boolean
@@ -36,7 +36,7 @@ const HabitEditorModal = ({
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
     },
-  });
+  })
 
   return (<>
     <Text size="sm">{innerProps.modalBody}</Text>

@@ -1,4 +1,4 @@
-import { config } from "@/config"
+import { config } from "@api/config"
 import postgres from "postgres"
 
 export const pg = postgres({

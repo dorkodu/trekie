@@ -1,11 +1,11 @@
 import { Box, Button, Card, Divider, Image, List, Paper, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core'
 
-import * as PremiumStyles from '@/styles/views/Premium.css'
 import {
   IconAdOff,
   IconMultiplier2x,
   IconUsersGroup,
 } from '@tabler/icons-react'
+import * as PremiumStyles from '@web/styles/views/Premium.css'
 
 function OnlyPremium() {
   return (

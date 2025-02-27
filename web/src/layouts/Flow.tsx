@@ -1,9 +1,8 @@
-import { Anchor, Divider, Group, Image, Stack }
-  from '@mantine/core'
+import { Anchor, Divider, Group, Image, Stack } from '@mantine/core'
 import { Link, Outlet } from 'react-router-dom'
 
 
-import * as styles from '@/styles/Layout.css'
+import * as styles from '@web/styles/Layout.css'
 
 export default function FlowLayout() {
   return (

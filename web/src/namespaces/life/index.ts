@@ -1,5 +1,5 @@
-import { GameInterface, IUser } from "@/core"
-import { daystamp } from "@/shared/utils"
+import { GameInterface, IUser } from "@web/core"
+import { daystamp } from "@web/shared/utils"
 
 export interface ILife {
   id: string

@@ -1,7 +1,7 @@
-import * as Trekie from '@/core'
+import * as Trekie from '@web/core'
 
-import { goalCommitment } from '@/namespaces/goal/commitment'
-import { habitCommitment } from '@/namespaces/habit/commitment'
+import { goalCommitment } from '@web/namespaces/goal/commitment'
+import { habitCommitment } from '@web/namespaces/habit/commitment'
 import { useEffect } from 'react'
 import { generateMockGameState } from './mock'
 

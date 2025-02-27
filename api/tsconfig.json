@@ -1,4 +1,6 @@
 {
+  "extends": "../tsconfig.json",
+
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
     "module": "ESNext",
@@ -8,15 +10,12 @@
     "moduleResolution": "Bundler",
     "noEmit": true,
     "skipLibCheck": true,
+    "noImplicitAny": false,
 
     "downlevelIteration": true,
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["./src/*"],
-      "@web/*": ["../web/src/*"],
-    }
+    "forceConsistentCasingInFileNames": true,  
   },
   "include": ["src"],
   "exclude": ["node_modules"]

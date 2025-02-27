@@ -1,6 +1,6 @@
-import { useThemed } from '@/shared/hooks'
 import { Anchor, Button, CSSVariablesResolver, Title, createTheme, useMantineColorScheme } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
+import { useThemed } from '@web/shared/hooks'
 
 export const theme = createTheme({
   primaryColor: 'green',

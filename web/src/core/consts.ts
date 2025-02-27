@@ -1,4 +1,4 @@
-import { CommitEvent, Commitment, GameState } from "@/core"
+import { CommitEvent, Commitment, GameState } from "@web/core"
 
 export const DEFAULT_AVATAR = '/images/avatar.png'
 

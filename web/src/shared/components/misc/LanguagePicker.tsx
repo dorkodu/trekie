@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { UnstyledButton, Menu, Image, Group } from '@mantine/core'
+import { Group, Image, Menu, UnstyledButton } from '@mantine/core'
 import { IconChevronDown } from '@tabler/icons-react'
-import classes from '@/styles/components/LanguagePicker.module.css'
+import classes from '@web/styles/components/LanguagePicker.module.css'
+import { useState } from 'react'
 
 const data = [
   { label: 'English', image: '/assets/locale/en.svg' },
