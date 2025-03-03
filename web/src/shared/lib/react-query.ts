@@ -6,8 +6,6 @@ export const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 0,
-      // TODO: Remove gcTime
-      gcTime: 0,
     },
     mutations: {
       onError(error, _variables, _context) {
