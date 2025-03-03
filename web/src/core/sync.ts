@@ -1,6 +1,6 @@
 import { trpc } from '@web/shared/lib/trpc'
-import xxhash from 'xxhash-wasm'
 import { db } from './db'
+import { hash } from './hash'
 
 // this represents a single commit event message
 export interface IStatus<T = any> {
@@ -9,10 +9,6 @@ export interface IStatus<T = any> {
   userId: string
   data: T
 }
-
-// hash utility
-const { h64ToString } = await xxhash()
-const hash = (status: IStatus<any>) => h64ToString(JSON.stringify(status))
 
 export const Sync = {
   queue: [] as Array<string>,
@@ -29,27 +25,33 @@ export const Sync = {
 
   async syncToServer() {
     const statusesToSend = db.statuses.bulkGet(this.queue)
-
-
-
     // Clear the queue after sending has verified
     // this.queue = [];
   },
 
   async share<T extends IStatus<any>>(status: T) {
-    this.add(status) // save to local storage
-    this.queue.push(hash(status)) // add status id to queue
+    await this.add(status) // save to local storage
+    const hashValue = await hash(status)
+    this.queue.push(hashValue) // add status id to queue
   },
 
   get: (hash: string) => db.statuses.get(hash),
-  add: (status: IStatus<any>) => db.statuses.add(status, hash(status)),
+
+  add: async (status: IStatus<any>) => {
+    const hashValue = await hash(status)
+    return db.statuses.add(status, hashValue)
+  },
+
   remove: (hash: string) => db.statuses.delete(hash),
 
-  match: <T extends IStatus<any>>(claimed: string, status: T): boolean => (claimed === hash(status))
+  match: async <T extends IStatus<any>>(claimed: string, status: T): Promise<boolean> => {
+    const hashValue = await hash(status)
+    return claimed === hashValue
+  }
 }
 
-export function status<T>(kind: string, userId: string, data: T) {
+export async function status<T>(kind: string, userId: string, data: T) {
   let s = Sync.status(kind, userId, data)
-  Sync.share(s)
+  await Sync.share(s)
   return s
 }
