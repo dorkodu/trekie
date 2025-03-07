@@ -1,7 +1,16 @@
+import { inferSchema } from "@web/shared/utils"
 import { z } from "zod"
 
-export const send = z.strictObject({
 
+export const statusSchema = z.object({
+  kind: z.string(),
+  createdAt: z.number(),
+  userId: z.string(),
+  data: z.any(),
+})
+
+export const send = z.strictObject({
+  statuses: z.array(statusSchema),
 })
 
 export const getStatus = z.strictObject({

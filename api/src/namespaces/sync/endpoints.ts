@@ -1,13 +1,14 @@
 import { authOptionalProcedure, authRequiredProcedure, Router } from "@api/lib/trpc"
 import { userRepository } from "@api/namespaces/user/repository"
+import { TRPCError } from "@trpc/server"
 import { z } from "zod"
 import { syncSchema } from "./schema"
+import { syncService } from "./service"
 
 export const router = Router({
   send: authRequiredProcedure
-    .input(syncSchema.send)
-    .query((opts) =>
-      userRepository.getUser(opts.ctx.session?.userId, opts.input)
+    .input(z.any())
+    .query((opts) => { throw new TRPCError({ code: "NOT_IMPLEMENTED" }) }
     ),
 
   hello: authOptionalProcedure
