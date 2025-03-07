@@ -84,7 +84,7 @@ export const daystamp = {
 export const sleep = (ms = 100) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export function inferSchema<T extends z.ZodTypeAny>(schema: T) {
-  return schema;
+  return schema
 }
 
 export function arrayRemoveItem<T>(arr: Array<T>, value: T): Array<T> {
