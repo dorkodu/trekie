@@ -1,7 +1,7 @@
 import { trpc } from '@web/shared/lib/trpc'
+import { hash } from '@web/shared/utils/hash'
 import { z } from 'zod'
 import { db } from './db'
-import { hash } from './hash'
 
 // this represents a single commit event message
 export interface IStatus<T = any> {
@@ -32,21 +32,21 @@ export const Sync = {
 
   async share<T extends IStatus<any>>(status: T) {
     await this.add(status) // save to local storage
-    const hashValue = await hash(status)
+    const hashValue = hash(status)
     this.queue.push(hashValue) // add status id to queue
   },
 
   get: (hash: string) => db.statuses.get(hash),
 
   add: async (status: IStatus<any>) => {
-    const hashValue = await hash(status)
+    const hashValue = hash(status)
     return db.statuses.add(status, hashValue)
   },
 
   remove: (hash: string) => db.statuses.delete(hash),
 
   match: async <T extends IStatus<any>>(claimed: string, status: T): Promise<boolean> => {
-    const hashValue = await hash(status)
+    const hashValue = hash(status)
     return claimed === hashValue
   }
 }

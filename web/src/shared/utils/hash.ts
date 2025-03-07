@@ -1,13 +1,4 @@
-export function hashcode(s: string) {
-  let hash = 0, i, chr
-  if (this.length === 0) return hash
-  for (i = 0; i < this.length; i++) {
-    chr = this.charCodeAt(i)
-    hash = ((hash << 5) - hash) + chr
-    hash |= 0 // Convert to 32bit integer
-  }
-  return hash
-}
+import { xxh32 } from "smolxxh"
 
 export const cyrb53 = (str: string, seed: number = 0) => {
   let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed
@@ -23,3 +14,9 @@ export const cyrb53 = (str: string, seed: number = 0) => {
 
   return 4294967296 * (2097151 & h2) + (h1 >>> 0)
 }
+
+export const hash = (data: any) =>
+  xxh32(
+    Buffer.from(
+      JSON.stringify(data), "utf8")
+  ).toString(16)
