@@ -145,7 +145,7 @@ export function LifeGoalSummary() {
   const queryClient = useQueryClient()
 
   const goals = useLiveQuery(
-    async () => trekie.db.goals.where('userId').equals(userId).toArray(),
+    async () => db.goals.where('userId').equals(userId).toArray(),
     [], "loading"
   )
 

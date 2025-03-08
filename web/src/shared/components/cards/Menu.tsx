@@ -8,6 +8,7 @@ import { useAppStore } from '@web/shared/stores/appStore'
 import { Menu as styles } from '@web/styles/Layout.css'
 import { UserButton } from '../buttons/UserButton'
 import ColorToggle from '../misc/ColorToggle'
+import { JSX } from 'react'
 
 export function AppMenu() {
   const isWideScreen = useMediaQuery('(min-width: 768px)')

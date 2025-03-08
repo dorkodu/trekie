@@ -7,7 +7,7 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { ContextModalProps } from '@mantine/modals'
-import { IHabit } from '@web/namespaces'
+import { IHabit } from '@web/namespaces/habit'
 
 interface Props {
   opened: boolean
