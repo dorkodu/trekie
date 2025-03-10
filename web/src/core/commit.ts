@@ -1,31 +1,64 @@
 import { Maybe, Timestamp } from "@web/shared/utils"
 import { ulid } from "ulidx"
+import { z } from "zod"
 import { db } from "./db"
 import { Game, GameMutations, ReadOnlyGame } from "./game"
 import { IStatus, status, Sync } from "./sync"
 
-export type ICommitReward = { xp: number, coins: number }
+export const CommitReward = z.strictObject({
+  xp: z.number(),
+  coins: z.number(),
+})
+export type ICommitReward = z.infer<typeof CommitReward>
+
+export const WithData =
+  <T extends z.ZodTypeAny>
+    (schema: T) => z.strictObject({
+      data: schema
+    })
+
+export type WithData<T> = { data: T }
+
+export const CommitMessage = z.strictObject({
+  id: z.string().ulid(),
+  event: z.string(),
+  kind: z.string(),
+  instanceId: z.string().ulid(),
+  timestamp: z.number().int(),
+})
+
+export const Commit = <T extends z.ZodTypeAny>(schema: T) => CommitMessage.merge(WithData(schema))
+
+export const Progress = Commit(z.object({
+  doruk: z.string()
+}))
+
+export type IProgress = z.infer<typeof Progress>
+
+export type ICommitMessageBase = z.infer<typeof CommitMessage>
 
 // this represents a single commit event message
-export interface ICommitMessage<T = any> {
-  id: string
-  event: string
-  kind: string
-  instanceId: string
-  timestamp: Timestamp
-  data: T
-}
+export type ICommitMessage<T = any> = ICommitMessageBase & { data: T }
 
 // COMMITSTATUS, Trekie:Habit:CREATE, 2021-09-01T00:00:00Z, { xp: 5, coins: 0 }
 
 // we return this to the client
 export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
+
 // we sync this to API as a verifiable record
 export type ICommitRecord<T> = ICommitResult<T> & { userId: string }
+
 // the action that runs on commit & returns rewards
 export type ICommitAction<T> = (status: ICommitMessage<T>) => ICommitReward
+
 // a status object for a commit event
 export type ICommitStatus<T> = IStatus<ICommitRecord<T>>
+
+//? COMMITS
+
+export const CommitEvent = <T>(action: ICommitAction<T>): ICommitAction<T> => action
+
+//? COMMITMENTS
 
 export type ICommitmentKind = ReturnType<typeof Commitment>
 export type ICommitmentTemplate = {
@@ -47,7 +80,6 @@ export interface ICommitmentStaticSchema {
   events: Record<string, ICommitReward>
 }
 
-export const CommitEvent = <T>(action: ICommitAction<T>): ICommitAction<T> => action
 export function Commitment
   <TEvents extends ICommitmentTemplate['events'], TKind extends keyof TEvents>
   (name: string, events: TEvents) {
@@ -64,6 +96,7 @@ export function Commitment
       timestamp: Date.now(),
       data
     }),
+
 
     commit(event: TKind, instanceId: string, data: Parameters<TEvents[TKind]>[0]['data']): ICommitResult<typeof data> {
       // create status object
