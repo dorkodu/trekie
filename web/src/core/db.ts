@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie'
-import { ICommitmentInstance, ICommitRecord } from './commit'
+import { ICommitmentInstance, ICommitRecord } from './commits'
 import { IStatus } from './sync'
 
 export const db = new Dexie('trekie') as Dexie & {

@@ -1,6 +1,6 @@
 import { CommitEvent } from "@web/core"
 import { useEffect } from "react"
-import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commit"
+import { Commitments, ICommitmentKind, ICommitRecord, ICommitReward } from "./commits"
 import { Game, GameState } from "./game"
 
 export type CreateConfig<TCommitments extends Record<any, ICommitmentKind>> = {

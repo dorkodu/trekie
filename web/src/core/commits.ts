@@ -27,32 +27,33 @@ export const CommitMessage = z.strictObject({
   timestamp: z.number().int(),
 })
 
-export const Commit = <T extends z.ZodTypeAny>(schema: T) => CommitMessage.merge(WithData(schema))
+export const CommitSchema = <T extends z.ZodTypeAny>(schema: T) => CommitMessage.merge(WithData(schema))
 
-export const Progress = Commit(z.object({
-  doruk: z.string()
-}))
-
-export type IProgress = z.infer<typeof Progress>
-
-export type ICommitMessageBase = z.infer<typeof CommitMessage>
-
-// this represents a single commit event message
-export type ICommitMessage<T = any> = ICommitMessageBase & { data: T }
-
-// COMMITSTATUS, Trekie:Habit:CREATE, 2021-09-01T00:00:00Z, { xp: 5, coins: 0 }
-
+// extending CommitSchema with reward
 // we return this to the client
-export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
+export const CommitResult =
+  <T extends z.ZodTypeAny>(schema: T) =>
+    CommitSchema(schema).merge(
+      z.strictObject({
+        reward: CommitReward
+      }))
 
+// extending CommitResult with userId
 // we sync this to API as a verifiable record
+export const CommitRecord =
+  <T extends z.ZodTypeAny>(schema: T) =>
+    CommitResult(schema).merge(
+      z.strictObject({
+        userId: z.string().ulid()
+      }))
+
+// typescript helper types for in module use only
+export type ICommitMessage<T> = z.infer<typeof CommitMessage> & WithData<T>
+export type ICommitResult<T> = ICommitMessage<T> & { reward: ICommitReward }
 export type ICommitRecord<T> = ICommitResult<T> & { userId: string }
 
 // the action that runs on commit & returns rewards
-export type ICommitAction<T> = (status: ICommitMessage<T>) => ICommitReward
-
-// a status object for a commit event
-export type ICommitStatus<T> = IStatus<ICommitRecord<T>>
+export type ICommitAction<T> = (message: ICommitMessage<T>) => ICommitReward
 
 //? COMMITS
 
@@ -66,14 +67,15 @@ export type ICommitmentTemplate = {
   events: Record<any, ICommitAction<any>>
 }
 
-export interface ICommitmentInstance {
-  id: string
-  kind: string
-  completedAt: Maybe<Timestamp>
-  createdAt: Timestamp
-  lastActivity: Timestamp
-  isDeleted: boolean
-}
+export const CommitmentInstance = z.strictObject({
+  id: z.string().ulid(),
+  kind: z.string(),
+  completedAt: z.number().nullable(),
+  createdAt: z.number(),
+  lastActivity: z.number(),
+  isDeleted: z.boolean(),
+})
+export type ICommitmentInstance = z.infer<typeof CommitmentInstance>
 
 export interface ICommitmentStaticSchema {
   name: string
@@ -97,7 +99,6 @@ export function Commitment
       data
     }),
 
-
     commit(event: TKind, instanceId: string, data: Parameters<TEvents[TKind]>[0]['data']): ICommitResult<typeof data> {
       // create status object
       let status = this.status(event, instanceId, data)
@@ -113,13 +114,16 @@ export function Commitment
         kind: name,
         createdAt: Date.now(),
         lastActivity: Date.now(),
-        completedAt: undefined,
+        completedAt: null,
         isDeleted: false
       }
     }
   }
 }
 
+/**
+ * Commitments Module for use in Trekie superconstruct
+ */
 export function Commitments<TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
   return {
     table: db.commitments,
