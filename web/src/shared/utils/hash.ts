@@ -1,4 +1,4 @@
-import { xxh32 } from "smolxxh"
+import { xxh32 } from 'smolxxh'
 
 export const cyrb53 = (str: string, seed: number = 0) => {
   let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed
@@ -15,8 +15,8 @@ export const cyrb53 = (str: string, seed: number = 0) => {
   return 4294967296 * (2097151 & h2) + (h1 >>> 0)
 }
 
-export const hash = (data: any) =>
-  xxh32(
-    Buffer.from(
-      JSON.stringify(data), "utf8")
-  ).toString(16)
+export const hash = (data: any) => {
+  const str = JSON.stringify(data)
+  const buffer = Buffer.from(str)
+  return xxh32(buffer).toString(16)
+}

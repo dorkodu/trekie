@@ -1,10 +1,9 @@
 import { CommitEvent, Commitment } from "@web/core"
-import { trekie } from "@web/shared/lib/trekie"
 
 export const goalCommitment = Commitment(
   'Goal',
   {
-    'START': CommitEvent((status) => ({ xp: +25, coins: 0 })),
+    'START': CommitEvent(() => ({ xp: +25, coins: 0 })),
     'PROGRESS_BEGIN': CommitEvent(() => ({ xp: +100, coins: 0 })),
     'PROGRESS_HALFWAY': CommitEvent(() => ({ xp: +100, coins: 0 })),
     'PROGRESS_ALMOST': CommitEvent(() => ({ xp: +100, coins: 0 })),

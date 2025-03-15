@@ -19,6 +19,7 @@ const GoalEditorModal = ({
       title: '',
       description: '',
       xpTarget: 0,
+      commitments: [],
     } satisfies IGoalTemplate,
 
     validate: zodResolver(GoalSchema.GoalTemplate),

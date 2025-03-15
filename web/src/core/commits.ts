@@ -1,4 +1,3 @@
-import { Maybe, Timestamp } from "@web/shared/utils"
 import { ulid } from "ulidx"
 import { z } from "zod"
 import { db } from "./db"
@@ -77,7 +76,7 @@ export const CommitmentInstance = z.strictObject({
 })
 export type ICommitmentInstance = z.infer<typeof CommitmentInstance>
 
-export interface ICommitmentStaticSchema {
+export interface ICommitmentStaticTemplate {
   name: string
   events: Record<string, ICommitReward>
 }
