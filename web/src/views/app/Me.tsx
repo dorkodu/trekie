@@ -8,12 +8,8 @@ export default function Me() {
   const selfUser = trekie.use($ => $.user)
 
   useEffect(() => {
-    async function fetchUserProfile() {
-      const profile = await getUserProfile(selfUser.id)
-      setUser(profile)
-    }
-
-    fetchUserProfile()
+    const profile = await getUserProfile(selfUser.id)
+    setUser(profile)
   }, [selfUser.id])
 
   if (!user) return <CenterLoader />

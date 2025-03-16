@@ -17,7 +17,6 @@ import { vanilla } from "@web/styles/theme"
 import { useLiveQuery } from "dexie-react-hooks"
 import { getProfile } from "./getProfile"
 
-
 export const ProfileEntry = ({ icon, text }: { icon: React.ReactNode; text: React.ReactNode }) => (
   <Group gap={2}>
     <ThemeIcon c="dimmed" variant="transparent" size={26}>{icon}</ThemeIcon>
@@ -59,7 +58,7 @@ export function Profile({ username }: { username: string }) {
 
         <Group gap={4} pb={8}>
           <ProfileEntry icon={<IconCalendar size={24} />} text={`Joined ${relativeDateString(user.joinedAt)}`} />
-          {user.birthDate && <ProfileEntry icon={<IconCake size={24} />} text={`Born ${relativeDateString(user.birthday)}`} />}
+          {user.birthDate && <ProfileEntry icon={<IconCake size={24} />} text={`Born ${relativeDateString(user.birthDate)}`} />}
           {user.location && <ProfileEntry icon={<IconMapPin size={24} />} text={user.location} />}
           {user.url && <ProfileEntry icon={<IconLink size={24} />} text={<Anchor href={user.url} referrerPolicy="no-referrer" target="_blank">{user.url}</Anchor>} />}
         </Group>

@@ -7,8 +7,8 @@ function CreateAccount() {
   return (
     <Stack maw={460} mx="auto" p={10} mt={"5vw"} mb={"10vw"}>
 
-      <Title align="center">Create Account</Title>
-      <Text align="center" color="dimmed" size="sm">
+      <Title ta="center">Create Account</Title>
+      <Text ta="center" c="dimmed" size="sm">
         Already have an account?{' '}
         <Anchor component={Link} to="/login" size="sm">
           Log in
@@ -20,7 +20,7 @@ function CreateAccount() {
           <input type="text" placeholder="Username" required />
           <input type="email" placeholder="Email" required />
           <input type="password" placeholder="Password" required />
-          <Button type="submit" rightIcon={<IconArrowRight size={18} />}>
+          <Button type="submit" rightSection={<IconArrowRight size={18} />}>
             Sign Up
           </Button>
         </Stack>

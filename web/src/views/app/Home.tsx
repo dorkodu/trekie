@@ -18,11 +18,6 @@ import { useState } from 'react'
 
 function Home() {
 
-  const greetingQuery = useQuery({
-    ...trpc.greeting.queryOptions({ name: 'Jerry' })
-  })
-
-
   const user = trekie.use($ => $.user)
   if (!user) {
     errors.handle('NO_SESSION', new Error('Failed to load user in home page.'))
