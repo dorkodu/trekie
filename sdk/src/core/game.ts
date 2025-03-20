@@ -5,7 +5,7 @@ import { createStore, StoreApi } from 'zustand/vanilla'
 // misc
 import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@web/shared/utils'
 
-import { IUser } from '@web/core/account'
+import { IUser } from '@sdk/core/account'
 import { useCallback } from 'react'
 import { useStore } from 'zustand'
 import { calculateStreak } from './lib'

@@ -1,4 +1,6 @@
 {
+  "extends": "../tsconfig.json",
+  
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -26,11 +28,7 @@
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
-
-    "paths": {
-      "@/*": ["./src/*"]
-    }
   },
-  "include": ["src", "src/shared/lib/errors.ts", "src/shared/lib/db.ts", "src/shared/lib/notifications.ts"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

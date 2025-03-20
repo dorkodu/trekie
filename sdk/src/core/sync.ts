@@ -51,6 +51,7 @@ export const Sync = {
   }
 }
 
+// TODO: kind'a göre trpc çağırsın. 
 export async function status<T>(kind: string, userId: string, data: T) {
   let s = Sync.status(kind, userId, data)
   await Sync.share(s)

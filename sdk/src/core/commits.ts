@@ -140,6 +140,9 @@ export function Commitments<TCommitments extends Record<any, ICommitmentKind>, T
         ...commitResult,
         userId: game().user.id,
       }
+
+      // TODO: take permission from server, if valid save to db, process rewards
+
       // save commit record to db
       db.commitRecords.add(commitRecord, commitRecord.id)
       db.commitments.update(id, { lastActivity: Date.now() })
@@ -156,6 +159,7 @@ export function Commitments<TCommitments extends Record<any, ICommitmentKind>, T
       let instance = commitments[kind]!.create()
       db.commitments.add(instance, instance.id)
       status('COMMITMENT:CREATE', game().user.id, { instance })
+
       return instance
     },
 

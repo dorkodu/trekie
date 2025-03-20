@@ -1,7 +1,7 @@
-import { Timestamp } from "@web/shared/utils"
+import { DEFAULT_AVATAR } from "@sdk/core/consts"
+import { Timestamp } from "@sdk/utils"
 import { ulid } from "ulidx"
 import { z } from "zod"
-import { DEFAULT_AVATAR } from "./consts"
 
 export type IAccount = z.infer<typeof IAccount>
 export type IProfile = z.infer<typeof IProfile>
