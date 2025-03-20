@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { IUser } from '@web/core'
+import { IUser } from '@sdk/core'
 import { IGoal } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
 

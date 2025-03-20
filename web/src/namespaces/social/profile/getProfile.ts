@@ -1,4 +1,4 @@
-import { IUser } from "@web/core"
+import { IUser } from "@sdk/core/index"
 import { db } from "@web/shared/lib/db"
 import { Maybe } from "@web/shared/utils"
 

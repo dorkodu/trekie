@@ -15,7 +15,7 @@
     "downlevelIteration": true,
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,  
+    "forceConsistentCasingInFileNames": true,
   },
   "include": ["src"],
   "exclude": ["node_modules"]

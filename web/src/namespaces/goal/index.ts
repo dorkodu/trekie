@@ -1,4 +1,4 @@
-import { ICommitmentInstance } from "@web/core"
+import { ICommitmentInstance } from "@sdk/core/index"
 import { Maybe } from "@web/shared/utils"
 import { Component } from "./component"
 import { IGoal, IGoalTemplate, schema } from './schema'

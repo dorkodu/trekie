@@ -9,5 +9,9 @@ export const updateUser = z.strictObject({
   username: commonSchemas.username,
 })
 
+export const updateProfile = z.strictObject({
+
+})
+
 export * as userSchemas from "./schema"
 

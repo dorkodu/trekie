@@ -6,12 +6,12 @@ import { syncSchema } from "./schema"
 import { syncService } from "./service"
 
 export const router = Router({
-  send: authRequiredProcedure
-    .input(z.any())
+  push: authRequiredProcedure
+    .input(syncSchema.push)
     .query((opts) => { throw new TRPCError({ code: "NOT_IMPLEMENTED" }) }
     ),
 
-  hello: authOptionalProcedure
+  pull: authRequiredProcedure
     .input(z.object({ name: z.string() }))
     .query((opts) =>
       "hello " + opts.input.name

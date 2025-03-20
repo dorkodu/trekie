@@ -1,7 +1,6 @@
 import { inferSchema } from "@web/shared/utils"
 import { z } from "zod"
 
-
 export const statusSchema = z.object({
   kind: z.string(),
   createdAt: z.number(),
@@ -9,7 +8,7 @@ export const statusSchema = z.object({
   data: z.any(),
 })
 
-export const send = z.strictObject({
+export const push = z.strictObject({
   statuses: z.array(statusSchema),
 })
 
@@ -17,8 +16,9 @@ export const getStatus = z.strictObject({
   hash: z.string(),
 })
 
-export const pullStatuses = z.strictObject({
-  hash: z.string(),
+export const pull = z.strictObject({
+  startTime: z.number().optional(),
+  endTime: z.number().optional(),
 })
 
 

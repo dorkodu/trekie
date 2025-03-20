@@ -8,5 +8,5 @@ export const router = Router({
 
 })
 
-export * as socialEndpoints from "./endpoints"
+export * as commitmentEndpoints from "./endpoints"
 

@@ -1,4 +1,4 @@
-import * as Trekie from '@web/core'
+import * as Trekie from '@sdk'
 
 import { goalCommitment } from '@web/namespaces/goal/commitment'
 import { habitCommitment } from '@web/namespaces/habit/commitment'

@@ -1,4 +1,5 @@
-import * as Trekie from '@web/core'
+import { } from '@sdk/app'
+import { AccountTier, GameState, IUser } from '@sdk/core'
 
 import { goals, IGoal } from "@web/namespaces/goal"
 import { habits, IHabit } from "@web/namespaces/habit"
@@ -9,7 +10,7 @@ import { ulid } from 'ulidx'
 // register a user
 // fill mock data like a real user 
 
-export function generateMockUser(): Trekie.IUser {
+export function generateMockUser(): IUser {
   return {
     id: ulid(),
     username: 'doruk',
@@ -21,11 +22,11 @@ export function generateMockUser(): Trekie.IUser {
     url: "https://doruk.dorkodu.com",
     birthDate: new Date("03/08/2004").getTime(),
     joinedAt: new Date("19/02/2024 10:50").getTime(),
-    tier: Trekie.AccountTier.PREMIUM,
+    tier: AccountTier.PREMIUM,
   }
 }
 
-export function generateMockGameState(): Trekie.GameState {
+export function generateMockGameState(): GameState {
   return {
     user: generateMockUser(),
     xp: 0,

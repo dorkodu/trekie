@@ -1,4 +1,4 @@
-import { IStatus } from '@web/core/sync'
+import { IStatus } from '@sdk/core/sync'
 
 export async function getGameState(userId: string) {
 

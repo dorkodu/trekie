@@ -1,4 +1,4 @@
-import { AccountTier, IUser } from "@web/core"
+import { AccountTier, IUser } from "@sdk/core/index"
 import { trekie } from "@web/shared/lib/trekie"
 import { LogKind, log } from "@web/shared/utils/log"
 import { create } from "zustand"

@@ -1,6 +1,6 @@
 import { pg } from "@api/lib/pg"
+import { IStatus } from "@sdk/core/sync"
 import { TRPCError } from "@trpc/server"
-import { IStatus } from "@web/core/sync"
 import type { z } from "zod"
 import type { syncSchema } from "./schema"
 

@@ -9,15 +9,17 @@
 
     "alwaysStrict": true,
     "allowUnreachableCode": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
 
     "baseUrl": ".",
+
     "paths": {
         "@api/*": ["./api/src/*"],
-        "@web/*": ["./web/src/*"]
+        "@web/*": ["./web/src/*"],
+        "@sdk/*": ["./sdk/src/*"]
     }
   },
   "references": [
@@ -26,6 +28,9 @@
     },
     {
       "path": "api"
+    },
+    {
+      "path": "sdk"
     },
   ]
 }

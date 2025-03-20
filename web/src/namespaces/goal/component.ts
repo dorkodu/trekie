@@ -1,6 +1,7 @@
 import { db } from "@web/shared/lib/db"
 import { errors } from "@web/shared/lib/errors"
 import { trekie } from "@web/shared/lib/trekie"
+import { trpc } from "@web/shared/lib/trpc"
 import { arrayRemoveItem } from "@web/shared/utils"
 import { ulid } from "ulidx"
 import { IGoal, Interface } from "."
@@ -30,7 +31,7 @@ export const Component: Interface = {
   },
 
   async create(props) {
-    let instance = trekie.commitments.create('Habit')
+    let instance = trekie.commitments.create('Goal')
 
     let goal = {
       ...props,
@@ -43,6 +44,10 @@ export const Component: Interface = {
       giveupAt: null,
       completedAt: null
     } satisfies IGoal
+
+    // check locally for validation, if seems legit just do it.
+    // when server returns success, its ok. if not, rollback. 
+    // trpc or react query
 
     await this.add(goal)
 
