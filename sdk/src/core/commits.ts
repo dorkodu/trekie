@@ -1,8 +1,8 @@
+import type { IDexieDb } from "@sdk/app/db"
 import { ulid } from "ulidx"
 import { z } from "zod"
-import { db } from "./db"
+import { IStatus, status } from "@sdk/utils/sync"
 import { Game, GameMutations, ReadOnlyGame } from "./game"
-import { IStatus, status, Sync } from "./sync"
 
 export const CommitReward = z.strictObject({
   xp: z.number(),
@@ -123,7 +123,9 @@ export function Commitment
 /**
  * Commitments Module for use in Trekie superconstruct
  */
-export function Commitments<TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments>(game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments) {
+export function Commitments
+  <TCommitments extends Record<any, ICommitmentKind>, TKind extends keyof TCommitments>
+  (game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments, db: IDexieDb) {
   return {
     table: db.commitments,
     act<TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(
