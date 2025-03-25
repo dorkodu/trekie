@@ -1,4 +1,4 @@
-import { IStatus } from "@sdk/core/sync"
+import { IStatus } from "@sdk/utils/sync"
 
 export function receive(statuses: IStatus<any>) {
 

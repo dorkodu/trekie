@@ -93,6 +93,8 @@ export function arrayRemoveItem<T>(arr: Array<T>, value: T): Array<T> {
   return arr
 }
 
+export const isBrowser = typeof window !== "undefined"
+
 export { format } from './format'
 
 export * as utils from '.'

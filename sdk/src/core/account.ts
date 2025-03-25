@@ -1,5 +1,4 @@
 import { DEFAULT_AVATAR } from "@sdk/core/consts"
-import { Timestamp } from "@sdk/utils"
 import { ulid } from "ulidx"
 import { z } from "zod"
 

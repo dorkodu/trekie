@@ -1,11 +1,12 @@
-import * as Trekie from '@sdk'
+import { createMiniApp } from '@sdk/app'
+import { GameState } from '@sdk/core'
 
 import { goalCommitment } from '@web/namespaces/goal/commitment'
 import { habitCommitment } from '@web/namespaces/habit/commitment'
 import { useEffect } from 'react'
 import { generateMockGameState } from './mock'
 
-const initialState: Trekie.GameState = generateMockGameState()
+const initialState: GameState = generateMockGameState()
 
 /**
  * TODO: add importing existing state NOT BLANK/MOCK EVERY TIME 
@@ -19,7 +20,7 @@ const commitments = {
   'Goal': goalCommitment,
 }
 
-export const trekie = Trekie.create({
+export const trekie = createMiniApp({
   initialState,
   commitments
 })

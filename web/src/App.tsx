@@ -1,7 +1,7 @@
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
-import { AccountTier } from '@sdk'
+import { AccountTier } from '@sdk/core'
 import { QueryClientProvider } from '@tanstack/react-query'
 import OverlayLoader from '@web/shared/components/loaders/OverlayLoader'
 import ApplicationError from '@web/shared/components/misc/ApplicationError'
