@@ -1,44 +1,28 @@
+import { createDb, startDb } from "@sdk/app/db"
 import { CommitEvent, Commitments, Game, GameState, ICommitmentKind, ICommitRecord, ICommitReward } from "@sdk/core"
 import { useEffect } from "react"
+import { useDailyTask } from "./hooks"
 
 export type CreateConfig<TCommitments extends Record<any, ICommitmentKind>> = {
   initialState: GameState,
   commitments: TCommitments,
 }
 
-export type CreateTrekie = ReturnType<typeof create>
+export type CreateMiniApp = ReturnType<typeof createMiniApp>
 
-export function create<TCommitments extends Record<any, ICommitmentKind>>
+export function createMiniApp<TCommitments extends Record<any, ICommitmentKind>>
   ({ initialState, commitments }: CreateConfig<TCommitments>) {
 
   const { game, useGame, useReadonlyGame, readOnlyGame, mutations } = Game(initialState)
 
-  function useDailyRefresh() {
-    useEffect(() => {
-      const task = () => { game.getState().dailyRefresh() }
-
-      const today = new Date()
-      const tomorrow = new Date()
-      tomorrow.setDate(tomorrow.getDate() + 1)
-      tomorrow.setUTCHours(0, 0, 0, 0)
-
-      let interval: ReturnType<typeof setInterval>
-      let timeout = setTimeout(() => {
-        task()
-        interval = setInterval(task, 24 * 60 * 60 * 1000)
-      }, tomorrow.getTime() - today.getTime())
-
-      return () => {
-        clearTimeout(interval)
-        clearTimeout(timeout)
-      }
-    }, [])
-  }
+  // create dexie db instance & do chores
+  const db = createDb()
+  startDb(db)
 
   return {
     use: useReadonlyGame,
     game: readOnlyGame,
-    commitments: Commitments(readOnlyGame, mutations, commitments),
-    useDailyRefresh,
+    commitments: Commitments(readOnlyGame, mutations, commitments, db),
+    useDailyRefresh: useDailyTask(() => { game.getState().dailyRefresh() })
   }
 }
