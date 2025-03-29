@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 
-// a generic wrapper for daily refresh hook
-export function useDailyTask(task: () => void) {
-  return useEffect(() => {
+export function dailyTask(task: () => void) {
+  return () => {
     const today = new Date()
     const tomorrow = new Date()
     tomorrow.setDate(tomorrow.getDate() + 1)
@@ -18,5 +17,5 @@ export function useDailyTask(task: () => void) {
       clearTimeout(interval)
       clearTimeout(timeout)
     }
-  }, [])
+  }
 }
