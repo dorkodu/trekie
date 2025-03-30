@@ -8,26 +8,20 @@ import ApplicationError from '@web/shared/components/misc/ApplicationError'
 import { modals } from '@web/shared/components/modals'
 import { onError, onReset } from '@web/shared/lib/errors'
 import { queryClient } from "@web/shared/lib/react-query"
-import { trekie } from '@web/shared/lib/trekie'
+import { trekie, useDailyRefresh } from '@web/shared/lib/trekie'
 import { useAppStore } from '@web/shared/stores/appStore'
 import { cssVariablesResolver, theme } from '@web/styles/theme'
 import { FlagsProvider } from 'flagged'
-import { useEffect, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { useAuthCheck } from './shared/lib/auth'
 
 function App() {
   const loading = useAppStore($ => $.loading)
   const premium = trekie.use($ => $.user.tier !== AccountTier.FREE)
 
-  useEffect(() => {
-    // TODO: Perform authorization logic by sending a request to the API
-    if (!loading.auth) return
-    // auth.login()
-  }, [loading.auth])
-
-  // trekie hooks
-  trekie.useDailyRefresh()
+  useDailyRefresh() // trekie daily game refresh
+  useAuthCheck() // check user session, do auth
 
   return (
     <ErrorBoundary FallbackComponent={ApplicationError} onError={onError} onReset={onReset}>

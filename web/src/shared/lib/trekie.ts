@@ -24,3 +24,7 @@ export const trekie = createMiniApp({
   initialState,
   commitments
 })
+
+export function useDailyRefresh() {
+  useEffect(trekie.dailyRefresh, [])
+}
