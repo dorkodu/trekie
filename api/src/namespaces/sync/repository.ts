@@ -1,5 +1,5 @@
 import { pg } from "@api/lib/pg"
-import { IStatus } from "@sdk/core/sync"
+import { IStatus } from "@sdk/utils/sync"
 import { TRPCError } from "@trpc/server"
 import type { z } from "zod"
 import type { syncSchema } from "./schema"
@@ -7,7 +7,6 @@ import type { syncSchema } from "./schema"
 export async function saveStatus(status: IStatus) {
 
 }
-
 
 export async function saveBulkStatuses(status: IStatus) {
 

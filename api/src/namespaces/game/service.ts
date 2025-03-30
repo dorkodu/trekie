@@ -1,5 +1,3 @@
-import { IStatus } from '@sdk/utils/sync'
-
 export async function getGameState(userId: string) {
 
 }

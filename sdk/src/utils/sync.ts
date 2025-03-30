@@ -4,7 +4,7 @@ import { trpc } from '@web/shared/lib/trpc'
 import { hash } from '@web/shared/utils/hash'
 import { z } from 'zod'
 
-// this represents a single commit event message
+// this represents a single meaningful event message in Trekie
 export interface IStatus<T = any> {
   kind: string
   createdAt: number
