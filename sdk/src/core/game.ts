@@ -3,11 +3,11 @@ import { immer } from 'zustand/middleware/immer'
 import { createStore, StoreApi } from 'zustand/vanilla'
 
 // misc
-import { Daystamp, daystamp, Maybe, Timestamp, utils } from '@web/shared/utils'
+import { Daystamp, daystamp, Maybe, Timestamp, utils } from '../utils'
 
-import { IUser } from '@sdk/core/account'
 import { useCallback } from 'react'
 import { useStore } from 'zustand'
+import { IUser } from '../core'
 import { calculateStreak } from './lib'
 
 export interface GameState {

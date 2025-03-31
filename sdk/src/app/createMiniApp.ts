@@ -1,4 +1,4 @@
-import { Commitments, Game, GameState, ICommitmentKind } from "@sdk/core"
+import { Commitments, Game, GameState, ICommitmentKind } from "../core"
 import { createDb, startDb } from "./db"
 import { dailyTask } from "./hooks"
 

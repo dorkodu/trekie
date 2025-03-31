@@ -1,5 +1,3 @@
-import { CommitEvent, Commitment, GameState } from "@sdk/core"
-
 export const DEFAULT_AVATAR = '/images/avatar.png'
 
 export const XpGains = {

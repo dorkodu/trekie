@@ -1,4 +1,4 @@
-import { daystamp } from "@web/shared/utils"
+import { daystamp } from "../utils"
 import { GameInterface } from "./game"
 
 // Function to calculate the current streak based on xpHistory and dailyXpTarget

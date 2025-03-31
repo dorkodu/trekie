@@ -1,18 +1,15 @@
 import { Flex, Text, Title } from '@mantine/core'
+import { useQuery } from '@tanstack/react-query'
 import CenterLoader from '@web/shared/components/loaders/CenterLoader'
 import { trekie } from '@web/shared/lib/trekie'
 import { useEffect, useState } from 'react'
 
 export default function Me() {
-  const [user, setUser] = useState(null)
   const selfUser = trekie.use($ => $.user)
 
-  useEffect(() => {
-    const profile = await getUserProfile(selfUser.id)
-    setUser(profile)
-  }, [selfUser.id])
+  let loading = false
 
-  if (!user) return <CenterLoader />
+  if (loading) return <CenterLoader />
 
   return (
     <Flex direction="column" m="md">

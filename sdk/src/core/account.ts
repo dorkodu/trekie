@@ -1,6 +1,6 @@
-import { DEFAULT_AVATAR } from "@sdk/core/consts"
 import { ulid } from "ulidx"
 import { z } from "zod"
+import { DEFAULT_AVATAR } from "./consts"
 
 export type IAccount = z.infer<typeof IAccount>
 export type IProfile = z.infer<typeof IProfile>

@@ -1,12 +1,9 @@
-import { ICommitmentInstance, ICommitRecord } from '@sdk/core/commits'
-import { isBrowser } from '@sdk/utils'
-import { IStatus } from '@sdk/utils/sync'
 import Dexie, { Table } from 'dexie'
+import { ICommitmentInstance, ICommitRecord } from '../core/commits'
 
 export const createDb = () =>
   new Dexie('trekie') as Dexie & {
     commitRecords: Table<ICommitRecord<any>, string>
-    statuses: Table<IStatus<any>, string>
     commitments: Table<ICommitmentInstance, string>
   }
 
@@ -17,7 +14,6 @@ export function startDb(db: IDexieDb) {
   db.version(1).stores({
     commitRecords: 'id, userId, timestamp, event, commitment',
     commitments: 'id, kind, createdAt, lastActivity',
-    statuses: ''
   })
 
   db.on("populate", async () => { })
