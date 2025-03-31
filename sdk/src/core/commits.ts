@@ -1,7 +1,6 @@
-import type { IDexieDb } from "@sdk/app/db"
 import { ulid } from "ulidx"
 import { z } from "zod"
-import { IStatus, status } from "@sdk/utils/sync"
+import type { IDexieDb } from "../app/db"
 import { Game, GameMutations, ReadOnlyGame } from "./game"
 
 export const CommitReward = z.strictObject({
@@ -151,8 +150,37 @@ export function Commitments
       // apply rewards to game state
       mutations.changeXp(commitRecord.reward.xp)
       mutations.changeCoinsBalance(commitRecord.reward.coins)
+    },
 
-      return status('COMMITMENT:ACT', game().user.id, commitRecord)
+    async rollback(commitId: string) {
+      // Look up the record by ID
+      const commitRecord = await db.commitRecords.get(commitId)
+      if (!commitRecord) return
+
+      // Create a rollback record to track this operation
+      const rollbackRecord: ICommitRecord<any> = {
+        id: ulid(),
+        event: `ROLLBACK_${commitRecord.event}`,
+        kind: commitRecord.kind,
+        instanceId: commitRecord.instanceId,
+        timestamp: Date.now(),
+        data: {
+          originalCommitId: commitRecord.id,
+          reason: 'manual_rollback'
+        },
+        reward: {
+          xp: -commitRecord.reward.xp,
+          coins: -commitRecord.reward.coins
+        },
+        userId: game().user.id
+      }
+
+      // Apply negative rewards to reverse the original commit
+      mutations.changeXp(-commitRecord.reward.xp)
+      mutations.changeCoinsBalance(-commitRecord.reward.coins)
+
+      // Save the rollback record
+      await db.commitRecords.add(rollbackRecord, rollbackRecord.id)
     },
 
     get: (id: string) => db.commitments.get(id),
@@ -160,19 +188,16 @@ export function Commitments
     create(kind: TKind) {
       let instance = commitments[kind]!.create()
       db.commitments.add(instance, instance.id)
-      status('COMMITMENT:CREATE', game().user.id, { instance })
 
       return instance
     },
 
     complete(id: string) {
       db.commitments.update(id, { completedAt: Date.now() })
-      status('COMMITMENT:COMPLETE', game().user.id, { id })
     },
 
     delete(id: string) {
       db.commitments.update(id, { isDeleted: true })
-      status('COMMITMENT:DELETE', game().user.id, { id })
     },
   }
-} 
+}
