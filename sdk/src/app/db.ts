@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie'
-import { ICommitmentInstance, ICommitRecord } from '../core/commits'
+import { ICommitmentInstance, ICommitRecord } from '../core/commitments'
 
 export const createDb = () =>
   new Dexie('trekie') as Dexie & {
@@ -12,8 +12,8 @@ export type IDexieDb = ReturnType<typeof createDb>
 export function startDb(db: IDexieDb) {
   // Schema declaration:
   db.version(1).stores({
-    commitRecords: 'id, userId, timestamp, event, commitment',
-    commitments: 'id, kind, createdAt, lastActivity',
+    commitRecords: 'id, userId, event, instanceId',
+    commitments: 'id, kind, userId',
   })
 
   db.on("populate", async () => { })
