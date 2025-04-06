@@ -44,7 +44,7 @@ export const Component: Interface = {
       return // has no permission or habit/user does not exist
     }
 
-    await db.habits.update(id, { deleted: true })
+    // await db.habits.update(id, { isDeleted: true }) // --> should delete but
     await trekie.commitments.table.update(removedHabit.commitmentId, { isDeleted: true })
   },
 
@@ -69,7 +69,7 @@ export const Component: Interface = {
 
     // If count is going up
     if (count > 0) {
-      commitResult = trekie.commitments.act({
+      commitResult = await trekie.commitments.act({
         kind: 'Habit',
         event: 'COUNT_UP',
         id: habit.commitmentId,
@@ -77,7 +77,7 @@ export const Component: Interface = {
       })
     } else {
       // If count is going down
-      commitResult = trekie.commitments.act({
+      commitResult = await trekie.commitments.act({
         kind: 'Habit',
         event: 'COUNT_DOWN',
         id: habit.commitmentId,

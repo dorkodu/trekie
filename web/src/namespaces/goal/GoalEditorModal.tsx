@@ -5,6 +5,7 @@ import { createDb } from '@sdk/app/db'
 import { IconTrash } from '@tabler/icons-react'
 import { schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
+import { db } from '@web/shared/lib/db'
 import { trekie } from '@web/shared/lib/trekie'
 import { useEffect, useState } from 'react'
 
@@ -13,8 +14,10 @@ type GoalEditorMode = 'CREATE' | 'EDIT'
 interface Commitment {
   id: string
   title: string
-  kind: 'Todo' | 'Habit' | 'Other' | string
+  kind: 'Todo' | 'Habit' | string
 }
+
+
 
 const GoalEditorModal = ({
   context,
@@ -39,7 +42,7 @@ const GoalEditorModal = ({
           .toArray()
 
         // Fetch all commitments that match the user's commitment IDs
-        const commitmentData = await db.commitments
+        const commitmentData = await db.
           .where('id')
           .anyOf(userCommitments.map(c => c.id))
           .toArray()
