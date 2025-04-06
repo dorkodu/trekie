@@ -1,5 +1,5 @@
 export * from './account'
-export * from './commits'
+export * from './commitments'
 export * from './consts'
 export * from './game'
 
