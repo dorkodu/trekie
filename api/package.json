@@ -10,12 +10,13 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@elysiajs/trpc": "^1.1.0",
+    "@elysiajs/websocket": "^0.2.8",
     "@langchain/core": "^0.3.40",
     "@langchain/langgraph": "^0.2.46",
     "@trpc/client": "^11.0.0-rc.817",
-    "@trpc/server": "^11.0.0-rc.817",
+    "@trpc/server": "^11.0.3",
     "better-auth": "^1.2.5",
-    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
     "elysia": "^1.2.25",

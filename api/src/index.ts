@@ -1,7 +1,15 @@
 import { Elysia } from 'elysia'
 
+import { trpc } from '@elysiajs/trpc'
+import { router } from './router'
+
 const app = new Elysia()
-  .get('/', () => 'Hello Elysia')
+
+  .get('/', () => '')
+
+  // trpc
+  .use(trpc(router))
+
   .listen(3000)
 
 console.log(
