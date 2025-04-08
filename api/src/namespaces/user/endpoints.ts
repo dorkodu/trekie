@@ -11,15 +11,11 @@ export function getUser() { }
 export const router = Router({
   getUser: authOptionalProcedure
     .input(userSchemas.getUser)
-    .query((opts) =>
-      userRepository.getUser(opts.ctx.session?.userId, opts.input)
-    ),
+    .query((opts) => { }),
 
   updateUser: authRequiredProcedure
     .input(userSchemas.updateUser)
-    .mutation((opts) =>
-      userRepository.updateUser(opts.ctx.session.userId, opts.input.username)
-    ),
+    .mutation((opts) => { }),
 })
 
 export * as userEndpoints from "./endpoints"
