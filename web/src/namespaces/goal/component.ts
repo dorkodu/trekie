@@ -31,7 +31,7 @@ export const Component: Interface = {
   },
 
   async create(props) {
-    let instance = trekie.commitments.create('Goal')
+    let instance = await trekie.commitments.create('Goal')
 
     let goal = {
       ...props,

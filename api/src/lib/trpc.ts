@@ -1,5 +1,3 @@
-import { authRepository } from "@api/namespaces/auth/repository"
-import { tokenUtil } from "@api/namespaces/auth/token-util"
 import { initTRPC, TRPCError } from "@trpc/server"
 import type { Request, Response } from "express"
 
@@ -17,7 +15,7 @@ export const publicProcedure = t.procedure
 
 export const authRequiredProcedure = publicProcedure.use(async (opts) => {
   const token = tokenUtil.getSession(opts.ctx.req)
-  if (!token) throw new TRPCError({ code: "UNAUTHORIZED" })
+  // if (!token) throw new TRPCError({ code: "UNAUTHORIZED" })
 
   if (opts.ctx.session === undefined) {
     opts.ctx.session = authRepository.getSessionByToken(token)

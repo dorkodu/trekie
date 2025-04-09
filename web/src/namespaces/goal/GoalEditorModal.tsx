@@ -1,72 +1,82 @@
-import { ActionIcon, Box, Button, Checkbox, Flex, Group, Paper, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { ActionIcon, Box, Button, Flex, Group, NumberInput, Stack, Text, Textarea, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 import { ContextModalProps } from '@mantine/modals'
-import { createDb } from '@sdk/app/db'
+import { IUser } from '@sdk/core'
 import { IconTrash } from '@tabler/icons-react'
+import { useQuery } from '@tanstack/react-query'
 import { schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
 import { db } from '@web/shared/lib/db'
 import { trekie } from '@web/shared/lib/trekie'
-import { useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
+import { ChoiceCombobox } from './ChoiceCombobox'
 
 type GoalEditorMode = 'CREATE' | 'EDIT'
 
-interface Commitment {
-  id: string
-  title: string
-  kind: 'Todo' | 'Habit' | string
+// Updated to match the ChoiceCombobox option type
+interface CommitmentOption {
+  value: string
+  label: ReactNode
 }
-
-
 
 const GoalEditorModal = ({
   context,
   id,
   innerProps = { mode: 'CREATE' },
 }: ContextModalProps<{ mode: GoalEditorMode, goal?: IGoal }>) => {
-  const [availableCommitments, setAvailableCommitments] = useState<Commitment[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [commitmentOptions, setCommitmentOptions] = useState<CommitmentOption[]>([])
+  const user = trekie.use($ => $.user)
 
-  // Fetch commitments from Dexie DB
-  useEffect(() => {
-    async function fetchCommitments() {
+  const choicesQuery = useQuery({
+    queryKey: ['userCommitments'],
+    queryFn: async () => {
       try {
-        setIsLoading(true)
-        // Get the current user from trekie
-        const user = trekie.use($ => $.user)
-
         // Get user's commitments from trekie
-        const userCommitments = trekie.commitments.table
+        const userCommitments = await trekie.commitments.getOwnCommitments()
+        // normally we would use commitment id's to fetch from their respective kinds / tables 
+
+        // Fetch all commitment entities
+        const commitmentEntities: {
+          habits: IHabit[],
+        } = { habits: [] }
+
+        commitmentEntities.habits = await db.habits
           .where('userId')
           .equals(user.id)
           .toArray()
 
-        // Fetch all commitments that match the user's commitment IDs
-        const commitmentData = await db.
-          .where('id')
-          .anyOf(userCommitments.map(c => c.id))
-          .toArray()
+        // Updated formatByKind to directly return the expected option format
+        const formatByKind = <T extends { id: string; title?: string }>(
+          items: T[],
+          kind: string
+        ): CommitmentOption[] => {
+          return items.map(item => ({
+            value: item.id,
+            label: (
+              <Group gap="xs" wrap="nowrap">
+                <Text>{item.title || `Unnamed ${kind}`}</Text>
+                <Text size="xs" c="dimmed">({kind})</Text>
+              </Group>
+            )
+          }))
+        }
 
-        // Format for the component
-        const formattedCommitments: Commitment[] = commitmentData.map(commitment => ({
-          id: commitment.id,
-          title: commitment.title || `Unnamed ${commitment.kind}`,
-          kind: commitment.kind
-        }))
+        // Format all commitment types
+        const formattedOptions: CommitmentOption[] = [
+          ...formatByKind(commitmentEntities.habits, "Habit"),
+          // Add other commitment types here as they become available
+        ]
 
-        setAvailableCommitments(formattedCommitments)
+        setCommitmentOptions(formattedOptions)
+        return formattedOptions
       } catch (error) {
-        console.error("Error fetching commitments:", error)
-        // Fallback to empty array
-        setAvailableCommitments([])
-      } finally {
-        setIsLoading(false)
+        console.error("[app] Error fetching user commitments:", error)
+        setCommitmentOptions([]) // Fallback to empty array
+        return []
       }
     }
-
-    fetchCommitments()
-  }, [])
-
+  })
+  3
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: innerProps.goal ?? {
@@ -79,21 +89,21 @@ const GoalEditorModal = ({
     validate: zodResolver(GoalSchema.GoalTemplate),
   })
 
-  const handleCreateGoal = (values: typeof form.values) => {
+  const onCreate = (values: typeof form.values) => {
     // In a real app, you would call an API to create the goal
     console.log('Creating goal:', values)
     // After successful creation, close the modal
     context.closeModal(id)
   }
 
-  const handleUpdateGoal = (values: typeof form.values) => {
+  const onUpdate = (values: typeof form.values) => {
     // In a real app, you would call an API to update the goal
     console.log('Updating goal:', values)
     // After successful update, close the modal
     context.closeModal(id)
   }
 
-  const handleDeleteGoal = () => {
+  const onDelete = () => {
     if (!innerProps.goal?.id) return
 
     // In a real app, you would call an API to delete the goal
@@ -102,27 +112,9 @@ const GoalEditorModal = ({
     context.closeModal(id)
   }
 
-  const isCommitmentSelected = (commitmentId: string) => {
-    return form.values.commitments.includes(commitmentId)
-  }
-
-  const toggleCommitment = (commitmentId: string) => {
-    const currentCommitments = [...form.values.commitments]
-    const index = currentCommitments.indexOf(commitmentId)
-
-    if (index === -1) {
-      // Add commitment
-      form.setFieldValue('commitments', [...currentCommitments, commitmentId])
-    } else {
-      // Remove commitment
-      currentCommitments.splice(index, 1)
-      form.setFieldValue('commitments', currentCommitments)
-    }
-  }
-
   return (
     <>
-      <form onSubmit={form.onSubmit(innerProps.mode === 'CREATE' ? handleCreateGoal : handleUpdateGoal)}>
+      <form onSubmit={form.onSubmit(innerProps.mode === 'CREATE' ? onCreate : onUpdate)}>
         <Stack gap="sm">
           <TextInput
             withAsterisk
@@ -140,10 +132,9 @@ const GoalEditorModal = ({
             {...form.getInputProps('description')}
           />
 
-          <TextInput
+          <NumberInput
             withAsterisk
             label="XP Target"
-            type="number"
             placeholder="0"
             key={form.key('xpTarget')}
             {...form.getInputProps('xpTarget')}
@@ -151,24 +142,13 @@ const GoalEditorModal = ({
 
           <Box>
             <Text fw={500} mb={5}>Commitments</Text>
-            <Paper p="sm" withBorder>
-              <Stack gap="xs">
-                {isLoading ? (
-                  <Text size="sm" c="dimmed">Loading commitments...</Text>
-                ) : availableCommitments.length === 0 ? (
-                  <Text size="sm" c="dimmed">No commitments found</Text>
-                ) : (
-                  availableCommitments.map(commitment => (
-                    <Checkbox
-                      key={commitment.id}
-                      label={`${commitment.title} - ${commitment.kind}`}
-                      checked={isCommitmentSelected(commitment.id)}
-                      onChange={() => toggleCommitment(commitment.id)}
-                    />
-                  ))
-                )}
-              </Stack>
-            </Paper>
+            {/* Updated ChoiceCombobox implementation with properly formatted options */}
+            <ChoiceCombobox
+              options={commitmentOptions}
+              value={form.values.commitments}
+              onChange={(selectedIds) => form.setFieldValue('commitments', selectedIds)}
+              placeholder="Select commitments to include in this goal"
+            />
           </Box>
 
           {innerProps.mode === 'CREATE' && (
@@ -179,7 +159,7 @@ const GoalEditorModal = ({
           {innerProps.mode === 'EDIT' && (
             <Flex gap={6}>
               <ActionIcon size="xl" color="red" variant="light" radius="lg"
-                onClick={handleDeleteGoal}>
+                onClick={onDelete}>
                 <IconTrash />
               </ActionIcon>
               <Button size="md" style={{ flexGrow: 1 }} type="submit">

@@ -1,7 +1,7 @@
 import { ulid } from "ulidx"
 import { IDexieDb } from "../../app/db"
 import { GameMutations, ReadOnlyGame } from "../game"
-import { ICommitmentKind, ICommitRecord } from "./schema"
+import { ICommitmentInstance, ICommitmentKind, ICommitRecord } from "./schema"
 
 /**
  * Commitments Module for use in Trekie superconstruct
@@ -85,6 +85,7 @@ export function Commitments
         .where('userId')
         .equals(userId)
         .toArray()
+      return commitments as ICommitmentInstance[]
     },
 
     get: (id: string) => db.commitments.get(id),
