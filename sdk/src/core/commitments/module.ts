@@ -11,7 +11,6 @@ export function Commitments
   (game: ReadOnlyGame, mutations: GameMutations, commitments: TCommitments, db: IDexieDb) {
 
   return {
-
     table: db.commitments,
 
     act: async <TKind extends keyof TCommitments, TEvent extends keyof TCommitments[TKind]['events']>(

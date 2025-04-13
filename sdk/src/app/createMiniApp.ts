@@ -23,6 +23,7 @@ export function createMiniApp<TCommitments extends Record<any, ICommitmentKind>>
     use: useReadonlyGame,
     useGame: useReadonlyGame,
     game: readOnlyGame,
+    db,
 
     commitments: Commitments(readOnlyGame, mutations, commitments, db),
 
