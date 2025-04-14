@@ -138,3 +138,34 @@ function HabitCounter({ habitId, onClick }: Props) {
   )
 }
 export default HabitCounter
+
+
+// Define the WeeklyCommitGraph component using Mantine
+const WeeklyCommitGraph: React.FC<{ counts: number[] }> = ({ counts }) => {
+  const maxCount = Math.max(...counts, 1) // Avoid division by zero
+
+  const getColorOpacity = (count: number) => {
+    if (count === 0) return 0.1
+    const intensity = count / maxCount
+    return Math.max(0.2, Math.min(1.0, intensity)) // Clamp between 0.2 and 1.0
+  }
+
+  return (
+    <Box display="flex" style={{ gap: '2px' }} title="Weekly Activity">
+      {counts.map((count, index) => (
+        <Tooltip key={index} label={`${count} commits on day ${index + 1}`} withArrow position="top">
+          <Box
+            style={{
+              width: 12,
+              height: 12,
+              backgroundColor: `rgba(35, 134, 54, ${getColorOpacity(count)})`,
+              borderRadius: vanilla.radius.sm,
+              border: `1px solid rgba(0, 0, 0, 0.1)`,
+            }}
+          />
+        </Tooltip>
+      ))}
+    </Box>
+  )
+}
+
