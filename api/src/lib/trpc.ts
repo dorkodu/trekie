@@ -14,17 +14,16 @@ export const Router = t.router
 export const publicProcedure = t.procedure
 
 export const authRequiredProcedure = publicProcedure.use(async (opts) => {
-  const token = tokenUtil.getSession(opts.ctx.req)
-  // if (!token) throw new TRPCError({ code: "UNAUTHORIZED" })
-
-  if (opts.ctx.session === undefined) {
-    opts.ctx.session = authRepository.getSessionByToken(token)
-  }
-
-  const session = await opts.ctx.session
+  /**
+   * const token = tokenUtil.getSession(opts.ctx.req)
+  if (!token) throw new TRPCError({ code: "UNAUTHORIZED" })
+  // if no session, get session by token
+  // const session = await opts.ctx.session
   if (!session) throw new TRPCError({ code: "UNAUTHORIZED" })
+   */
 
-  return opts.next({ ctx: { session } })
+  // replace null with actual session
+  return opts.next({ ctx: { session: null } })
 })
 
 export const authOptionalProcedure = publicProcedure.use(async (opts) => {

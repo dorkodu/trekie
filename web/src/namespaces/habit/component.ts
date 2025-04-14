@@ -6,6 +6,7 @@ import { trekie } from "@web/shared/lib/trekie"
 import { Daystamp, daystamp } from "@web/shared/utils"
 import { IHabit } from "./schema"
 
+import { ICommitRecord } from "@sdk/core"
 import { Interface } from "."
 
 // Helper function to check if a DAILYCHECK event already exists for today
@@ -65,7 +66,7 @@ export const Component: Interface = {
     db.habits.put(habit, habit.id)
 
     // Track the last commit result for potential rollback
-    let commitResult = null
+    let commitResult
 
     // If count is going up
     if (count > 0) {
@@ -88,8 +89,7 @@ export const Component: Interface = {
     console.log(habit)
 
     // Store the daily check commit ID if we trigger one
-    let dailyCheckCommitId = null
-
+    let dailyCheckCommitId: string | undefined
     // Only trigger DAILYCHECK event if we're crossing the threshold today
     // (going from below target to at/above target) and haven't already triggered it today
     if (
@@ -100,7 +100,7 @@ export const Component: Interface = {
       const alreadyCheckedToday = await hasDailyCheckToday(habit.commitmentId)
 
       if (!alreadyCheckedToday) {
-        dailyCheckCommitId = trekie.commitments.act({
+        dailyCheckCommitId = await trekie.commitments.act({
           kind: 'Habit',
           event: 'DAILYCHECK',
           id: habit.commitmentId,
@@ -119,9 +119,8 @@ export const Component: Interface = {
       const todayEnd = new Date(todayStart).setHours(23, 59, 59, 999)
 
       // Query for today's DAILYCHECK commit for this habit
-      const dailyChecks = await db.commitRecords
-        .where('instanceId')
-        .equals(habit.commitmentId)
+      const dailyChecks = await trekie.db.commitRecords
+        .where({ 'instanceId': habit.commitmentId })
         .and(record =>
           record.event === 'DAILYCHECK' &&
           record.timestamp >= todayStart &&
@@ -147,7 +146,7 @@ export const Component: Interface = {
     const userId = trekie.game().user.id
     if (!userId) return
 
-    let instance = trekie.commitments.create('Habit')
+    let instance = await trekie.commitments.create('Habit')
 
     let habit = {
       ...template,
