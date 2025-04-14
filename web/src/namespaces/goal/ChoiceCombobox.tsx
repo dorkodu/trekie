@@ -1,14 +1,15 @@
-import { Combobox, Input, Pill, PillsInput, useCombobox } from '@mantine/core'
+import { Combobox, Group, Input, Pill, PillsInput, Text, useCombobox } from '@mantine/core'
 import { ReactNode, useEffect, useState } from 'react'
 
-// Fixed option type with value and label
-interface OptionType {
+// Option type definition
+export interface ChoiceOption {
   value: string
-  label: ReactNode
+  label: string
+  content?: NonNullable<ReactNode>
 }
 
 interface ChoiceComboboxProps {
-  options: OptionType[]
+  options: ChoiceOption[]
   value?: string[]
   onChange?: (value: string[]) => void
   placeholder?: string
@@ -17,103 +18,94 @@ interface ChoiceComboboxProps {
 export function ChoiceCombobox(props: ChoiceComboboxProps) {
   const {
     options = [],
-    value: externalValue,
+    value: externalValue = [],
     onChange,
     placeholder = 'Pick one or more values',
   } = props
 
+  // Initialize combobox with proper configuration
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
     onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
   })
 
-  const [internalValue, setInternalValue] = useState<string[]>(externalValue || [])
+  const [search, setSearch] = useState('')
+  const [selectedValues, setSelectedValues] = useState<string[]>(externalValue)
 
-  // Sync with external value when it changes
+  // Keep internal state in sync with external value
   useEffect(() => {
-    if (externalValue !== undefined) {
-      setInternalValue(externalValue)
-    }
+    setSelectedValues(externalValue)
   }, [externalValue])
 
-  // Value handling logic
-  const value = externalValue !== undefined ? externalValue : internalValue
+  // Handle selecting an option
+  const handleOptionSubmit = (val: string) => {
+    const newValues = selectedValues.includes(val)
+      ? selectedValues.filter((v) => v !== val)
+      : [...selectedValues, val]
 
-  const handleValueSelect = (val: string) => {
-    const newValue = value.includes(val)
-      ? value.filter((v) => v !== val)
-      : [...value, val]
-
-    // Update internal state if uncontrolled
-    if (externalValue === undefined) {
-      setInternalValue(newValue)
-    }
-
-    // Notify parent component
-    onChange?.(newValue)
+    setSelectedValues(newValues)
+    onChange?.(newValues)
+    setSearch('')
   }
 
+  // Handle removing a selected value
   const handleValueRemove = (val: string) => {
-    const newValue = value.filter((v) => v !== val)
-
-    // Update internal state if uncontrolled
-    if (externalValue === undefined) {
-      setInternalValue(newValue)
-    }
-
-    // Notify parent component
-    onChange?.(newValue)
+    const newValues = selectedValues.filter((v) => v !== val)
+    setSelectedValues(newValues)
+    onChange?.(newValues)
   }
 
-  // Find option by value
-  const findOptionByValue = (val: string): OptionType | undefined => {
-    return options.find(opt => opt.value === val)
-  }
+  // Filter options: first remove selected values, then filter by search text
+  const filteredOptions = options
+    .filter(option => !selectedValues.includes(option.value)) // Hide already selected options
+    .filter(option =>
+      option.label.toString().toLowerCase().includes(search.toLowerCase())
+    )
 
-  // Create pills for selected values
-  const values = value.map((itemValue) => {
-    const option = findOptionByValue(itemValue)
+  const selectedItems = selectedValues.map((value) => {
+    const option = options.find((opt) => opt.value === value)
 
     return (
-      <Pill key={itemValue} withRemoveButton onRemove={() => handleValueRemove(itemValue)}>
-        {option ? option.label : itemValue}
+      <Pill
+        key={value}
+        withRemoveButton
+        onRemove={() => handleValueRemove(value)}
+      >
+        {option ?
+          option.content ?
+            option.content
+            : option.label
+          : value}
       </Pill>
     )
   })
 
-  // Create options for dropdown
-  const optionElements = options
-    .filter((item) => !value.includes(item.value))
-    .map((item) => (
-      <Combobox.Option
-        value={item.value}
-        key={item.value}
-        active={value.includes(item.value)}
-      >
-        {item.label}
-      </Combobox.Option>
-    ))
-
   return (
-    <Combobox store={combobox} onOptionSubmit={handleValueSelect} withinPortal={false}>
+    <Combobox
+      store={combobox}
+      onOptionSubmit={handleOptionSubmit}
+      withinPortal={true}
+    >
       <Combobox.DropdownTarget>
-        <PillsInput pointer onClick={() => combobox.toggleDropdown()}>
+        <PillsInput
+          onClick={() => combobox.openDropdown()}
+          rightSection={<Combobox.Chevron />}
+        >
           <Pill.Group>
-            {values.length > 0 ? (
-              values
-            ) : (
-              <Input.Placeholder>{placeholder}</Input.Placeholder>
-            )}
+            {selectedItems}
 
             <Combobox.EventsTarget>
               <PillsInput.Field
-                type="hidden"
-                onBlur={() => combobox.closeDropdown()}
-                onKeyDown={(e) => {
-                  if (e.key === 'Backspace' && value && value.length > 0) {
-                    e.preventDefault()
-                    handleValueRemove(value[value.length - 1])
-                  }
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.currentTarget.value)
+                  combobox.openDropdown()
+                }}
+                placeholder={selectedItems.length === 0 ? placeholder : undefined}
+                onFocus={() => combobox.openDropdown()}
+                onBlur={() => {
+                  combobox.closeDropdown()
+                  setSearch('')
                 }}
               />
             </Combobox.EventsTarget>
@@ -123,7 +115,21 @@ export function ChoiceCombobox(props: ChoiceComboboxProps) {
 
       <Combobox.Dropdown>
         <Combobox.Options>
-          {optionElements.length === 0 ? <Combobox.Empty>All options selected</Combobox.Empty> : optionElements}
+          {filteredOptions.length === 0 ? (
+            <Combobox.Empty>Nothing found</Combobox.Empty>
+          ) : (
+            filteredOptions.map((option) => (
+              <Combobox.Option
+                key={option.value}
+                value={option.value}
+                selected={selectedValues.includes(option.value)}
+              >
+                <Group gap="xs" wrap="nowrap">
+                  {option.content ?? <Text size="sm">{option.label}</Text>}
+                </Group>
+              </Combobox.Option>
+            ))
+          )}
         </Combobox.Options>
       </Combobox.Dropdown>
     </Combobox>

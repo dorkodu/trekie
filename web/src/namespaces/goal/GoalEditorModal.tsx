@@ -9,22 +9,16 @@ import { IHabit } from '@web/namespaces/habit'
 import { db } from '@web/shared/lib/db'
 import { trekie } from '@web/shared/lib/trekie'
 import { ReactNode, useState } from 'react'
-import { ChoiceCombobox } from './ChoiceCombobox'
+import { ChoiceCombobox, ChoiceOption } from './ChoiceCombobox'
 
 type GoalEditorMode = 'CREATE' | 'EDIT'
-
-// Updated to match the ChoiceCombobox option type
-interface CommitmentOption {
-  value: string
-  label: ReactNode
-}
 
 const GoalEditorModal = ({
   context,
   id,
   innerProps = { mode: 'CREATE' },
 }: ContextModalProps<{ mode: GoalEditorMode, goal?: IGoal }>) => {
-  const [commitmentOptions, setCommitmentOptions] = useState<CommitmentOption[]>([])
+  const [commitmentOptions, setCommitmentOptions] = useState<ChoiceOption[]>([])
   const user = trekie.use($ => $.user)
 
   const choicesQuery = useQuery({
@@ -49,20 +43,15 @@ const GoalEditorModal = ({
         const formatByKind = <T extends { id: string; title?: string }>(
           items: T[],
           kind: string
-        ): CommitmentOption[] => {
+        ): ChoiceOption[] => {
           return items.map(item => ({
             value: item.id,
-            label: (
-              <Group gap="xs" wrap="nowrap">
-                <Text>{item.title || `Unnamed ${kind}`}</Text>
-                <Text size="xs" c="dimmed">({kind})</Text>
-              </Group>
-            )
+            label: item.title
           }))
         }
 
         // Format all commitment types
-        const formattedOptions: CommitmentOption[] = [
+        const formattedOptions: ChoiceOption[] = [
           ...formatByKind(commitmentEntities.habits, "Habit"),
           // Add other commitment types here as they become available
         ]
@@ -76,7 +65,7 @@ const GoalEditorModal = ({
       }
     }
   })
-  3
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: innerProps.goal ?? {
@@ -142,7 +131,6 @@ const GoalEditorModal = ({
 
           <Box>
             <Text fw={500} mb={5}>Commitments</Text>
-            {/* Updated ChoiceCombobox implementation with properly formatted options */}
             <ChoiceCombobox
               options={commitmentOptions}
               value={form.values.commitments}
