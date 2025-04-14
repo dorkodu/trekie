@@ -1,8 +1,8 @@
-import { ActionIcon, Box, Button, Flex, Group, NumberInput, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { ActionIcon, Box, Button, Flex, Group, NumberInput, Stack, Text, Textarea, TextInput, ThemeIcon } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
 import { ContextModalProps } from '@mantine/modals'
 import { IUser } from '@sdk/core'
-import { IconTrash } from '@tabler/icons-react'
+import { IconPlusMinus, IconTrash } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
 import { schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
@@ -46,7 +46,15 @@ const GoalEditorModal = ({
         ): ChoiceOption[] => {
           return items.map(item => ({
             value: item.id,
-            label: item.title
+            label: item.title || `Untitled ${kind}`,
+            content: (
+              <Group key={item.id} wrap="nowrap" gap="xs">
+                <ThemeIcon color="dark" size="sm" variant="light"><IconPlusMinus /></ThemeIcon>
+                <Text size="sm">
+                  {item.title || `Untitled ${kind}`}
+                </Text>
+              </Group>
+            ),
           }))
         }
 

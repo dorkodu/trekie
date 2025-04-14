@@ -124,9 +124,7 @@ export function ChoiceCombobox(props: ChoiceComboboxProps) {
                 value={option.value}
                 selected={selectedValues.includes(option.value)}
               >
-                <Group gap="xs" wrap="nowrap">
-                  {option.content ?? <Text size="sm">{option.label}</Text>}
-                </Group>
+                {option.content ?? <Text size="sm">{option.label}</Text>}
               </Combobox.Option>
             ))
           )}

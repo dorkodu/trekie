@@ -88,13 +88,13 @@ function HabitCounter({ habitId, onClick }: Props) {
           <Group gap={8} mt="6" justify="space-between" pt={4}>
             <Group gap={12} justify="start" align="start">
 
-              <Badge display="block" variant="light" size="xl" color="blue" radius="md" px={8} py={1}>
+              <Badge display="block" variant="light" size="xl" color="blue" radius="md" px={8} py={2}>
                 <Text fw={700} size='lg' span>{habit.count}</Text>
               </Badge>
 
               <Stack gap={0} align="start" pt={2}>
                 <Text c="dimmed" size='xs' fw={500} lh={1}>Today</Text>
-                <Text fw={600} c="blue" size='sm' lh={1}>
+                <Text fw={600} c="blue" size='sm' lh={1} opacity={0.75}>
                   {habit.history.get(daystamp.today()) ?? 0}
                   <Text span c="blue" opacity={0.25} px={1} fw={600}>/{habit.dailyTarget}</Text>
                 </Text>
