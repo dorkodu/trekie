@@ -1,6 +1,6 @@
 import { ICommitmentInstance } from "@sdk/core/index"
 import { Maybe } from "@web/shared/utils"
-import { Component } from "./component"
+import { Component } from "./library"
 import { IGoal, IGoalTemplate, schema } from './schema'
 
 export interface Interface {
@@ -18,7 +18,7 @@ export interface Interface {
 export const goals = Component
 
 export * from "./commitment"
-export * from "./component"
+export * from "./library"
 export * from "./schema"
 
 export * as Goal from "."

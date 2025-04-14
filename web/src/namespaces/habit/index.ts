@@ -1,5 +1,5 @@
 import { Maybe } from "@web/shared/utils"
-import { Component } from "./component"
+import { Component } from "./library"
 import { IHabit, IHabitTemplate } from "./schema"
 
 //? Interfaces
@@ -17,7 +17,7 @@ export interface Interface {
 export const habits = Component
 
 export * from "./commitment"
-export * from "./component"
+export * from "./library"
 export * from "./schema"
 
 
