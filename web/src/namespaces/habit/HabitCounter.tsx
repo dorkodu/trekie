@@ -1,5 +1,5 @@
-import { Badge, Button, Card, Flex, Group, Text, Title } from '@mantine/core'
-import { IconLayersSelectedBottom, IconMinus, IconPlus } from '@tabler/icons-react'
+import { Badge, Box, Button, Card, Flex, Group, Stack, Text, ThemeIcon, Title, Tooltip } from '@mantine/core'
+import { IconCheckbox, IconLayersSelectedBottom, IconMinus, IconPlus, IconPlusMinus } from '@tabler/icons-react'
 import { useLiveQuery } from "dexie-react-hooks"
 import { MouseEvent } from 'react'
 
@@ -9,6 +9,7 @@ import { trekie } from "@web/shared/lib/trekie"
 import { truncate } from '@web/styles/shared.css'
 import { vanilla } from '@web/styles/theme'
 
+import { daystamp } from '@sdk/utils'
 import { habits } from '@web/namespaces/habit'
 
 interface Props {
@@ -84,10 +85,29 @@ function HabitCounter({ habitId, onClick }: Props) {
             </Text>
           </Flex>
 
-          <Group gap={8} mt="4">
-            <Badge display="block" variant="light" size="lg" color="blue">
-              <Text fw={700}>{habit.count}</Text>
-            </Badge>
+          <Group gap={8} mt="6" justify="space-between" pt={4}>
+            <Group gap={12} justify="start" align="start">
+
+              <Badge display="block" variant="light" size="xl" color="blue" radius="md" px={8} py={1}>
+                <Text fw={700} size='lg' span>{habit.count}</Text>
+              </Badge>
+
+              <Stack gap={0} align="start" pt={2}>
+                <Text c="dimmed" size='xs' fw={500} lh={1}>Today</Text>
+                <Text fw={600} c="blue" size='sm' lh={1}>
+                  {habit.history.get(daystamp.today()) ?? 0}
+                  <Text span c="blue" opacity={0.25} px={1} fw={600}>/{habit.dailyTarget}</Text>
+                </Text>
+              </Stack>
+
+              <Stack gap={4} align="start" pt={2}>
+                <Text c="dimmed" size='xs' fw={500} lh={1}>This Week</Text>
+                <WeeklyCommitGraph counts={[1, 0, 5, 3, 0, 4, 2]} />
+              </Stack>
+
+            </Group>
+
+            <ThemeIcon size="sm" c="dimmed" variant="transparent"><IconPlusMinus /></ThemeIcon>
           </Group>
         </Flex>
 
@@ -117,5 +137,4 @@ function HabitCounter({ habitId, onClick }: Props) {
     </Card>
   )
 }
-
 export default HabitCounter
