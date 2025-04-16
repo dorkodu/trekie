@@ -1,5 +1,4 @@
 import { initTRPC, TRPCError } from "@trpc/server"
-import type { Request, Response } from "express"
 
 interface Context {
   req: Request
@@ -22,17 +21,20 @@ export const authRequiredProcedure = publicProcedure.use(async (opts) => {
   if (!session) throw new TRPCError({ code: "UNAUTHORIZED" })
    */
 
-  // replace null with actual session
+  //TODO: replace null with actual session
   return opts.next({ ctx: { session: null } })
 })
 
 export const authOptionalProcedure = publicProcedure.use(async (opts) => {
+  /*
   if (opts.ctx.session === undefined) {
     const token = tokenUtil.getSession(opts.ctx.req)
     if (token) opts.ctx.session = authRepository.getSessionByToken(token)
   }
 
   const session = await opts.ctx.session
+*/
 
-  return opts.next({ ctx: { session } })
+  //TODO: replace null with actual session
+  return opts.next({ ctx: { session: null } })
 })
