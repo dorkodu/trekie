@@ -21,20 +21,20 @@ db.version(1).stores({
 })
 
 db.on("populate", populate)
-
 db.on("ready", ready)
-
 db.open().then(async (db) => {
   // Database opened successfully
   console.info("[app] dexie opened successfully.")
 }).catch((e) => {
-  console.error(e)
+  console.error(`[app] an error happened in dexie. `, e)
 })
 
 export async function populate() {
   const user = trekie.game().user
   await db.users.add(user, user.id)
-  fillMockUserData()
+  await fillMockUserData()
+  console.info("[app] db populated.")
+
 }
 
 export async function ready() {

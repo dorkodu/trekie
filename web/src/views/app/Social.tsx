@@ -10,11 +10,7 @@ function Social() {
 
   return (
     <Flex direction="column" m="md">
-      <Stack gap="md">
-        <NewsFeed />
-        <ActivityFeed />
-      </Stack>
-      {isPremium ? <WIPCard /> : <OnlyPremium />}
+      {isPremium ? <NewsFeed /> : <OnlyPremium />}
     </Flex>
   )
 }
@@ -35,34 +31,5 @@ function NewsFeed() {
         </Badge>
       </Flex>
     </Box>
-  )
-}
-
-function ActivityFeed() {
-  const activities = [
-    { type: 'achievement', title: 'New Badge Earned', description: 'You earned the "Early Bird" badge', time: 'Today' },
-    { type: 'friend', title: 'New Connection', description: 'Jenny accepted your friend request', time: 'Yesterday' },
-    { type: 'event', title: 'Upcoming Event', description: 'Tech Conference starts in 3 days', time: 'Mon, 10:00 AM' },
-  ]
-
-  return (
-    <Box style={{ borderRadius: 20, padding: 16 }} className={ContainerSheet} mt="md">
-      <Flex justify="space-between" align="center" mb="md">
-        <Title order={4}><IconBell size={18} style={{ marginRight: 8 }} />Recent Activity</Title>
-      </Flex>
-      <Stack gap="md">
-        {activities.map((activity, index) => (
-          <Paper key={index} p="xs" withBorder>
-            <Text size="sm" fw={500}>{activity.title}</Text>
-            <Text size="xs" c="dimmed">{activity.description}</Text>
-            <Flex justify="space-between" mt={4}>
-              <Badge size="xs" variant="light">{activity.type}</Badge>
-              <Text size="xs" c="dimmed">{activity.time}</Text>
-            </Flex>
-          </Paper>
-        ))
-        }
-      </Stack >
-    </Box >
   )
 }

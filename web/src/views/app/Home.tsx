@@ -132,7 +132,7 @@ function LifeGoalSummary() {
 
   return (
     <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
-      <Stack gap={0}>
+      <Stack gap="xs">
         {goals.map(goal => (
           <GoalCard id={goal.id} key={goal.id} />
         ))}

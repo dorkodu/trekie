@@ -13,7 +13,6 @@ import { Item } from '@web/namespaces/market/types'
 function Page() {
   // Get coins directly from trekie user context
   const coins = trekie.use($ => $.coins) || 0
-  const updateUser = trekie.use($ => $.updateUser)
 
   // Get other state from market store
   const items = useMarketStore($ => $.items)
