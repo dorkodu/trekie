@@ -17,7 +17,19 @@ export function createMiniApp<TCommitments extends Record<any, ICommitmentKind>>
   // create dexie db instance & do chores
   // TODO: catch errors if any, with tryCatch 
   const db = createDb()
-  startDb(db)
+  startDb({
+    db,
+    onPopulate: (t) => {
+
+    },
+    onReady: (db) => {
+      console.info("[sdk] game db is ready.")
+    },
+    onError(e) {
+      console.error("[sdk] db open failed!")
+      console.error(e)
+    },
+  })
 
   return {
     use: useReadonlyGame,

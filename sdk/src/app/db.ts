@@ -8,23 +8,28 @@ export type IDexieDb = Dexie & {
   commitments: Table<ICommitmentInstance, string>
 }
 
-export function startDb(db: IDexieDb) {
+export function startDb(
+  { db, onPopulate = () => { }, onReady = () => { }, onError = () => { }, }:
+    {
+      db: IDexieDb,
+      onPopulate?: (t: Transaction) => any,
+      onReady?: (db: Dexie) => any,
+      onError?: (e: Error) => any,
+    }) {
+
   // Schema declaration:
   db.version(1).stores({
     commitRecords: 'id, userId, event, instanceId',
     commitments: 'id, kind, userId',
   })
 
-  db.on("populate", async () => { })
+  db.on("populate", onPopulate)
 
-  db.on("ready", async () => {
-    console.info("[trekie] game db is ready.")
-  })
+  db.on("ready", onReady)
 
   db.open().then(async (db) => {
-    console.info("[trekie] db opened successfully.")
-  }).catch((e) => {
-    console.error("[trekie] db open failed!")
-    console.error(e)
-  })
+    console.info("[sdk] db opened successfully.")
+  }).catch(
+    onError
+  )
 }
