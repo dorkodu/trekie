@@ -35,15 +35,11 @@ export const Component: Interface = {
     const removedHabit = await db.habits.get(id)
     const user = trekie.game().user
 
-    if (!removedHabit) {
-      errors.handle("ITEM_NOT_FOUND")
-      return // habit does not exist
-    }
+    if (!removedHabit)
+      return errors.handle("ITEM_NOT_FOUND") // habit does not exist
 
-    if (!removedHabit || user.id != removedHabit.userId) {
-      errors.handle("NOT_AUTHORIZED")
-      return // has no permission or habit/user does not exist
-    }
+    if (!removedHabit || user.id != removedHabit.userId)
+      return errors.handle("NOT_AUTHORIZED") // has no permission or habit/user does not exist
 
     // await db.habits.update(id, { isDeleted: true }) // --> should delete but
     await trekie.commitments.table.update(removedHabit.commitmentId, { isDeleted: true })
@@ -63,7 +59,7 @@ export const Component: Interface = {
     habit.count += count
     habit.history.set(daystamp.today(), updatedCount)
 
-    db.habits.put(habit, habit.id)
+    await db.habits.put(habit, habit.id)
 
     // Track the last commit result for potential rollback
     let commitResult
@@ -100,12 +96,14 @@ export const Component: Interface = {
       const alreadyCheckedToday = await hasDailyCheckToday(habit.commitmentId)
 
       if (!alreadyCheckedToday) {
-        dailyCheckCommitId = await trekie.commitments.act({
+        const r = await trekie.commitments.act({
           kind: 'Habit',
           event: 'DAILYCHECK',
           id: habit.commitmentId,
           data: null
         })
+
+        dailyCheckCommitId = r.id
       }
     }
     // If we previously crossed the threshold but now fall below it, rollback the DAILYCHECK rewards
@@ -162,7 +160,7 @@ export const Component: Interface = {
 
     await this.add(habit)
 
-    trekie.commitments.act({
+    await trekie.commitments.act({
       kind: 'Habit',
       event: 'START',
       id: habit.commitmentId,

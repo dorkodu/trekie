@@ -11,6 +11,7 @@ import { vanilla } from '@web/styles/theme'
 
 import { daystamp } from '@sdk/utils'
 import { habits } from '@web/namespaces/habit'
+import { useSafeColorScheme } from '@web/shared/hooks'
 
 interface Props {
   habitId: string
@@ -102,7 +103,7 @@ function HabitCounter({ habitId, onClick }: Props) {
 
               <Stack gap={4} align="start" pt={2}>
                 <Text c="dimmed" size='xs' fw={500} lh={1}>This Week</Text>
-                <WeeklyCommitGraph counts={[1, 0, 5, 3, 0, 4, 2]} />
+                <WeeklyActivity />
               </Stack>
 
             </Group>
@@ -139,15 +140,25 @@ function HabitCounter({ habitId, onClick }: Props) {
 }
 export default HabitCounter
 
+const WeeklyActivity: React.FC = () => {
+
+  const counts = [1, 5, 3, 0, 6, 11, 1] // feed this with the actual data
+
+
+  return <WeekGraph counts={counts} />
+}
+
 
 // Define the WeeklyCommitGraph component using Mantine
-const WeeklyCommitGraph: React.FC<{ counts: number[] }> = ({ counts }) => {
-  const maxCount = Math.max(...counts, 1) // Avoid division by zero
+const WeekGraph: React.FC<{ counts: number[] }> = ({ counts }) => {
 
-  const getColorOpacity = (count: number) => {
-    if (count === 0) return 0.1
+  const maxCount = Math.max(...counts, 1) // Avoid division by zero
+  const emptyRGB = useSafeColorScheme() === "dark" ? `200, 225, 230` : `0, 45, 50`
+  const getBoxColor = (count: number) => {
+
+    if (count === 0) return `rgba(${emptyRGB}, 0.15)` // Transparent for zero commits
     const intensity = count / maxCount
-    return Math.max(0.2, Math.min(1.0, intensity)) // Clamp between 0.2 and 1.0
+    return `rgba(35, 134, 54, ${Math.max(0.2, Math.min(1.0, intensity))}` // Clamp between 0.2 and 1.0
   }
 
   return (
@@ -158,9 +169,8 @@ const WeeklyCommitGraph: React.FC<{ counts: number[] }> = ({ counts }) => {
             style={{
               width: 12,
               height: 12,
-              backgroundColor: `rgba(35, 134, 54, ${getColorOpacity(count)})`,
+              backgroundColor: getBoxColor(count),
               borderRadius: vanilla.radius.sm,
-              border: `1px solid rgba(0, 0, 0, 0.1)`,
             }}
           />
         </Tooltip>

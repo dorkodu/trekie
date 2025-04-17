@@ -4,7 +4,7 @@ import { ContextModalProps } from '@mantine/modals'
 import { IUser } from '@sdk/core'
 import { IconPlusMinus, IconTrash } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
-import { schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespaces/goal'
+import { goals, schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
 import { db } from '@web/shared/lib/db'
 import { trekie } from '@web/shared/lib/trekie'
@@ -89,6 +89,7 @@ const GoalEditorModal = ({
   const onCreate = (values: typeof form.values) => {
     // In a real app, you would call an API to create the goal
     console.log('Creating goal:', values)
+    console.log(goals.create(values))
     // After successful creation, close the modal
     context.closeModal(id)
   }
