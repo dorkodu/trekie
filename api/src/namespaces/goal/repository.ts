@@ -1,8 +1,4 @@
-import { pg } from "@api/lib/pg"
-import { TRPCError } from "@trpc/server"
 import { IGoal } from '@web/namespaces/goal'
-import type { z } from "zod"
-import type { goalSchemas } from "./schema"
 
 export async function getGoal(
   id: string,
