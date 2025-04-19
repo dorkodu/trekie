@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-
 export function dailyTask(task: () => void) {
   return () => {
     const today = new Date()
