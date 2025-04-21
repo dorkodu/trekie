@@ -43,16 +43,4 @@ export function generateMockGameState(): GameState {
 }
 
 export async function fillMockUserData() {
-  await habits.create({
-    title: "Daily Guitar Practice",
-    description: "At least 5 times per day for 20 minutes each.",
-    dailyTarget: 5,
-  })
-
-  await goals.create({
-    title: "Be An Indie Rockstar",
-    description: "A thousand true fans & a million streams.",
-    xpTarget: 100,
-    commitments: []
-  })
 }

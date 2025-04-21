@@ -8,10 +8,10 @@ export type IDexieDb = Dexie & {
   commitments: Table<ICommitmentInstance, string>
 }
 
-export function startDb(
+export function startDb<T extends Dexie>(
   { db, onPopulate = () => { }, onReady = () => { }, onError = () => { }, }:
     {
-      db: IDexieDb,
+      db: T,
       onPopulate?: (t: Transaction) => any,
       onReady?: (db: Dexie) => any,
       onError?: (e: Error) => any,

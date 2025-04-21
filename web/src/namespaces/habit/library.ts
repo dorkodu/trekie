@@ -28,9 +28,9 @@ async function hasDailyCheckToday(commitmentId: string): Promise<boolean> {
 }
 
 export const Component: Interface = {
-  get: (id) => db.habits.get(id),
-  add: (habit) => db.habits.add(habit, habit.id),
-  count: () => db.habits.count(),
+  get: async (id) => db.habits.get(id),
+  add: async (habit) => db.habits.add(habit, habit.id),
+  count: async () => db.habits.count(),
   delete: async (id) => {
     const removedHabit = await db.habits.get(id)
     const user = trekie.game().user
