@@ -26,7 +26,8 @@ function HabitCounterMenu({ habit }: Props) {
       modal: "habitEditor",
       title: "Edit Habit",
       innerProps: {
-        mode: "EDIT"
+        mode: "EDIT",
+        habit: habit,
       }
     })
   }

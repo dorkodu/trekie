@@ -8,6 +8,7 @@ import { goals, schema as GoalSchema, IGoal, IGoalTemplate } from '@web/namespac
 import { IHabit } from '@web/namespaces/habit'
 import { db } from '@web/shared/lib/db'
 import { trekie } from '@web/shared/lib/trekie'
+import { tryCatch } from '@web/shared/utils/tryCatch'
 import { ReactNode, useState } from 'react'
 import { ChoiceCombobox, ChoiceOption } from './ChoiceCombobox'
 
@@ -86,11 +87,15 @@ const GoalEditorModal = ({
     validate: zodResolver(GoalSchema.GoalTemplate),
   })
 
-  const onCreate = (values: typeof form.values) => {
-    // In a real app, you would call an API to create the goal
-    console.log('Creating goal:', values)
-    console.log(goals.create(values))
-    // After successful creation, close the modal
+  const onCreate = async (values: typeof form.values) => {
+
+    const { data, error } = await tryCatch((async () => {
+      console.log('Creating goal:', values)
+      const r = await goals.create(values)
+      console.log('Goal created successfully:', r)
+      // After successful creation, close the modal
+    })())
+
     context.closeModal(id)
   }
 

@@ -6,7 +6,6 @@ import { trekie } from "@web/shared/lib/trekie"
 import { Daystamp, daystamp } from "@web/shared/utils"
 import { IHabit } from "./schema"
 
-import { ICommitRecord } from "@sdk/core"
 import { Interface } from "."
 
 // Helper function to check if a DAILYCHECK event already exists for today
@@ -27,7 +26,7 @@ async function hasDailyCheckToday(commitmentId: string): Promise<boolean> {
   return existingChecks > 0
 }
 
-export const Component: Interface = {
+export const habits: Interface = {
   get: async (id) => db.habits.get(id),
   add: async (habit) => db.habits.add(habit, habit.id),
   count: async () => db.habits.count(),
@@ -42,6 +41,7 @@ export const Component: Interface = {
       return errors.handle("NOT_AUTHORIZED") // has no permission or habit/user does not exist
 
     // await db.habits.update(id, { isDeleted: true }) // --> should delete but
+    await db.habits.delete(id)
     await trekie.commitments.table.update(removedHabit.commitmentId, { isDeleted: true })
   },
 
@@ -135,10 +135,7 @@ export const Component: Interface = {
     return habit.count
   },
 
-  async update(id, props) {
-    await db.habits.update(id, props)
-    return await db.habits.get(id)
-  },
+  update: async (id, props) => db.habits.update(id, props),
 
   async create(template) {
     const userId = trekie.game().user.id

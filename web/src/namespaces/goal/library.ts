@@ -11,6 +11,7 @@ export const Component: Interface = {
   add: (goal) => db.goals.add(goal, goal.id),
   update: (id, props) => db.goals.update(id, { ...props }),
   count: () => db.goals.count(),
+
   delete: async (id) => {
     const removedGoal = await db.goals.get(id)
     const user = trekie.game().user

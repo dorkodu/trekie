@@ -8,13 +8,15 @@ import { DailyStats } from '@web/namespaces/life/DailyStats'
 
 import { useQuery } from '@tanstack/react-query'
 import GoalCard from '@web/namespaces/goal/GoalCard'
+import { IHabit } from '@web/namespaces/habit'
+import { useDexieQuery } from '@web/shared/hooks'
 import { db } from '@web/shared/lib/db'
 import { errors } from '@web/shared/lib/errors'
 import { trekie } from '@web/shared/lib/trekie'
 import { trpc } from '@web/shared/lib/trpc'
 import { ContainerSheet } from '@web/styles/shared.css'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 function Home() {
 
@@ -62,10 +64,10 @@ function Home() {
 
         <Tabs mt={8} color="green" variant="pills" radius="md" defaultValue="feed" value={tab}>
           <Tabs.Panel value="habits">
-            <HabitSummary />
+            <CommitmentsFeed />
           </Tabs.Panel>
           <Tabs.Panel value="goals">
-            <LifeGoalSummary />
+            <GoalsFeed />
           </Tabs.Panel>
         </Tabs>
       </Stack>
@@ -75,16 +77,19 @@ function Home() {
 
 export default Home
 
-function HabitSummary() {
+function CommitmentsFeed() {
   const userId = trekie.use($ => $.user.id)
 
-  const { data, error, isError, isLoading, isSuccess } = useQuery({
-    queryKey: ['habits'], queryFn: async () => {
-      return db.habits.where('userId').equals(userId).toArray()
-    }
-  })
 
-  if (isLoading)
+  const query = useLiveQuery(() =>
+    db.habits
+      .where({ 'userId': userId })
+      .filter((habit) => !Object.hasOwn(habit, 'isDeleted'))
+      .toArray()
+    , [])
+
+
+  if (!query)
     return (
       <Box h={250}>
         <Skeleton height={8} radius="xl" />
@@ -93,13 +98,13 @@ function HabitSummary() {
       </Box>
     )
 
-  const hasAnyHabits = isSuccess && data?.length > 0
+  const hasAnyHabits = query?.length > 0
   if (!hasAnyHabits) return <NoHabitsCard />
 
   return (
     <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet} h="auto" mih={150}>
       <Stack gap={0}>
-        {data.map(habit => (
+        {query.map(habit => (
           <HabitCounter habitId={habit.id} key={habit.id} />
         ))}
       </Stack>
@@ -112,7 +117,7 @@ function HabitSummary() {
   )
 }
 
-function LifeGoalSummary() {
+function GoalsFeed() {
   const userId = trekie.use($ => $.user?.id)
 
   if (!userId) return <Box py={10} hiddenFrom="md"><NoHabitsCard /></Box>

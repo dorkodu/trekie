@@ -1,5 +1,5 @@
-import { ulid } from 'ulidx'
 import Dexie, { Table, Transaction } from 'dexie'
+import { ulid } from 'ulidx'
 
 import { IUser } from '@sdk/core'
 import { IGoal } from '@web/namespaces/goal'
@@ -54,20 +54,7 @@ startAppDb({
     try {
       const user = trekie.game().user
       await db.users.add(user, user.id)
-      await db.habits.bulkAdd([
-        {
-          id: ulid(),
-          title: "One Song A Day",
-          descr*654876ption: "Learn a new song on guitar every day.",
-          userId: user.id,
-          history: new Map(),
-          createdAt: new Date().getTime(),
-          lastUpdated: new Date().getTime(),
-          dailyTarget: 0,
-          count: 0,
-          commitmentId: ''
-        }
-      ])
+
       console.info("[app] db populated.")
     } catch (error) {
       console.error("[app] db population failed!.", error)
