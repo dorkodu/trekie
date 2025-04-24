@@ -37,7 +37,9 @@ export default function GoalCard({ id }: Props) {
           <Progress.Section color="blue" value={progress}>
             <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
               <Center>
-                <Text style={{ textShadow: `0 0 4px ${vanilla.colors.dark[4]}`, fontWeight: 500, fontSize: 13, color: "white", lineHeight: "24px", textTransform: "uppercase" }}>{progress}%</Text>
+                <Text style={{ textShadow: `0 0 4px ${vanilla.colors.dark[4]}`, fontWeight: 500, fontSize: 13, color: "white", lineHeight: "24px", textTransform: "uppercase" }}>
+                  {progress}%
+                </Text>
               </Center>
             </Overlay>
           </Progress.Section>

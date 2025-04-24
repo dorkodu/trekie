@@ -9,7 +9,7 @@ import { IHabit } from '@web/namespaces/habit'
 import { db } from '@web/shared/lib/db'
 import { trekie } from '@web/shared/lib/trekie'
 import { tryCatch } from '@web/shared/utils/tryCatch'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { ChoiceCombobox, ChoiceOption } from './ChoiceCombobox'
 
 type GoalEditorMode = 'CREATE' | 'EDIT'
@@ -87,6 +87,29 @@ const GoalEditorModal = ({
     validate: zodResolver(GoalSchema.GoalTemplate),
   })
 
+  // Ensure commitments are set after options load in EDIT mode, but only if the IDs exist in the options
+  useEffect(() => {
+    if (
+      innerProps.mode === 'EDIT' &&
+      innerProps.goal &&
+      Array.isArray(innerProps.goal.commitments) &&
+      commitmentOptions.length > 0
+    ) {
+      // Only set if form's commitments is empty or different from goal's commitments
+      const currentFormCommitments = form.getValues().commitments ?? []
+      // Only update if not already set (prevents overwriting user changes)
+      if (
+        (!Array.isArray(currentFormCommitments) || currentFormCommitments.length === 0)
+      ) {
+        // Only keep IDs that exist in the loaded options
+        const validCommitments = innerProps.goal.commitments.filter(cid =>
+          commitmentOptions.some(opt => opt.value === cid)
+        )
+        form.setFieldValue('commitments', validCommitments)
+      }
+    }
+  }, [commitmentOptions, innerProps.goal, innerProps.mode])
+
   const onCreate = async (values: typeof form.values) => {
 
     const { data, error } = await tryCatch((async () => {
@@ -99,19 +122,33 @@ const GoalEditorModal = ({
     context.closeModal(id)
   }
 
-  const onUpdate = (values: typeof form.values) => {
-    // In a real app, you would call an API to update the goal
-    console.log('Updating goal:', values)
-    // After successful update, close the modal
+  const onUpdate = async (values: typeof form.values) => {
+    if (!innerProps.goal?.id) return
+
+    const { data, error } = await tryCatch((async () => {
+      goals.update(innerProps.goal!.id, values)
+    })())
+
+    if (error) {
+      console.error('Error updating goal:', error)
+      // Optionally show user feedback here
+      return
+    }
     context.closeModal(id)
   }
 
-  const onDelete = () => {
+  const onDelete = async () => {
     if (!innerProps.goal?.id) return
 
-    // In a real app, you would call an API to delete the goal
-    console.log('Deleting goal with ID:', innerProps.goal.id)
-    // After successful deletion, close the modal
+    const { error } = await tryCatch((async () => {
+      goals.delete(innerProps.goal!.id)
+    })())
+
+    if (error) {
+      console.error('Error deleting goal:', error)
+      // Optionally show user feedback here
+      return
+    }
     context.closeModal(id)
   }
 
