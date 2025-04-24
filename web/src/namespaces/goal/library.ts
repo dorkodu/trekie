@@ -131,4 +131,20 @@ export const Component: Interface = {
     return true
   },
 
+  // Returns a promise resolving to { xp: number, percent: number }
+  async calculateProgress(goalId: string) {
+    const goal = await db.goals.get(goalId)
+    if (!goal || !Array.isArray(goal.commitments) || goal.commitments.length === 0) {
+      return { xp: 0, percent: 0 }
+    }
+    // Get all commit records for all commitments in this goal
+    const records = await trekie.db.commitRecords
+      .where('instanceId')
+      .anyOf(goal.commitments)
+      .toArray()
+    // Sum all XP rewards
+    const xp = records.reduce((sum, rec) => sum + (rec.reward?.xp || 0), 0)
+    const percent = goal.xpTarget > 0 ? Math.min(100, Math.floor((xp / goal.xpTarget) * 100)) : 0
+    return { xp, percent }
+  },
 }

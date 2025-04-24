@@ -14,11 +14,12 @@ interface Props {
 
 export default function GoalCard({ id }: Props) {
   const goal = useLiveQuery(() => goals.get(id), [id])
-  const xp = trekie.use($ => $.xp)
+  const progress = useLiveQuery(() => goals.calculateProgress(id), [id])
 
   if (!goal) return GoalNotFound
 
-  let progress = Math.floor((xp / goal.xpTarget) * 100)
+  const percentage = progress?.percent ?? 0
+  const xp = progress?.xp ?? 0
 
   return (
     <Card shadow="sm" p="sm" radius="lg">
@@ -34,11 +35,11 @@ export default function GoalCard({ id }: Props) {
 
       <Flex mt="xs" gap={4} justify="flex-start" align="center" direction="row" wrap="nowrap">
         <Progress.Root color="blue" radius="lg" size={24} miw="25%">
-          <Progress.Section color="blue" value={progress}>
+          <Progress.Section color="blue" value={percentage}>
             <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
               <Center>
                 <Text style={{ textShadow: `0 0 4px ${vanilla.colors.dark[4]}`, fontWeight: 500, fontSize: 13, color: "white", lineHeight: "24px", textTransform: "uppercase" }}>
-                  {progress}%
+                  {percentage}%
                 </Text>
               </Center>
             </Overlay>

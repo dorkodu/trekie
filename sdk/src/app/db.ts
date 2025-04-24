@@ -19,7 +19,7 @@ export function startDb<T extends Dexie>(
 
   // Schema declaration:
   db.version(1).stores({
-    commitRecords: 'id, userId, event, instanceId',
+    commitRecords: 'id, userId, event, instanceId, timestamp, [id+event+timestamp]',
     commitments: 'id, kind, userId',
   })
 
