@@ -20,6 +20,7 @@ export function Commitments
         id: string,
         data: Parameters<TCommitments[TKind]['events'][TEvent]>[0]['data']
       }) => {
+
       // 1) mutate game state with commit 2) save this commit record
       // calculate commit event
       const commitResult = commitments[kind]!.commit(event, id, data)
@@ -80,11 +81,11 @@ export function Commitments
 
     getOwnCommitments: async () => {
       const userId = game().user.id
-      const commitments = await db.commitments
+
+      return await db.commitments
         .where('userId')
         .equals(userId)
-        .toArray()
-      return commitments as ICommitmentInstance[]
+        .toArray() satisfies ICommitmentInstance[]
     },
 
     get: (id: string) => db.commitments.get(id),

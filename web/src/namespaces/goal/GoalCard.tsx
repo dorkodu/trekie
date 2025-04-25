@@ -15,6 +15,7 @@ interface Props {
 export default function GoalCard({ id }: Props) {
   const goal = useLiveQuery(() => goals.get(id), [id])
   const progress = useLiveQuery(() => goals.calculateProgress(id), [id])
+  console.log(progress)
 
   if (!goal) return GoalNotFound
 

@@ -6,24 +6,26 @@ import { trekie } from "@web/shared/lib/trekie"
 import { Daystamp, daystamp } from "@web/shared/utils"
 import { IHabit } from "./schema"
 
+import { tryCatch } from "@web/shared/utils/tryCatch"
 import { Interface } from "."
 
 // Helper function to check if a DAILYCHECK event already exists for today
-async function hasDailyCheckToday(commitmentId: string): Promise<boolean> {
+async function getDailyChecksToday(commitmentId: string) {
   const today = daystamp.today()
   const todayStart = new Date(today.split('-').join('/')).setHours(0, 0, 0, 0)
   const todayEnd = new Date(todayStart).setHours(23, 59, 59, 999)
 
   // Query for DAILYCHECK events for this habit's commitment created today
-  const existingChecks = await trekie.commitments.table
-    .where({
-      id: commitmentId,
-      event: 'DAILYCHECK',
-      timestamp: t => t >= todayStart && t <= todayEnd
-    })
-    .count()
+  const existingChecks = await trekie.db.commitRecords
+    .where('instanceId').equals(commitmentId)
+    .filter(r =>
+      r.event === 'DAILYCHECK' &&
+      r.timestamp >= todayStart &&
+      r.timestamp <= todayEnd
+    )
+    .toArray()
 
-  return existingChecks > 0
+  return existingChecks
 }
 
 export const habits: Interface = {
@@ -93,7 +95,7 @@ export const habits: Interface = {
       && updatedCount >= habit.dailyTarget
     ) {
       // Check if we've already logged a DAILYCHECK today
-      const alreadyCheckedToday = await hasDailyCheckToday(habit.commitmentId)
+      const alreadyCheckedToday = await getDailyChecksToday(habit.commitmentId)
 
       if (!alreadyCheckedToday) {
         const r = await trekie.commitments.act({
@@ -117,21 +119,16 @@ export const habits: Interface = {
       const todayEnd = new Date(todayStart).setHours(23, 59, 59, 999)
 
       // Query for today's DAILYCHECK commit for this habit
-      const dailyChecks = await trekie.db.commitRecords
-        .where({ 'instanceId': habit.commitmentId })
-        .and(record =>
-          record.event === 'DAILYCHECK' &&
-          record.timestamp >= todayStart &&
-          record.timestamp <= todayEnd
-        )
-        .toArray()
+      const { data: dailyChecks, error } = await tryCatch(getDailyChecksToday(habit.commitmentId))
 
-      // Rollback any DAILYCHECK commits found
-      for (const check of dailyChecks) {
-        await trekie.commitments.rollback(check.id)
+      if (error) console.error("Error fetching DAILYCHECK records:", error)
+      else {
+        // Rollback any DAILYCHECK commits found
+        for (const checkRecord of dailyChecks) {
+          await trekie.commitments.rollback(checkRecord.id)
+        }
       }
     }
-
     return habit.count
   },
 
