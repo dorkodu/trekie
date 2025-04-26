@@ -80,11 +80,14 @@ function HabitCounter({ habitId, onClick }: Props) {
             <HabitCounterMenu habit={habit} />
           </Flex>
 
-          <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
-            <Text truncate size="sm">
-              <EnhancedText ids={['emoji', 'url', 'username']} text={habit.description} />
-            </Text>
-          </Flex>
+          {
+            habit.description && habit.description.length > 0 &&
+            <Flex style={{ display: 'grid', gridTemplateRows: 'auto' }}>
+              <Text c="dimmed" size="xs" fw={500} lh={1} pt={2}>
+                <EnhancedText ids={['emoji', 'url', 'username']} text={habit.description} />
+              </Text>
+            </Flex>
+          }
 
           <Group gap={8} mt="6" justify="space-between" pt={4}>
             <Group gap={12} justify="start" align="start">

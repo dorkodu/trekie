@@ -142,6 +142,9 @@ export const Component: Interface = {
       .where('instanceId')
       .anyOf(goal.commitments)
       .toArray()
+
+    console.log("Records: ", records)
+
     // Sum all XP rewards
     const xp = records.reduce((sum, rec) => sum + (rec.reward?.xp || 0), 0)
     const percent = goal.xpTarget > 0 ? Math.min(100, Math.floor((xp / goal.xpTarget) * 100)) : 0
