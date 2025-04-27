@@ -29,7 +29,7 @@ export function startAppDb(
   // Schema declaration:
   db.version(1).stores({
     users: 'id, &username',
-    habits: 'id, userId',
+    habits: 'id, userId, &commitmentId',
     goals: 'id, userId',
   })
 

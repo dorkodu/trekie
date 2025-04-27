@@ -29,9 +29,10 @@ async function getDailyChecksToday(commitmentId: string) {
 }
 
 export const habits: Interface = {
-  get: async (id) => db.habits.get(id),
-  add: async (habit) => db.habits.add(habit, habit.id),
-  count: async () => db.habits.count(),
+  get: (id) => db.habits.get(id),
+  getByCommitmentId: (commitmentId) => db.habits.where('commitmentId').equals(commitmentId).first(),
+  add: (habit) => db.habits.add(habit, habit.id),
+  count: () => db.habits.count(),
   delete: async (id) => {
     const removedHabit = await db.habits.get(id)
     const user = trekie.game().user
@@ -84,8 +85,6 @@ export const habits: Interface = {
       })
     }
 
-    console.log(habit)
-
     // Store the daily check commit ID if we trigger one
     let dailyCheckCommitId: string | undefined
     // Only trigger DAILYCHECK event if we're crossing the threshold today
@@ -95,7 +94,7 @@ export const habits: Interface = {
       && updatedCount >= habit.dailyTarget
     ) {
       // Check if we've already logged a DAILYCHECK today
-      const alreadyCheckedToday = await getDailyChecksToday(habit.commitmentId)
+      const alreadyCheckedToday = (await getDailyChecksToday(habit.commitmentId)).length > 0
 
       if (!alreadyCheckedToday) {
         const r = await trekie.commitments.act({
