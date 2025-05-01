@@ -1,10 +1,10 @@
 import { create, StateCreator } from 'zustand'
-import { immer } from 'zustand/middleware/immer';
+import { immer } from 'zustand/middleware/immer'
 
 export interface IStatus<TData> {
-  kind: string; // keyof typeof "given kinds"
-  timestamp: number;
-  data: TData;
+  kind: string // keyof typeof "given kinds"
+  timestamp: number
+  data: TData
 }
 
 export interface IEvent<TData> {
@@ -48,4 +48,5 @@ const mind = Cell({
     on: (status) => console.log(status)
   })
 })
+
 
