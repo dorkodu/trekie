@@ -3,8 +3,8 @@ import { StrictMode } from "react"
 import ReactDOM from "react-dom/client"
 
 import * as TanstackQuery from "./lib/tanstack-query/root-provider.tsx"
-
 import reportWebVitals from "./reportWebVitals.ts"
+import { router } from "./router.tsx"
 import "./styles.css"
 
 declare module "@tanstack/react-router" {

@@ -1,3 +1,14 @@
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
+import App from "./App"
+import * as TanstackQuery from "./lib/tanstack-query/root-provider.tsx"
+
 const rootRoute = createRootRoute({
   component: () => (
     <>
@@ -10,17 +21,17 @@ const rootRoute = createRootRoute({
   ),
 })
 
-const indexRoute = createRoute({
+export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: App,
 })
 
-const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren([
   indexRoute,
 ])
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   context: {
     ...TanstackQuery.getContext(),
