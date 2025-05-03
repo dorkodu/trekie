@@ -1,45 +1,66 @@
-import { ColorSchemeScript, MantineProvider } from '@mantine/core'
-import { ModalsProvider } from '@mantine/modals'
-import { Notifications } from '@mantine/notifications'
-import { AccountTier } from '@sdk/core'
-import { QueryClientProvider } from '@tanstack/react-query'
-import OverlayLoader from '@web/shared/components/loaders/OverlayLoader'
-import ApplicationError from '@web/shared/components/misc/ApplicationError'
-import { modals } from '@web/shared/components/modals'
-import { onError, onReset } from '@web/shared/lib/errors'
-import { queryClient } from "@web/shared/lib/react-query"
-import { trekie, useDailyRefresh } from '@web/shared/lib/trekie'
-import { useAppStore } from '@web/shared/stores/appStore'
-import { cssVariablesResolver, theme } from '@web/styles/theme'
-import { FlagsProvider } from 'flagged'
-import { ErrorBoundary } from 'react-error-boundary'
-import { Outlet, ScrollRestoration } from 'react-router-dom'
-import { useAuthCheck } from './shared/lib/auth'
+import { createRootRoute, createRoute, createRouter, ErrorComponent, Outlet, RouterProvider } from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
+import * as TanstackQuery from "./lib/tanstack-query/root-provider.tsx"
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router
+  }
+}
 
 function App() {
-  const loading = useAppStore($ => $.loading)
-  const premium = trekie.use($ => $.user.tier !== AccountTier.FREE)
-
-  useDailyRefresh() // trekie daily game refresh
-  useAuthCheck() // check user session, do auth
 
   return (
-    <ErrorBoundary FallbackComponent={ApplicationError} onError={onError} onReset={onReset}>
-      <FlagsProvider features={{ beta: true, premium }}>
-        <QueryClientProvider client={queryClient}>
-          <ColorSchemeScript defaultColorScheme="light" />
-          <MantineProvider theme={theme} defaultColorScheme="light" cssVariablesResolver={cssVariablesResolver}>
-            <ModalsProvider modals={modals} modalProps={{ centered: true, radius: 'lg' }}>
-              <Notifications limit={3} position="top-center" zIndex={99999} />
-              {loading.auth && <OverlayLoader full={true} />}
-              {!loading.auth && <Outlet />}
-            </ModalsProvider>
-          </MantineProvider>
-          <ScrollRestoration />
-        </QueryClientProvider>
-      </FlagsProvider>
-    </ErrorBoundary>
+    <>
+      <Header />
+      <Outlet />
+      <TanStackRouterDevtools />
+
+      <TanstackQueryLayout />
+    </>
   )
 }
 
-export default App
+const rootRoute = createRootRoute({
+  component: App,
+  notFoundComponent: () => <div>404 Not Found</div>,
+})
+
+export const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  component: App,
+})
+
+export const routeTree = rootRoute.addChildren([
+  indexRoute,
+])
+
+export const router = createRouter({
+  routeTree,
+
+  basepath: "./pages/",
+
+  context: {
+    ...TanstackQuery.getContext(),
+  },
+
+  defaultPendingComponent: () => (
+    <div className="p-2 text-2xl">
+      <div className="flex flex-col gap-2">
+        <div className="animate-pulse bg-gray-200 h-8 w-1/2 rounded" />
+        <div className="animate-pulse bg-gray-200 h-8 w-1/4 rounded" />
+        <div className="animate-pulse bg-gray-200 h-8 w-3/4 rounded" />
+      </div>
+    </div>
+  ),
+
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+
+  defaultPreload: "intent",
+  scrollRestoration: true,
+  defaultStructuralSharing: true,
+  // Since we're using React Query, we don't want loader calls to ever be stale
+  // This will ensure that the loader is always called when the route is preloaded or visited
+  defaultPreloadStaleTime: 0,
+})
