@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useAppStore } from "../../../web/src/shared/stores/appStore"
+import { useAppStore } from "@web/lib/stores/appStore"
 
 export function useAuthCheck() {
   const loading = useAppStore($ => $.loading)

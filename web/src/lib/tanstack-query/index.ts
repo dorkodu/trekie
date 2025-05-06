@@ -1,5 +1,4 @@
 import { QueryClient } from "@tanstack/react-query"
-import { notifications } from "./notifications"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,7 +8,7 @@ export const queryClient = new QueryClient({
     },
     mutations: {
       onError(error, _variables, _context) {
-        notifications.error(error.message)
+        console.error(error.message)
       },
     },
   },
