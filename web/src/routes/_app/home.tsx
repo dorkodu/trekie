@@ -6,17 +6,12 @@ import HabitCounter from '@web/namespaces/habit/HabitCounter'
 import NoHabitsCard from '@web/namespaces/habit/NoHabitsCard'
 import { DailyStats } from '@web/namespaces/life/DailyStats'
 
-import { useQuery } from '@tanstack/react-query'
 import GoalCard from '@web/namespaces/goal/GoalCard'
-import { IHabit } from '@web/namespaces/habit'
-import { ContainerSheet } from '@web/styles/shared.css'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useDexieQuery } from 'new/src/hooks'
 import { db } from 'new/src/lib/db'
 import { errors } from 'new/src/lib/errors'
 import { trekie } from 'new/src/lib/trekie'
-import { trpc } from 'new/src/lib/trpc'
-import React, { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 function Home() {
 
