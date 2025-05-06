@@ -1,57 +1,13 @@
-import { persist } from 'zustand/middleware'
-import { immer } from 'zustand/middleware/immer'
-import { createStore, StoreApi } from 'zustand/vanilla'
+import { useCallback } from "react"
+import { createStore, useStore } from "zustand"
+import { persist } from "zustand/middleware"
+import { immer } from "zustand/middleware/immer"
 
-// misc
-import { Daystamp, daystamp, Maybe, Timestamp, utils } from '../utils'
+import type { GameInterface, GameState } from "."
+import { utils } from "../../utils"
+import { calculateStreak } from "./lib"
 
-import { useCallback } from 'react'
-import { useStore } from 'zustand'
-import { IUser } from '../core'
-import { calculateStreak } from './lib'
-
-export interface GameState {
-  user: IUser
-
-  xp: number
-  coins: number
-  momentum: number
-  streak: number
-
-  dailyTarget: number
-
-  lastActive: Maybe<Timestamp>
-  lastXp: Maybe<Timestamp>
-  lastStreak: Maybe<Timestamp>
-  lastDailyCheck: Maybe<Timestamp>,
-
-  xpHistory: { [date: Daystamp]: number }
-}
-
-export interface GameActions {
-  xpToday: () => number
-  dailyProgress: () => number
-  averageXp: () => number
-
-  calculateStreak: () => void
-  calculateMomentum: () => void
-  refresh: () => void
-  dailyRefresh: () => void
-  reset: () => void
-}
-
-export interface GameMutations {
-  changeXp: (change: number) => number
-  changeCoinsBalance: (change: number) => number
-  changeDailyTarget: (target: number) => number
-}
-
-export type GameInterface = GameState & GameActions
-export type Game = ReturnType<typeof Game>["game"]
-export type ReactiveGame = ReturnType<typeof Game>['useGame']
-export type ReadOnlyGame = ReturnType<typeof Game>['readOnlyGame']
-
-export function Game(state: GameState) {
+export function createGameStore(state: GameState) {
   const game = createStore<GameInterface>()(
     persist(
       immer((set, get) => ({
@@ -68,8 +24,9 @@ export function Game(state: GameState) {
           })
         },
 
+        // Afsin
         calculateMomentum() {
-          let averageXp = get().averageXp()
+          const averageXp = get().averageXp()
           set($ => {
             $.momentum = averageXp // for now, momentum is just average xp
           })
@@ -82,7 +39,7 @@ export function Game(state: GameState) {
         dailyRefresh() {
           set($ => {
             // first we reset stale values
-            if (!utils.isSameDay($.lastActive, Date.now()))
+            if (!isSameDay($.lastActive, Date.now()))
               $.xpHistory[daystamp.today()] = 0 // reset daily xp
 
             // then we calculate new values
@@ -157,55 +114,12 @@ export function Game(state: GameState) {
       )
     )
   }
-
   // New addition: Read-only vanilla store
   const readOnlyGame = (() => {
     const state = game.getState()
     return Object.freeze(state) satisfies GameInterface
   })
 
-  function changeXp(change: number) {
-    game.setState($ => {
-      let newTotalXp = $.xp + change
-      let newDailyXp = $.xpToday() + change
-      // prevent negative xp
-      if (newTotalXp < 0)
-        newTotalXp = 0
-      $.xp = newTotalXp
-      // add XP to history
-      $.xpHistory[daystamp.today()] = newDailyXp
-      // USE LATER: console.log(Object.fromEntries(Object.entries($.xpHistory).map(([k, v]) => [k, v])))
-      // Handle user's last xp date
-      if (!utils.isSameDay($.lastXp, Date.now()))
-        $.lastXp = Date.now()
-    })
-    game.getState().refresh()
-    return game.getState().xp
-  }
 
-  function changeCoinsBalance(change: number) {
-    game.setState($ => {
-      let newTotalCoins = $.coins + change
-      // prevent negative coins
-      if (newTotalCoins < 0)
-        newTotalCoins = 0
-      $.coins = newTotalCoins
-    })
-    game.getState().refresh()
-    return game.getState().coins
-  }
-
-  function changeDailyTarget(target: number) {
-    game.setState($ => {
-      // prevent negative target
-      if (target < 0) target = 0
-      $.dailyTarget = target
-    })
-    game.getState().refresh()
-    return game.getState().dailyTarget
-  }
-
-  const mutations: GameMutations = { changeXp, changeCoinsBalance, changeDailyTarget }
-
-  return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }
+

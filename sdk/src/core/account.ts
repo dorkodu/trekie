@@ -64,7 +64,6 @@ export function registerAccount() {
   // create 
 }
 
-
 export const USERNAME_REGEX = /^(?![_.])(?!.*[_.]{2})([a-zA-Z0-9_.]{1,16})(?<![_.])$/
 export const USERHANDLE_REGEX = /^@(?![_.])(?!.*[_.]{2})([a-zA-Z0-9_.]{1,16})(?<![_.])$/
 

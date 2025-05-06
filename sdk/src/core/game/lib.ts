@@ -1,5 +1,5 @@
-import { daystamp } from "../utils"
-import { GameInterface } from "./game"
+import { GameInterface } from "."
+import { daystamp } from "../../utils"
 
 // Function to calculate the current streak based on xpHistory and dailyXpTarget
 export function calculateStreak(
