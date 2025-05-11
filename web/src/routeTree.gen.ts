@@ -8,45 +8,39 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WwwImport } from './routes/_www'
 import { Route as AppImport } from './routes/_app'
-import { Route as AppProfileImport } from './routes/_app/Profile'
-import { Route as AppSocialImport } from './routes/_app/Social'
-import { Route as AppArchiveImport } from './routes/_app/archive'
-import { Route as AppCommunityImport } from './routes/_app/community'
-import { Route as AppCommunityPageImport } from './routes/_app/community/$id'
-import { Route as AppExploreImport } from './routes/_app/explore'
-import { Route as AppHomeImport } from './routes/_app/home'
-import { Route as AppLifeImport } from './routes/_app/life'
-import { Route as AppMarketImport } from './routes/_app/market'
-import { Route as AppMeImport } from './routes/_app/me'
-import { Route as AppDataImport } from './routes/_app/my-data'
-import { Route as AppPremiumImport } from './routes/_app/premium'
-import { Route as AppSettingsImport } from './routes/_app/settings'
-import { Route as WwwLayoutImport } from './routes/_www'
-import { Route as Www404Import } from './routes/_www/404'
-import { Route as WwwAboutImport } from './routes/_www/about'
-import { Route as WwwCreateAccountImport } from './routes/_www/create-account'
-import { Route as WwwErrorImport } from './routes/_www/error'
-import { Route as AppHelpImport } from './routes/_www/help'
 import { Route as WwwIndexImport } from './routes/_www/index'
-import { Route as WwwLegalImport } from './routes/_www/legal'
-import { Route as WwwLoginImport } from './routes/_www/login'
 import { Route as WwwWelcomeImport } from './routes/_www/welcome'
-
-// Create Virtual Routes
-
-const WwwImport = createFileRoute('/www')()
+import { Route as WwwLoginImport } from './routes/_www/login'
+import { Route as WwwLegalImport } from './routes/_www/legal'
+import { Route as WwwErrorImport } from './routes/_www/error'
+import { Route as WwwCreateAccountImport } from './routes/_www/create-account'
+import { Route as WwwAboutImport } from './routes/_www/about'
+import { Route as Www404Import } from './routes/_www/404'
+import { Route as AppPremiumImport } from './routes/_app/premium'
+import { Route as AppMeImport } from './routes/_app/me'
+import { Route as AppLifeImport } from './routes/_app/life'
+import { Route as AppHomeImport } from './routes/_app/home'
+import { Route as AppExploreImport } from './routes/_app/explore'
+import { Route as AppArchiveImport } from './routes/_app/archive'
+import { Route as AppSocialImport } from './routes/_app/Social'
+import { Route as AppProfileImport } from './routes/_app/Profile'
+import { Route as WwwHelpIndexImport } from './routes/_www/help/index'
+import { Route as AppSettingsIndexImport } from './routes/_app/settings/index'
+import { Route as AppMarketIndexImport } from './routes/_app/market/index'
+import { Route as AppCommunityIndexImport } from './routes/_app/community/index'
+import { Route as AppProfileEditImport } from './routes/_app/profile/edit'
+import { Route as AppProfileUsernameImport } from './routes/_app/profile/$username'
+import { Route as AppCommunityIdImport } from './routes/_app/community/$id'
 
 // Create/Update Routes
 
 const WwwRoute = WwwImport.update({
-  id: '/www',
-  path: '/www',
+  id: '/_www',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -97,99 +91,100 @@ const WwwAboutRoute = WwwAboutImport.update({
   getParentRoute: () => WwwRoute,
 } as any)
 
-const WwwLayoutRoute = WwwLayoutImport.update({
-  id: '/_layout',
+const Www404Route = Www404Import.update({
+  id: '/404',
+  path: '/404',
   getParentRoute: () => WwwRoute,
 } as any)
 
-const Www404Route = Www404Import.update({
-  id: '/www/404',
-  path: '/www/404',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppCommunityRoute = AppCommunityImport.update({
-  id: '/app/community',
-  path: '/app/community',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppArchiveRoute = AppArchiveImport.update({
-  id: '/app/archive',
-  path: '/app/archive',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppSocialRoute = AppSocialImport.update({
-  id: '/app/Social',
-  path: '/app/Social',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppSettingsRoute = AppSettingsImport.update({
-  id: '/app/Settings',
-  path: '/app/Settings',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppProfileRoute = AppProfileImport.update({
-  id: '/app/Profile',
-  path: '/app/Profile',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AppPremiumRoute = AppPremiumImport.update({
-  id: '/app/Premium',
-  path: '/app/Premium',
-  getParentRoute: () => rootRoute,
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AppMeRoute = AppMeImport.update({
-  id: '/app/Me',
-  path: '/app/Me',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppMarketRoute = AppMarketImport.update({
-  id: '/app/Market',
-  path: '/app/Market',
-  getParentRoute: () => rootRoute,
+  id: '/me',
+  path: '/me',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AppLifeRoute = AppLifeImport.update({
-  id: '/app/Life',
-  path: '/app/Life',
-  getParentRoute: () => rootRoute,
+  id: '/life',
+  path: '/life',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AppHomeRoute = AppHomeImport.update({
-  id: '/app/Home',
-  path: '/app/Home',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppHelpRoute = AppHelpImport.update({
-  id: '/app/Help',
-  path: '/app/Help',
-  getParentRoute: () => rootRoute,
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AppExploreRoute = AppExploreImport.update({
-  id: '/app/Explore',
-  path: '/app/Explore',
-  getParentRoute: () => rootRoute,
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => AppRoute,
 } as any)
 
-const AppDataRoute = AppDataImport.update({
-  id: '/app/Data',
-  path: '/app/Data',
-  getParentRoute: () => rootRoute,
+const AppArchiveRoute = AppArchiveImport.update({
+  id: '/archive',
+  path: '/archive',
+  getParentRoute: () => AppRoute,
 } as any)
 
-const AppCommunityPageRoute = AppCommunityPageImport.update({
-  id: '/app/CommunityPage',
-  path: '/app/CommunityPage',
-  getParentRoute: () => rootRoute,
+const AppSocialRoute = AppSocialImport.update({
+  id: '/Social',
+  path: '/Social',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppProfileRoute = AppProfileImport.update({
+  id: '/Profile',
+  path: '/Profile',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const WwwHelpIndexRoute = WwwHelpIndexImport.update({
+  id: '/help/',
+  path: '/help/',
+  getParentRoute: () => WwwRoute,
+} as any)
+
+const AppSettingsIndexRoute = AppSettingsIndexImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppMarketIndexRoute = AppMarketIndexImport.update({
+  id: '/market/',
+  path: '/market/',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppCommunityIndexRoute = AppCommunityIndexImport.update({
+  id: '/community/',
+  path: '/community/',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppProfileEditRoute = AppProfileEditImport.update({
+  id: '/profile/edit',
+  path: '/profile/edit',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppProfileUsernameRoute = AppProfileUsernameImport.update({
+  id: '/profile/$username',
+  path: '/profile/$username',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppCommunityIdRoute = AppCommunityIdImport.update({
+  id: '/community/$id',
+  path: '/community/$id',
+  getParentRoute: () => AppRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -203,172 +198,172 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
-    '/app/CommunityPage': {
-      id: '/app/CommunityPage'
-      path: '/app/CommunityPage'
-      fullPath: '/app/CommunityPage'
-      preLoaderRoute: typeof AppCommunityPageImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Data': {
-      id: '/app/Data'
-      path: '/app/Data'
-      fullPath: '/app/Data'
-      preLoaderRoute: typeof AppDataImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Explore': {
-      id: '/app/Explore'
-      path: '/app/Explore'
-      fullPath: '/app/Explore'
-      preLoaderRoute: typeof AppExploreImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Help': {
-      id: '/app/Help'
-      path: '/app/Help'
-      fullPath: '/app/Help'
-      preLoaderRoute: typeof AppHelpImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Home': {
-      id: '/app/Home'
-      path: '/app/Home'
-      fullPath: '/app/Home'
-      preLoaderRoute: typeof AppHomeImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Life': {
-      id: '/app/Life'
-      path: '/app/Life'
-      fullPath: '/app/Life'
-      preLoaderRoute: typeof AppLifeImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Market': {
-      id: '/app/Market'
-      path: '/app/Market'
-      fullPath: '/app/Market'
-      preLoaderRoute: typeof AppMarketImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Me': {
-      id: '/app/Me'
-      path: '/app/Me'
-      fullPath: '/app/Me'
-      preLoaderRoute: typeof AppMeImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Premium': {
-      id: '/app/Premium'
-      path: '/app/Premium'
-      fullPath: '/app/Premium'
-      preLoaderRoute: typeof AppPremiumImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Profile': {
-      id: '/app/Profile'
-      path: '/app/Profile'
-      fullPath: '/app/Profile'
-      preLoaderRoute: typeof AppProfileImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Settings': {
-      id: '/app/Settings'
-      path: '/app/Settings'
-      fullPath: '/app/Settings'
-      preLoaderRoute: typeof AppSettingsImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/Social': {
-      id: '/app/Social'
-      path: '/app/Social'
-      fullPath: '/app/Social'
-      preLoaderRoute: typeof AppSocialImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/archive': {
-      id: '/app/archive'
-      path: '/app/archive'
-      fullPath: '/app/archive'
-      preLoaderRoute: typeof AppArchiveImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/community': {
-      id: '/app/community'
-      path: '/app/community'
-      fullPath: '/app/community'
-      preLoaderRoute: typeof AppCommunityImport
-      parentRoute: typeof rootRoute
-    }
-    '/www/404': {
-      id: '/www/404'
-      path: '/www/404'
-      fullPath: '/www/404'
-      preLoaderRoute: typeof Www404Import
-      parentRoute: typeof rootRoute
-    }
-    '/www': {
-      id: '/www'
-      path: '/www'
-      fullPath: '/www'
+    '/_www': {
+      id: '/_www'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof WwwImport
       parentRoute: typeof rootRoute
     }
-    '/www/_layout': {
-      id: '/www/_layout'
-      path: '/www'
-      fullPath: '/www'
-      preLoaderRoute: typeof WwwLayoutImport
-      parentRoute: typeof WwwRoute
+    '/_app/Profile': {
+      id: '/_app/Profile'
+      path: '/Profile'
+      fullPath: '/Profile'
+      preLoaderRoute: typeof AppProfileImport
+      parentRoute: typeof AppImport
     }
-    '/www/about': {
-      id: '/www/about'
+    '/_app/Social': {
+      id: '/_app/Social'
+      path: '/Social'
+      fullPath: '/Social'
+      preLoaderRoute: typeof AppSocialImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/archive': {
+      id: '/_app/archive'
+      path: '/archive'
+      fullPath: '/archive'
+      preLoaderRoute: typeof AppArchiveImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/explore': {
+      id: '/_app/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof AppExploreImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/life': {
+      id: '/_app/life'
+      path: '/life'
+      fullPath: '/life'
+      preLoaderRoute: typeof AppLifeImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/me': {
+      id: '/_app/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof AppMeImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/premium': {
+      id: '/_app/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof AppPremiumImport
+      parentRoute: typeof AppImport
+    }
+    '/_www/404': {
+      id: '/_www/404'
+      path: '/404'
+      fullPath: '/404'
+      preLoaderRoute: typeof Www404Import
+      parentRoute: typeof WwwImport
+    }
+    '/_www/about': {
+      id: '/_www/about'
       path: '/about'
-      fullPath: '/www/about'
+      fullPath: '/about'
       preLoaderRoute: typeof WwwAboutImport
       parentRoute: typeof WwwImport
     }
-    '/www/create-account': {
-      id: '/www/create-account'
+    '/_www/create-account': {
+      id: '/_www/create-account'
       path: '/create-account'
-      fullPath: '/www/create-account'
+      fullPath: '/create-account'
       preLoaderRoute: typeof WwwCreateAccountImport
       parentRoute: typeof WwwImport
     }
-    '/www/error': {
-      id: '/www/error'
+    '/_www/error': {
+      id: '/_www/error'
       path: '/error'
-      fullPath: '/www/error'
+      fullPath: '/error'
       preLoaderRoute: typeof WwwErrorImport
       parentRoute: typeof WwwImport
     }
-    '/www/legal': {
-      id: '/www/legal'
+    '/_www/legal': {
+      id: '/_www/legal'
       path: '/legal'
-      fullPath: '/www/legal'
+      fullPath: '/legal'
       preLoaderRoute: typeof WwwLegalImport
       parentRoute: typeof WwwImport
     }
-    '/www/login': {
-      id: '/www/login'
+    '/_www/login': {
+      id: '/_www/login'
       path: '/login'
-      fullPath: '/www/login'
+      fullPath: '/login'
       preLoaderRoute: typeof WwwLoginImport
       parentRoute: typeof WwwImport
     }
-    '/www/welcome': {
-      id: '/www/welcome'
+    '/_www/welcome': {
+      id: '/_www/welcome'
       path: '/welcome'
-      fullPath: '/www/welcome'
+      fullPath: '/welcome'
       preLoaderRoute: typeof WwwWelcomeImport
       parentRoute: typeof WwwImport
     }
-    '/www/': {
-      id: '/www/'
+    '/_www/': {
+      id: '/_www/'
       path: '/'
-      fullPath: '/www/'
+      fullPath: '/'
       preLoaderRoute: typeof WwwIndexImport
+      parentRoute: typeof WwwImport
+    }
+    '/_app/community/$id': {
+      id: '/_app/community/$id'
+      path: '/community/$id'
+      fullPath: '/community/$id'
+      preLoaderRoute: typeof AppCommunityIdImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/profile/$username': {
+      id: '/_app/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof AppProfileUsernameImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/profile/edit': {
+      id: '/_app/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof AppProfileEditImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/community/': {
+      id: '/_app/community/'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof AppCommunityIndexImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/market/': {
+      id: '/_app/market/'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof AppMarketIndexImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/settings/': {
+      id: '/_app/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsIndexImport
+      parentRoute: typeof AppImport
+    }
+    '/_www/help/': {
+      id: '/_www/help/'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof WwwHelpIndexImport
       parentRoute: typeof WwwImport
     }
   }
@@ -376,8 +371,44 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AppRouteChildren {
+  AppProfileRoute: typeof AppProfileRoute
+  AppSocialRoute: typeof AppSocialRoute
+  AppArchiveRoute: typeof AppArchiveRoute
+  AppExploreRoute: typeof AppExploreRoute
+  AppHomeRoute: typeof AppHomeRoute
+  AppLifeRoute: typeof AppLifeRoute
+  AppMeRoute: typeof AppMeRoute
+  AppPremiumRoute: typeof AppPremiumRoute
+  AppCommunityIdRoute: typeof AppCommunityIdRoute
+  AppProfileUsernameRoute: typeof AppProfileUsernameRoute
+  AppProfileEditRoute: typeof AppProfileEditRoute
+  AppCommunityIndexRoute: typeof AppCommunityIndexRoute
+  AppMarketIndexRoute: typeof AppMarketIndexRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppProfileRoute: AppProfileRoute,
+  AppSocialRoute: AppSocialRoute,
+  AppArchiveRoute: AppArchiveRoute,
+  AppExploreRoute: AppExploreRoute,
+  AppHomeRoute: AppHomeRoute,
+  AppLifeRoute: AppLifeRoute,
+  AppMeRoute: AppMeRoute,
+  AppPremiumRoute: AppPremiumRoute,
+  AppCommunityIdRoute: AppCommunityIdRoute,
+  AppProfileUsernameRoute: AppProfileUsernameRoute,
+  AppProfileEditRoute: AppProfileEditRoute,
+  AppCommunityIndexRoute: AppCommunityIndexRoute,
+  AppMarketIndexRoute: AppMarketIndexRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 interface WwwRouteChildren {
-  WwwLayoutRoute: typeof WwwLayoutRoute
+  Www404Route: typeof Www404Route
   WwwAboutRoute: typeof WwwAboutRoute
   WwwCreateAccountRoute: typeof WwwCreateAccountRoute
   WwwErrorRoute: typeof WwwErrorRoute
@@ -385,10 +416,11 @@ interface WwwRouteChildren {
   WwwLoginRoute: typeof WwwLoginRoute
   WwwWelcomeRoute: typeof WwwWelcomeRoute
   WwwIndexRoute: typeof WwwIndexRoute
+  WwwHelpIndexRoute: typeof WwwHelpIndexRoute
 }
 
 const WwwRouteChildren: WwwRouteChildren = {
-  WwwLayoutRoute: WwwLayoutRoute,
+  Www404Route: Www404Route,
   WwwAboutRoute: WwwAboutRoute,
   WwwCreateAccountRoute: WwwCreateAccountRoute,
   WwwErrorRoute: WwwErrorRoute,
@@ -396,211 +428,184 @@ const WwwRouteChildren: WwwRouteChildren = {
   WwwLoginRoute: WwwLoginRoute,
   WwwWelcomeRoute: WwwWelcomeRoute,
   WwwIndexRoute: WwwIndexRoute,
+  WwwHelpIndexRoute: WwwHelpIndexRoute,
 }
 
 const WwwRouteWithChildren = WwwRoute._addFileChildren(WwwRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '': typeof AppRoute
-  '/app/CommunityPage': typeof AppCommunityPageRoute
-  '/app/Data': typeof AppDataRoute
-  '/app/Explore': typeof AppExploreRoute
-  '/app/Help': typeof AppHelpRoute
-  '/app/Home': typeof AppHomeRoute
-  '/app/Life': typeof AppLifeRoute
-  '/app/Market': typeof AppMarketRoute
-  '/app/Me': typeof AppMeRoute
-  '/app/Premium': typeof AppPremiumRoute
-  '/app/Profile': typeof AppProfileRoute
-  '/app/Settings': typeof AppSettingsRoute
-  '/app/Social': typeof AppSocialRoute
-  '/app/archive': typeof AppArchiveRoute
-  '/app/community': typeof AppCommunityRoute
-  '/www/404': typeof Www404Route
-  '/www': typeof WwwLayoutRoute
-  '/www/about': typeof WwwAboutRoute
-  '/www/create-account': typeof WwwCreateAccountRoute
-  '/www/error': typeof WwwErrorRoute
-  '/www/legal': typeof WwwLegalRoute
-  '/www/login': typeof WwwLoginRoute
-  '/www/welcome': typeof WwwWelcomeRoute
-  '/www/': typeof WwwIndexRoute
+  '': typeof WwwRouteWithChildren
+  '/Profile': typeof AppProfileRoute
+  '/Social': typeof AppSocialRoute
+  '/archive': typeof AppArchiveRoute
+  '/explore': typeof AppExploreRoute
+  '/home': typeof AppHomeRoute
+  '/life': typeof AppLifeRoute
+  '/me': typeof AppMeRoute
+  '/premium': typeof AppPremiumRoute
+  '/404': typeof Www404Route
+  '/about': typeof WwwAboutRoute
+  '/create-account': typeof WwwCreateAccountRoute
+  '/error': typeof WwwErrorRoute
+  '/legal': typeof WwwLegalRoute
+  '/login': typeof WwwLoginRoute
+  '/welcome': typeof WwwWelcomeRoute
+  '/': typeof WwwIndexRoute
+  '/community/$id': typeof AppCommunityIdRoute
+  '/profile/$username': typeof AppProfileUsernameRoute
+  '/profile/edit': typeof AppProfileEditRoute
+  '/community': typeof AppCommunityIndexRoute
+  '/market': typeof AppMarketIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
+  '/help': typeof WwwHelpIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '': typeof AppRoute
-  '/app/CommunityPage': typeof AppCommunityPageRoute
-  '/app/Data': typeof AppDataRoute
-  '/app/Explore': typeof AppExploreRoute
-  '/app/Help': typeof AppHelpRoute
-  '/app/Home': typeof AppHomeRoute
-  '/app/Life': typeof AppLifeRoute
-  '/app/Market': typeof AppMarketRoute
-  '/app/Me': typeof AppMeRoute
-  '/app/Premium': typeof AppPremiumRoute
-  '/app/Profile': typeof AppProfileRoute
-  '/app/Settings': typeof AppSettingsRoute
-  '/app/Social': typeof AppSocialRoute
-  '/app/archive': typeof AppArchiveRoute
-  '/app/community': typeof AppCommunityRoute
-  '/www/404': typeof Www404Route
-  '/www': typeof WwwIndexRoute
-  '/www/about': typeof WwwAboutRoute
-  '/www/create-account': typeof WwwCreateAccountRoute
-  '/www/error': typeof WwwErrorRoute
-  '/www/legal': typeof WwwLegalRoute
-  '/www/login': typeof WwwLoginRoute
-  '/www/welcome': typeof WwwWelcomeRoute
+  '': typeof AppRouteWithChildren
+  '/Profile': typeof AppProfileRoute
+  '/Social': typeof AppSocialRoute
+  '/archive': typeof AppArchiveRoute
+  '/explore': typeof AppExploreRoute
+  '/home': typeof AppHomeRoute
+  '/life': typeof AppLifeRoute
+  '/me': typeof AppMeRoute
+  '/premium': typeof AppPremiumRoute
+  '/404': typeof Www404Route
+  '/about': typeof WwwAboutRoute
+  '/create-account': typeof WwwCreateAccountRoute
+  '/error': typeof WwwErrorRoute
+  '/legal': typeof WwwLegalRoute
+  '/login': typeof WwwLoginRoute
+  '/welcome': typeof WwwWelcomeRoute
+  '/': typeof WwwIndexRoute
+  '/community/$id': typeof AppCommunityIdRoute
+  '/profile/$username': typeof AppProfileUsernameRoute
+  '/profile/edit': typeof AppProfileEditRoute
+  '/community': typeof AppCommunityIndexRoute
+  '/market': typeof AppMarketIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
+  '/help': typeof WwwHelpIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/_app': typeof AppRoute
-  '/app/CommunityPage': typeof AppCommunityPageRoute
-  '/app/Data': typeof AppDataRoute
-  '/app/Explore': typeof AppExploreRoute
-  '/app/Help': typeof AppHelpRoute
-  '/app/Home': typeof AppHomeRoute
-  '/app/Life': typeof AppLifeRoute
-  '/app/Market': typeof AppMarketRoute
-  '/app/Me': typeof AppMeRoute
-  '/app/Premium': typeof AppPremiumRoute
-  '/app/Profile': typeof AppProfileRoute
-  '/app/Settings': typeof AppSettingsRoute
-  '/app/Social': typeof AppSocialRoute
-  '/app/archive': typeof AppArchiveRoute
-  '/app/community': typeof AppCommunityRoute
-  '/www/404': typeof Www404Route
-  '/www': typeof WwwRouteWithChildren
-  '/www/_layout': typeof WwwLayoutRoute
-  '/www/about': typeof WwwAboutRoute
-  '/www/create-account': typeof WwwCreateAccountRoute
-  '/www/error': typeof WwwErrorRoute
-  '/www/legal': typeof WwwLegalRoute
-  '/www/login': typeof WwwLoginRoute
-  '/www/welcome': typeof WwwWelcomeRoute
-  '/www/': typeof WwwIndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_www': typeof WwwRouteWithChildren
+  '/_app/Profile': typeof AppProfileRoute
+  '/_app/Social': typeof AppSocialRoute
+  '/_app/archive': typeof AppArchiveRoute
+  '/_app/explore': typeof AppExploreRoute
+  '/_app/home': typeof AppHomeRoute
+  '/_app/life': typeof AppLifeRoute
+  '/_app/me': typeof AppMeRoute
+  '/_app/premium': typeof AppPremiumRoute
+  '/_www/404': typeof Www404Route
+  '/_www/about': typeof WwwAboutRoute
+  '/_www/create-account': typeof WwwCreateAccountRoute
+  '/_www/error': typeof WwwErrorRoute
+  '/_www/legal': typeof WwwLegalRoute
+  '/_www/login': typeof WwwLoginRoute
+  '/_www/welcome': typeof WwwWelcomeRoute
+  '/_www/': typeof WwwIndexRoute
+  '/_app/community/$id': typeof AppCommunityIdRoute
+  '/_app/profile/$username': typeof AppProfileUsernameRoute
+  '/_app/profile/edit': typeof AppProfileEditRoute
+  '/_app/community/': typeof AppCommunityIndexRoute
+  '/_app/market/': typeof AppMarketIndexRoute
+  '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_www/help/': typeof WwwHelpIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-  | ''
-  | '/app/CommunityPage'
-  | '/app/Data'
-  | '/app/Explore'
-  | '/app/Help'
-  | '/app/Home'
-  | '/app/Life'
-  | '/app/Market'
-  | '/app/Me'
-  | '/app/Premium'
-  | '/app/Profile'
-  | '/app/Settings'
-  | '/app/Social'
-  | '/app/archive'
-  | '/app/community'
-  | '/www/404'
-  | '/www'
-  | '/www/about'
-  | '/www/create-account'
-  | '/www/error'
-  | '/www/legal'
-  | '/www/login'
-  | '/www/welcome'
-  | '/www/'
+    | ''
+    | '/Profile'
+    | '/Social'
+    | '/archive'
+    | '/explore'
+    | '/home'
+    | '/life'
+    | '/me'
+    | '/premium'
+    | '/404'
+    | '/about'
+    | '/create-account'
+    | '/error'
+    | '/legal'
+    | '/login'
+    | '/welcome'
+    | '/'
+    | '/community/$id'
+    | '/profile/$username'
+    | '/profile/edit'
+    | '/community'
+    | '/market'
+    | '/settings'
+    | '/help'
   fileRoutesByTo: FileRoutesByTo
   to:
-  | ''
-  | '/app/CommunityPage'
-  | '/app/Data'
-  | '/app/Explore'
-  | '/app/Help'
-  | '/app/Home'
-  | '/app/Life'
-  | '/app/Market'
-  | '/app/Me'
-  | '/app/Premium'
-  | '/app/Profile'
-  | '/app/Settings'
-  | '/app/Social'
-  | '/app/archive'
-  | '/app/community'
-  | '/www/404'
-  | '/www'
-  | '/www/about'
-  | '/www/create-account'
-  | '/www/error'
-  | '/www/legal'
-  | '/www/login'
-  | '/www/welcome'
+    | ''
+    | '/Profile'
+    | '/Social'
+    | '/archive'
+    | '/explore'
+    | '/home'
+    | '/life'
+    | '/me'
+    | '/premium'
+    | '/404'
+    | '/about'
+    | '/create-account'
+    | '/error'
+    | '/legal'
+    | '/login'
+    | '/welcome'
+    | '/'
+    | '/community/$id'
+    | '/profile/$username'
+    | '/profile/edit'
+    | '/community'
+    | '/market'
+    | '/settings'
+    | '/help'
   id:
-  | '__root__'
-  | '/_app'
-  | '/app/CommunityPage'
-  | '/app/Data'
-  | '/app/Explore'
-  | '/app/Help'
-  | '/app/Home'
-  | '/app/Life'
-  | '/app/Market'
-  | '/app/Me'
-  | '/app/Premium'
-  | '/app/Profile'
-  | '/app/Settings'
-  | '/app/Social'
-  | '/app/archive'
-  | '/app/community'
-  | '/www/404'
-  | '/www'
-  | '/www/_layout'
-  | '/www/about'
-  | '/www/create-account'
-  | '/www/error'
-  | '/www/legal'
-  | '/www/login'
-  | '/www/welcome'
-  | '/www/'
+    | '__root__'
+    | '/_app'
+    | '/_www'
+    | '/_app/Profile'
+    | '/_app/Social'
+    | '/_app/archive'
+    | '/_app/explore'
+    | '/_app/home'
+    | '/_app/life'
+    | '/_app/me'
+    | '/_app/premium'
+    | '/_www/404'
+    | '/_www/about'
+    | '/_www/create-account'
+    | '/_www/error'
+    | '/_www/legal'
+    | '/_www/login'
+    | '/_www/welcome'
+    | '/_www/'
+    | '/_app/community/$id'
+    | '/_app/profile/$username'
+    | '/_app/profile/edit'
+    | '/_app/community/'
+    | '/_app/market/'
+    | '/_app/settings/'
+    | '/_www/help/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  AppRoute: typeof AppRoute
-  AppCommunityPageRoute: typeof AppCommunityPageRoute
-  AppDataRoute: typeof AppDataRoute
-  AppExploreRoute: typeof AppExploreRoute
-  AppHelpRoute: typeof AppHelpRoute
-  AppHomeRoute: typeof AppHomeRoute
-  AppLifeRoute: typeof AppLifeRoute
-  AppMarketRoute: typeof AppMarketRoute
-  AppMeRoute: typeof AppMeRoute
-  AppPremiumRoute: typeof AppPremiumRoute
-  AppProfileRoute: typeof AppProfileRoute
-  AppSettingsRoute: typeof AppSettingsRoute
-  AppSocialRoute: typeof AppSocialRoute
-  AppArchiveRoute: typeof AppArchiveRoute
-  AppCommunityRoute: typeof AppCommunityRoute
-  Www404Route: typeof Www404Route
+  AppRoute: typeof AppRouteWithChildren
   WwwRoute: typeof WwwRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  AppRoute: AppRoute,
-  AppCommunityPageRoute: AppCommunityPageRoute,
-  AppDataRoute: AppDataRoute,
-  AppExploreRoute: AppExploreRoute,
-  AppHelpRoute: AppHelpRoute,
-  AppHomeRoute: AppHomeRoute,
-  AppLifeRoute: AppLifeRoute,
-  AppMarketRoute: AppMarketRoute,
-  AppMeRoute: AppMeRoute,
-  AppPremiumRoute: AppPremiumRoute,
-  AppProfileRoute: AppProfileRoute,
-  AppSettingsRoute: AppSettingsRoute,
-  AppSocialRoute: AppSocialRoute,
-  AppArchiveRoute: AppArchiveRoute,
-  AppCommunityRoute: AppCommunityRoute,
-  Www404Route: Www404Route,
+  AppRoute: AppRouteWithChildren,
   WwwRoute: WwwRouteWithChildren,
 }
 
@@ -615,116 +620,133 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_app",
-        "/app/CommunityPage",
-        "/app/Data",
-        "/app/Explore",
-        "/app/Help",
-        "/app/Home",
-        "/app/Life",
-        "/app/Market",
-        "/app/Me",
-        "/app/Premium",
-        "/app/Profile",
-        "/app/Settings",
-        "/app/Social",
-        "/app/archive",
-        "/app/community",
-        "/www/404",
-        "/www"
+        "/_www"
       ]
     },
     "/_app": {
-      "filePath": "_app.tsx"
-    },
-    "/app/CommunityPage": {
-      "filePath": "app/CommunityPage.tsx"
-    },
-    "/app/Data": {
-      "filePath": "app/Data.tsx"
-    },
-    "/app/Explore": {
-      "filePath": "app/Explore.tsx"
-    },
-    "/app/Help": {
-      "filePath": "app/Help.tsx"
-    },
-    "/app/Home": {
-      "filePath": "app/Home.tsx"
-    },
-    "/app/Life": {
-      "filePath": "app/Life.tsx"
-    },
-    "/app/Market": {
-      "filePath": "app/Market.tsx"
-    },
-    "/app/Me": {
-      "filePath": "app/Me.tsx"
-    },
-    "/app/Premium": {
-      "filePath": "app/Premium.tsx"
-    },
-    "/app/Profile": {
-      "filePath": "app/Profile.tsx"
-    },
-    "/app/Settings": {
-      "filePath": "app/Settings.tsx"
-    },
-    "/app/Social": {
-      "filePath": "app/Social.tsx"
-    },
-    "/app/archive": {
-      "filePath": "app/archive.tsx"
-    },
-    "/app/community": {
-      "filePath": "app/community.tsx"
-    },
-    "/www/404": {
-      "filePath": "www/404.tsx"
-    },
-    "/www": {
-      "filePath": "www",
+      "filePath": "_app.tsx",
       "children": [
-        "/www/_layout",
-        "/www/about",
-        "/www/create-account",
-        "/www/error",
-        "/www/legal",
-        "/www/login",
-        "/www/welcome",
-        "/www/"
+        "/_app/Profile",
+        "/_app/Social",
+        "/_app/archive",
+        "/_app/explore",
+        "/_app/home",
+        "/_app/life",
+        "/_app/me",
+        "/_app/premium",
+        "/_app/community/$id",
+        "/_app/profile/$username",
+        "/_app/profile/edit",
+        "/_app/community/",
+        "/_app/market/",
+        "/_app/settings/"
       ]
     },
-    "/www/_layout": {
-      "filePath": "www/_layout.tsx",
-      "parent": "/www"
+    "/_www": {
+      "filePath": "_www.tsx",
+      "children": [
+        "/_www/404",
+        "/_www/about",
+        "/_www/create-account",
+        "/_www/error",
+        "/_www/legal",
+        "/_www/login",
+        "/_www/welcome",
+        "/_www/",
+        "/_www/help/"
+      ]
     },
-    "/www/about": {
-      "filePath": "www/about.tsx",
-      "parent": "/www"
+    "/_app/Profile": {
+      "filePath": "_app/Profile.tsx",
+      "parent": "/_app"
     },
-    "/www/create-account": {
-      "filePath": "www/create-account.tsx",
-      "parent": "/www"
+    "/_app/Social": {
+      "filePath": "_app/Social.tsx",
+      "parent": "/_app"
     },
-    "/www/error": {
-      "filePath": "www/error.tsx",
-      "parent": "/www"
+    "/_app/archive": {
+      "filePath": "_app/archive.tsx",
+      "parent": "/_app"
     },
-    "/www/legal": {
-      "filePath": "www/legal.tsx",
-      "parent": "/www"
+    "/_app/explore": {
+      "filePath": "_app/explore.tsx",
+      "parent": "/_app"
     },
-    "/www/login": {
-      "filePath": "www/login.tsx",
-      "parent": "/www"
+    "/_app/home": {
+      "filePath": "_app/home.tsx",
+      "parent": "/_app"
     },
-    "/www/welcome": {
-      "filePath": "www/welcome.tsx",
-      "parent": "/www"
+    "/_app/life": {
+      "filePath": "_app/life.tsx",
+      "parent": "/_app"
     },
-    "/www/": {
-      "filePath": "www/index.tsx",
-      "parent": "/www"
+    "/_app/me": {
+      "filePath": "_app/me.tsx",
+      "parent": "/_app"
+    },
+    "/_app/premium": {
+      "filePath": "_app/premium.tsx",
+      "parent": "/_app"
+    },
+    "/_www/404": {
+      "filePath": "_www/404.tsx",
+      "parent": "/_www"
+    },
+    "/_www/about": {
+      "filePath": "_www/about.tsx",
+      "parent": "/_www"
+    },
+    "/_www/create-account": {
+      "filePath": "_www/create-account.tsx",
+      "parent": "/_www"
+    },
+    "/_www/error": {
+      "filePath": "_www/error.tsx",
+      "parent": "/_www"
+    },
+    "/_www/legal": {
+      "filePath": "_www/legal.tsx",
+      "parent": "/_www"
+    },
+    "/_www/login": {
+      "filePath": "_www/login.tsx",
+      "parent": "/_www"
+    },
+    "/_www/welcome": {
+      "filePath": "_www/welcome.tsx",
+      "parent": "/_www"
+    },
+    "/_www/": {
+      "filePath": "_www/index.tsx",
+      "parent": "/_www"
+    },
+    "/_app/community/$id": {
+      "filePath": "_app/community/$id.tsx",
+      "parent": "/_app"
+    },
+    "/_app/profile/$username": {
+      "filePath": "_app/profile/$username.tsx",
+      "parent": "/_app"
+    },
+    "/_app/profile/edit": {
+      "filePath": "_app/profile/edit.tsx",
+      "parent": "/_app"
+    },
+    "/_app/community/": {
+      "filePath": "_app/community/index.tsx",
+      "parent": "/_app"
+    },
+    "/_app/market/": {
+      "filePath": "_app/market/index.tsx",
+      "parent": "/_app"
+    },
+    "/_app/settings/": {
+      "filePath": "_app/settings/index.tsx",
+      "parent": "/_app"
+    },
+    "/_www/help/": {
+      "filePath": "_www/help/index.tsx",
+      "parent": "/_www"
     }
   }
 }

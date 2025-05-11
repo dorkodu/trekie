@@ -13,7 +13,6 @@ export default defineConfig({
 		TanStackRouterVite({
 			target: "react",
 			autoCodeSplitting: true,
-			virtualRouteConfig: "./routes.ts",
 		}),
 	],
 	test: {
@@ -22,7 +21,9 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			"@": resolve(__dirname, "./src"),
+			"@web": resolve(__dirname, "./src"),
+			"@sdk": resolve(__dirname, "../sdk/src"),
+			"@api": resolve(__dirname, "../api/src"),
 		},
 	},
 });
