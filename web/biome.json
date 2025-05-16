@@ -56,7 +56,7 @@
       "lineWidth": 100,
       "quoteStyle": "double",
       "trailingCommas": "es5",
-      "semicolons": "asNeeded",
+      "semicolons": "always",
       "attributePosition": "auto",
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
