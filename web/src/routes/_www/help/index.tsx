@@ -1,12 +1,9 @@
-import { Flex, Image, Title } from '@mantine/core'
-import OnlyPremium from '@web/shared/components/cards/OnlyPremium'
-import WIPCard from '@web/shared/components/cards/WIPCard'
+import { createFileRoute } from '@tanstack/react-router'
 
-export default function Help() {
-  return (
-    <Flex direction="column" m="md">
-      <Title order={1} size="h2">Help</Title>
-      <WIPCard />
-    </Flex>
-  )
+export const Route = createFileRoute('/_www/help/')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/_www/help/"!</div>
 }

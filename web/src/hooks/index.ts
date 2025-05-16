@@ -1,4 +1,5 @@
 
+import { useNavigate } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 
 export function useDelay() {
@@ -12,21 +13,6 @@ export function useDelay() {
   return state
 }
 
-import { useMantineColorScheme } from "@mantine/core"
-import { useColorScheme } from "@mantine/hooks"
-
-export function useSafeColorScheme(): "light" | "dark" {
-  const { colorScheme } = useMantineColorScheme()
-  const systemColorScheme = useColorScheme(undefined, {
-    getInitialValueInEffect: false,
-  })
-
-  if (colorScheme === "auto") return systemColorScheme
-  return colorScheme
-}
-
-import { useNavigate } from "react-router-dom"
-
 export function useSafeGoBack() {
   const navigate = useNavigate()
 
@@ -38,10 +24,3 @@ export function useSafeGoBack() {
     }
   }
 }
-
-export function useThemed(options: { light: any; dark: any }) {
-  const colorScheme = useSafeColorScheme()
-  return options[colorScheme]
-}
-
-export * from "./useDexieQuery"

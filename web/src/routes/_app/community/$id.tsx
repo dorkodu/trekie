@@ -1,5 +1,9 @@
-function Premium() {
-	return <div className={`flex`}></div>;
-}
+import { createFileRoute } from '@tanstack/react-router'
 
-export default Premium;
+export const Route = createFileRoute('/_app/community/$id')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/_app/community/$id"!</div>
+}

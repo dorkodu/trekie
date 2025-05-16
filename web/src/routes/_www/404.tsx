@@ -1,26 +1,28 @@
-import { Anchor, Button, Center, Flex, Stack, Text, Title } from '@mantine/core'
-import { IconArrowRight } from '@tabler/icons-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { IconArrowRight } from "@tabler/icons-react";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 function NotFound() {
-
-  return (
-    <Stack maw={460} mx="auto" p={10} mt={"5vw"} mb={"10vw"}>
-      <Flex direction="column" align="center">
-        <Title fw={900} fz={"15vw"} c="dimmed" opacity={0.25} lh={1}>404</Title>
-        <Title fw={900} lh={1} lts={-1}>Not Found</Title>
-      </Flex>
-
-      <Text size="xl" maw={460} ta="center" mx="auto" lh={1.25}>
-        The page you are looking for was moved, removed, renamed or may have
-        never existed.
-      </Text>
-
-      <Button component={Link} to="/" size="lg" radius="lg" rightSection={<IconArrowRight />}>
+	return (
+    <div className="max-w-xl mx-auto p-10 mt-[5vw] mb-[10vw] flex flex-col items-center">
+      <div className="flex flex-col items-center">
+        <h1 className="font-extrabold text-[15vw] text-gray-400 opacity-25 leading-none select-none">
+          404
+        </h1>
+        <h2 className="font-extrabold leading-none tracking-tight text-3xl mt-2">
+          Not Found
+        </h2>
+      </div>
+      <p className="text-xl max-w-xl text-center mx-auto leading-snug mt-6 mb-8">
+        The page you are looking for was moved, removed, renamed or may have never existed.
+      </p>
+      <Link
+        to="/"
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition font-semibold text-lg"
+      >
         Go Back Home
-      </Button>
-    </Stack>
-  )
+        <ArrowRight className="w-5 h-5" />
+      </Link>
+    </div>
 }
 
-export default NotFound
+export default NotFound;

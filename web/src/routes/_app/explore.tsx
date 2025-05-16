@@ -1,25 +1,9 @@
-import { IconSearch, IconTrendingUp } from '@tabler/icons-react'
+import { createFileRoute } from '@tanstack/react-router'
 
-function Explore() {
-  return (
-    <Flex direction="column" m="md">
-      <TextInput
-        variant="filled"
-        size="md"
-        radius="md"
-        placeholder="Search"
-        leftSection={<IconSearch />}
-      />
+export const Route = createFileRoute('/_app/explore')({
+  component: RouteComponent,
+})
 
-      <Divider my="md" />
-
-      <Group gap="xs">
-        <IconTrendingUp />
-        <Text fw="bold">Trending Activities</Text>
-      </Group>
-      <Text c="dimmed">Nothing to see, yet.</Text>
-    </Flex>
-  )
+function RouteComponent() {
+  return <div>Hello "/_app/explore"!</div>
 }
-
-export default Explore

@@ -1,12 +1,9 @@
-import { Flex } from '@mantine/core'
-import WIPCard from '@web/shared/components/cards/WIPCard'
+import { createFileRoute } from '@tanstack/react-router'
 
-function Page() {
-  return (
-    <Flex direction="column" m="md">
-      <WIPCard />
-    </Flex>
-  )
+export const Route = createFileRoute('/_app/community/')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/_app/community/"!</div>
 }
-
-export default Page

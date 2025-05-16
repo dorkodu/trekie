@@ -1,9 +1,9 @@
-function Archive() {
-  return (
-    <Flex direction="column" m="md">
-      <WIPCard />
-    </Flex>
-  )
-}
+import { createFileRoute } from '@tanstack/react-router'
 
-export default Archive
+export const Route = createFileRoute('/_app/archive')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/_app/archive"!</div>
+}
