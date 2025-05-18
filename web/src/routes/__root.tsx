@@ -54,9 +54,9 @@ function RootComponent() {
                       }
                     }
                     preload="intent"
-                    className={`block py-2 px-3 text-blue-700`}
+                    className="block py-2 px-3 text-blue-700"
                     // Make "active" links bold
-                    activeProps={{ className: `font-bold` }}
+                    activeProps={{ className: "font-bold" }}
                   >
                     {label}
                   </Link>
@@ -64,7 +64,7 @@ function RootComponent() {
               )
             })}
           </div>
-          <div className={`flex-1 border-l`}>
+          <div className="flex-1 border-l">
             {/* Render our first route match */}
             <Outlet />
           </div>
