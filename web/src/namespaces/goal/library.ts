@@ -1,8 +1,8 @@
-import { db } from "@web/shared/lib/db"
-import { errors } from "@web/shared/lib/errors"
-import { trekie } from "@web/shared/lib/trekie"
-import { trpc } from "@web/shared/lib/trpc"
-import { arrayRemoveItem } from "@web/shared/utils"
+import { db } from "@web/lib/db"
+import { errors } from "@web/lib/errors"
+import { trekie } from "@web/lib/trekie"
+import { trpc } from "@web/lib/trpc"
+import { arrayRemoveItem } from "@web/utils"
 import { ulid } from "ulidx"
 import { IGoal, Interface } from "."
 

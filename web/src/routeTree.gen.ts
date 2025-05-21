@@ -21,14 +21,14 @@ import { Route as WwwErrorImport } from './routes/_www/error'
 import { Route as WwwCreateAccountImport } from './routes/_www/create-account'
 import { Route as WwwAboutImport } from './routes/_www/about'
 import { Route as Www404Import } from './routes/_www/404'
+import { Route as AppSocialImport } from './routes/_app/social'
+import { Route as AppProfileImport } from './routes/_app/profile'
 import { Route as AppPremiumImport } from './routes/_app/premium'
 import { Route as AppMeImport } from './routes/_app/me'
 import { Route as AppLifeImport } from './routes/_app/life'
 import { Route as AppHomeImport } from './routes/_app/home'
 import { Route as AppExploreImport } from './routes/_app/explore'
 import { Route as AppArchiveImport } from './routes/_app/archive'
-import { Route as AppSocialImport } from './routes/_app/Social'
-import { Route as AppProfileImport } from './routes/_app/Profile'
 import { Route as WwwHelpIndexImport } from './routes/_www/help/index'
 import { Route as AppSettingsIndexImport } from './routes/_app/settings/index'
 import { Route as AppMarketIndexImport } from './routes/_app/market/index'
@@ -97,6 +97,18 @@ const Www404Route = Www404Import.update({
   getParentRoute: () => WwwRoute,
 } as any)
 
+const AppSocialRoute = AppSocialImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppProfileRoute = AppProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+
 const AppPremiumRoute = AppPremiumImport.update({
   id: '/premium',
   path: '/premium',
@@ -133,18 +145,6 @@ const AppArchiveRoute = AppArchiveImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppSocialRoute = AppSocialImport.update({
-  id: '/Social',
-  path: '/Social',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppProfileRoute = AppProfileImport.update({
-  id: '/Profile',
-  path: '/Profile',
-  getParentRoute: () => AppRoute,
-} as any)
-
 const WwwHelpIndexRoute = WwwHelpIndexImport.update({
   id: '/help/',
   path: '/help/',
@@ -170,15 +170,15 @@ const AppCommunityIndexRoute = AppCommunityIndexImport.update({
 } as any)
 
 const AppProfileEditRoute = AppProfileEditImport.update({
-  id: '/profile/edit',
-  path: '/profile/edit',
-  getParentRoute: () => AppRoute,
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => AppProfileRoute,
 } as any)
 
 const AppProfileUsernameRoute = AppProfileUsernameImport.update({
-  id: '/profile/$username',
-  path: '/profile/$username',
-  getParentRoute: () => AppRoute,
+  id: '/$username',
+  path: '/$username',
+  getParentRoute: () => AppProfileRoute,
 } as any)
 
 const AppCommunityIdRoute = AppCommunityIdImport.update({
@@ -204,20 +204,6 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof WwwImport
       parentRoute: typeof rootRoute
-    }
-    '/_app/Profile': {
-      id: '/_app/Profile'
-      path: '/Profile'
-      fullPath: '/Profile'
-      preLoaderRoute: typeof AppProfileImport
-      parentRoute: typeof AppImport
-    }
-    '/_app/Social': {
-      id: '/_app/Social'
-      path: '/Social'
-      fullPath: '/Social'
-      preLoaderRoute: typeof AppSocialImport
-      parentRoute: typeof AppImport
     }
     '/_app/archive': {
       id: '/_app/archive'
@@ -259,6 +245,20 @@ declare module '@tanstack/react-router' {
       path: '/premium'
       fullPath: '/premium'
       preLoaderRoute: typeof AppPremiumImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/social': {
+      id: '/_app/social'
+      path: '/social'
+      fullPath: '/social'
+      preLoaderRoute: typeof AppSocialImport
       parentRoute: typeof AppImport
     }
     '/_www/404': {
@@ -326,17 +326,17 @@ declare module '@tanstack/react-router' {
     }
     '/_app/profile/$username': {
       id: '/_app/profile/$username'
-      path: '/profile/$username'
+      path: '/$username'
       fullPath: '/profile/$username'
       preLoaderRoute: typeof AppProfileUsernameImport
-      parentRoute: typeof AppImport
+      parentRoute: typeof AppProfileImport
     }
     '/_app/profile/edit': {
       id: '/_app/profile/edit'
-      path: '/profile/edit'
+      path: '/edit'
       fullPath: '/profile/edit'
       preLoaderRoute: typeof AppProfileEditImport
-      parentRoute: typeof AppImport
+      parentRoute: typeof AppProfileImport
     }
     '/_app/community/': {
       id: '/_app/community/'
@@ -371,35 +371,45 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AppProfileRouteChildren {
+  AppProfileUsernameRoute: typeof AppProfileUsernameRoute
+  AppProfileEditRoute: typeof AppProfileEditRoute
+}
+
+const AppProfileRouteChildren: AppProfileRouteChildren = {
+  AppProfileUsernameRoute: AppProfileUsernameRoute,
+  AppProfileEditRoute: AppProfileEditRoute,
+}
+
+const AppProfileRouteWithChildren = AppProfileRoute._addFileChildren(
+  AppProfileRouteChildren,
+)
+
 interface AppRouteChildren {
-  AppProfileRoute: typeof AppProfileRoute
-  AppSocialRoute: typeof AppSocialRoute
   AppArchiveRoute: typeof AppArchiveRoute
   AppExploreRoute: typeof AppExploreRoute
   AppHomeRoute: typeof AppHomeRoute
   AppLifeRoute: typeof AppLifeRoute
   AppMeRoute: typeof AppMeRoute
   AppPremiumRoute: typeof AppPremiumRoute
+  AppProfileRoute: typeof AppProfileRouteWithChildren
+  AppSocialRoute: typeof AppSocialRoute
   AppCommunityIdRoute: typeof AppCommunityIdRoute
-  AppProfileUsernameRoute: typeof AppProfileUsernameRoute
-  AppProfileEditRoute: typeof AppProfileEditRoute
   AppCommunityIndexRoute: typeof AppCommunityIndexRoute
   AppMarketIndexRoute: typeof AppMarketIndexRoute
   AppSettingsIndexRoute: typeof AppSettingsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppProfileRoute: AppProfileRoute,
-  AppSocialRoute: AppSocialRoute,
   AppArchiveRoute: AppArchiveRoute,
   AppExploreRoute: AppExploreRoute,
   AppHomeRoute: AppHomeRoute,
   AppLifeRoute: AppLifeRoute,
   AppMeRoute: AppMeRoute,
   AppPremiumRoute: AppPremiumRoute,
+  AppProfileRoute: AppProfileRouteWithChildren,
+  AppSocialRoute: AppSocialRoute,
   AppCommunityIdRoute: AppCommunityIdRoute,
-  AppProfileUsernameRoute: AppProfileUsernameRoute,
-  AppProfileEditRoute: AppProfileEditRoute,
   AppCommunityIndexRoute: AppCommunityIndexRoute,
   AppMarketIndexRoute: AppMarketIndexRoute,
   AppSettingsIndexRoute: AppSettingsIndexRoute,
@@ -435,14 +445,14 @@ const WwwRouteWithChildren = WwwRoute._addFileChildren(WwwRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof WwwRouteWithChildren
-  '/Profile': typeof AppProfileRoute
-  '/Social': typeof AppSocialRoute
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
   '/home': typeof AppHomeRoute
   '/life': typeof AppLifeRoute
   '/me': typeof AppMeRoute
   '/premium': typeof AppPremiumRoute
+  '/profile': typeof AppProfileRouteWithChildren
+  '/social': typeof AppSocialRoute
   '/404': typeof Www404Route
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
@@ -462,14 +472,14 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof AppRouteWithChildren
-  '/Profile': typeof AppProfileRoute
-  '/Social': typeof AppSocialRoute
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
   '/home': typeof AppHomeRoute
   '/life': typeof AppLifeRoute
   '/me': typeof AppMeRoute
   '/premium': typeof AppPremiumRoute
+  '/profile': typeof AppProfileRouteWithChildren
+  '/social': typeof AppSocialRoute
   '/404': typeof Www404Route
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
@@ -491,14 +501,14 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
   '/_www': typeof WwwRouteWithChildren
-  '/_app/Profile': typeof AppProfileRoute
-  '/_app/Social': typeof AppSocialRoute
   '/_app/archive': typeof AppArchiveRoute
   '/_app/explore': typeof AppExploreRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/life': typeof AppLifeRoute
   '/_app/me': typeof AppMeRoute
   '/_app/premium': typeof AppPremiumRoute
+  '/_app/profile': typeof AppProfileRouteWithChildren
+  '/_app/social': typeof AppSocialRoute
   '/_www/404': typeof Www404Route
   '/_www/about': typeof WwwAboutRoute
   '/_www/create-account': typeof WwwCreateAccountRoute
@@ -520,14 +530,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
-    | '/Profile'
-    | '/Social'
     | '/archive'
     | '/explore'
     | '/home'
     | '/life'
     | '/me'
     | '/premium'
+    | '/profile'
+    | '/social'
     | '/404'
     | '/about'
     | '/create-account'
@@ -546,14 +556,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
-    | '/Profile'
-    | '/Social'
     | '/archive'
     | '/explore'
     | '/home'
     | '/life'
     | '/me'
     | '/premium'
+    | '/profile'
+    | '/social'
     | '/404'
     | '/about'
     | '/create-account'
@@ -573,14 +583,14 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/_www'
-    | '/_app/Profile'
-    | '/_app/Social'
     | '/_app/archive'
     | '/_app/explore'
     | '/_app/home'
     | '/_app/life'
     | '/_app/me'
     | '/_app/premium'
+    | '/_app/profile'
+    | '/_app/social'
     | '/_www/404'
     | '/_www/about'
     | '/_www/create-account'
@@ -626,17 +636,15 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/Profile",
-        "/_app/Social",
         "/_app/archive",
         "/_app/explore",
         "/_app/home",
         "/_app/life",
         "/_app/me",
         "/_app/premium",
+        "/_app/profile",
+        "/_app/social",
         "/_app/community/$id",
-        "/_app/profile/$username",
-        "/_app/profile/edit",
         "/_app/community/",
         "/_app/market/",
         "/_app/settings/"
@@ -655,14 +663,6 @@ export const routeTree = rootRoute
         "/_www/",
         "/_www/help/"
       ]
-    },
-    "/_app/Profile": {
-      "filePath": "_app/Profile.tsx",
-      "parent": "/_app"
-    },
-    "/_app/Social": {
-      "filePath": "_app/Social.tsx",
-      "parent": "/_app"
     },
     "/_app/archive": {
       "filePath": "_app/archive.tsx",
@@ -686,6 +686,18 @@ export const routeTree = rootRoute
     },
     "/_app/premium": {
       "filePath": "_app/premium.tsx",
+      "parent": "/_app"
+    },
+    "/_app/profile": {
+      "filePath": "_app/profile.tsx",
+      "parent": "/_app",
+      "children": [
+        "/_app/profile/$username",
+        "/_app/profile/edit"
+      ]
+    },
+    "/_app/social": {
+      "filePath": "_app/social.tsx",
       "parent": "/_app"
     },
     "/_www/404": {
@@ -726,11 +738,11 @@ export const routeTree = rootRoute
     },
     "/_app/profile/$username": {
       "filePath": "_app/profile/$username.tsx",
-      "parent": "/_app"
+      "parent": "/_app/profile"
     },
     "/_app/profile/edit": {
       "filePath": "_app/profile/edit.tsx",
-      "parent": "/_app"
+      "parent": "/_app/profile"
     },
     "/_app/community/": {
       "filePath": "_app/community/index.tsx",

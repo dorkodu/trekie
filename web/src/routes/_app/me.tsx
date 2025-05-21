@@ -1,15 +1,15 @@
-import { Flex, Text, Title } from '@mantine/core'
-import { useQuery } from '@tanstack/react-query'
-import CenterLoader from '@web/shared/components/loaders/CenterLoader'
-import { trekie } from 'new/src/lib/trekie'
-import { useEffect, useState } from 'react'
+import { Flex, Text, Title } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+import CenterLoader from "@web/components/loaders/CenterLoader";
+import { trekie } from "new/src/lib/trekie";
+import { useEffect, useState } from "react";
 
 export default function Me() {
-  const selfUser = trekie.use($ => $.user)
+  const selfUser = trekie.use($ => $.user);
 
-  let loading = false
+  const loading = false;
 
-  if (loading) return <CenterLoader />
+  if (loading) return <CenterLoader />;
 
   return (
     <Flex direction="column" m="md">
@@ -18,6 +18,5 @@ export default function Me() {
       <Text>Email: {user.email}</Text>
       {/* Add more profile details and self actions here */}
     </Flex>
-  )
+  );
 }
-

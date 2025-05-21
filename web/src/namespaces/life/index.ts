@@ -1,5 +1,5 @@
 import { GameInterface, IUser } from "@sdk/core/index"
-import { daystamp } from "@web/shared/utils"
+import { daystamp } from "@web/utils"
 
 export interface ILife {
   id: string

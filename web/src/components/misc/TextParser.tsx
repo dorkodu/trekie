@@ -1,7 +1,5 @@
-import { Anchor } from "@mantine/core";
 import emojiRegexp from "emoji-regex";
 import React, { MouseEvent, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import urlRegexp from "url-regex";
 import Emoji from "./Emoji";
 

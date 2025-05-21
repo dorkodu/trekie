@@ -1,6 +1,6 @@
 import { IUser } from "@sdk/core/index"
-import { db } from "@web/shared/lib/db"
-import { Maybe } from "@web/shared/utils"
+import { db } from "@web/lib/db"
+import { Maybe } from "@web/utils"
 
 export async function getAccount(username: string): Promise<Maybe<IUser>> {
   // 1) ask db 2) if not found, ask server 3) if not found, return null

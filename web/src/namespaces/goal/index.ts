@@ -1,5 +1,5 @@
 import { ICommitmentInstance } from "@sdk/core/index"
-import { Maybe } from "@web/shared/utils"
+import { Maybe } from "@web/utils"
 import { Component } from "./library"
 import { IGoal, IGoalTemplate, schema } from './schema'
 

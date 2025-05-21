@@ -1,12 +1,12 @@
 import { ulid } from "ulidx"
 
-import { db } from "@web/shared/lib/db"
-import { errors } from "@web/shared/lib/errors"
-import { trekie } from "@web/shared/lib/trekie"
-import { Daystamp, daystamp } from "@web/shared/utils"
-import { IHabit } from "./schema"
+import { db } from "@web/lib/db"
+import { errors } from "@web/lib/errors"
+import { trekie } from "@web/lib/trekie"
+import { Daystamp, daystamp } from "@web/utils"
+import { IHabit } from "../social/schema"
 
-import { tryCatch } from "@web/shared/utils/tryCatch"
+import { tryCatch } from "@web/utils/tryCatch"
 import { Interface } from "."
 
 // Helper function to check if a DAILYCHECK event already exists for today
