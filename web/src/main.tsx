@@ -6,6 +6,7 @@ import * as TanstackQuery from "./lib/tanstack-query/root-provider";
 import reportWebVitals from "./reportWebVitals";
 import { routeTree } from "./routeTree.gen";
 
+import { ThemeProvider } from "./components/theme-provider";
 import "./styles.css";
 
 declare module "@tanstack/react-router" {

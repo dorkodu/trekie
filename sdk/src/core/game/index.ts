@@ -1,13 +1,6 @@
-import { useCallback } from 'react'
-import { useStore } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { immer } from 'zustand/middleware/immer'
-import { createStore, StoreApi } from 'zustand/vanilla'
-
 // misc
 import type { IUser } from '../account'
-import type { Daystamp, daystamp, Maybe, Timestamp, utils } from '@sdk/../../utils'
-import { calculateStreak } from './lib'
+import type { Daystamp, Maybe, Timestamp } from '../../utils'
 
 export interface GameState {
   user: IUser

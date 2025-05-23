@@ -1,5 +1,3 @@
-import { notifications } from "@mantine/notifications"
-
 export function success(message: string | undefined) {
   notifications.show({
     title: "Success!",
