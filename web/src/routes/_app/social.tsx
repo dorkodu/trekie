@@ -1,19 +1,17 @@
-import { IconBell, IconMessage, IconUserPlus, IconUsers } from "@tabler/icons-react";
-import OnlyPremium from "@web/components/cards/OnlyPremium";
-import WIPCard from "@web/components/cards/WIPCard";
-import { goals } from "@web/namespaces/goal";
+import { Badge } from "@web/components/ui/badge";
+import { Card } from "@web/components/ui/card";
+import { Flex, Group, Stack } from "@web/components/ui/layout";
+import { Text } from "@web/components/ui/text";
+import { trekie } from "@web/lib/trekie";
+import { cn } from "@web/lib/utils";
 import { habits } from "@web/namespaces/habit";
-import { ContainerSheet } from "@web/styles/shared.css";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Feature, useFeature } from "flagged";
-import { trekie } from "new/src/lib/trekie";
-import { useEffect, useState } from "react";
+import { useFeature } from "flagged";
 
 function Social() {
   const isPremium = useFeature("premium");
-
   return (
-    <Flex direction="column" m="md">
+    <Flex direction="column" className="m-4">
       {isPremium ? <NewsFeed /> : <OnlyPremium />}
     </Flex>
   );
@@ -30,58 +28,58 @@ function NewsFeed() {
     ) || [];
 
   return (
-    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
+    <div style={{ borderRadius: 20, padding: 6 }}>
       {records.length === 0 ? (
-        <Text ta="center" my="xs" c="dimmed">
+        <Text align="center" className="my-2 text-muted-foreground">
           Nothing to see here yet.
         </Text>
       ) : (
-        <Stack gap="xs" w="100%">
+        <Stack gap={8} className="w-full">
           {records.map(record => (
             <CommitActivityCard key={record.id} record={record} />
           ))}
         </Stack>
       )}
-      <Flex>
-        <Badge variant="light" color="gray" mx="auto">
+      <Flex className="mt-4">
+        <Badge variant="secondary" className="mx-auto">
           Your Activities
         </Badge>
       </Flex>
-    </Box>
+    </div>
   );
 }
 
 function CommitActivityCard({ record }: { record: any }) {
   return (
-    <Card shadow="sm" p="xs" radius="lg" withBorder w="100%">
+    <Card className="shadow-sm p-2 rounded-lg border w-full mb-2">
       <Stack gap={2}>
         {/* Row 1: kind, event, timestamp */}
-        <Group gap="md" wrap="nowrap">
-          <Text size="xs" c="dimmed" fw={600}>
+        <Group gap={12} wrap="nowrap">
+          <Text size="xs" className="text-muted-foreground font-semibold">
             {record.kind}
           </Text>
-          <Text size="xs" fw={600}>
+          <Text size="xs" className="font-semibold">
             {record.event}
           </Text>
-          <Text size="xs" c="dimmed">
+          <Text size="xs" className="text-muted-foreground">
             {new Date(record.timestamp).toUTCString()}
           </Text>
         </Group>
         {/* Row 2: title */}
-        <Box>
+        <div>
           <CommitmentInstanceTableCell kind={record.kind} instanceId={record.instanceId} />
-        </Box>
+        </div>
         {/* Row 3: rewards */}
-        <Box>
+        <div>
           <Text size="xs">
             XP {record.reward?.xp ?? 0}, Coins {record.reward?.coins ?? 0}
           </Text>
-        </Box>
+        </div>
         {/* Row 4: data code block */}
         {record.data ? (
-          <Code block maw={400} color="dark" w="100%" style={{ fontSize: 10, borderRadius: 10 }}>
+          <pre className="bg-muted text-xs rounded p-2 max-w-[400px] w-full overflow-x-auto">
             {JSON.stringify(record.data)}
-          </Code>
+          </pre>
         ) : null}
       </Stack>
     </Card>
@@ -100,7 +98,7 @@ function CommitmentInstanceTableCell({ kind, instanceId }: { kind: string; insta
 
   if (!entity)
     return (
-      <Text size="sm" c="dimmed">
+      <Text size="sm" className="text-muted-foreground">
         {kind} not found
       </Text>
     );

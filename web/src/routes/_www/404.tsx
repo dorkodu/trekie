@@ -1,5 +1,5 @@
 import { IconArrowRight } from "@tabler/icons-react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 function NotFound() {
   return (

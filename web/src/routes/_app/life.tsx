@@ -1,11 +1,8 @@
-import { Flex } from "@mantine/core";
-import WIPCard from "@web/components/cards/WIPCard";
-
 function Page() {
   return (
-    <Flex direction="column" m="md">
+    <div cl>
       <WIPCard />
-    </Flex>
+    </div>
   );
 }
 

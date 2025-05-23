@@ -1,6 +1,5 @@
-import { Flex, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import CenterLoader from "@web/components/loaders/CenterLoader";
+import { Flex } from "@web/components/ui/flex";
 import { trekie } from "new/src/lib/trekie";
 import { useEffect, useState } from "react";
 
@@ -9,7 +8,7 @@ export default function Me() {
 
   const loading = false;
 
-  if (loading) return <CenterLoader />;
+  if (loading) return "Loading...";
 
   return (
     <Flex direction="column" m="md">

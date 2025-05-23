@@ -1,29 +1,27 @@
-import { Alert, Badge, Box, Center, Flex, SegmentedControl, Skeleton, Stack, Tabs, rem } from '@mantine/core'
-import { IconCopyCheck, IconTargetArrow } from '@tabler/icons-react'
+import { IconCopyCheck, IconTargetArrow } from "@tabler/icons-react";
 
-import NoGoalsCard from '@web/namespaces/goal/NoGoalsCard'
-import HabitCounter from '@web/namespaces/habit/HabitCounter'
-import NoHabitsCard from '@web/namespaces/habit/NoHabitsCard'
-import { DailyStats } from '@web/namespaces/life/DailyStats'
+import NoGoalsCard from "@web/namespaces/goal/NoGoalsCard";
+import HabitCounter from "@web/namespaces/habit/HabitCounter";
+import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard";
+import { DailyStats } from "@web/namespaces/life/DailyStats";
 
-import GoalCard from '@web/namespaces/goal/GoalCard'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from 'new/src/lib/db'
-import { errors } from 'new/src/lib/errors'
-import { trekie } from 'new/src/lib/trekie'
-import { useState } from 'react'
+import { db } from "@web/lib/db";
+import { errors } from "@web/lib/errors";
+import { trekie } from "@web/lib/trekie";
+import GoalCard from "@web/namespaces/goal/GoalCard";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useState } from "react";
 
 function Home() {
-
-  const user = trekie.use($ => $.user)
+  const user = trekie.use($ => $.user);
   if (!user) {
-    errors.handle('NO_SESSION', new Error('Failed to load user in home page.'))
-    return <Alert>Failed to load user in home page.</Alert>
+    errors.handle("NO_SESSION", new Error("Failed to load user in home page."));
+    return <Alert>Failed to load user in home page.</Alert>;
   }
 
-  const iconStyle = { width: rem(20), height: rem(20) }
+  const iconStyle = { width: rem(20), height: rem(20) };
 
-  const [tab, setTab] = useState('habits')
+  const [tab, setTab] = useState("habits");
 
   return (
     <Box m="xs">
@@ -33,11 +31,12 @@ function Home() {
         </Box>
 
         <SegmentedControl
-          value={tab} onChange={setTab}
+          value={tab}
+          onChange={setTab}
           radius={12}
           data={[
             {
-              value: 'habits',
+              value: "habits",
               label: (
                 <Center style={{ gap: 6 }}>
                   <IconCopyCheck style={iconStyle} />
@@ -46,7 +45,7 @@ function Home() {
               ),
             },
             {
-              value: 'goals',
+              value: "goals",
               label: (
                 <Center style={{ gap: 6 }}>
                   <IconTargetArrow style={iconStyle} />
@@ -67,22 +66,22 @@ function Home() {
         </Tabs>
       </Stack>
     </Box>
-  )
+  );
 }
 
-export default Home
+export default Home;
 
 function CommitmentsFeed() {
-  const userId = trekie.use($ => $.user.id)
+  const userId = trekie.use($ => $.user.id);
 
-
-  const query = useLiveQuery(() =>
-    db.habits
-      .where({ 'userId': userId })
-      .filter((habit) => !Object.hasOwn(habit, 'isDeleted'))
-      .toArray()
-    , [])
-
+  const query = useLiveQuery(
+    () =>
+      db.habits
+        .where({ userId: userId })
+        .filter(habit => !Object.hasOwn(habit, "isDeleted"))
+        .toArray(),
+    []
+  );
 
   if (!query)
     return (
@@ -91,10 +90,10 @@ function CommitmentsFeed() {
         <Skeleton height={8} mt={8} radius="xl" />
         <Skeleton height={8} mt={8} width="70%" radius="xl" />
       </Box>
-    )
+    );
 
-  const hasAnyHabits = query?.length > 0
-  if (!hasAnyHabits) return <NoHabitsCard />
+  const hasAnyHabits = query?.length > 0;
+  if (!hasAnyHabits) return <NoHabitsCard />;
 
   return (
     <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet} h="auto" mih={150}>
@@ -109,26 +108,36 @@ function CommitmentsFeed() {
         </Badge>
       </Flex>
     </Box>
-  )
+  );
 }
 
 function GoalsFeed() {
-  const userId = trekie.use($ => $.user?.id)
+  const userId = trekie.use($ => $.user?.id);
 
-  if (!userId) return <Box py={10} hiddenFrom="md"><NoHabitsCard /></Box>
+  if (!userId)
+    return (
+      <Box py={10} hiddenFrom="md">
+        <NoHabitsCard />
+      </Box>
+    );
 
-  const goals = useLiveQuery(async () => db.goals.where('userId').equals(userId).toArray(), [userId])
+  const goals = useLiveQuery(
+    async () => db.goals.where("userId").equals(userId).toArray(),
+    [userId]
+  );
 
   if (!goals)
-    return (<>
-      <Skeleton height={8} radius="xl" />
-      <Skeleton height={8} mt={8} radius="xl" />
-      <Skeleton height={8} mt={8} width="70%" radius="xl" />
-    </>)
+    return (
+      <>
+        <Skeleton height={8} radius="xl" />
+        <Skeleton height={8} mt={8} radius="xl" />
+        <Skeleton height={8} mt={8} width="70%" radius="xl" />
+      </>
+    );
 
-  const hasAnyLifeGoals = goals.length > 0
+  const hasAnyLifeGoals = goals.length > 0;
 
-  if (!hasAnyLifeGoals) return <NoGoalsCard />
+  if (!hasAnyLifeGoals) return <NoGoalsCard />;
 
   return (
     <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet}>
@@ -143,5 +152,5 @@ function GoalsFeed() {
         </Badge>
       </Flex>
     </Box>
-  )
+  );
 }
