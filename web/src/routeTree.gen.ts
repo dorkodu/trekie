@@ -29,10 +29,17 @@ import { Route as AppLifeImport } from './routes/_app/life'
 import { Route as AppHomeImport } from './routes/_app/home'
 import { Route as AppExploreImport } from './routes/_app/explore'
 import { Route as AppArchiveImport } from './routes/_app/archive'
+import { Route as WwwLegalIndexImport } from './routes/_www/legal/index'
 import { Route as WwwHelpIndexImport } from './routes/_www/help/index'
 import { Route as AppSettingsIndexImport } from './routes/_app/settings/index'
 import { Route as AppMarketIndexImport } from './routes/_app/market/index'
 import { Route as AppCommunityIndexImport } from './routes/_app/community/index'
+import { Route as WwwLegalTermsOfServiceImport } from './routes/_www/legal/terms-of-service'
+import { Route as WwwLegalRefundPolicyImport } from './routes/_www/legal/refund-policy'
+import { Route as WwwLegalPrivacyPolicyImport } from './routes/_www/legal/privacy-policy'
+import { Route as WwwLegalCookiePolicyImport } from './routes/_www/legal/cookie-policy'
+import { Route as WwwLegalCompanyImport } from './routes/_www/legal/company'
+import { Route as WwwLegalCommunityRulesImport } from './routes/_www/legal/community-rules'
 import { Route as AppProfileEditImport } from './routes/_app/profile/edit'
 import { Route as AppProfileUsernameImport } from './routes/_app/profile/$username'
 import { Route as AppCommunityIdImport } from './routes/_app/community/$id'
@@ -145,6 +152,12 @@ const AppArchiveRoute = AppArchiveImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
+const WwwLegalIndexRoute = WwwLegalIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WwwLegalRoute,
+} as any)
+
 const WwwHelpIndexRoute = WwwHelpIndexImport.update({
   id: '/help/',
   path: '/help/',
@@ -167,6 +180,42 @@ const AppCommunityIndexRoute = AppCommunityIndexImport.update({
   id: '/community/',
   path: '/community/',
   getParentRoute: () => AppRoute,
+} as any)
+
+const WwwLegalTermsOfServiceRoute = WwwLegalTermsOfServiceImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => WwwLegalRoute,
+} as any)
+
+const WwwLegalRefundPolicyRoute = WwwLegalRefundPolicyImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => WwwLegalRoute,
+} as any)
+
+const WwwLegalPrivacyPolicyRoute = WwwLegalPrivacyPolicyImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => WwwLegalRoute,
+} as any)
+
+const WwwLegalCookiePolicyRoute = WwwLegalCookiePolicyImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
+  getParentRoute: () => WwwLegalRoute,
+} as any)
+
+const WwwLegalCompanyRoute = WwwLegalCompanyImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => WwwLegalRoute,
+} as any)
+
+const WwwLegalCommunityRulesRoute = WwwLegalCommunityRulesImport.update({
+  id: '/community-rules',
+  path: '/community-rules',
+  getParentRoute: () => WwwLegalRoute,
 } as any)
 
 const AppProfileEditRoute = AppProfileEditImport.update({
@@ -338,6 +387,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileEditImport
       parentRoute: typeof AppProfileImport
     }
+    '/_www/legal/community-rules': {
+      id: '/_www/legal/community-rules'
+      path: '/community-rules'
+      fullPath: '/legal/community-rules'
+      preLoaderRoute: typeof WwwLegalCommunityRulesImport
+      parentRoute: typeof WwwLegalImport
+    }
+    '/_www/legal/company': {
+      id: '/_www/legal/company'
+      path: '/company'
+      fullPath: '/legal/company'
+      preLoaderRoute: typeof WwwLegalCompanyImport
+      parentRoute: typeof WwwLegalImport
+    }
+    '/_www/legal/cookie-policy': {
+      id: '/_www/legal/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/legal/cookie-policy'
+      preLoaderRoute: typeof WwwLegalCookiePolicyImport
+      parentRoute: typeof WwwLegalImport
+    }
+    '/_www/legal/privacy-policy': {
+      id: '/_www/legal/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/legal/privacy-policy'
+      preLoaderRoute: typeof WwwLegalPrivacyPolicyImport
+      parentRoute: typeof WwwLegalImport
+    }
+    '/_www/legal/refund-policy': {
+      id: '/_www/legal/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/legal/refund-policy'
+      preLoaderRoute: typeof WwwLegalRefundPolicyImport
+      parentRoute: typeof WwwLegalImport
+    }
+    '/_www/legal/terms-of-service': {
+      id: '/_www/legal/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/legal/terms-of-service'
+      preLoaderRoute: typeof WwwLegalTermsOfServiceImport
+      parentRoute: typeof WwwLegalImport
+    }
     '/_app/community/': {
       id: '/_app/community/'
       path: '/community'
@@ -365,6 +456,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/help'
       preLoaderRoute: typeof WwwHelpIndexImport
       parentRoute: typeof WwwImport
+    }
+    '/_www/legal/': {
+      id: '/_www/legal/'
+      path: '/'
+      fullPath: '/legal/'
+      preLoaderRoute: typeof WwwLegalIndexImport
+      parentRoute: typeof WwwLegalImport
     }
   }
 }
@@ -417,12 +515,36 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface WwwLegalRouteChildren {
+  WwwLegalCommunityRulesRoute: typeof WwwLegalCommunityRulesRoute
+  WwwLegalCompanyRoute: typeof WwwLegalCompanyRoute
+  WwwLegalCookiePolicyRoute: typeof WwwLegalCookiePolicyRoute
+  WwwLegalPrivacyPolicyRoute: typeof WwwLegalPrivacyPolicyRoute
+  WwwLegalRefundPolicyRoute: typeof WwwLegalRefundPolicyRoute
+  WwwLegalTermsOfServiceRoute: typeof WwwLegalTermsOfServiceRoute
+  WwwLegalIndexRoute: typeof WwwLegalIndexRoute
+}
+
+const WwwLegalRouteChildren: WwwLegalRouteChildren = {
+  WwwLegalCommunityRulesRoute: WwwLegalCommunityRulesRoute,
+  WwwLegalCompanyRoute: WwwLegalCompanyRoute,
+  WwwLegalCookiePolicyRoute: WwwLegalCookiePolicyRoute,
+  WwwLegalPrivacyPolicyRoute: WwwLegalPrivacyPolicyRoute,
+  WwwLegalRefundPolicyRoute: WwwLegalRefundPolicyRoute,
+  WwwLegalTermsOfServiceRoute: WwwLegalTermsOfServiceRoute,
+  WwwLegalIndexRoute: WwwLegalIndexRoute,
+}
+
+const WwwLegalRouteWithChildren = WwwLegalRoute._addFileChildren(
+  WwwLegalRouteChildren,
+)
+
 interface WwwRouteChildren {
   Www404Route: typeof Www404Route
   WwwAboutRoute: typeof WwwAboutRoute
   WwwCreateAccountRoute: typeof WwwCreateAccountRoute
   WwwErrorRoute: typeof WwwErrorRoute
-  WwwLegalRoute: typeof WwwLegalRoute
+  WwwLegalRoute: typeof WwwLegalRouteWithChildren
   WwwLoginRoute: typeof WwwLoginRoute
   WwwWelcomeRoute: typeof WwwWelcomeRoute
   WwwIndexRoute: typeof WwwIndexRoute
@@ -434,7 +556,7 @@ const WwwRouteChildren: WwwRouteChildren = {
   WwwAboutRoute: WwwAboutRoute,
   WwwCreateAccountRoute: WwwCreateAccountRoute,
   WwwErrorRoute: WwwErrorRoute,
-  WwwLegalRoute: WwwLegalRoute,
+  WwwLegalRoute: WwwLegalRouteWithChildren,
   WwwLoginRoute: WwwLoginRoute,
   WwwWelcomeRoute: WwwWelcomeRoute,
   WwwIndexRoute: WwwIndexRoute,
@@ -457,17 +579,24 @@ export interface FileRoutesByFullPath {
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
-  '/legal': typeof WwwLegalRoute
+  '/legal': typeof WwwLegalRouteWithChildren
   '/login': typeof WwwLoginRoute
   '/welcome': typeof WwwWelcomeRoute
   '/': typeof WwwIndexRoute
   '/community/$id': typeof AppCommunityIdRoute
   '/profile/$username': typeof AppProfileUsernameRoute
   '/profile/edit': typeof AppProfileEditRoute
+  '/legal/community-rules': typeof WwwLegalCommunityRulesRoute
+  '/legal/company': typeof WwwLegalCompanyRoute
+  '/legal/cookie-policy': typeof WwwLegalCookiePolicyRoute
+  '/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
+  '/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
+  '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
   '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
   '/settings': typeof AppSettingsIndexRoute
   '/help': typeof WwwHelpIndexRoute
+  '/legal/': typeof WwwLegalIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -484,17 +613,23 @@ export interface FileRoutesByTo {
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
-  '/legal': typeof WwwLegalRoute
   '/login': typeof WwwLoginRoute
   '/welcome': typeof WwwWelcomeRoute
   '/': typeof WwwIndexRoute
   '/community/$id': typeof AppCommunityIdRoute
   '/profile/$username': typeof AppProfileUsernameRoute
   '/profile/edit': typeof AppProfileEditRoute
+  '/legal/community-rules': typeof WwwLegalCommunityRulesRoute
+  '/legal/company': typeof WwwLegalCompanyRoute
+  '/legal/cookie-policy': typeof WwwLegalCookiePolicyRoute
+  '/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
+  '/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
+  '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
   '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
   '/settings': typeof AppSettingsIndexRoute
   '/help': typeof WwwHelpIndexRoute
+  '/legal': typeof WwwLegalIndexRoute
 }
 
 export interface FileRoutesById {
@@ -513,17 +648,24 @@ export interface FileRoutesById {
   '/_www/about': typeof WwwAboutRoute
   '/_www/create-account': typeof WwwCreateAccountRoute
   '/_www/error': typeof WwwErrorRoute
-  '/_www/legal': typeof WwwLegalRoute
+  '/_www/legal': typeof WwwLegalRouteWithChildren
   '/_www/login': typeof WwwLoginRoute
   '/_www/welcome': typeof WwwWelcomeRoute
   '/_www/': typeof WwwIndexRoute
   '/_app/community/$id': typeof AppCommunityIdRoute
   '/_app/profile/$username': typeof AppProfileUsernameRoute
   '/_app/profile/edit': typeof AppProfileEditRoute
+  '/_www/legal/community-rules': typeof WwwLegalCommunityRulesRoute
+  '/_www/legal/company': typeof WwwLegalCompanyRoute
+  '/_www/legal/cookie-policy': typeof WwwLegalCookiePolicyRoute
+  '/_www/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
+  '/_www/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
+  '/_www/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
   '/_app/community/': typeof AppCommunityIndexRoute
   '/_app/market/': typeof AppMarketIndexRoute
   '/_app/settings/': typeof AppSettingsIndexRoute
   '/_www/help/': typeof WwwHelpIndexRoute
+  '/_www/legal/': typeof WwwLegalIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -549,10 +691,17 @@ export interface FileRouteTypes {
     | '/community/$id'
     | '/profile/$username'
     | '/profile/edit'
+    | '/legal/community-rules'
+    | '/legal/company'
+    | '/legal/cookie-policy'
+    | '/legal/privacy-policy'
+    | '/legal/refund-policy'
+    | '/legal/terms-of-service'
     | '/community'
     | '/market'
     | '/settings'
     | '/help'
+    | '/legal/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
@@ -568,17 +717,23 @@ export interface FileRouteTypes {
     | '/about'
     | '/create-account'
     | '/error'
-    | '/legal'
     | '/login'
     | '/welcome'
     | '/'
     | '/community/$id'
     | '/profile/$username'
     | '/profile/edit'
+    | '/legal/community-rules'
+    | '/legal/company'
+    | '/legal/cookie-policy'
+    | '/legal/privacy-policy'
+    | '/legal/refund-policy'
+    | '/legal/terms-of-service'
     | '/community'
     | '/market'
     | '/settings'
     | '/help'
+    | '/legal'
   id:
     | '__root__'
     | '/_app'
@@ -602,10 +757,17 @@ export interface FileRouteTypes {
     | '/_app/community/$id'
     | '/_app/profile/$username'
     | '/_app/profile/edit'
+    | '/_www/legal/community-rules'
+    | '/_www/legal/company'
+    | '/_www/legal/cookie-policy'
+    | '/_www/legal/privacy-policy'
+    | '/_www/legal/refund-policy'
+    | '/_www/legal/terms-of-service'
     | '/_app/community/'
     | '/_app/market/'
     | '/_app/settings/'
     | '/_www/help/'
+    | '/_www/legal/'
   fileRoutesById: FileRoutesById
 }
 
@@ -718,7 +880,16 @@ export const routeTree = rootRoute
     },
     "/_www/legal": {
       "filePath": "_www/legal.tsx",
-      "parent": "/_www"
+      "parent": "/_www",
+      "children": [
+        "/_www/legal/community-rules",
+        "/_www/legal/company",
+        "/_www/legal/cookie-policy",
+        "/_www/legal/privacy-policy",
+        "/_www/legal/refund-policy",
+        "/_www/legal/terms-of-service",
+        "/_www/legal/"
+      ]
     },
     "/_www/login": {
       "filePath": "_www/login.tsx",
@@ -744,6 +915,30 @@ export const routeTree = rootRoute
       "filePath": "_app/profile/edit.tsx",
       "parent": "/_app/profile"
     },
+    "/_www/legal/community-rules": {
+      "filePath": "_www/legal/community-rules.tsx",
+      "parent": "/_www/legal"
+    },
+    "/_www/legal/company": {
+      "filePath": "_www/legal/company.tsx",
+      "parent": "/_www/legal"
+    },
+    "/_www/legal/cookie-policy": {
+      "filePath": "_www/legal/cookie-policy.tsx",
+      "parent": "/_www/legal"
+    },
+    "/_www/legal/privacy-policy": {
+      "filePath": "_www/legal/privacy-policy.tsx",
+      "parent": "/_www/legal"
+    },
+    "/_www/legal/refund-policy": {
+      "filePath": "_www/legal/refund-policy.tsx",
+      "parent": "/_www/legal"
+    },
+    "/_www/legal/terms-of-service": {
+      "filePath": "_www/legal/terms-of-service.tsx",
+      "parent": "/_www/legal"
+    },
     "/_app/community/": {
       "filePath": "_app/community/index.tsx",
       "parent": "/_app"
@@ -759,6 +954,10 @@ export const routeTree = rootRoute
     "/_www/help/": {
       "filePath": "_www/help/index.tsx",
       "parent": "/_www"
+    },
+    "/_www/legal/": {
+      "filePath": "_www/legal/index.tsx",
+      "parent": "/_www/legal"
     }
   }
 }

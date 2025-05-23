@@ -17,20 +17,9 @@
     "baseUrl": ".",
 
     "paths": {
-        "@api/*": ["./api/src/*"],
-        "@web/*": ["./web/src/*"],
-        "@sdk/*": ["./sdk/src/*"]
+      "@api/*": ["./api/src/*"],
+      "@web/*": ["./web/src/*"],
+      "@sdk/*": ["./sdk/src/*"]
     }
   },
-  "references": [
-    {
-      "path": "web"
-    },
-    {
-      "path": "api"
-    },
-    {
-      "path": "sdk"
-    },
-  ]
 }
