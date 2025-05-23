@@ -2,7 +2,7 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 
 function NotFound() {
-	return (
+  return (
     <div className="max-w-xl mx-auto p-10 mt-[5vw] mb-[10vw] flex flex-col items-center">
       <div className="flex flex-col items-center">
         <h1 className="font-extrabold text-[15vw] text-gray-400 opacity-25 leading-none select-none">
@@ -20,7 +20,7 @@ function NotFound() {
         className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition font-semibold text-lg"
       >
         Go Back Home
-        <ArrowRight className="w-5 h-5" />
+        <IconArrowRight className="w-5 h-5" />
       </Link>
     </div>
 }
