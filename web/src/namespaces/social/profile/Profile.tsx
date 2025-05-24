@@ -1,65 +1,67 @@
-import { getUser } from "@api/namespaces/user/repository"
-import {
-  Alert,
-  Anchor,
-  Badge,
-  Box,
-  Flex,
-  Group,
-  Image,
-  Paper,
-  rem,
-  Skeleton,
-  Stack,
-  Tabs,
-  Text,
-  ThemeIcon,
-} from "@mantine/core"
-import { useMediaQuery } from "@mantine/hooks"
-import { IUser } from "@sdk/core/index"
+import type { IUser } from "@sdk/core/index"; // Changed to type import
 import {
   IconAlertCircle,
-  IconBriefcase,
   IconCake,
   IconCalendar,
   IconCopyCheck,
   IconLink,
   IconMapPin,
   IconTargetArrow,
-} from "@tabler/icons-react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import CenterLoader from "@web/components/loaders/CenterLoader"
-import { db } from "@web/lib/db"
-import { trekie } from "@web/lib/trekie"
-import GoalCard from "@web/namespaces/goal/GoalCard"
-import NoGoalsCard from "@web/namespaces/goal/NoGoalsCard"
-import HabitCounter from "@web/namespaces/habit/HabitCounter"
-import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard"
-import { DailyStats } from "@web/namespaces/life/DailyStats"
-import { vanilla } from "@web/styles/theme"
-import { relativeDateString } from "@web/utils/format"
-import { useLiveQuery } from "dexie-react-hooks"
-import { getProfile } from "./getProfile"
+} from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query"; // Removed useQueryClient as it's unused in LifeGoalSummary after change
+import { AlertDescription, AlertTitle, Alert as ShadAlert } from "@web/components/ui/alert";
+import { Badge } from "@web/components/ui/badge";
+import { Card } from "@web/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@web/components/ui/tabs";
+import { db } from "@web/lib/db";
+import { trekie } from "@web/lib/trekie";
+import GoalCard from "@web/namespaces/goal/GoalCard";
+import NoGoalsCard from "@web/namespaces/goal/NoGoalsCard"; // Added import
+import HabitCounter from "@web/namespaces/habit/HabitCounter";
+import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard";
+import { DailyStats } from "@web/namespaces/life/DailyStats";
+import React from "react"; // Added for useState, useEffect
+// import { vanilla } from "@web/styles/theme" // No longer needed for these components
+import { relativeDateString } from "@web/utils/format";
+import { useLiveQuery } from "dexie-react-hooks";
+import { getProfile } from "./getProfile";
+
+// Helper hook to replace useMediaQuery
+const useIsMobile = (maxWidth = 768) => {
+  const [isMobile, setIsMobile] = React.useState(false)
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${maxWidth}px)`)
+    const handleChange = () => setIsMobile(mediaQuery.matches)
+
+    handleChange() // Initial check
+    mediaQuery.addEventListener('change', handleChange)
+
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [maxWidth])
+
+  return isMobile
+}
 
 export const ProfileEntry = ({
   icon,
   text,
 }: { icon: React.ReactNode; text: React.ReactNode }) => (
-  <Group gap={2}>
-    <ThemeIcon c="dimmed" variant="transparent" size={26}>
-      {icon}
-    </ThemeIcon>
-    <Text c="dimmed" lh={1} size="sm" mt={4}>
+  <div className="flex items-center gap-1"> {/* Adjusted gap */}
+    <div className="text-muted-foreground flex items-center justify-center w-5 h-5"> {/* Container for icon */}
+      {icon} {/* Icon is now passed with size, React.cloneElement removed */}
+    </div>
+    <p className="text-muted-foreground leading-none text-sm"> {/* Removed mt-1 for better alignment */}
       {text}
-    </Text>
-  </Group>
+    </p>
+  </div>
 )
 
 export function Profile({ username }: { username: string }) {
-  const isMobile = !useMediaQuery(vanilla.largerThan(768))
+  const isMobile = useIsMobile(768) // Replaces useMediaQuery
 
-  const { isPending, isError, isSuccess, error, data } = useQuery({
-    queryKey: ["profile:" + username],
+  const { isPending, isError, error, data } = useQuery({ // Removed isSuccess
+    queryKey: [`profile:${username}`], // Changed to template literal
     queryFn: () => getProfile(username),
   })
 
@@ -69,98 +71,94 @@ export function Profile({ username }: { username: string }) {
   if (isPending) return <CenterLoader />
   if (isError)
     return (
-      <Alert color="red" icon={<IconAlertCircle />}>
-        Failed to get user profile.
-      </Alert>
+      <ShadAlert variant="destructive" className="mt-4">
+        <IconAlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Failed to get user profile. {error instanceof Error ? error.message : ""}
+        </AlertDescription>
+      </ShadAlert>
     )
 
-  const iconStyle = { width: rem(20), height: rem(20) }
+  // const iconStyle = { width: rem(20), height: rem(20) } // Replaced with Tailwind classes h-5 w-5 or direct size prop
 
   return (
-    <Paper>
-      <Group mb={10} gap="sm" wrap="nowrap">
-        <Image src={user.pictureUrl} w={64} h={64} radius={10} />
-        <Stack gap={0}>
-          <Text fw={700} size="lg" lh={1}>
+    <Card className="p-4"> {/* Replaces Paper */}
+      <div className="mb-2.5 flex items-center gap-2 flex-nowrap"> {/* Replaces Group mb={10} gap=\"sm\" wrap=\"nowrap\" */}
+        <img src={user.pictureUrl} alt={user.name} className="w-16 h-16 rounded-lg" /> {/* Replaces Image */}
+        <div className="flex flex-col gap-0"> {/* Replaces Stack gap={0} */}
+          <p className="font-bold text-lg leading-none"> {/* Replaces Text fw={700} size=\"lg\" lh={1} */}
             {user.name}
-          </Text>
+          </p>
 
-          <Text c="dimmed" fw={500}>
+          <p className="text-muted-foreground font-medium"> {/* Replaces Text c=\"dimmed\" fw={500} */}
             @{user.username}
-          </Text>
-        </Stack>
-      </Group>
+          </p>
+        </div>
+      </div>
 
-      <Stack gap={4}>
-        <Text size="sm">{user.bio}</Text>
+      <div className="flex flex-col gap-1"> {/* Replaces Stack gap={4} */}
+        <p className="text-sm">{user.bio}</p> {/* Replaces Text size=\"sm\" */}
 
-        <Group gap={4} pb={8}>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pb-2"> {/* Replaces Group gap={4} pb={8}, using gap-x-4 for wider spacing between items */}
           <ProfileEntry
-            icon={<IconCalendar size={24} />}
+            icon={<IconCalendar size={20} />} // Passed size directly
             text={`Joined ${relativeDateString(user.joinedAt)}`}
           />
           {user.birthDate && (
             <ProfileEntry
-              icon={<IconCake size={24} />}
+              icon={<IconCake size={20} />} // Passed size directly
               text={`Born ${relativeDateString(user.birthDate)}`}
             />
           )}
           {user.location && (
             <ProfileEntry
-              icon={<IconMapPin size={24} />}
+              icon={<IconMapPin size={20} />} // Passed size directly
               text={user.location}
             />
           )}
           {user.url && (
             <ProfileEntry
-              icon={<IconLink size={24} />}
+              icon={<IconLink size={20} />} // Passed size directly
               text={
-                <Anchor
+                <a
                   href={user.url}
                   referrerPolicy="no-referrer"
                   target="_blank"
+                  rel="noopener noreferrer" // Added rel attribute
+                  className="text-primary hover:underline" // Replaces Anchor
                 >
                   {user.url}
-                </Anchor>
+                </a>
               }
             />
           )}
-        </Group>
+        </div>
 
         {isMobile && <DailyStats />}
 
-        <Tabs
-          mt={8}
-          color="green"
-          variant="default"
-          radius="md"
-          defaultValue="habits"
-        >
-          <Tabs.List>
-            <Tabs.Tab
-              value="goals"
-              leftSection={<IconTargetArrow style={iconStyle} />}
-            >
+        <Tabs defaultValue="habits" className="mt-2 w-full"> {/* Replaces Tabs mt={8} ... */}
+          <TabsList>
+            <TabsTrigger value="goals">
+              <IconTargetArrow className="mr-2 h-5 w-5" /> {/* Icon from leftSection */}
               Life Goals
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="habits"
-              leftSection={<IconCopyCheck style={iconStyle} />}
-            >
+            </TabsTrigger>
+            <TabsTrigger value="habits">
+              <IconCopyCheck className="mr-2 h-5 w-5" /> {/* Icon from leftSection */}
               Habits
-            </Tabs.Tab>
-          </Tabs.List>
+            </TabsTrigger>
+          </TabsList>
 
-          <Tabs.Panel value="habits">
+          <TabsContent value="habits" className="mt-2">
             <UserHabitSummary />
-          </Tabs.Panel>
+          </TabsContent>
 
-          <Tabs.Panel value="goals">
+          <TabsContent value="goals" className="mt-2">
             <LifeGoalSummary />
-          </Tabs.Panel>
+          </TabsContent>
         </Tabs>
-      </Stack>
-    </Paper>
+      </div>
+    </Card>
   )
 }
 
@@ -169,47 +167,40 @@ export function UserHabitSummary() {
 
   if (!userId)
     return (
-      <Box py={10}>
+      <div className="py-2.5"> {/* Replaces Box py={10} */}
         <NoHabitsCard />
-      </Box>
+      </div>
     )
 
   const habits = useLiveQuery(async () => {
     return db.habits.where("userId").equals(userId).toArray()
   }, [userId])
 
-  // TODO: maybe add skeleton?? needed? not sure.
-  if (!habits) return <></>
+  if (!habits) return <></> // TODO: maybe add skeleton?? -> Handled by shadcn Skeleton if needed elsewhere
 
   const hasAnyHabits = habits?.length > 0
   if (!hasAnyHabits)
     return (
-      <Box py={10}>
+      <div className="py-2.5"> {/* Replaces Box py={10} */}
         <NoHabitsCard />
-      </Box>
+      </div>
     )
 
   return (
-    <Box
-      style={{
-        background: vanilla.colors.gray.light,
-        padding: 6,
-        borderRadius: 20,
-      }}
-      py={6}
-      my={10}
+    <div
+      className="bg-muted p-1.5 rounded-2xl my-2.5" // Replaces Box style={{ background: vanilla.colors.gray.light, padding: 6, borderRadius: 20 }} py={6} my={10}
     >
-      <Stack gap={0}>
+      <div className="flex flex-col gap-0"> {/* Replaces Stack gap={0} */}
         {habits.map((habit) => (
           <HabitCounter habitId={habit.id} key={habit.id} />
         ))}
-      </Stack>
-      <Flex>
-        <Badge variant="light" color="gray" mx="auto">
+      </div>
+      <div className="flex mt-2"> {/* Replaces Flex, added mt-2 for spacing */}
+        <Badge variant="secondary" className="mx-auto"> {/* Replaces Badge variant=\"light\" color=\"gray\" */}
           Check your daily habits!
         </Badge>
-      </Flex>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -217,12 +208,12 @@ export function LifeGoalSummary() {
   const userId = trekie.use(($) => $.user?.id)
   if (!userId)
     return (
-      <Box py={10}>
-        <NoHabitsCard />
-      </Box>
+      <div className="py-2.5"> {/* Replaces Box py={10} */}
+        <NoGoalsCard /> {/* Changed from NoHabitsCard, assuming it was a typo */}
+      </div>
     )
 
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient() // Removed unused variable
 
   const goals = useLiveQuery(
     async () => db.goals.where("userId").equals(userId).toArray(),
@@ -230,13 +221,13 @@ export function LifeGoalSummary() {
     "loading",
   )
 
-  if (goals == "loading")
+  if (goals === "loading") // Changed == to ===
     return (
-      <>
-        <Skeleton height={8} radius="xl" />
-        <Skeleton height={8} mt={8} radius="xl" />
-        <Skeleton height={8} mt={8} width="70%" radius="xl" />
-      </>
+      <div className="space-y-2 py-2.5"> {/* Added space-y-2 for spacing between skeletons */}
+        <Skeleton className="h-2 rounded-xl" /> {/* Replaces Skeleton height={8} radius=\"xl\" */}
+        <Skeleton className="h-2 rounded-xl" /> {/* Replaces Skeleton height={8} mt={8} radius=\"xl\" */}
+        <Skeleton className="h-2 w-[70%] rounded-xl" /> {/* Replaces Skeleton height={8} mt={8} width=\"70%\" radius=\"xl\" */}
+      </div>
     )
 
   const hasAnyLifeGoals = goals.length > 0
@@ -244,12 +235,12 @@ export function LifeGoalSummary() {
   if (!hasAnyLifeGoals) return <NoGoalsCard />
 
   return (
-    <Box py={10}>
-      <Stack>
+    <div className="py-2.5"> {/* Replaces Box py={10} */}
+      <div className="flex flex-col gap-2"> {/* Replaces Stack, assuming a small gap for GoalCards */}
         {goals.map((goal) => (
           <GoalCard id={goal.id} key={goal.id} />
         ))}
-      </Stack>
-    </Box>
+      </div>
+    </div>
   )
 }
