@@ -1,16 +1,16 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Container, Flex, Group, Stack, Title } from "@/components/ui/layout";
-import { Separator } from "@/components/ui/separator";
-import { Text } from "@/components/ui/text";
-import { randomId } from "@mantine/hooks";
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Container, Flex, Group, Stack, Title } from "@/components/ui/layout"
+import { Separator } from "@/components/ui/separator"
+import { Text } from "@/components/ui/text"
+import { randomId } from "@mantine/hooks"
 import {
   IconAdOff, IconArrowRight, IconBuildingCommunity, IconBuildingStore, IconCheck, IconCircleCheckFilled, IconCoins, IconCopyCheck, IconInfinity, IconLockAccess, IconMail, IconMultiplier2x, IconPhoto, IconPin, IconRocket, IconSparkles, IconTargetArrow, IconUserCheck, IconUsersGroup, IconWorld,
-} from '@tabler/icons-react';
-import Emoji from "@web/components/misc/Emoji";
-import { Image } from "@web/components/ui/image";
-import { vanilla } from "@web/styles/theme";
+} from '@tabler/icons-react'
+import Emoji from "@web/components/misc/Emoji"
+import { Image } from "@web/components/ui/image"
+import { vanilla } from "@web/styles/theme"
 
 export default function Welcome() {
   return (
