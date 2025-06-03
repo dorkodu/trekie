@@ -1,4 +1,17 @@
+import {
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandTelegram,
+  IconBrandX,
+  IconBrandYoutube,
+  IconInfoCircle,
+} from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
+import Emoji from "@web/components/misc/Emoji";
+import { ActionIcon } from "@web/components/ui/action-icon";
+import { Alert, AlertDescription } from "@web/components/ui/alert";
+import { Box, Group, SimpleGrid, Stack } from "@web/components/ui/layout";
+import { Text, Title } from "@web/components/ui/typography";
 
 export const Route = createFileRoute("/_www/legal/company")({
   component: Company,
@@ -6,9 +19,9 @@ export const Route = createFileRoute("/_www/legal/company")({
 
 export function Company() {
   return (
-    <Box my={50} id="company">
+    <Box className="my-12" id="company">
       <SimpleGrid cols={{ base: 1, sm: 2 }}>
-        <Stack gap={4} justify="center" maw={500} mx="auto">
+        <Stack gap={4} className="justify-center max-w-[500px] mx-auto">
           <Group wrap="nowrap">
             <Emoji emoji="💼" size={32} />
             <Stack gap={0}>
@@ -16,13 +29,13 @@ export function Company() {
                 Company
               </Title>
               {/* <Text span inherit variant="gradient" gradient={{ from: "#17CC38", to: "#6BD731", deg: 60 }}> Gamification</Text> */}
-              <Title order={4} c="dimmed" fw={600} size={18}>
+              <Title order={4} className="text-muted-foreground" fw={600} size={18}>
                 Explore what we can do together.
               </Title>
             </Stack>
           </Group>
 
-          <Group gap="xs" my={8}>
+          <Group gap="xs" className="my-2">
             <ActionIcon
               size="xl"
               color="dark"
@@ -53,7 +66,7 @@ export function Company() {
             </ActionIcon>
             <ActionIcon
               size="xl"
-              color="red.7"
+              color="red"
               component="a"
               href="https://github.com/dorkodu"
               target="_blank"
@@ -74,8 +87,11 @@ export function Company() {
         </Stack>
 
         <div>
-          <Alert title="Info" icon={<IconInfoCircle size={28} />}>
-            <Text size="sm">We are not legally incorporated yet.</Text>
+          <Alert>
+            <IconInfoCircle size={28} />
+            <AlertDescription>
+              <Text size="sm">We are not legally incorporated yet.</Text>
+            </AlertDescription>
           </Alert>
         </div>
       </SimpleGrid>

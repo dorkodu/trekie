@@ -1,10 +1,7 @@
 
 import { IconMinus, IconPlus, IconPlusMinus, } from "@tabler/icons-react";
 import { useLiveQuery } from "dexie-react-hooks";
-import {
-  type
-  , işlkj MouseEvent
-} from "react";
+import { type MouseEvent } from "react";
 
 import EnhancedText from "@web/components/misc/TextParser";
 import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
