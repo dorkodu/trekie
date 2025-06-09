@@ -47,11 +47,11 @@ export const ProfileEntry = ({
   icon,
   text,
 }: { icon: React.ReactNode; text: React.ReactNode }) => (
-  <div className="flex items-center gap-1"> {/* Adjusted gap */}
-    <div className="text-muted-foreground flex items-center justify-center w-5 h-5"> {/* Container for icon */}
-      {icon} {/* Icon is now passed with size, React.cloneElement removed */}
+  <div className="flex items-center gap-1">
+    <div className="text-muted-foreground flex items-center justify-center w-5 h-5">
+      {icon}
     </div>
-    <p className="text-muted-foreground leading-none text-sm"> {/* Removed mt-1 for better alignment */}
+    <p className="text-muted-foreground leading-none text-sm">
       {text}
     </p>
   </div>
