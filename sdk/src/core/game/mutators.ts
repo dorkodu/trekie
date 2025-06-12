@@ -1,7 +1,7 @@
 import type { Game } from "."
-import { daystamp } from "../../utils"
+import { daystamp, utils } from "@sdk/utils/index"
 
-function changeXp(game: Game, change: number) {
+export function changeXp(game: Game, change: number) {
   game.setState($ => {
     let newTotalXp = $.xp + change
     let newDailyXp = $.xpToday() + change
@@ -20,7 +20,7 @@ function changeXp(game: Game, change: number) {
   return game.getState().xp
 }
 
-function changeCoinsBalance(change: number) {
+export function changeCoinsBalance(change: number) {
   game.setState($ => {
     let newTotalCoins = $.coins + change
     // prevent negative coins
