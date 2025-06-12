@@ -1,15 +1,15 @@
-import { Badge, Button, Card, Center, Group, Image, Text } from '@mantine/core'
-import { IconCoin } from '@tabler/icons-react'
-import { Item } from './types'
+import { IconCoin } from "@tabler/icons-react";
+import { Badge, Button, Card, Center, Group, Image, Text } from "../../components/ui/shadcn-clones";
+import type { Item } from "./types";
 
 interface ItemCardProps {
-  item: Item
-  onBuy: (item: Item) => void
-  userCoins: number
+  item: Item;
+  onBuy: (item: Item) => void;
+  userCoins: number;
 }
 
 export function ItemCard({ item, onBuy, userCoins }: ItemCardProps) {
-  const canBuy = userCoins >= item.price
+  const canBuy = userCoins >= item.price;
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -26,7 +26,9 @@ export function ItemCard({ item, onBuy, userCoins }: ItemCardProps) {
       </Card.Section>
 
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500} size="lg">{item.name}</Text>
+        <Text fw={500} size="lg">
+          {item.name}
+        </Text>
         <Badge color="yellow" variant="filled">
           <Group gap="xs">
             <IconCoin size={14} />
@@ -35,13 +37,19 @@ export function ItemCard({ item, onBuy, userCoins }: ItemCardProps) {
         </Badge>
       </Group>
 
-      <Text size="sm" color="dimmed" mb="md">{item.description}</Text>
+      <Text size="sm" color="dimmed" mb="md">
+        {item.description}
+      </Text>
 
       {item.duration && (
-        <Text size="xs" mb="xs">Duration: {item.duration}</Text>
+        <Text size="xs" mb="xs">
+          Duration: {item.duration}
+        </Text>
       )}
 
-      <Text size="xs" mb="md">Effect: {item.effect}</Text>
+      <Text size="xs" mb="md">
+        Effect: {item.effect}
+      </Text>
 
       <Button
         fullWidth
@@ -49,8 +57,8 @@ export function ItemCard({ item, onBuy, userCoins }: ItemCardProps) {
         onClick={() => canBuy && onBuy(item)}
         disabled={!canBuy}
       >
-        {canBuy ? 'Buy' : 'Not enough coins'}
+        {canBuy ? "Buy" : "Not enough coins"}
       </Button>
     </Card>
-  )
+  );
 }

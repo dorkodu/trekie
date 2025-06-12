@@ -1,5 +1,5 @@
-import { useThemed } from "@web/hooks";
 import { vanilla } from "@web/styles/theme";
+import { Box, Center, Group, Paper, Stack, Text } from "../../components/ui/shadcn-clones";
 
 export function SumCard({
   icon,
@@ -14,8 +14,6 @@ export function SumCard({
   kind?: string;
   subtext?: string;
 }) {
-  const { colorScheme } = useMantineColorScheme();
-
   return (
     <Paper
       style={{

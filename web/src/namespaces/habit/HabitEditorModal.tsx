@@ -1,17 +1,15 @@
+import { useForm, zodResolver } from '@mantine/form';
+import { ContextModalProps } from '@mantine/modals';
 import {
   Box,
   Button,
   Group,
+  Input,
   NumberInput,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-} from '@mantine/core'
-import { useForm, zodResolver } from '@mantine/form'
-import { ContextModalProps } from '@mantine/modals'
-import { IHabit, IHabitTemplate } from '@web/namespaces/habit' // Import schema and Zod validation
-import { habits } from '.' // Assuming habits library is exported from index
+  Textarea
+} from '@web/components/ui/shadcn-clones';
+import { IHabit, IHabitTemplate } from '@web/namespaces/habit'; // Import schema and Zod validation
+import { habits } from '.'; // Assuming habits library is exported from index
 
 // Define the expected innerProps structure
 type HabitEditorMode = 'CREATE' | 'EDIT'
@@ -70,7 +68,7 @@ const HabitEditorModal = ({
       {/* Removed the <Text size="sm">{innerProps.modalBody}</Text> as modalBody is not in props */}
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
-          <TextInput
+          <Input
             withAsterisk
             label="Title"
             placeholder="e.g., Drink 8 glasses of water"

@@ -12,57 +12,48 @@ import GoalCard from "@web/namespaces/goal/GoalCard";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 
+// shadcn/ui imports
+import { Alert, AlertDescription } from "@web/components/ui/alert";
+import { Badge } from "@web/components/ui/badge";
+import { Box, Stack } from "@web/components/ui/layout";
+import { Skeleton } from "@web/components/ui/skeleton";
+import { Tabs, TabsList, TabsTrigger } from "@web/components/ui/tabs";
+
 function Home() {
   const user = trekie.use($ => $.user);
   if (!user) {
     errors.handle("NO_SESSION", new Error("Failed to load user in home page."));
-    return <Alert>Failed to load user in home page.</Alert>;
+    return <Alert><AlertDescription>Failed to load user in home page.</AlertDescription></Alert>;
   }
-
-  const iconStyle = { width: rem(20), height: rem(20) };
 
   const [tab, setTab] = useState("habits");
 
   return (
-    <Box m="xs">
+    <Box className="m-2">
       <Stack gap={4}>
-        <Box mb="md" hiddenFrom="sm">
+        <Box className="mb-6 sm:hidden">
           <DailyStats />
         </Box>
 
-        <SegmentedControl
-          value={tab}
-          onChange={setTab}
-          radius={12}
-          data={[
-            {
-              value: "habits",
-              label: (
-                <Center style={{ gap: 6 }}>
-                  <IconCopyCheck style={iconStyle} />
-                  <span>Commitments</span>
-                </Center>
-              ),
-            },
-            {
-              value: "goals",
-              label: (
-                <Center style={{ gap: 6 }}>
-                  <IconTargetArrow style={iconStyle} />
-                  <span>Goals</span>
-                </Center>
-              ),
-            },
-          ]}
-        />
+        {/* Replace SegmentedControl with Tabs */}
+        <Tabs value={tab} onValueChange={setTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="habits" className="flex items-center gap-2">
+              <IconCopyCheck className="w-5 h-5" />
+              <span>Commitments</span>
+            </TabsTrigger>
+            <TabsTrigger value="goals" className="flex items-center gap-2">
+              <IconTargetArrow className="w-5 h-5" />
+              <span>Goals</span>
+            </TabsTrigger>
+          </TabsList>
 
-        <Tabs mt={8} color="green" variant="pills" radius="md" defaultValue="feed" value={tab}>
-          <Tabs.Panel value="habits">
+          <TabsContent value="habits" className="mt-2">
             <CommitmentsFeed />
-          </Tabs.Panel>
-          <Tabs.Panel value="goals">
+          </TabsContent>
+          <TabsContent value="goals" className="mt-2">
             <GoalsFeed />
-          </Tabs.Panel>
+          </TabsContent>
         </Tabs>
       </Stack>
     </Box>
@@ -85,10 +76,12 @@ function CommitmentsFeed() {
 
   if (!query)
     return (
-      <Box h={250}>
-        <Skeleton height={8} radius="xl" />
-        <Skeleton height={8} mt={8} radius="xl" />
-        <Skeleton height={8} mt={8} width="70%" radius="xl" />
+      <Box className="h-60">
+        <Stack gap={2}>
+          <Skeleton className="h-2 rounded-xl" />
+          <Skeleton className="h-2 rounded-xl" />
+          <Skeleton className="h-2 w-[70%] rounded-xl" />
+        </Stack>
       </Box>
     );
 
@@ -96,17 +89,17 @@ function CommitmentsFeed() {
   if (!hasAnyHabits) return <NoHabitsCard />;
 
   return (
-    <Box style={{ borderRadius: 20, padding: 6 }} className={ContainerSheet} h="auto" mih={150}>
+    <Box className={cn("bg-muted p-1.5 rounded-2xl min-h-[150px]")}>
       <Stack gap={0}>
         {query.map(habit => (
           <HabitCounter habitId={habit.id} key={habit.id} />
         ))}
       </Stack>
-      <Flex>
-        <Badge variant="light" color="gray" mx="auto">
+      <div className="flex mt-2">
+        <Badge variant="secondary" className="mx-auto">
           Check your daily habits!
         </Badge>
-      </Flex>
+      </div>
     </Box>
   );
 }

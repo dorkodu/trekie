@@ -1,29 +1,30 @@
-import { Badge, Flex, Group, Image, Paper, Text, Title } from '@mantine/core'
-import { items as marketItems } from './data'
-import { useMarketStore } from './store'
+import { Badge, Flex, Group, Image, Paper, Text, Title } from "../../components/ui/shadcn-clones";
+import { items as marketItems } from "./data";
+import { useMarketStore } from "./store";
 
 export function InventoryDisplay() {
-  const inventory = useMarketStore(state => state.inventory)
-  const getPowerUpQuantity = useMarketStore(state => state.getPowerUpQuantity)
+  const getPowerUpQuantity = useMarketStore((state) => state.getPowerUpQuantity);
 
   // Prepare display data
   const ownedPowerUps = marketItems
-    .filter(item => getPowerUpQuantity(item.id) > 0)
-    .map(item => ({
+    .filter((item) => getPowerUpQuantity(item.id) > 0)
+    .map((item) => ({
       id: item.id,
       name: item.name,
       image: item.image,
-      count: getPowerUpQuantity(item.id)
-    }))
+      count: getPowerUpQuantity(item.id),
+    }));
 
   return (
     <Paper withBorder p="md" mb="md">
-      <Title order={4} mb="sm">Your Inventory</Title>
+      <Title order={4} mb="sm">
+        Your Inventory
+      </Title>
 
       <Flex direction="column" gap="md">
         {ownedPowerUps.length > 0 ? (
           <Flex gap="md" wrap="wrap">
-            {ownedPowerUps.map(item => (
+            {ownedPowerUps.map((item) => (
               <Paper key={item.id} withBorder p="xs" radius="md">
                 <Group gap="sm">
                   <Image
@@ -40,9 +41,11 @@ export function InventoryDisplay() {
             ))}
           </Flex>
         ) : (
-          <Text color="dimmed" size="sm">You don't have any power-ups yet.</Text>
+          <Text color="dimmed" size="sm">
+            You don't have any power-ups yet.
+          </Text>
         )}
       </Flex>
     </Paper>
-  )
+  );
 }
