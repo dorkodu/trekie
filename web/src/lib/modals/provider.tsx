@@ -1,4 +1,3 @@
-import React, { useCallback, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,7 +5,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle
-} from "../../components/ui/dialog";
+} from "@web/components/ui/dialog";
+import React, { useCallback, useRef, useState } from "react";
 import ModalsContext from "./context";
 import type {
   ConfirmModalProps,
