@@ -26,4 +26,14 @@ export default defineConfig({
       "@api": resolve(__dirname, "../api/src"),
     },
   },
+  server: {
+    port: 5173,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

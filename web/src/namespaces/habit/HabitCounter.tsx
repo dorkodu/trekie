@@ -3,19 +3,6 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { type MouseEvent } from "react";
 
 import EnhancedText from "@web/components/misc/TextParser";
-import {
-  Badge,
-  Box,
-  Button,
-  Card,
-  Flex,
-  Group,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-  Tooltip,
-} from "@web/components/ui/shadcn-clones";
 import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
 
 import { daystamp } from "@sdk/utils";

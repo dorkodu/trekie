@@ -1,31 +1,16 @@
-import { useQuery } from "@tanstack/react-query"
-import { createRoute } from "@tanstack/react-router"
+import { createFileRoute } from '@tanstack/react-router'
+import { Hero } from '@web/components/hero'
+import { Features } from '@web/components/www/features'
 
-import type { RootRoute } from "@tanstack/react-router"
+export const Route = createFileRoute('/_www/')({
+  component: Page,
+})
 
-function TanStackQueryDemo() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      Promise.resolve([{ name: "John Doe" }, { name: "Jane Doe" }]),
-    initialData: [],
-  })
-
+function Page() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl mb-4">People list from Swapi</h1>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
+    <main>
+      <Hero />
+      <Features />
+    </main>
   )
 }
-
-export default (parentRoute: RootRoute) =>
-  createRoute({
-    path: "/demo/tanstack-query",
-    component: TanStackQueryDemo,
-    getParentRoute: () => parentRoute,
-  })
