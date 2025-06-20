@@ -47,24 +47,24 @@ export function SumCard({
   kind?: string;
   subtext?: string;
 }) {
-  const colors = colorMap[color] || colorMap.blue;
+  const colors = colorMap[color] ?? colorMap.blue;
   return (
     <div
-      className={`rounded-xl border shadow-sm p-0 ${colors.bg} ${colors.border}`}
+      className={`rounded-xl border shadow-sm p-0 ${colors?.bg} ${colors?.border}`}
       style={{ boxShadow: "0px 3px 0px 0px rgba(0,0,0,0.04)" }}
     >
       <div className="flex flex-row items-stretch justify-between w-full">
         <div className="flex flex-col gap-1 px-3 py-3 pt-4">
           <div className="flex flex-row items-end gap-1">
             <span
-              className={`font-extrabold text-2xl leading-tight ${colors.text}`}
+              className={`font-extrabold text-2xl leading-tight ${colors?.text}`}
               style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
             >
               {value}
             </span>
             {subtext && (
               <span
-                className={`font-medium text-xs leading-tight ${colors.text}`}
+                className={`font-medium text-xs leading-tight ${colors?.text}`}
                 style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
               >
                 {subtext}
@@ -73,7 +73,7 @@ export function SumCard({
           </div>
           {kind && (
             <span
-              className={`uppercase font-bold text-[11px] leading-4 ${colors.accent}`}
+              className={`uppercase font-bold text-[11px] leading-4 ${colors?.accent}`}
             >
               {kind}
             </span>

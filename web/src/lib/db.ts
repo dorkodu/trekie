@@ -1,11 +1,9 @@
-import Dexie, { Table, Transaction } from 'dexie'
-import { ulid } from 'ulidx'
+import Dexie, { type Table, type Transaction } from 'dexie'
 
 import { IUser } from '@sdk/core'
 import { IGoal } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
 
-import { fillMockUserData } from './mock'
 import { trekie } from './trekie'
 
 

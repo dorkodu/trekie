@@ -1,4 +1,5 @@
-import { Badge } from "@";
+import { IconX } from "@tabler/icons-react";
+import { Badge } from "@web/components/ui/badge";
 import {
   Command,
   CommandEmpty,
@@ -74,7 +75,7 @@ export function ChoiceCombobox(props: ChoiceComboboxProps) {
                 onClick={() => handleValueRemove(value)}
                 aria-label="Remove"
               >
-                <X className="w-3 h-3" />
+                <IconX className="w-3 h-3" />
               </button>
             </Badge>
           );

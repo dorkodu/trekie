@@ -1,7 +1,12 @@
-import { trekie } from "@web/lib/trekie";
-import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash, } from "@tabler/icons-react";
-import { IGoal } from "@web/namespaces/goal";
-import { MouseEvent } from "react";
+import { Button } from "@web/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@web/components/ui/dropdown-menu";
+import { modals } from "@web/lib/modals";
 import { goals } from ".";
 
 interface Props {
@@ -39,60 +44,60 @@ function GoalMenu({ goal }: Props) {
   };
 
   return (
-    <Menu position="bottom-end" withArrow>
-      <Menu.Target>
-        <ActionIcon
-          variant="subtle"
-          color="gray"
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 p-0"
           onClick={(e) => e.stopPropagation()}
         >
-          <IconDotsVertical color={vanilla.colors.gray.lightColor} />
-        </ActionIcon>
-      </Menu.Target>
-
-      <Menu.Dropdown
-        style={{
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Menu.Item onClick={onShare} leftSection={<IconShare />}>
-          Share
-        </Menu.Item>
-
-        <Menu.Item onClick={onClipboard} leftSection={<IconClipboardText />}>
-          Copy To Clipboard
-        </Menu.Item>
-
+          <IconDotsVertical className="text-gray-400" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48 shadow-lg">
+        <DropdownMenuItem
+          onClick={onShare}
+          className="flex gap-2 items-center"
+        >
+          <IconShare className="w-4 h-4" /> Share
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={onClipboard}
+          className="flex gap-2 items-center"
+        >
+          <IconClipboardText className="w-4 h-4" /> Copy To Clipboard
+        </DropdownMenuItem>
         {currentUserId && (
           <>
-            <Menu.Divider />
-
+            <DropdownMenuSeparator />
             {currentUserId === goal.userId ? (
               <>
-                <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                  Edit Goal
-                </Menu.Item>
-                <Menu.Item
-                  onClick={onDelete}
-                  leftSection={<IconTrash />}
-                  c="red"
+                <DropdownMenuItem
+                  onClick={onEdit}
+                  className="flex gap-2 items-center"
                 >
-                  Delete Goal
-                </Menu.Item>
+                  <IconEdit className="w-4 h-4" /> Edit Goal
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={onDelete}
+                  className="flex gap-2 items-center text-red-600 focus:text-red-700"
+                >
+                  <IconTrash className="w-4 h-4" /> Delete Goal
+                </DropdownMenuItem>
               </>
             ) : (
-              <Menu.Item
+              <DropdownMenuItem
                 onClick={onReport}
-                color="red"
-                leftSection={<IconExclamationCircle />}
+                className="flex gap-2 items-center text-red-600 focus:text-red-700"
               >
-                Report Goal
-              </Menu.Item>
+                <IconExclamationCircle className="w-4 h-4" /> Report Goal
+              </DropdownMenuItem>
             )}
           </>
         )}
-      </Menu.Dropdown>
-    </Menu>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 

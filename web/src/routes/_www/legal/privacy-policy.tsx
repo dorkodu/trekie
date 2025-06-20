@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Emoji from "@web/components/misc/Emoji";
+import { Container, Group, Stack } from "@web/components/ui/layout";
+import { Title } from "@web/components/ui/typography";
 
 export const Route = createFileRoute("/_www/legal/privacy-policy")({
   component: Privacy,
@@ -15,7 +17,7 @@ export function Privacy() {
             Privacy Policy
           </Title>
           {/* <Text span inherit variant="gradient" gradient={{ from: "#17CC38", to: "#6BD731", deg: 60 }}> Gamification</Text> */}
-          <Title order={2} c="dimmed" fw={600} size={18}>
+          <Title order={2} color="dimmed" fw={600} size={18}>
             Our respect for your information.
           </Title>
         </Stack>
@@ -490,7 +492,7 @@ export function Privacy() {
       <h2>Contact Us</h2>
       <p>If you have any questions about this Privacy Policy, You can contact us:</p>
       <p>
-        <b>By Email:</b> <Anchor href="mailto:hey@dorkodu.com">hey@dorkodu.com</Anchor>
+        <b>By Email:</b> <a href="mailto:hey@dorkodu.com">hey@dorkodu.com</a>
       </p>
     </Container>
   );

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Emoji from "@web/components/misc/Emoji";
-import { Container } from "@web/components/ui/container";
-import { Group, Stack } from "@web/components/ui/layout";
+import { Container, Group, Stack } from "@web/components/ui/layout";
 import { Title } from "@web/components/ui/typography";
 
 export const Route = createFileRoute("/_www/legal/community-rules")({

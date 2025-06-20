@@ -18,7 +18,7 @@ export function useSafeGoBack() {
 
   return () => {
     if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1)
+      navigate('-1', { replace: true })
     } else {
       navigate("/", { replace: true })
     }

@@ -1,4 +1,5 @@
 import { IconBrandInstagram, IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
+import { cn } from "@web/lib/utils";
 import React from "react";
 import { Image } from "../ui/image";
 
@@ -81,7 +82,7 @@ export const Footer = ({
   legalLinks = defaultLegalLinks,
 }: FooterProps) => {
   return (
-    <footer className="px-6">
+    <footer className={cn('mx-auto mt-2 px-3 transition-all duration-300 max-w-4xl lg:px-4')}>
       <section className="py-32">
         <div className="container mx-auto">
           <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
@@ -143,4 +144,3 @@ export const Footer = ({
     </footer>
   );
 };
-

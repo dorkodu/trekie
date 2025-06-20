@@ -1,6 +1,8 @@
+import WIPCard from "@web/components/cards/WIPCard";
+
 function Page() {
   return (
-    <div cl>
+    <div>
       <WIPCard />
     </div>
   );

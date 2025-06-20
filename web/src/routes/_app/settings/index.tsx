@@ -1,8 +1,10 @@
+import WIPCard from "@web/components/cards/WIPCard";
+
 export default function Settings() {
   return (
-    <Flex direction="column" m="md">
-      <Title order={1} size="h2">Help</Title>
+    <div className="flex flex-col m-4">
+      <h2>Help</h2>
       <WIPCard />
-    </Flex>
+    </div>
   )
 }

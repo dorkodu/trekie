@@ -1,21 +1,15 @@
-import { useForm, zodResolver } from "@mantine/form";
-import { ContextModalProps } from "@mantine/modals";
-import { IconPlusMinus, IconTrash } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
+import { IconTrash } from "@tabler/icons-react";
+import { FieldApi, useForm } from "@tanstack/react-form";
 import {
   ActionIcon,
   Box,
   Button,
-  Flex,
-  Group,
-  Input,
+  Flex, Input,
   NumberInput,
   Stack,
   Text,
-  Textarea,
-  ThemeIcon,
+  Textarea
 } from "@web/components/ui/shadcn-clones";
-import { db } from "@web/lib/db";
 import { trekie } from "@web/lib/trekie";
 import {
   goals,
@@ -23,79 +17,33 @@ import {
   IGoal,
   IGoalTemplate,
 } from "@web/namespaces/goal";
-import { IHabit } from "@web/namespaces/habit";
 import { tryCatch } from "@web/utils/tryCatch";
 import { useEffect, useState } from "react";
 import { ChoiceCombobox, ChoiceOption } from "./ChoiceCombobox";
 
+// Zod schema for validation
+const GoalTemplateSchema = GoalSchema.GoalTemplate;
+
 type GoalEditorMode = "CREATE" | "EDIT";
+
+type GoalEditorModalProps = {
+  context: any;
+  id: string;
+  innerProps: { mode: GoalEditorMode; goal?: IGoal };
+};
 
 const GoalEditorModal = ({
   context,
   id,
   innerProps = { mode: "CREATE" },
-}: ContextModalProps<{ mode: GoalEditorMode; goal?: IGoal }>) => {
-  const [commitmentOptions, setCommitmentOptions] = useState<ChoiceOption[]>(
-    [],
-  );
+}: GoalEditorModalProps) => {
+  const [commitmentOptions, setCommitmentOptions] = useState<ChoiceOption[]>([]);
   const user = trekie.use(($) => $.user);
 
-  const choicesQuery = useQuery({
-    queryKey: ["userCommitments"],
-    queryFn: async () => {
-      try {
-        // Get user's commitments from trekie
-        const userCommitments = await trekie.commitments.getOwnCommitments();
-        // normally we would use commitment id's to fetch from their respective kinds / tables
 
-        // Fetch all commitment entities
-        const commitmentEntities: {
-          habits: IHabit[];
-        } = { habits: [] };
-
-        commitmentEntities.habits = await db.habits
-          .where("userId")
-          .equals(user.id)
-          .toArray();
-
-        // Updated formatByKind to directly return the expected option format
-        const formatByKind = <T extends { id: string; title?: string }>(
-          items: T[],
-          kind: string,
-        ): ChoiceOption[] => {
-          return items.map((item) => ({
-            value: item.id,
-            label: item.title || `Untitled ${kind}`,
-            content: (
-              <Group key={item.id} wrap="nowrap" gap="xs">
-                <ThemeIcon color="dark" size="sm" variant="light">
-                  <IconPlusMinus />
-                </ThemeIcon>
-                <Text size="sm">{item.title || `Untitled ${kind}`}</Text>
-              </Group>
-            ),
-          }));
-        };
-
-        // Format all commitment types
-        const formattedOptions: ChoiceOption[] = [
-          ...formatByKind(commitmentEntities.habits, "Habit"),
-          // Add other commitment types here as they become available
-        ];
-
-        setCommitmentOptions(formattedOptions);
-        return formattedOptions;
-      } catch (error) {
-        console.error("[app] Error fetching user commitments:", error);
-        setCommitmentOptions([]); // Fallback to empty array
-        return [];
-      }
-    },
-  });
-
+  // TanStack React Form
   const form = useForm({
-    mode: "uncontrolled",
-    initialValues:
+    defaultValues:
       innerProps.goal ??
       ({
         title: "",
@@ -103,8 +51,21 @@ const GoalEditorModal = ({
         xpTarget: 0,
         commitments: [],
       } satisfies IGoalTemplate),
-
-    validate: zodResolver(GoalSchema.GoalTemplate),
+    onSubmit: async ({ value }) => {
+      if (innerProps.mode === "CREATE") {
+        await onCreate(value);
+      } else {
+        await onUpdate(value);
+      }
+    },
+    validatorAdapter: async (values) => {
+      try {
+        GoalTemplateSchema.parse(values);
+        return {};
+      } catch (err: any) {
+        return err.formErrors?.fieldErrors || {};
+      }
+    },
   });
 
   // Ensure commitments are set after options load in EDIT mode, but only if the IDs exist in the options
@@ -116,7 +77,7 @@ const GoalEditorModal = ({
       commitmentOptions.length > 0
     ) {
       // Only set if form's commitments is empty or different from goal's commitments
-      const currentFormCommitments = form.getValues().commitments ?? [];
+      const currentFormCommitments = form.state.values.commitments ?? [];
       // Only update if not already set (prevents overwriting user changes)
       if (
         !Array.isArray(currentFormCommitments) ||
@@ -131,123 +92,112 @@ const GoalEditorModal = ({
     }
   }, [commitmentOptions, innerProps.goal, innerProps.mode]);
 
-  const onCreate = async (values: typeof form.values) => {
-    const { data, error } = await tryCatch(
-      (async () => {
-        console.log("Creating goal:", values);
-        const r = await goals.create(values);
-        console.log("Goal created successfully:", r);
-        // After successful creation, close the modal
-      })(),
-    );
-
+  const onCreate = async (values: typeof form.state.values) => {
+    await tryCatch(async () => {
+      await goals.create(values);
+    });
     context.closeModal(id);
   };
 
-  const onUpdate = async (values: typeof form.values) => {
+  const onUpdate = async (values: typeof form.state.values) => {
     if (!innerProps.goal?.id) return;
-
-    const { data, error } = await tryCatch(
-      (async () => {
-        goals.update(innerProps.goal!.id, values);
-      })(),
-    );
-
-    if (error) {
-      console.error("Error updating goal:", error);
-      // Optionally show user feedback here
-      return;
-    }
+    const { error } = await tryCatch(async () => {
+      await goals.update(innerProps.goal!.id, values);
+    });
+    if (error) return;
     context.closeModal(id);
   };
 
   const onDelete = async () => {
     if (!innerProps.goal?.id) return;
-
-    const { error } = await tryCatch(
-      (async () => {
-        goals.delete(innerProps.goal!.id);
-      })(),
-    );
-
-    if (error) {
-      console.error("Error deleting goal:", error);
-      // Optionally show user feedback here
-      return;
-    }
+    const { error } = await tryCatch(async () => {
+      await goals.delete(innerProps.goal!.id);
+    });
+    if (error) return;
     context.closeModal(id);
   };
 
   return (
-    <>
-      <form
-        onSubmit={form.onSubmit(
-          innerProps.mode === "CREATE" ? onCreate : onUpdate,
-        )}
-      >
-        <Stack gap="sm">
-          <Input
-            withAsterisk
-            label="Title"
-            placeholder="Title"
-            key={form.key("title")}
-            {...form.getInputProps("title")}
-          />
-
-          <Textarea
-            withAsterisk
-            label="Description"
-            placeholder="Description"
-            key={form.key("description")}
-            {...form.getInputProps("description")}
-          />
-
-          <NumberInput
-            withAsterisk
-            label="XP Target"
-            placeholder="0"
-            key={form.key("xpTarget")}
-            {...form.getInputProps("xpTarget")}
-          />
-
-          <Box>
-            <Text fw={500} mb={5}>
-              Commitments
-            </Text>
-            <ChoiceCombobox
-              options={commitmentOptions}
-              value={form.values.commitments}
-              onChange={(selectedIds) =>
-                form.setFieldValue("commitments", selectedIds)
-              }
-              placeholder="Select commitments to include in this goal"
+    <form
+      onSubmit={form.handleSubmit}
+      className="w-full"
+      autoComplete="off"
+    >
+      <Stack gap="sm">
+        <form.Field name="title">
+          {(field: FieldApi<any, string>) => (
+            <Input
+              withAsterisk
+              label="Title"
+              placeholder="Title"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+              error={field.state.meta.errors?.[0]}
             />
-          </Box>
+          )}
+        </form.Field>
 
-          {innerProps.mode === "CREATE" && (
-            <Button size="md" type="submit">
-              CREATE
+        <form.Field name="description">
+          {(field: FieldApi<any, string>) => (
+            <Textarea
+              withAsterisk
+              label="Description"
+              placeholder="Description"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+              error={field.state.meta.errors?.[0]}
+            />
+          )}
+        </form.Field>
+
+        <form.Field name="xpTarget">
+          {(field: FieldApi<any, number>) => (
+            <NumberInput
+              withAsterisk
+              label="XP Target"
+              placeholder="0"
+              value={field.state.value}
+              onChange={(v) => field.handleChange(Number(v))}
+              error={field.state.meta.errors?.[0]}
+            />
+          )}
+        </form.Field>
+
+        <Box>
+          <Text fw={500} mb={5}>
+            Commitments
+          </Text>
+          <ChoiceCombobox
+            options={commitmentOptions}
+            value={form.state.values.commitments}
+            onChange={(selectedIds) => form.setFieldValue("commitments", selectedIds)}
+            placeholder="Select commitments to include in this goal"
+          />
+        </Box>
+
+        {innerProps.mode === "CREATE" && (
+          <Button size="md" type="submit">
+            CREATE
+          </Button>
+        )}
+        {innerProps.mode === "EDIT" && (
+          <Flex gap={6}>
+            <ActionIcon
+              size="xl"
+              color="red"
+              variant="light"
+              radius="lg"
+              onClick={onDelete}
+            >
+              <IconTrash />
+            </ActionIcon>
+            <Button size="md" style={{ flexGrow: 1 }} type="submit">
+              UPDATE
             </Button>
-          )}
-          {innerProps.mode === "EDIT" && (
-            <Flex gap={6}>
-              <ActionIcon
-                size="xl"
-                color="red"
-                variant="light"
-                radius="lg"
-                onClick={onDelete}
-              >
-                <IconTrash />
-              </ActionIcon>
-              <Button size="md" style={{ flexGrow: 1 }} type="submit">
-                UPDATE
-              </Button>
-            </Flex>
-          )}
-        </Stack>
-      </form>
-    </>
+          </Flex>
+        )}
+      </Stack>
+    </form>
   );
 };
 

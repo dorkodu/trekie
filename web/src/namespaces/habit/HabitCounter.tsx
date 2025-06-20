@@ -1,12 +1,15 @@
-import { IconMinus, IconPlus, IconPlusMinus, } from "@tabler/icons-react";
+import { IconMinus, IconPlus, IconPlusMinus } from "@tabler/icons-react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { type MouseEvent } from "react";
-
-import EnhancedText from "@web/components/misc/TextParser";
-import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
+import React, { type MouseEvent } from "react";
 
 import { daystamp } from "@sdk/utils";
+import EnhancedText from "@web/components/misc/TextParser";
+import { Badge } from "@web/components/ui/badge";
+import { Button } from "@web/components/ui/button";
+import { Card } from "@web/components/ui/card";
+import { Tooltip } from "@web/components/ui/tooltip";
 import { habits } from "@web/namespaces/habit";
+import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
 
 interface Props {
   habitId: string;
@@ -14,8 +17,6 @@ interface Props {
 }
 
 function HabitCounter({ habitId, onClick }: Props) {
-  // get the habit yourself, fresh!
-
   const habit = useLiveQuery(() => habits.get(habitId), [habitId]);
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
@@ -28,138 +29,92 @@ function HabitCounter({ habitId, onClick }: Props) {
 
   return (
     <Card
-      p={0}
-      mb="xs"
-      style={{ overflow: "visible" }}
+      className="overflow-visible mb-2 rounded-lg shadow-sm p-0"
       onClick={onClick}
-      radius="lg"
-      shadow="sm"
     >
-      <Button.Group mih={80}>
+      <div className="flex flex-row items-stretch min-h-20">
+        {/* Increment Button */}
         <Button
           variant="gradient"
-          gradient={{
-            from: "hsl(135, 95%, 30%)",
-            to: "hsl(170, 95%, 35%)",
-            deg: 45,
+          className="rounded-none rounded-l-lg flex items-center justify-center px-2 min-w-0"
+          style={{
+            background: "linear-gradient(45deg, hsl(135, 95%, 30%), hsl(170, 95%, 35%))",
+            height: "auto",
           }}
-          h="auto"
           onClick={(ev) => onChangeCount(ev, +1)}
-          px="xs"
         >
-          <Flex
-            style={{
-              background: "rgba(255,255,255,0.3)",
-              width: 32,
-              height: 32,
-              display: "flex",
-              justifyItems: "center",
-              alignItems: "center",
-              borderRadius: 8,
-              padding: 2,
-            }}
-          >
+          <div className="flex items-center justify-center bg-white/30 w-8 h-8 rounded-md p-0.5">
             <IconPlus stroke={2.5} size={28} />
-          </Flex>
+          </div>
         </Button>
 
-        <Flex
-          direction="column"
-          justify="center"
-          py="sm"
-          pl="sm"
-          pr={8}
-          style={{
-            flex: 1,
-          }}
-        >
-          <Flex justify="space-between" align="center">
-            <Flex style={{ display: "grid", gridTemplateRows: "auto" }}>
-              <Title order={5} className={truncate}>
+        {/* Main Content */}
+        <div className="flex flex-col flex-1 justify-center py-3 pl-3 pr-2 min-w-0">
+          <div className="flex flex-row justify-between items-center">
+            <div className="grid grid-rows-1 min-w-0">
+              <h5 className="truncate font-bold text-base">
                 <EnhancedText ids={["emoji"]} text={habit.title} />
-              </Title>
-            </Flex>
+              </h5>
+            </div>
             <HabitCounterMenu habit={habit} />
-          </Flex>
+          </div>
 
           {habit.description && habit.description.length > 0 && (
-            <Text size="sm" lh={1} pt={2}>
-              <EnhancedText
-                ids={["emoji", "url", "username"]}
-                text={habit.description}
-              />
-            </Text>
+            <div className="pt-0.5">
+              <span className="text-sm leading-tight">
+                <EnhancedText
+                  ids={["emoji", "url", "username"]}
+                  text={habit.description}
+                />
+              </span>
+            </div>
           )}
 
-          <Group gap={8} mt="6" justify="space-between" pt={4}>
-            <Group gap={12} justify="start" align="start">
+          <div className="flex flex-row gap-2 mt-1.5 justify-between pt-1">
+            <div className="flex flex-row gap-3 items-start">
               <Badge
-                display="block"
                 variant="light"
                 size="xl"
-                color="blue"
-                radius="md"
-                px={8}
-                py={2}
+                className="block text-lg font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-800"
               >
-                <Text fw={700} size="lg" span>
-                  {habit.count}
-                </Text>
+                <span>{habit.count}</span>
               </Badge>
 
-              <Stack gap={0} align="start" pt={2}>
-                <Text c="dimmed" size="xs" fw={500} lh={1}>
-                  Today
-                </Text>
-                <Text fw={600} c="blue" size="sm" lh={1} opacity={0.75}>
+              <div className="flex flex-col gap-0 items-start pt-0.5">
+                <span className="text-xs text-gray-500 font-medium leading-none">Today</span>
+                <span className="font-semibold text-blue-600 text-sm leading-none opacity-75">
                   {habit.history.get(daystamp.today()) ?? 0}
-                  <Text span c="blue" opacity={0.25} px={1} fw={600}>
-                    /{habit.dailyTarget}
-                  </Text>
-                </Text>
-              </Stack>
+                  <span className="text-blue-600 opacity-25 px-1 font-semibold">/{habit.dailyTarget}</span>
+                </span>
+              </div>
 
-              <Stack gap={4} align="start" pt={2}>
-                <Text c="dimmed" size="xs" fw={500} lh={1}>
-                  This Week
-                </Text>
+              <div className="flex flex-col gap-1 items-start pt-0.5">
+                <span className="text-xs text-gray-500 font-medium leading-none">This Week</span>
                 <WeeklyActivity />
-              </Stack>
-            </Group>
+              </div>
+            </div>
 
-            <ThemeIcon size="sm" c="dimmed" variant="transparent">
+            <span className="inline-flex items-center justify-center text-gray-400">
               <IconPlusMinus />
-            </ThemeIcon>
-          </Group>
-        </Flex>
+            </span>
+          </div>
+        </div>
 
+        {/* Decrement Button */}
         <Button
           variant="gradient"
-          gradient={{
-            to: "hsl(0, 96%, 45%)",
-            from: "hsl(15, 90%, 60%)",
-            deg: 135,
+          className="rounded-none rounded-r-lg flex items-center justify-center px-2 min-w-0"
+          style={{
+            background: "linear-gradient(135deg, hsl(15, 90%, 60%), hsl(0, 96%, 45%))",
+            height: "auto",
           }}
-          h="auto"
           onClick={(ev) => onChangeCount(ev, -1)}
-          px="xs"
         >
-          <Flex
-            style={{
-              background: "rgba(255,255,255,0.25)",
-              width: 32,
-              height: 32,
-              display: "flex",
-              justifyItems: "center",
-              alignItems: "center",
-              borderRadius: 8,
-              padding: 2,
-            }}
-          >
+          <div className="flex items-center justify-center bg-white/25 w-8 h-8 rounded-md p-0.5">
             <IconMinus stroke={2.5} size={28} />
-          </Flex>
+          </div>
         </Button>
-      </Button.Group>
+      </div>
     </Card>
   );
 }
@@ -167,40 +122,30 @@ export default HabitCounter;
 
 const WeeklyActivity: React.FC = () => {
   const counts = [1, 5, 3, 0, 6, 11, 1]; // feed this with the actual data
-
   return <WeekGraph counts={counts} />;
 };
 
-// Define the WeeklyCommitGraph component using Mantine
 const WeekGraph: React.FC<{ counts: number[] }> = ({ counts }) => {
   const maxCount = Math.max(...counts, 1); // Avoid division by zero
-  const emptyRGB =
-    useSafeColorScheme() === "dark" ? `200, 225, 230` : `0, 45, 50`;
-  const getBoxColor = (count: number) => {
-    if (count === 0) return `rgba(${emptyRGB}, 0.15)`; // Transparent for zero commits
-    const intensity = count / maxCount;
-    return `rgba(35, 134, 54, ${Math.max(0.2, Math.min(1.0, intensity))}`; // Clamp between 0.2 and 1.0
-  };
-
+  // Use Tailwind for color, fallback to green-600 with opacity for filled, gray-200 for empty
   return (
-    <Box display="flex" style={{ gap: "2px" }} title="Weekly Activity">
+    <div className="flex gap-0.5" title="Weekly Activity">
       {counts.map((count, index) => (
         <Tooltip
           key={index}
           label={`${count} commits on day ${index + 1}`}
-          withArrow
-          position="top"
+          side="top"
         >
-          <Box
-            style={{
-              width: 12,
-              height: 12,
-              backgroundColor: getBoxColor(count),
-              borderRadius: vanilla.radius.sm,
-            }}
+          <div
+            className={
+              count === 0
+                ? "w-3 h-3 rounded-sm bg-gray-200 dark:bg-gray-700"
+                : "w-3 h-3 rounded-sm bg-green-600"
+            }
+            style={count !== 0 ? { opacity: Math.max(0.2, Math.min(1.0, count / maxCount)) } : {}}
           />
         </Tooltip>
       ))}
-    </Box>
+    </div>
   );
 };

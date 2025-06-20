@@ -1,15 +1,7 @@
-import { useForm, zodResolver } from '@mantine/form';
-import { ContextModalProps } from '@mantine/modals';
-import {
-  Box,
-  Button,
-  Group,
-  Input,
-  NumberInput,
-  Textarea
-} from '@web/components/ui/shadcn-clones';
+import { ContextModalProps } from '@web/lib/modals';
 import { IHabit, IHabitTemplate } from '@web/namespaces/habit'; // Import schema and Zod validation
 import { habits } from '.'; // Assuming habits library is exported from index
+import { useTransform } from '@tanstack/react-form';
 
 // Define the expected innerProps structure
 type HabitEditorMode = 'CREATE' | 'EDIT'
@@ -26,7 +18,7 @@ const HabitEditorModal = ({
   const { habit, mode = 'CREATE' } = innerProps
   const isEditing = mode === 'EDIT'
 
-  const form = useForm<Omit<IHabitTemplate, 'description'> & { description?: string }>({
+  const form = useTransform<Omit<IHabitTemplate, 'description'> & { description?: string }>({
     mode: 'uncontrolled',
     initialValues: {
       title: habit?.title ?? '',

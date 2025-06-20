@@ -15,9 +15,10 @@ import { useState } from "react";
 // shadcn/ui imports
 import { Alert, AlertDescription } from "@web/components/ui/alert";
 import { Badge } from "@web/components/ui/badge";
-import { Box, Stack } from "@web/components/ui/layout";
+import { Box, Flex, Stack } from "@web/components/ui/layout";
 import { Skeleton } from "@web/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@web/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@web/components/ui/tabs";
+import { cn } from "@web/lib/utils";
 
 function Home() {
   const user = trekie.use($ => $.user);
@@ -109,7 +110,7 @@ function GoalsFeed() {
 
   if (!userId)
     return (
-      <Box py={10} hiddenFrom="md">
+      <Box className="py-2.5 md:hidden">
         <NoHabitsCard />
       </Box>
     );
@@ -122,9 +123,9 @@ function GoalsFeed() {
   if (!goals)
     return (
       <>
-        <Skeleton height={8} radius="xl" />
-        <Skeleton height={8} mt={8} radius="xl" />
-        <Skeleton height={8} mt={8} width="70%" radius="xl" />
+        <Skeleton className="h-2 rounded-xl radius-xl" />
+        <Skeleton className="h-2 rounded-xl mt-8 radius-xl" />
+        <Skeleton className="h-2 w-[70%] rounded-xl mt-8 radius-xl" />
       </>
     );
 
@@ -139,8 +140,8 @@ function GoalsFeed() {
           <GoalCard id={goal.id} key={goal.id} />
         ))}
       </Stack>
-      <Flex mt="xs">
-        <Badge variant="light" color="gray" mx="auto">
+      <Flex className="mt-2">
+        <Badge variant="default" color="gray" className="mx-auto">
           Track your goals!
         </Badge>
       </Flex>

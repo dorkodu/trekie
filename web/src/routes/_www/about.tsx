@@ -1,17 +1,19 @@
 import Emoji from "@web/components/misc/Emoji";
+import { Container, Flex, Group, Stack } from "@web/components/ui/layout";
+import { Text, Title } from "@web/components/ui/typography";
 
 function About() {
   return (
-    <Flex direction="column" m="md">
+    <Flex direction="column" className="m-4">
       <Container size={760}>
-        <Group wrap="nowrap" my="lg">
+        <Group wrap="nowrap" className="mb-4" gap={12}>
           <Emoji emoji="📄" size={36} />
           <Stack gap={0}>
             <Title order={1} fw={750} lh={1}>
               About
             </Title>
             {/* <Text span inherit variant="gradient" gradient={{ from: "#17CC38", to: "#6BD731", deg: 60 }}> Gamification</Text> */}
-            <Title order={2} c="dimmed" fw={600} size={18}>
+            <Title order={2} color="dimmed" fw={600} size={18}>
               Buildilng gamified tools for thought we are building at Dorkodu.
             </Title>
           </Stack>

@@ -136,3 +136,13 @@ code {
 		@apply bg-background text-foreground;
 	}
 }
+
+.animate-stripes {
+  background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.15) 0 8px, transparent 8px 16px);
+  animation: stripes 1s linear infinite;
+}
+
+@keyframes stripes {
+  0% { background-position: 0 0; }
+  100% { background-position: 32px 0; }
+}

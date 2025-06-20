@@ -12,7 +12,10 @@ function Social() {
   const isPremium = useFeature("premium");
   return (
     <Flex direction="column" className="m-4">
-      {isPremium ? <NewsFeed /> : <OnlyPremium />}
+      {isPremium
+        ? <NewsFeed />
+        : <div className="text-center text-muted-foreground">Upgrade to Premium to unlock the News Feed!</div>
+      }
     </Flex>
   );
 }
@@ -30,7 +33,7 @@ function NewsFeed() {
   return (
     <div style={{ borderRadius: 20, padding: 6 }}>
       {records.length === 0 ? (
-        <Text align="center" className="my-2 text-muted-foreground">
+        <Text className="text-center my-2 text-muted-foreground">
           Nothing to see here yet.
         </Text>
       ) : (

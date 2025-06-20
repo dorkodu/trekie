@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Hero } from '@web/components/hero'
+import { Hero } from '@web/components/www/hero'
 import { Features } from '@web/components/www/features'
 
 export const Route = createFileRoute('/_www/')({

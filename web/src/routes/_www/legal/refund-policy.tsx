@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Emoji from "@web/components/misc/Emoji";
-import { Container, Group, Stack, Title } from "@web/components/ui/layout";
+import { Container, Group, Stack } from "@web/components/ui/layout";
+import { Title } from "@web/components/ui/typography";
 
 export const Route = createFileRoute("/_www/legal/refund-policy")({
   component: RefundPolicy,
@@ -15,7 +16,7 @@ export function RefundPolicy() {
           <Title order={1} fw={750} lh={1}>
             Refund Policy
           </Title>
-          <Title order={2} c="dimmed" fw={600} lh={1.2} size={18} mt={4}>
+          <Title order={2} color="dimmed" fw={600} lh={1.2} size={18} className="mt-1">
             Our policy on refunds for products and services.
           </Title>
         </Stack>
@@ -98,7 +99,7 @@ export function RefundPolicy() {
       </p>
       <ul>
         <li>
-          By email: <Anchor href="mailto:hey@dorkodu.com">hey@dorkodu.com</Anchor>
+          By email: <a href="mailto:hey@dorkodu.com">hey@dorkodu.com</a>
         </li>
         <li>By submitting the form on our website: https://dorkodu.com/refund</li>
       </ul>
@@ -162,7 +163,7 @@ export function RefundPolicy() {
       <h3>Contact Us</h3>
       <p>
         If you have any questions about our Returns and Refunds Policy, please contact us:{" "}
-        <Anchor href="mailto:hey@dorkodu.com">hey@dorkodu.com</Anchor>
+        <a href="mailto:hey@dorkodu.com">hey@dorkodu.com</a>
       </p>
     </Container>
   );
