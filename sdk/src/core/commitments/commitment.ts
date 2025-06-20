@@ -1,5 +1,5 @@
 import { ulid } from "ulidx"
-import { ICommitmentInstance, ICommitmentTemplate, ICommitMessage, ICommitResult } from "./schema"
+import type { ICommitmentInstance, ICommitmentTemplate, ICommitMessage, ICommitResult } from "./schema"
 
 export function Commitment
   <TEvents extends ICommitmentTemplate['events'], TKind extends keyof TEvents>

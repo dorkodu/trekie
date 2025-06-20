@@ -1,5 +1,5 @@
 import { commonSchemas } from "@api/commons/schemas"
-import { IGoal, IGoalTemplate } from "@web/namespaces/goal"
+import { IGoal } from "@web/namespaces/goal"
 import { z } from "zod"
 
 export const getGoal = z.strictObject({

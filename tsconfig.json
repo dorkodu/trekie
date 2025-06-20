@@ -17,9 +17,9 @@
     "baseUrl": ".",
 
     "paths": {
+      "@sdk/*": ["./sdk/src/*"],
       "@api/*": ["./api/src/*"],
       "@web/*": ["./web/src/*"],
-      "@sdk/*": ["./sdk/src/*"]
     }
   },
 }

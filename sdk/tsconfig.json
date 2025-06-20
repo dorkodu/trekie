@@ -1,35 +1,33 @@
 {
   "extends": "../tsconfig.json",
-  
+
+  "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "target": "ES2022",
+    "jsx": "react-jsx",
     "module": "ESNext",
-    "skipLibCheck": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "noEmit": true,
-    "jsx": "react",
 
     /* Linting */
+    "skipLibCheck": true,
     "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
 
-    "alwaysStrict": true,
-    "allowUnreachableCode": false,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "esModuleInterop": true
+    "baseUrl": "./src",
+    "paths": {
+      "@sdk/*": ["./*"]
+    }
   },
-  "include": ["src"],
+
   "references": [{ "path": "./tsconfig.node.json" }]
 }

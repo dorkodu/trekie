@@ -1,5 +1,5 @@
 import type { Game } from "."
-import { daystamp, utils } from "@sdk/utils/index"
+import { daystamp, utils } from "@sdk"
 
 export function changeXp(game: Game, change: number) {
   game.setState($ => {

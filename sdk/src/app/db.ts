@@ -1,5 +1,5 @@
 import Dexie, { type Table, Transaction } from 'dexie'
-import type { type ICommitmentInstance, ICommitRecord } from '../core/commitments'
+import type { ICommitmentInstance, ICommitRecord } from '../core/commitments'
 
 export const createDb = () => new Dexie('trekie') as IDexieDb
 

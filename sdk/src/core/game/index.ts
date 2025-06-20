@@ -1,6 +1,6 @@
 // misc
 import type { IUser } from '../account'
-import type { Daystamp, Maybe, Timestamp } from '../../utils'
+import type { Daystamp, Maybe, Timestamp } from '@sdk/utils'
 
 export interface GameState {
   user: IUser
