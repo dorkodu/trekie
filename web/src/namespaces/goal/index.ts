@@ -1,7 +1,7 @@
-import { ICommitmentInstance } from "@sdk/core/index"
-import { Maybe } from "@web/utils"
+import { type ICommitmentInstance } from "@sdk/core/index"
+import { type Maybe } from "@web/utils"
 import { Component } from "./library"
-import { IGoal, IGoalTemplate, schema } from './schema'
+import { IGoal, IGoalTemplate } from './schema'
 
 export interface Interface {
   get: (id: IGoal["id"]) => Promise<Maybe<IGoal>>

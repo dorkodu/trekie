@@ -1,5 +1,5 @@
 
-import { useNavigate } from "@tanstack/react-router"
+import { useCanGoBack, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 
 export function useDelay() {
@@ -14,13 +14,14 @@ export function useDelay() {
 }
 
 export function useSafeGoBack() {
-  const navigate = useNavigate()
+  const router = useRouter()
+  const canGoBack = useCanGoBack()
 
   return () => {
-    if (window.history.state && window.history.state.idx > 0) {
-      navigate('-1', { replace: true })
+    if (canGoBack) {
+      router.history.back()
     } else {
-      navigate("/", { replace: true })
+      router.navigate({ to: "/" })
     }
   }
 }

@@ -15,11 +15,15 @@ import { Route as WwwIndexRouteImport } from './routes/_www/index'
 import { Route as WwwWelcomeRouteImport } from './routes/_www/welcome'
 import { Route as WwwErrorRouteImport } from './routes/_www/error'
 import { Route as WwwCreateAccountRouteImport } from './routes/_www/create-account'
+import { Route as WwwAboutRouteImport } from './routes/_www/about'
 import { Route as AppPremiumRouteImport } from './routes/_app/premium'
+import { Route as AppHomeRouteImport } from './routes/_app/home'
 import { Route as AppExploreRouteImport } from './routes/_app/explore'
 import { Route as AppArchiveRouteImport } from './routes/_app/archive'
+import { Route as AppChar58usernameRouteImport } from './routes/_app/:username'
 import { Route as WwwLegalIndexRouteImport } from './routes/_www/legal/index'
 import { Route as WwwHelpIndexRouteImport } from './routes/_www/help/index'
+import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
 import { Route as AppMarketIndexRouteImport } from './routes/_app/market/index'
 import { Route as AppCommunityIndexRouteImport } from './routes/_app/community/index'
 import { Route as WwwLegalTermsOfServiceRouteImport } from './routes/_www/legal/terms-of-service'
@@ -60,9 +64,19 @@ const WwwCreateAccountRoute = WwwCreateAccountRouteImport.update({
   path: '/create-account',
   getParentRoute: () => WwwRoute,
 } as any)
+const WwwAboutRoute = WwwAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => WwwRoute,
+} as any)
 const AppPremiumRoute = AppPremiumRouteImport.update({
   id: '/premium',
   path: '/premium',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHomeRoute = AppHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => AppRoute,
 } as any)
 const AppExploreRoute = AppExploreRouteImport.update({
@@ -75,6 +89,11 @@ const AppArchiveRoute = AppArchiveRouteImport.update({
   path: '/archive',
   getParentRoute: () => AppRoute,
 } as any)
+const AppChar58usernameRoute = AppChar58usernameRouteImport.update({
+  id: '/:username',
+  path: '/:username',
+  getParentRoute: () => AppRoute,
+} as any)
 const WwwLegalIndexRoute = WwwLegalIndexRouteImport.update({
   id: '/legal/',
   path: '/legal/',
@@ -84,6 +103,11 @@ const WwwHelpIndexRoute = WwwHelpIndexRouteImport.update({
   id: '/help/',
   path: '/help/',
   getParentRoute: () => WwwRoute,
+} as any)
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppMarketIndexRoute = AppMarketIndexRouteImport.update({
   id: '/market/',
@@ -142,9 +166,12 @@ const AppCommunityIdRoute = AppCommunityIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/:username': typeof AppChar58usernameRoute
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
+  '/home': typeof AppHomeRoute
   '/premium': typeof AppPremiumRoute
+  '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
   '/welcome': typeof WwwWelcomeRoute
@@ -160,13 +187,17 @@ export interface FileRoutesByFullPath {
   '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
   '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
   '/help': typeof WwwHelpIndexRoute
   '/legal': typeof WwwLegalIndexRoute
 }
 export interface FileRoutesByTo {
+  '/:username': typeof AppChar58usernameRoute
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
+  '/home': typeof AppHomeRoute
   '/premium': typeof AppPremiumRoute
+  '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
   '/welcome': typeof WwwWelcomeRoute
@@ -182,6 +213,7 @@ export interface FileRoutesByTo {
   '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
   '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
   '/help': typeof WwwHelpIndexRoute
   '/legal': typeof WwwLegalIndexRoute
 }
@@ -189,9 +221,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_www': typeof WwwRouteWithChildren
+  '/_app/:username': typeof AppChar58usernameRoute
   '/_app/archive': typeof AppArchiveRoute
   '/_app/explore': typeof AppExploreRoute
+  '/_app/home': typeof AppHomeRoute
   '/_app/premium': typeof AppPremiumRoute
+  '/_www/about': typeof WwwAboutRoute
   '/_www/create-account': typeof WwwCreateAccountRoute
   '/_www/error': typeof WwwErrorRoute
   '/_www/welcome': typeof WwwWelcomeRoute
@@ -207,15 +242,19 @@ export interface FileRoutesById {
   '/_www/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
   '/_app/community/': typeof AppCommunityIndexRoute
   '/_app/market/': typeof AppMarketIndexRoute
+  '/_app/settings/': typeof AppSettingsIndexRoute
   '/_www/help/': typeof WwwHelpIndexRoute
   '/_www/legal/': typeof WwwLegalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/:username'
     | '/archive'
     | '/explore'
+    | '/home'
     | '/premium'
+    | '/about'
     | '/create-account'
     | '/error'
     | '/welcome'
@@ -231,13 +270,17 @@ export interface FileRouteTypes {
     | '/legal/terms-of-service'
     | '/community'
     | '/market'
+    | '/settings'
     | '/help'
     | '/legal'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/:username'
     | '/archive'
     | '/explore'
+    | '/home'
     | '/premium'
+    | '/about'
     | '/create-account'
     | '/error'
     | '/welcome'
@@ -253,15 +296,19 @@ export interface FileRouteTypes {
     | '/legal/terms-of-service'
     | '/community'
     | '/market'
+    | '/settings'
     | '/help'
     | '/legal'
   id:
     | '__root__'
     | '/_app'
     | '/_www'
+    | '/_app/:username'
     | '/_app/archive'
     | '/_app/explore'
+    | '/_app/home'
     | '/_app/premium'
+    | '/_www/about'
     | '/_www/create-account'
     | '/_www/error'
     | '/_www/welcome'
@@ -277,6 +324,7 @@ export interface FileRouteTypes {
     | '/_www/legal/terms-of-service'
     | '/_app/community/'
     | '/_app/market/'
+    | '/_app/settings/'
     | '/_www/help/'
     | '/_www/legal/'
   fileRoutesById: FileRoutesById
@@ -330,11 +378,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WwwCreateAccountRouteImport
       parentRoute: typeof WwwRoute
     }
+    '/_www/about': {
+      id: '/_www/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof WwwAboutRouteImport
+      parentRoute: typeof WwwRoute
+    }
     '/_app/premium': {
       id: '/_app/premium'
       path: '/premium'
       fullPath: '/premium'
       preLoaderRoute: typeof AppPremiumRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/home': {
+      id: '/_app/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/explore': {
@@ -351,6 +413,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppArchiveRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/:username': {
+      id: '/_app/:username'
+      path: '/:username'
+      fullPath: '/:username'
+      preLoaderRoute: typeof AppChar58usernameRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_www/legal/': {
       id: '/_www/legal/'
       path: '/legal'
@@ -364,6 +433,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/help'
       preLoaderRoute: typeof WwwHelpIndexRouteImport
       parentRoute: typeof WwwRoute
+    }
+    '/_app/settings/': {
+      id: '/_app/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/market/': {
       id: '/_app/market/'
@@ -446,30 +522,37 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppChar58usernameRoute: typeof AppChar58usernameRoute
   AppArchiveRoute: typeof AppArchiveRoute
   AppExploreRoute: typeof AppExploreRoute
+  AppHomeRoute: typeof AppHomeRoute
   AppPremiumRoute: typeof AppPremiumRoute
   AppCommunityIdRoute: typeof AppCommunityIdRoute
   AppProfileUsernameRoute: typeof AppProfileUsernameRoute
   AppProfileEditRoute: typeof AppProfileEditRoute
   AppCommunityIndexRoute: typeof AppCommunityIndexRoute
   AppMarketIndexRoute: typeof AppMarketIndexRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppChar58usernameRoute: AppChar58usernameRoute,
   AppArchiveRoute: AppArchiveRoute,
   AppExploreRoute: AppExploreRoute,
+  AppHomeRoute: AppHomeRoute,
   AppPremiumRoute: AppPremiumRoute,
   AppCommunityIdRoute: AppCommunityIdRoute,
   AppProfileUsernameRoute: AppProfileUsernameRoute,
   AppProfileEditRoute: AppProfileEditRoute,
   AppCommunityIndexRoute: AppCommunityIndexRoute,
   AppMarketIndexRoute: AppMarketIndexRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface WwwRouteChildren {
+  WwwAboutRoute: typeof WwwAboutRoute
   WwwCreateAccountRoute: typeof WwwCreateAccountRoute
   WwwErrorRoute: typeof WwwErrorRoute
   WwwWelcomeRoute: typeof WwwWelcomeRoute
@@ -485,6 +568,7 @@ interface WwwRouteChildren {
 }
 
 const WwwRouteChildren: WwwRouteChildren = {
+  WwwAboutRoute: WwwAboutRoute,
   WwwCreateAccountRoute: WwwCreateAccountRoute,
   WwwErrorRoute: WwwErrorRoute,
   WwwWelcomeRoute: WwwWelcomeRoute,

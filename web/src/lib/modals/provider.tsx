@@ -7,7 +7,6 @@ import {
   DialogTitle
 } from "@web/components/ui/dialog";
 import React, { useCallback, useRef, useState } from "react";
-import ModalsContext from "./context";
 import type {
   ConfirmModalProps,
   ContextModalProps,

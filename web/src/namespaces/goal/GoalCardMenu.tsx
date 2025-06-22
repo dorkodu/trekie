@@ -7,7 +7,9 @@ import {
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
 import { modals } from "@web/lib/modals";
-import { goals } from ".";
+import { goals, IGoal, IGoalTemplate } from ".";
+import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
+import { trekie } from "@web/lib/trekie";
 
 interface Props {
   goal: IGoal;

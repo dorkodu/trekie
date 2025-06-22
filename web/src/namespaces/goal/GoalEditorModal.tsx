@@ -1,15 +1,8 @@
 import { IconTrash } from "@tabler/icons-react";
 import { FieldApi, useForm } from "@tanstack/react-form";
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Flex, Input,
-  NumberInput,
-  Stack,
-  Text,
-  Textarea
-} from "@web/components/ui/shadcn-clones";
+
+import { Input } from "@web/components/ui/input";
+import { Stack } from "@web/components/ui/layout";
 import { trekie } from "@web/lib/trekie";
 import {
   goals,
@@ -19,7 +12,7 @@ import {
 } from "@web/namespaces/goal";
 import { tryCatch } from "@web/utils/tryCatch";
 import { useEffect, useState } from "react";
-import { ChoiceCombobox, ChoiceOption } from "./ChoiceCombobox";
+import { ChoiceCombobox, type ChoiceOption } from "./ChoiceCombobox";
 
 // Zod schema for validation
 const GoalTemplateSchema = GoalSchema.GoalTemplate;
@@ -58,7 +51,7 @@ const GoalEditorModal = ({
         await onUpdate(value);
       }
     },
-    validatorAdapter: async (values) => {
+    validate: async (values) => {
       try {
         GoalTemplateSchema.parse(values);
         return {};

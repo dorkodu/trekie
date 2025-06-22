@@ -1,6 +1,12 @@
+
+import { createFileRoute } from '@tanstack/react-router';
 import Emoji from "@web/components/misc/Emoji";
 import { Container, Flex, Group, Stack } from "@web/components/ui/layout";
 import { Text, Title } from "@web/components/ui/typography";
+
+export const Route = createFileRoute('/_www/about')({
+  component: About,
+})
 
 function About() {
   return (

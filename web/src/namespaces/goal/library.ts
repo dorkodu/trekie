@@ -4,7 +4,7 @@ import { trekie } from "@web/lib/trekie"
 import { trpc } from "@web/lib/trpc"
 import { arrayRemoveItem } from "@web/utils"
 import { ulid } from "ulidx"
-import { IGoal, Interface } from "."
+import { IGoal, type Interface } from "."
 
 export const Component: Interface = {
   get: (id) => db.goals.get(id),

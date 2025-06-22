@@ -1,24 +1,26 @@
 import { IconCopyCheck, IconTargetArrow } from "@tabler/icons-react";
-
-import NoGoalsCard from "@web/namespaces/goal/NoGoalsCard";
-import HabitCounter from "@web/namespaces/habit/HabitCounter";
-import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard";
-import { DailyStats } from "@web/namespaces/life/DailyStats";
-
-import { db } from "@web/lib/db";
-import { errors } from "@web/lib/errors";
-import { trekie } from "@web/lib/trekie";
-import GoalCard from "@web/namespaces/goal/GoalCard";
+import { createFileRoute } from '@tanstack/react-router';
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 
-// shadcn/ui imports
+export const Route = createFileRoute('/_app/home')({
+  component: Home,
+})
+
 import { Alert, AlertDescription } from "@web/components/ui/alert";
 import { Badge } from "@web/components/ui/badge";
 import { Box, Flex, Stack } from "@web/components/ui/layout";
 import { Skeleton } from "@web/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@web/components/ui/tabs";
+import { db } from "@web/lib/db";
+import { errors } from "@web/lib/errors";
+import { trekie } from "@web/lib/trekie";
 import { cn } from "@web/lib/utils";
+import GoalCard from "@web/namespaces/goal/GoalCard";
+import { default as NoGoalsCard } from "@web/namespaces/goal/NoGoalsCard";
+import HabitCounter from "@web/namespaces/habit/HabitCounter";
+import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard";
+import { DailyStats } from "@web/namespaces/life/DailyStats";
 
 function Home() {
   const user = trekie.use($ => $.user);
@@ -36,7 +38,6 @@ function Home() {
           <DailyStats />
         </Box>
 
-        {/* Replace SegmentedControl with Tabs */}
         <Tabs value={tab} onValueChange={setTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="habits" className="flex items-center gap-2">

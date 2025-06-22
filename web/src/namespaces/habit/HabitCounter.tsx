@@ -35,7 +35,6 @@ function HabitCounter({ habitId, onClick }: Props) {
       <div className="flex flex-row items-stretch min-h-20">
         {/* Increment Button */}
         <Button
-          variant="gradient"
           className="rounded-none rounded-l-lg flex items-center justify-center px-2 min-w-0"
           style={{
             background: "linear-gradient(45deg, hsl(135, 95%, 30%), hsl(170, 95%, 35%))",
@@ -72,11 +71,7 @@ function HabitCounter({ habitId, onClick }: Props) {
 
           <div className="flex flex-row gap-2 mt-1.5 justify-between pt-1">
             <div className="flex flex-row gap-3 items-start">
-              <Badge
-                variant="light"
-                size="xl"
-                className="block text-lg font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-800"
-              >
+              <Badge className="block text-lg font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-800">
                 <span>{habit.count}</span>
               </Badge>
 
@@ -102,7 +97,6 @@ function HabitCounter({ habitId, onClick }: Props) {
 
         {/* Decrement Button */}
         <Button
-          variant="gradient"
           className="rounded-none rounded-r-lg flex items-center justify-center px-2 min-w-0"
           style={{
             background: "linear-gradient(135deg, hsl(15, 90%, 60%), hsl(0, 96%, 45%))",

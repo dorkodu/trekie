@@ -1,5 +1,7 @@
 import { IconCoin } from "@tabler/icons-react";
-import { Badge, Button, Card, Center, Group, Image, Text } from "../../components/ui/shadcn-clones";
+import { Badge } from "@web/components/ui/badge";
+import { Button } from "@web/components/ui/button";
+import { Card, CardContent } from "@web/components/ui/card";
 import type { Item } from "./types";
 
 interface ItemCardProps {
@@ -12,53 +14,48 @@ export function ItemCard({ item, onBuy, userCoins }: ItemCardProps) {
   const canBuy = userCoins >= item.price;
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Card.Section>
-        <Center p="md" h={140} bg="gray.1">
-          <Image
-            src={item.image}
-            height={80}
-            width={80}
-            alt={item.name}
-            fallbackSrc="https://placehold.co/80x80?text=Item"
-          />
-        </Center>
-      </Card.Section>
+    <Card className="shadow-sm border rounded-md overflow-hidden">
+      <div className="p-4 h-[140px] bg-gray-100 flex items-center justify-center">
+        <img
+          src={item.image || "https://placehold.co/80x80?text=Item"}
+          className="h-20 w-20 object-cover"
+          alt={item.name}
+          onError={(e) => {
+            e.currentTarget.src = "https://placehold.co/80x80?text=Item";
+          }}
+        />
+      </div>
 
-      <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500} size="lg">
-          {item.name}
-        </Text>
-        <Badge color="yellow" variant="filled">
-          <Group gap="xs">
-            <IconCoin size={14} />
-            <Text>{item.price}</Text>
-          </Group>
-        </Badge>
-      </Group>
+      <CardContent className="p-4">
+        <div className="flex justify-between items-start mt-0 mb-2">
+          <h3 className="font-medium text-lg leading-tight">{item.name}</h3>
+          <Badge className="bg-yellow-500 text-white">
+            <div className="flex items-center gap-1">
+              <IconCoin size={14} />
+              <span>{item.price}</span>
+            </div>
+          </Badge>
+        </div>
 
-      <Text size="sm" color="dimmed" mb="md">
-        {item.description}
-      </Text>
+        <p className="text-sm text-gray-500 mb-3">{item.description}</p>
 
-      {item.duration && (
-        <Text size="xs" mb="xs">
-          Duration: {item.duration}
-        </Text>
-      )}
+        {item.duration && (
+          <p className="text-xs mb-1">Duration: {item.duration}</p>
+        )}
 
-      <Text size="xs" mb="md">
-        Effect: {item.effect}
-      </Text>
+        <p className="text-xs mb-3">Effect: {item.effect}</p>
 
-      <Button
-        fullWidth
-        color={canBuy ? "blue" : "gray"}
-        onClick={() => canBuy && onBuy(item)}
-        disabled={!canBuy}
-      >
-        {canBuy ? "Buy" : "Not enough coins"}
-      </Button>
+        <Button
+          className={`w-full ${canBuy
+            ? "bg-blue-600 hover:bg-blue-700"
+            : "bg-gray-400 cursor-not-allowed"
+            }`}
+          onClick={() => canBuy && onBuy(item)}
+          disabled={!canBuy}
+        >
+          {canBuy ? "Buy" : "Not enough coins"}
+        </Button>
+      </CardContent>
     </Card>
   );
 }

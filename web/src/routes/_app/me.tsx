@@ -1,8 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { Flex } from "@web/components/ui/layout";
 import { Text, Title } from "@web/components/ui/typography";
-import { trekie } from "new/src/lib/trekie";
-import { useEffect, useState } from "react";
+import { trekie } from "@web/lib/trekie";
 
 export default function Me() {
   const user = trekie.use($ => $.user);

@@ -3,11 +3,11 @@ import { ulid } from "ulidx"
 import { db } from "@web/lib/db"
 import { errors } from "@web/lib/errors"
 import { trekie } from "@web/lib/trekie"
-import { Daystamp, daystamp } from "@web/utils"
+import { type Daystamp, daystamp } from "@web/utils"
 import { IHabit } from "../social/schema"
 
 import { tryCatch } from "@web/utils/tryCatch"
-import { Interface } from "."
+import type { Interface } from "."
 
 // Helper function to check if a DAILYCHECK event already exists for today
 async function getDailyChecksToday(commitmentId: string) {

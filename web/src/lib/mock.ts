@@ -1,8 +1,5 @@
 import { } from '@sdk/app'
-import { AccountTier, GameState, IUser } from '@sdk/core'
-
-import { goals, IGoal } from "@web/namespaces/goal"
-import { habits, IHabit } from "@web/namespaces/habit"
+import { AccountTier, type GameState, IUser } from '@sdk/core'
 
 import { ulid } from 'ulidx'
 

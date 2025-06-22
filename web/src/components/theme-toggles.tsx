@@ -37,7 +37,7 @@ export default function ThemeToggle() {
         className="group data-[state=on]:hover:bg-muted size-9 data-[state=on]:bg-transparent"
         pressed={theme === "dark"}
         onPressedChange={() =>
-          setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+          setTheme(theme === "dark" ? "light" : "dark")
         }
         aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >

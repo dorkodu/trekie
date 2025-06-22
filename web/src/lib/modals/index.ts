@@ -1,17 +1,13 @@
-import type { ModalsContextValue } from "./types";
-
 import { createContext, useContext } from "react";
 import type { ModalsContextValue } from "./types";
 
-const ModalsContext = createContext(defaultValue)<ModalsContextValue | null>(null);
+export const ModalsContext = createContext<ModalsContextValue | null>(null);
 
 export function useModals() {
   const ctx = useContext(ModalsContext);
   if (!ctx) throw new Error("useModals must be used within ModalsProvider");
   return ctx;
 }
-
-
 
 export const modals = {
   openModal: (...args: Parameters<ModalsContextValue["openModal"]>) => {

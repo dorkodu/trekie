@@ -1,5 +1,5 @@
 import { createMiniApp } from '@sdk/app'
-import { GameState } from '@sdk/core'
+import { type GameState } from '@sdk/core'
 
 import { goalCommitment } from '@web/namespaces/goal/commitment'
 import { habitCommitment } from '@web/namespaces/habit/commitment'
