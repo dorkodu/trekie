@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 
 import type { GameInterface, GameState } from "."
-import { utils } from "../../utils"
+import { daystamp, isSameDay, utils } from "../../utils"
 import { calculateStreak } from "./lib"
 
 export function createGameStore(state: GameState) {
@@ -120,6 +120,6 @@ export function createGameStore(state: GameState) {
     return Object.freeze(state) satisfies GameInterface
   })
 
-
+  return { game, readOnlyGame, useReadonlyGame, useGame }
 }
 

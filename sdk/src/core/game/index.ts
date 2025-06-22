@@ -1,6 +1,8 @@
 // misc
+import type { Daystamp, Maybe, Timestamp } from '../../utils'
 import type { IUser } from '../account'
-import type { Daystamp, Maybe, Timestamp } from '@sdk/utils'
+import { changeCoinsBalance, changeDailyTarget, changeXp } from './mutators'
+import { createGameStore } from './store'
 
 export interface GameState {
   user: IUser
@@ -47,7 +49,13 @@ export type ReadOnlyGame = ReturnType<typeof Game>['readOnlyGame']
 
 export function Game(state: GameState) {
 
-  const mutations: GameMutations = { changeXp, changeCoinsBalance, changeDailyTarget }
+  const { game, readOnlyGame, useReadonlyGame, useGame } = createGameStore(state)
+
+  const mutations: GameMutations = {
+    changeXp: (change: number) => changeXp(game, change),
+    changeCoinsBalance: (change: number) => changeCoinsBalance(game, change),
+    changeDailyTarget: (target: number) => changeDailyTarget(game, target)
+  }
 
   return { game, readOnlyGame, useReadonlyGame, useGame, mutations }
 }
