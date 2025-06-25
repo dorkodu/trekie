@@ -12,11 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WwwRouteImport } from './routes/_www'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as WwwIndexRouteImport } from './routes/_www/index'
-import { Route as WwwWelcomeRouteImport } from './routes/_www/welcome'
 import { Route as WwwErrorRouteImport } from './routes/_www/error'
 import { Route as WwwCreateAccountRouteImport } from './routes/_www/create-account'
 import { Route as WwwAboutRouteImport } from './routes/_www/about'
+import { Route as Www404RouteImport } from './routes/_www/404'
+import { Route as AppSocialRouteImport } from './routes/_app/social'
+import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPremiumRouteImport } from './routes/_app/premium'
+import { Route as AppMeRouteImport } from './routes/_app/me'
 import { Route as AppHomeRouteImport } from './routes/_app/home'
 import { Route as AppExploreRouteImport } from './routes/_app/explore'
 import { Route as AppArchiveRouteImport } from './routes/_app/archive'
@@ -49,11 +52,6 @@ const WwwIndexRoute = WwwIndexRouteImport.update({
   path: '/',
   getParentRoute: () => WwwRoute,
 } as any)
-const WwwWelcomeRoute = WwwWelcomeRouteImport.update({
-  id: '/welcome',
-  path: '/welcome',
-  getParentRoute: () => WwwRoute,
-} as any)
 const WwwErrorRoute = WwwErrorRouteImport.update({
   id: '/error',
   path: '/error',
@@ -69,9 +67,29 @@ const WwwAboutRoute = WwwAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => WwwRoute,
 } as any)
+const Www404Route = Www404RouteImport.update({
+  id: '/404',
+  path: '/404',
+  getParentRoute: () => WwwRoute,
+} as any)
+const AppSocialRoute = AppSocialRouteImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPremiumRoute = AppPremiumRouteImport.update({
   id: '/premium',
   path: '/premium',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMeRoute = AppMeRouteImport.update({
+  id: '/me',
+  path: '/me',
   getParentRoute: () => AppRoute,
 } as any)
 const AppHomeRoute = AppHomeRouteImport.update({
@@ -150,14 +168,14 @@ const WwwLegalCommunityRulesRoute = WwwLegalCommunityRulesRouteImport.update({
   getParentRoute: () => WwwRoute,
 } as any)
 const AppProfileEditRoute = AppProfileEditRouteImport.update({
-  id: '/profile/edit',
-  path: '/profile/edit',
-  getParentRoute: () => AppRoute,
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => AppProfileRoute,
 } as any)
 const AppProfileUsernameRoute = AppProfileUsernameRouteImport.update({
-  id: '/profile/$username',
-  path: '/profile/$username',
-  getParentRoute: () => AppRoute,
+  id: '/$username',
+  path: '/$username',
+  getParentRoute: () => AppProfileRoute,
 } as any)
 const AppCommunityIdRoute = AppCommunityIdRouteImport.update({
   id: '/community/$id',
@@ -170,11 +188,14 @@ export interface FileRoutesByFullPath {
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
   '/home': typeof AppHomeRoute
+  '/me': typeof AppMeRoute
   '/premium': typeof AppPremiumRoute
+  '/profile': typeof AppProfileRouteWithChildren
+  '/social': typeof AppSocialRoute
+  '/404': typeof Www404Route
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
-  '/welcome': typeof WwwWelcomeRoute
   '/': typeof WwwIndexRoute
   '/community/$id': typeof AppCommunityIdRoute
   '/profile/$username': typeof AppProfileUsernameRoute
@@ -196,11 +217,14 @@ export interface FileRoutesByTo {
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
   '/home': typeof AppHomeRoute
+  '/me': typeof AppMeRoute
   '/premium': typeof AppPremiumRoute
+  '/profile': typeof AppProfileRouteWithChildren
+  '/social': typeof AppSocialRoute
+  '/404': typeof Www404Route
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
-  '/welcome': typeof WwwWelcomeRoute
   '/': typeof WwwIndexRoute
   '/community/$id': typeof AppCommunityIdRoute
   '/profile/$username': typeof AppProfileUsernameRoute
@@ -225,11 +249,14 @@ export interface FileRoutesById {
   '/_app/archive': typeof AppArchiveRoute
   '/_app/explore': typeof AppExploreRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/me': typeof AppMeRoute
   '/_app/premium': typeof AppPremiumRoute
+  '/_app/profile': typeof AppProfileRouteWithChildren
+  '/_app/social': typeof AppSocialRoute
+  '/_www/404': typeof Www404Route
   '/_www/about': typeof WwwAboutRoute
   '/_www/create-account': typeof WwwCreateAccountRoute
   '/_www/error': typeof WwwErrorRoute
-  '/_www/welcome': typeof WwwWelcomeRoute
   '/_www/': typeof WwwIndexRoute
   '/_app/community/$id': typeof AppCommunityIdRoute
   '/_app/profile/$username': typeof AppProfileUsernameRoute
@@ -253,11 +280,14 @@ export interface FileRouteTypes {
     | '/archive'
     | '/explore'
     | '/home'
+    | '/me'
     | '/premium'
+    | '/profile'
+    | '/social'
+    | '/404'
     | '/about'
     | '/create-account'
     | '/error'
-    | '/welcome'
     | '/'
     | '/community/$id'
     | '/profile/$username'
@@ -279,11 +309,14 @@ export interface FileRouteTypes {
     | '/archive'
     | '/explore'
     | '/home'
+    | '/me'
     | '/premium'
+    | '/profile'
+    | '/social'
+    | '/404'
     | '/about'
     | '/create-account'
     | '/error'
-    | '/welcome'
     | '/'
     | '/community/$id'
     | '/profile/$username'
@@ -307,11 +340,14 @@ export interface FileRouteTypes {
     | '/_app/archive'
     | '/_app/explore'
     | '/_app/home'
+    | '/_app/me'
     | '/_app/premium'
+    | '/_app/profile'
+    | '/_app/social'
+    | '/_www/404'
     | '/_www/about'
     | '/_www/create-account'
     | '/_www/error'
-    | '/_www/welcome'
     | '/_www/'
     | '/_app/community/$id'
     | '/_app/profile/$username'
@@ -357,13 +393,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WwwIndexRouteImport
       parentRoute: typeof WwwRoute
     }
-    '/_www/welcome': {
-      id: '/_www/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof WwwWelcomeRouteImport
-      parentRoute: typeof WwwRoute
-    }
     '/_www/error': {
       id: '/_www/error'
       path: '/error'
@@ -385,11 +414,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WwwAboutRouteImport
       parentRoute: typeof WwwRoute
     }
+    '/_www/404': {
+      id: '/_www/404'
+      path: '/404'
+      fullPath: '/404'
+      preLoaderRoute: typeof Www404RouteImport
+      parentRoute: typeof WwwRoute
+    }
+    '/_app/social': {
+      id: '/_app/social'
+      path: '/social'
+      fullPath: '/social'
+      preLoaderRoute: typeof AppSocialRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/premium': {
       id: '/_app/premium'
       path: '/premium'
       fullPath: '/premium'
       preLoaderRoute: typeof AppPremiumRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/me': {
+      id: '/_app/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof AppMeRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/home': {
@@ -499,17 +556,17 @@ declare module '@tanstack/react-router' {
     }
     '/_app/profile/edit': {
       id: '/_app/profile/edit'
-      path: '/profile/edit'
+      path: '/edit'
       fullPath: '/profile/edit'
       preLoaderRoute: typeof AppProfileEditRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof AppProfileRoute
     }
     '/_app/profile/$username': {
       id: '/_app/profile/$username'
-      path: '/profile/$username'
+      path: '/$username'
       fullPath: '/profile/$username'
       preLoaderRoute: typeof AppProfileUsernameRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof AppProfileRoute
     }
     '/_app/community/$id': {
       id: '/_app/community/$id'
@@ -521,15 +578,30 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppProfileRouteChildren {
+  AppProfileUsernameRoute: typeof AppProfileUsernameRoute
+  AppProfileEditRoute: typeof AppProfileEditRoute
+}
+
+const AppProfileRouteChildren: AppProfileRouteChildren = {
+  AppProfileUsernameRoute: AppProfileUsernameRoute,
+  AppProfileEditRoute: AppProfileEditRoute,
+}
+
+const AppProfileRouteWithChildren = AppProfileRoute._addFileChildren(
+  AppProfileRouteChildren,
+)
+
 interface AppRouteChildren {
   AppChar58usernameRoute: typeof AppChar58usernameRoute
   AppArchiveRoute: typeof AppArchiveRoute
   AppExploreRoute: typeof AppExploreRoute
   AppHomeRoute: typeof AppHomeRoute
+  AppMeRoute: typeof AppMeRoute
   AppPremiumRoute: typeof AppPremiumRoute
+  AppProfileRoute: typeof AppProfileRouteWithChildren
+  AppSocialRoute: typeof AppSocialRoute
   AppCommunityIdRoute: typeof AppCommunityIdRoute
-  AppProfileUsernameRoute: typeof AppProfileUsernameRoute
-  AppProfileEditRoute: typeof AppProfileEditRoute
   AppCommunityIndexRoute: typeof AppCommunityIndexRoute
   AppMarketIndexRoute: typeof AppMarketIndexRoute
   AppSettingsIndexRoute: typeof AppSettingsIndexRoute
@@ -540,10 +612,11 @@ const AppRouteChildren: AppRouteChildren = {
   AppArchiveRoute: AppArchiveRoute,
   AppExploreRoute: AppExploreRoute,
   AppHomeRoute: AppHomeRoute,
+  AppMeRoute: AppMeRoute,
   AppPremiumRoute: AppPremiumRoute,
+  AppProfileRoute: AppProfileRouteWithChildren,
+  AppSocialRoute: AppSocialRoute,
   AppCommunityIdRoute: AppCommunityIdRoute,
-  AppProfileUsernameRoute: AppProfileUsernameRoute,
-  AppProfileEditRoute: AppProfileEditRoute,
   AppCommunityIndexRoute: AppCommunityIndexRoute,
   AppMarketIndexRoute: AppMarketIndexRoute,
   AppSettingsIndexRoute: AppSettingsIndexRoute,
@@ -552,10 +625,10 @@ const AppRouteChildren: AppRouteChildren = {
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface WwwRouteChildren {
+  Www404Route: typeof Www404Route
   WwwAboutRoute: typeof WwwAboutRoute
   WwwCreateAccountRoute: typeof WwwCreateAccountRoute
   WwwErrorRoute: typeof WwwErrorRoute
-  WwwWelcomeRoute: typeof WwwWelcomeRoute
   WwwIndexRoute: typeof WwwIndexRoute
   WwwLegalCommunityRulesRoute: typeof WwwLegalCommunityRulesRoute
   WwwLegalCompanyRoute: typeof WwwLegalCompanyRoute
@@ -568,10 +641,10 @@ interface WwwRouteChildren {
 }
 
 const WwwRouteChildren: WwwRouteChildren = {
+  Www404Route: Www404Route,
   WwwAboutRoute: WwwAboutRoute,
   WwwCreateAccountRoute: WwwCreateAccountRoute,
   WwwErrorRoute: WwwErrorRoute,
-  WwwWelcomeRoute: WwwWelcomeRoute,
   WwwIndexRoute: WwwIndexRoute,
   WwwLegalCommunityRulesRoute: WwwLegalCommunityRulesRoute,
   WwwLegalCompanyRoute: WwwLegalCompanyRoute,

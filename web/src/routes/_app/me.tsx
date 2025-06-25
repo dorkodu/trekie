@@ -1,3 +1,9 @@
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/_app/me')({
+  component: Me,
+})
+
 import { Flex } from "@web/components/ui/layout";
 import { Text, Title } from "@web/components/ui/typography";
 import { trekie } from "@web/lib/trekie";

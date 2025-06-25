@@ -1,9 +1,14 @@
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/_app/social')({
+  component: Social,
+})
+
 import { Badge } from "@web/components/ui/badge";
 import { Card } from "@web/components/ui/card";
 import { Flex, Group, Stack } from "@web/components/ui/layout";
 import { Text } from "@web/components/ui/text";
 import { trekie } from "@web/lib/trekie";
-import { cn } from "@web/lib/utils";
 import { habits } from "@web/namespaces/habit";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useFeature } from "flagged";

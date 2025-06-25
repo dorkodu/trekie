@@ -31,35 +31,34 @@ const defaultSections = [
   {
     title: "Product",
     links: [
-      { name: "Overview", href: "#" },
-      { name: "Pricing", href: "#" },
-      { name: "Marketplace", href: "#" },
-      { name: "Features", href: "#" },
+      { name: "Overview", href: "/#overview" },
+      { name: "Features", href: "/#features" },
+      { name: "SDK", href: "/developers#sdk" },
+      { name: "Pricing", href: "/#pricing" },
     ],
   },
   {
     title: "Company",
     links: [
-      { name: "About", href: "#" },
-      { name: "Team", href: "#" },
-      { name: "Blog", href: "#" },
-      { name: "Careers", href: "#" },
+      { name: "About", href: "https://dorkodu.com/#about" },
+      { name: "Team", href: "https://dorkodu.com/#team" },
+      { name: "Blog", href: "https://dorkodu.substack.com" },
+      { name: "Careers", href: "https://dorkodu.com/jobs" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { name: "Help", href: "#" },
-      { name: "Sales", href: "#" },
-      { name: "Advertise", href: "#" },
-      { name: "Privacy", href: "#" },
+      { name: "Help", href: "/help" },
+      { name: "Help", href: "/help" },
+      { name: "Privacy", href: "/legal/privacy-policy" },
     ],
   },
 ];
 
 const defaultSocialLinks = [
-  { icon: <IconBrandInstagram className="size-5" />, href: "https://instagram.com/wanderia.xyz", label: "Instagram" },
-  { icon: <IconBrandTwitter className="size-5" />, href: "https://twitter.com/wanderia_xyz", label: "Twitter" },
+  { icon: <IconBrandInstagram className="size-5" />, href: "https://instagram.com/trekieapp", label: "Instagram" },
+  { icon: <IconBrandTwitter className="size-5" />, href: "https://twitter.com/trekieapp", label: "Twitter" },
   { icon: <IconBrandLinkedin className="size-5" />, href: "https://linkedin.com/company/dorkodu", label: "The Company" },
 ];
 
@@ -129,7 +128,7 @@ export const Footer = ({
               ))}
             </div>
           </div>
-          <div className="mt-8 flex flex-col justify-between gap-4 border-t py-8 text-xs font-medium text-muted-foreground md:flex-row md:items-center md:text-left">
+          <div className="mt-8 flex flex-col justify-between gap-4 border-t py-8 text-xs font-normal text-muted-foreground md:flex-row md:items-center md:text-left">
             <p className="order-2 lg:order-1">{copyright}</p>
             <ul className="order-1 flex flex-col gap-2 md:order-2 md:flex-row">
               {legalLinks.map((link, idx) => (

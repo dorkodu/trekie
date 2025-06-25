@@ -1,6 +1,11 @@
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/_app/profile')({
+  component: Page,
+})
+
 import { USERHANDLE_REGEX } from "@sdk/core";
 import { useLocation } from "@tanstack/react-router";
-import { Stack } from "@web/components/ui/layout";
 import { Text } from "@web/components/ui/typography";
 import { Profile } from "@web/namespaces/social/profile/Profile";
 

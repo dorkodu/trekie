@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Hero } from '@web/components/www/hero'
 import { Features } from '@web/components/www/features'
+import { Hero } from '@web/components/www/hero'
+import { PremiumHero } from '@web/components/www/premium-hero'
 
 export const Route = createFileRoute('/_www/')({
   component: Page,
@@ -11,6 +12,7 @@ function Page() {
     <main>
       <Hero />
       <Features />
+      <PremiumHero />
     </main>
   )
 }
