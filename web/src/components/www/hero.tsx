@@ -27,13 +27,13 @@ export function Hero() {
             <div aria-hidden className="absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--background)_75%)]" />
             <div className="mx-auto max-w-7xl px-6">
               <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
+                <img src="/web/public/" />
                 <div>
-                  <h1
-                    className="mt-8 max-w-5xl mx-auto text-balance font-black font-stretch-75% text-2xl md:text-4xl lg:text-5xl lg:mt-16 xl:text-[4rem]">
+                  <h1 className="mt-8 max-w-5xl mx-auto text-balance font-black font-stretch-75% text-3xl/9 md:text-4xl lg:text-5xl lg:mt-16 xl:text-[4rem]">
                     <span>
                       Your Gamified Life Dashboard
                     </span><br />
-                    <span className='text-3xl md:text-5xl xl:text-[3.5rem]' style={{ opacity: 0.5 }}>
+                    <span className='text-2xl leading-0 md:text-5xl xl:text-[3.5rem] text-gray-400'>
                       With AI Productivity Companion
                     </span>
                   </h1>

@@ -1,7 +1,6 @@
 import { IconBook, IconInfoCircle, IconLifebuoy, IconMenu4 } from "@tabler/icons-react"
 import { Link } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
-import { Image } from "@web/components/ui/image"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@web/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@web/components/ui/popover"
 import { cn } from "@web/lib/utils"
@@ -58,8 +57,7 @@ export function Header() {
                   <Button
                     className="md:hidden"
                     variant="ghost"
-                    size="icon"
-                  >
+                    size="icon">
                     <IconMenu4 className="size-6" />
                   </Button>
                 </PopoverTrigger>
@@ -116,7 +114,8 @@ export function Header() {
                 </PopoverContent>
               </Popover>
               <Link to="/" className="text-primary hover:text-primary/90">
-                <Image src="/images/trekie_Brand_White.svg" alt="Trekie Logo" className="h-11" />
+                <img src="/images/trekie_Brand_White.svg" alt="Trekie Logo" className="h-12 hidden dark:block" />
+                <img src="/images/trekie_Brand.svg" alt="Trekie Logo" className="h-12 dark:hidden" />
               </Link>
             </div>
             <div className="flex items-center gap-2">
