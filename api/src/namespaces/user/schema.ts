@@ -1,5 +1,5 @@
 import { commonSchemas } from "@api/commons/schemas"
-import { z } from "zod"
+import * as z from "zod"
 
 export const getUser = z.strictObject({
   username: commonSchemas.username.optional(),

@@ -69,15 +69,15 @@ const defaultLegalLinks = [
 
 export const Footer = ({
   logo = {
-    url: "https://wanderia.xyz",
-    src: "https://wanderia.xyz/images/wanderia_Brand.svg",
+    url: "https://trekie.io",
+    src: "https://trekie.io/images/trekie_Brand.svg",
     alt: "logo",
-    title: "Wanderia",
+    title: "Trekie",
   },
   sections = defaultSections,
   description = "The Decentralized Superapp for Regenerative Communities",
   socialLinks = defaultSocialLinks,
-  copyright = "© 2024 Wanderia. All rights reserved.",
+  copyright = "© 2024 Trekie. All rights reserved.",
   legalLinks = defaultLegalLinks,
 }: FooterProps) => {
   return (

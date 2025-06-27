@@ -1,20 +1,18 @@
-import { commonSchemas } from "@api/commons/schemas"
-import { IGoal, IGoalTemplate } from "@web/namespaces/goal"
-import { z } from "zod"
+import { IGoal } from "@web/namespaces/goal"
+import * as z from "zod/v4"
 
 export const getGoal = z.strictObject({
-  id: commonSchemas.id,
+  id: z.ulid(),
 })
 
 export const getGoalsByUser = z.strictObject({
-  userId: commonSchemas.id.optional(),
-  cursor: commonSchemas.id.optional(),
-  direction: commonSchemas.direction,
+  userId: z.ulid().optional(),
+  cursor: z.ulid().optional(),
+  direction: z.enum(["asc", "desc"]),
 })
 
 export const updateGoal = z.strictObject({
-  id: commonSchemas.id,
-  fields: IGoalTemplate.partial(),
+  id: z.ulid(),
 })
 
 export const createGoal = z.strictObject({

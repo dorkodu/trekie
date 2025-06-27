@@ -231,9 +231,9 @@ const MultipleSelector = ({
         if (e.key === "Delete" || e.key === "Backspace") {
           if (input.value === "" && selected.length > 0) {
             const lastSelectOption = selected[selected.length - 1]
-            // If last item is fixed, we should not remove it.
-            if (!lastSelectOption.fixed) {
-              handleUnselect(selected[selected.length - 1])
+            // If last item exists and is not fixed, remove it.
+            if (lastSelectOption && !lastSelectOption.fixed) {
+              handleUnselect(lastSelectOption)
             }
           }
         }

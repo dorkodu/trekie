@@ -1,4 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { IconArrowRight } from '@tabler/icons-react'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_www/404')({
   component: NotFound,

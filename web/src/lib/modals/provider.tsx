@@ -1,19 +1,7 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from "@web/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@web/components/ui/dialog";
 import React, { useCallback, useRef, useState } from "react";
-import type {
-  ConfirmModalProps,
-  ContextModalProps,
-  ModalBase,
-  ModalId,
-  ModalsContextValue
-} from "./types";
+import { ModalsContext } from ".";
+import type { ConfirmModalProps, ContextModalProps, ModalBase, ModalId, ModalsContextValue } from "./types";
 
 let globalModalId = 0;
 function getId() {

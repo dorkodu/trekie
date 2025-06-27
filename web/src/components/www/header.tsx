@@ -1,5 +1,5 @@
 import { IconBook, IconInfoCircle, IconLifebuoy, IconMenu4 } from "@tabler/icons-react"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@web/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@web/components/ui/popover"
@@ -8,7 +8,7 @@ import ThemeToggle from "../theme-toggles"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Home" },
+  { href: "/about", label: "Home" },
   {
     label: "Features",
     submenu: true,
@@ -44,6 +44,8 @@ const navigationLinks = [
 ]
 
 export function Header() {
+  const navigate = useNavigate()
+
   return (
     <header>
       <nav data-state={'active'} className="w-full px-2 group">
@@ -76,7 +78,7 @@ export function Header() {
                                   <li key={itemIndex}>
                                     <NavigationMenuLink
                                       href={item.href}
-                                      className="py-1.5"
+                                      className="py-2"
                                     >
                                       {item.label}
                                     </NavigationMenuLink>
@@ -114,8 +116,8 @@ export function Header() {
                 </PopoverContent>
               </Popover>
               <Link to="/" className="text-primary hover:text-primary/90">
-                <img src="/images/trekie_Brand_White.svg" alt="Trekie Logo" className="h-13 hidden dark:block" />
-                <img src="/images/trekie_Brand.svg" alt="Trekie Logo" className="h-13 dark:hidden" />
+                <img src="/images/trekie_Brand_White.svg" alt="Trekie Logo" className="h-11 md:h-13 hidden dark:block" />
+                <img src="/images/trekie_Brand.svg" alt="Trekie Logo" className="h-11 md:h-13 dark:hidden" />
               </Link>
             </div>
             <div className="flex items-center gap-2">
@@ -128,7 +130,7 @@ export function Header() {
                       <NavigationMenuItem key={index}>
                         {link.submenu ? (
                           <>
-                            <NavigationMenuTrigger className="text-muted-foreground hover:text-primary bg-transparent px-2 py-1.5 font-medium *:[svg]:-me-0.5 *:[svg]:size-3.5">
+                            <NavigationMenuTrigger className="text-muted-foreground hover:text-primary bg-transparent cursor-pointer px-2 py-1 font-medium *:[svg]:-me-0.5 *:[svg]:size-3.5">
                               {link.label}
                             </NavigationMenuTrigger>
                             <NavigationMenuContent className="data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! z-50 p-1">
@@ -199,10 +201,13 @@ export function Header() {
                             </NavigationMenuContent>
                           </>
                         ) : (
-                          <NavigationMenuLink
+                          <NavigationMenuLink onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigate({ to: link.href! });
+                          }}
                             href={link.href}
-                            className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                          >
+                            className="text-muted-foreground hover:text-primary py-1 font-medium">
                             {link.label}
                           </NavigationMenuLink>
                         )}
@@ -214,7 +219,7 @@ export function Header() {
             </div>
             {/* Right side */}
             <div className="hidden md:flex items-center gap-2">
-              <Button asChild className="text-sm rounded-xl font-extrabold uppercase">
+              <Button variant="default" asChild className="text-sm rounded-xl font-extrabold uppercase">
                 <a href="#">Get Started</a>
               </Button>
               <ThemeToggle />
