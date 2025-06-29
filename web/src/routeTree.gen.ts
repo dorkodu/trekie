@@ -20,12 +20,14 @@ import { Route as AppSocialRouteImport } from './routes/_app/social'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPremiumRouteImport } from './routes/_app/premium'
 import { Route as AppMeRouteImport } from './routes/_app/me'
+import { Route as AppLifeRouteImport } from './routes/_app/life'
 import { Route as AppHomeRouteImport } from './routes/_app/home'
 import { Route as AppExploreRouteImport } from './routes/_app/explore'
 import { Route as AppArchiveRouteImport } from './routes/_app/archive'
 import { Route as AppChar58usernameRouteImport } from './routes/_app/:username'
 import { Route as WwwLegalIndexRouteImport } from './routes/_www/legal/index'
 import { Route as WwwHelpIndexRouteImport } from './routes/_www/help/index'
+import { Route as WwwDocsIndexRouteImport } from './routes/_www/docs/index'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
 import { Route as AppMarketIndexRouteImport } from './routes/_app/market/index'
 import { Route as AppCommunityIndexRouteImport } from './routes/_app/community/index'
@@ -92,6 +94,11 @@ const AppMeRoute = AppMeRouteImport.update({
   path: '/me',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLifeRoute = AppLifeRouteImport.update({
+  id: '/life',
+  path: '/life',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHomeRoute = AppHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -120,6 +127,11 @@ const WwwLegalIndexRoute = WwwLegalIndexRouteImport.update({
 const WwwHelpIndexRoute = WwwHelpIndexRouteImport.update({
   id: '/help/',
   path: '/help/',
+  getParentRoute: () => WwwRoute,
+} as any)
+const WwwDocsIndexRoute = WwwDocsIndexRouteImport.update({
+  id: '/docs/',
+  path: '/docs/',
   getParentRoute: () => WwwRoute,
 } as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
@@ -188,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
   '/home': typeof AppHomeRoute
+  '/life': typeof AppLifeRoute
   '/me': typeof AppMeRoute
   '/premium': typeof AppPremiumRoute
   '/profile': typeof AppProfileRouteWithChildren
@@ -209,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
   '/settings': typeof AppSettingsIndexRoute
+  '/docs': typeof WwwDocsIndexRoute
   '/help': typeof WwwHelpIndexRoute
   '/legal': typeof WwwLegalIndexRoute
 }
@@ -217,6 +231,7 @@ export interface FileRoutesByTo {
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
   '/home': typeof AppHomeRoute
+  '/life': typeof AppLifeRoute
   '/me': typeof AppMeRoute
   '/premium': typeof AppPremiumRoute
   '/profile': typeof AppProfileRouteWithChildren
@@ -238,6 +253,7 @@ export interface FileRoutesByTo {
   '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
   '/settings': typeof AppSettingsIndexRoute
+  '/docs': typeof WwwDocsIndexRoute
   '/help': typeof WwwHelpIndexRoute
   '/legal': typeof WwwLegalIndexRoute
 }
@@ -249,6 +265,7 @@ export interface FileRoutesById {
   '/_app/archive': typeof AppArchiveRoute
   '/_app/explore': typeof AppExploreRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/life': typeof AppLifeRoute
   '/_app/me': typeof AppMeRoute
   '/_app/premium': typeof AppPremiumRoute
   '/_app/profile': typeof AppProfileRouteWithChildren
@@ -270,6 +287,7 @@ export interface FileRoutesById {
   '/_app/community/': typeof AppCommunityIndexRoute
   '/_app/market/': typeof AppMarketIndexRoute
   '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_www/docs/': typeof WwwDocsIndexRoute
   '/_www/help/': typeof WwwHelpIndexRoute
   '/_www/legal/': typeof WwwLegalIndexRoute
 }
@@ -280,6 +298,7 @@ export interface FileRouteTypes {
     | '/archive'
     | '/explore'
     | '/home'
+    | '/life'
     | '/me'
     | '/premium'
     | '/profile'
@@ -301,6 +320,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/market'
     | '/settings'
+    | '/docs'
     | '/help'
     | '/legal'
   fileRoutesByTo: FileRoutesByTo
@@ -309,6 +329,7 @@ export interface FileRouteTypes {
     | '/archive'
     | '/explore'
     | '/home'
+    | '/life'
     | '/me'
     | '/premium'
     | '/profile'
@@ -330,6 +351,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/market'
     | '/settings'
+    | '/docs'
     | '/help'
     | '/legal'
   id:
@@ -340,6 +362,7 @@ export interface FileRouteTypes {
     | '/_app/archive'
     | '/_app/explore'
     | '/_app/home'
+    | '/_app/life'
     | '/_app/me'
     | '/_app/premium'
     | '/_app/profile'
@@ -361,6 +384,7 @@ export interface FileRouteTypes {
     | '/_app/community/'
     | '/_app/market/'
     | '/_app/settings/'
+    | '/_www/docs/'
     | '/_www/help/'
     | '/_www/legal/'
   fileRoutesById: FileRoutesById
@@ -449,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/life': {
+      id: '/_app/life'
+      path: '/life'
+      fullPath: '/life'
+      preLoaderRoute: typeof AppLifeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/home': {
       id: '/_app/home'
       path: '/home'
@@ -489,6 +520,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof WwwHelpIndexRouteImport
+      parentRoute: typeof WwwRoute
+    }
+    '/_www/docs/': {
+      id: '/_www/docs/'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof WwwDocsIndexRouteImport
       parentRoute: typeof WwwRoute
     }
     '/_app/settings/': {
@@ -597,6 +635,7 @@ interface AppRouteChildren {
   AppArchiveRoute: typeof AppArchiveRoute
   AppExploreRoute: typeof AppExploreRoute
   AppHomeRoute: typeof AppHomeRoute
+  AppLifeRoute: typeof AppLifeRoute
   AppMeRoute: typeof AppMeRoute
   AppPremiumRoute: typeof AppPremiumRoute
   AppProfileRoute: typeof AppProfileRouteWithChildren
@@ -612,6 +651,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppArchiveRoute: AppArchiveRoute,
   AppExploreRoute: AppExploreRoute,
   AppHomeRoute: AppHomeRoute,
+  AppLifeRoute: AppLifeRoute,
   AppMeRoute: AppMeRoute,
   AppPremiumRoute: AppPremiumRoute,
   AppProfileRoute: AppProfileRouteWithChildren,
@@ -636,6 +676,7 @@ interface WwwRouteChildren {
   WwwLegalPrivacyPolicyRoute: typeof WwwLegalPrivacyPolicyRoute
   WwwLegalRefundPolicyRoute: typeof WwwLegalRefundPolicyRoute
   WwwLegalTermsOfServiceRoute: typeof WwwLegalTermsOfServiceRoute
+  WwwDocsIndexRoute: typeof WwwDocsIndexRoute
   WwwHelpIndexRoute: typeof WwwHelpIndexRoute
   WwwLegalIndexRoute: typeof WwwLegalIndexRoute
 }
@@ -652,6 +693,7 @@ const WwwRouteChildren: WwwRouteChildren = {
   WwwLegalPrivacyPolicyRoute: WwwLegalPrivacyPolicyRoute,
   WwwLegalRefundPolicyRoute: WwwLegalRefundPolicyRoute,
   WwwLegalTermsOfServiceRoute: WwwLegalTermsOfServiceRoute,
+  WwwDocsIndexRoute: WwwDocsIndexRoute,
   WwwHelpIndexRoute: WwwHelpIndexRoute,
   WwwLegalIndexRoute: WwwLegalIndexRoute,
 }

@@ -97,7 +97,7 @@ export const Footer = ({
                   />
                 </a>
               </div>
-              <p className="max-w-[70%] text-md text-muted-foreground">
+              <p className="max-w-[70%] text-md">
                 {description}
               </p>
               <ul className="flex items-center space-x-6 text-muted-foreground">
@@ -129,12 +129,16 @@ export const Footer = ({
             </div>
           </div>
           <div className="mt-8 flex flex-col justify-between gap-4 border-t py-8 text-xs font-normal text-muted-foreground md:flex-row md:items-center md:text-left">
-            <p className="order-2 lg:order-1">{copyright}</p>
+            <p className="order-2 lg:order-1 text-sm">{copyright}</p>
             <ul className="order-1 flex flex-col gap-2 md:order-2 md:flex-row">
               {legalLinks.map((link, idx) => (
-                <li key={idx} className="hover:text-primary">
-                  <a href={link.href}> {link.name}</a>
-                </li>
+                <>
+                  {idx != 0 && <>·</>}
+                  <li key={idx} className="hover:text-primary">
+                    <a href={link.href}> {link.name}</a>
+                  </li>
+                </>
+
               ))}
             </ul>
           </div>

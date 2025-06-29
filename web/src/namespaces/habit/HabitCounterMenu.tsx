@@ -1,4 +1,13 @@
-import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash, } from "@tabler/icons-react";
+import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
+import { ActionIcon } from "@web/components/ui/action-icon";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@web/components/ui/dropdown-menu";
+import { modals } from "@web/lib/modals";
 import { trekie } from "@web/lib/trekie";
 import { IHabit } from "@web/namespaces/habit";
 import { habits } from ".";
@@ -20,7 +29,6 @@ function HabitCounterMenu({ habit }: Props) {
 
   const onEdit = (ev) => {
     ev.stopPropagation();
-
     modals.openContextModal({
       modal: "habitEditor",
       title: "Edit Habit",
@@ -37,66 +45,49 @@ function HabitCounterMenu({ habit }: Props) {
 
   const onDelete = (ev) => {
     ev.stopPropagation();
-
     habits.delete(habit.id);
   };
 
   return (
-    <Menu position="bottom-end" withArrow>
-      <Menu.Target>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <ActionIcon
-          variant="subtle"
+          variant="ghost"
           color="gray"
           onClick={(ev) => ev.stopPropagation()}
           size="lg"
         >
-          <IconDotsVertical color={vanilla.colors.gray.lightColor} />
+          <IconDotsVertical className="text-gray-500" />
         </ActionIcon>
-      </Menu.Target>
-
-      <Menu.Dropdown
-        style={{
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Menu.Item onClick={onShare} leftSection={<IconShare />}>
-          Share
-        </Menu.Item>
-
-        <Menu.Item onClick={onClipboard} leftSection={<IconClipboardText />}>
-          Copy To Clipboard
-        </Menu.Item>
-
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="shadow-lg">
+        <DropdownMenuItem onClick={onShare}>
+          <IconShare className="mr-2 w-4 h-4" /> Share
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onClipboard}>
+          <IconClipboardText className="mr-2 w-4 h-4" /> Copy To Clipboard
+        </DropdownMenuItem>
         {currentUserId && (
           <>
-            <Menu.Divider />
-
+            <DropdownMenuSeparator />
             {isHabitOwner ? (
               <>
-                <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                  Edit Habit
-                </Menu.Item>
-                <Menu.Item
-                  onClick={onDelete}
-                  leftSection={<IconTrash />}
-                  c="red"
-                >
-                  Delete Habit
-                </Menu.Item>
+                <DropdownMenuItem onClick={onEdit}>
+                  <IconEdit className="mr-2 w-4 h-4" /> Edit Habit
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onDelete} className="text-red-600 focus:bg-red-50">
+                  <IconTrash className="mr-2 w-4 h-4" /> Delete Habit
+                </DropdownMenuItem>
               </>
             ) : (
-              <Menu.Item
-                onClick={onReport}
-                color="red"
-                leftSection={<IconExclamationCircle />}
-              >
-                Report habit
-              </Menu.Item>
+              <DropdownMenuItem onClick={onReport} className="text-red-600 focus:bg-red-50">
+                <IconExclamationCircle className="mr-2 w-4 h-4" /> Report habit
+              </DropdownMenuItem>
             )}
           </>
         )}
-      </Menu.Dropdown>
-    </Menu>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 

@@ -1,4 +1,4 @@
-import { IconBook, IconInfoCircle, IconLifebuoy, IconMenu4 } from "@tabler/icons-react"
+import { IconBook, IconInfoCircle, IconLifebuoy, IconMenu2 } from "@tabler/icons-react"
 import { Link, useNavigate } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@web/components/ui/navigation-menu"
@@ -60,7 +60,7 @@ export function Header() {
                     className="md:hidden"
                     variant="ghost"
                     size="icon">
-                    <IconMenu4 className="size-6" />
+                    <IconMenu2 className="size-6" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="start" className="w-64 p-1 md:hidden">
@@ -97,12 +97,12 @@ export function Header() {
                             // 1. One is submenu and one is simple link OR
                             // 2. Both are submenus but with different types
                             ((!link.submenu &&
-                              navigationLinks[index + 1].submenu) ||
+                              navigationLinks[index + 1]?.submenu) ||
                               (link.submenu &&
-                                !navigationLinks[index + 1].submenu) ||
+                                !navigationLinks[index + 1]?.submenu) ||
                               (link.submenu &&
-                                navigationLinks[index + 1].submenu &&
-                                link.type !== navigationLinks[index + 1].type)) && (
+                                navigationLinks[index + 1]?.submenu &&
+                                link.type !== navigationLinks[index + 1]?.type)) && (
                               <div
                                 role="separator"
                                 aria-orientation="horizontal"

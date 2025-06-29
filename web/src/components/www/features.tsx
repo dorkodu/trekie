@@ -1,13 +1,22 @@
-import { IconShield, IconUsers } from '@tabler/icons-react'
-import { Card, CardContent } from '@web/components/ui/card'
+import { IconShield, IconUsers } from '@tabler/icons-react';
+import { Card, CardContent } from '@web/components/ui/card';
+import { cn } from '@web/lib/utils';
 
 export function Features() {
+  const glassBg = 'bg-white/35 dark:bg-black/35 backdrop-blur-2xs';
+
   return (
-    <section className="bg-gray-50 py-16 md:py-32 dark:bg-transparent">
+    <section className="py-16 md:py-32"
+      style={{
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundImage: 'url("https://images.unsplash.com/photo-1597200381847-30ec200eeb9a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")'
+      }}>
       <div className="mx-auto max-w-3xl lg:max-w-5xl px-6">
         <div className="relative">
           <div className="relative z-10 grid grid-cols-6 gap-3">
-            <Card className="relative col-span-full flex overflow-hidden lg:col-span-2">
+            <Card className={cn("relative col-span-full flex overflow-hidden lg:col-span-2", glassBg)}>
               <CardContent className="relative m-auto size-fit pt-6">
                 <div className="relative flex h-24 w-56 items-center">
                   <svg className="text-muted absolute inset-0 size-full" viewBox="0 0 254 104" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,10 +27,10 @@ export function Features() {
                   </svg>
                   <span className="mx-auto block w-fit text-5xl font-semibold">100%</span>
                 </div>
-                <h2 className="mt-6 text-center text-3xl font-semibold">Customizable</h2>
+                <h2 className="mt-6 text-center text-3xl font-semibold">Your life,<br />in one place.</h2>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
+            <Card className={cn("relative col-span-full flex overflow-hidden lg:col-span-2", glassBg)}>
               <CardContent className="pt-6">
                 <div className="relative mx-auto flex aspect-square size-32 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
                   <svg className="m-auto h-fit w-24" viewBox="0 0 212 143" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,7 +63,7 @@ export function Features() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
+            <Card className={cn("relative col-span-full flex overflow-hidden lg:col-span-2", glassBg)}>
               <CardContent className="pt-6">
                 <div className="pt-6 lg:px-6">
                   <svg className="dark:text-muted-foreground w-full" viewBox="0 0 386 123" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +110,7 @@ export function Features() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden lg:col-span-3">
+            <Card className={cn("relative col-span-full overflow-hidden lg:col-span-3", glassBg)}>
               <CardContent className="grid pt-6 sm:grid-cols-2">
                 <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
                   <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
@@ -141,7 +150,7 @@ export function Features() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden lg:col-span-3">
+            <Card className={cn("relative col-span-full overflow-hidden lg:col-span-3", glassBg)}>
               <CardContent className="grid h-full pt-6 sm:grid-cols-2">
                 <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
                   <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
@@ -179,6 +188,6 @@ export function Features() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   )
 }

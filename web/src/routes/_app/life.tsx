@@ -1,11 +1,9 @@
-import WIPCard from "@web/components/cards/WIPCard";
+import { createFileRoute } from '@tanstack/react-router'
 
-function Page() {
-  return (
-    <div>
-      <WIPCard />
-    </div>
-  );
+export const Route = createFileRoute('/_app/life')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/_app/life"!</div>
 }
-
-export default Page;
