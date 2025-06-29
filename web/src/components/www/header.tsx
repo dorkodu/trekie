@@ -15,19 +15,19 @@ const navigationLinks = [
     type: "description",
     items: [
       {
-        href: "#",
-        label: "Components",
-        description: "Browse all components in the library.",
+        href: "/#todos",
+        label: "Commitments",
+        description: `Track "things" in your life.`,
+      },
+      {
+        href: "/#goals",
+        label: "Life Goals",
+        description: "Change your life, one goal at a time.",
       },
       {
         href: "#",
-        label: "Documentation",
-        description: "Learn how to use the library.",
-      },
-      {
-        href: "#",
-        label: "Templates",
-        description: "Pre-built layouts for common use cases.",
+        label: "Stats",
+        description: "See your progress in numbers.",
       },
     ],
   },
@@ -36,9 +36,9 @@ const navigationLinks = [
     submenu: true,
     type: "icon",
     items: [
-      { href: "#", label: "Getting Started", icon: "BookOpenIcon" },
-      { href: "#", label: "Tutorials", icon: "LifeBuoyIcon" },
-      { href: "#", label: "About Us", icon: "InfoIcon" },
+      { href: "#", label: "Manifesto", icon: IconBook },
+      { href: "#", label: "Tutorials", icon: IconLifebuoy },
+      { href: "#", label: "Dorkodu", icon: IconInfoCircle },
     ],
   },
 ]
@@ -150,27 +150,11 @@ export function Header() {
                                       {/* Display icon if present */}
                                       {link.type === "icon" && "icon" in item && (
                                         <div className="flex items-center gap-2">
-                                          {item.icon === "BookOpenIcon" && (
-                                            <IconBook
-                                              size={16}
-                                              className="text-foreground opacity-60"
-                                              aria-hidden="true"
-                                            />
-                                          )}
-                                          {item.icon === "LifeBuoyIcon" && (
-                                            <IconLifebuoy
-                                              size={16}
-                                              className="text-foreground opacity-60"
-                                              aria-hidden="true"
-                                            />
-                                          )}
-                                          {item.icon === "InfoIcon" && (
-                                            <IconInfoCircle
-                                              size={16}
-                                              className="text-foreground opacity-60"
-                                              aria-hidden="true"
-                                            />
-                                          )}
+                                          <item.icon
+                                            size={16}
+                                            className="text-foreground opacity-60"
+                                            aria-hidden="true"
+                                          />
                                           <span>{item.label}</span>
                                         </div>
                                       )}
