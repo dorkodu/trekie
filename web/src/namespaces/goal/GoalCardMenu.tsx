@@ -1,3 +1,4 @@
+import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
 import { Button } from "@web/components/ui/button";
 import {
   DropdownMenu,
@@ -7,9 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
 import { modals } from "@web/lib/modals";
-import { goals, IGoal, IGoalTemplate } from ".";
-import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
 import { trekie } from "@web/lib/trekie";
+import { goals, IGoal } from ".";
 
 interface Props {
   goal: IGoal;
@@ -18,17 +18,17 @@ interface Props {
 function GoalMenu({ goal }: Props) {
   const currentUserId = trekie.use(($) => $.user.id);
 
-  const onShare = (ev: MouseEvent) => {
+  const onShare = (ev) => {
     ev.stopPropagation();
   };
-  const onReport = (ev: MouseEvent) => {
+  const onReport = (ev) => {
     ev.stopPropagation();
   };
-  const onClipboard = (ev: MouseEvent) => {
+  const onClipboard = (ev) => {
     ev.stopPropagation();
   };
 
-  const onEdit = (ev: MouseEvent) => {
+  const onEdit = (ev) => {
     ev.stopPropagation();
     modals.openContextModal({
       modal: "goalEditor",
@@ -40,7 +40,7 @@ function GoalMenu({ goal }: Props) {
     });
   };
 
-  const onDelete = (ev: MouseEvent) => {
+  const onDelete = (ev) => {
     ev.stopPropagation();
     goals.delete(goal.id);
   };

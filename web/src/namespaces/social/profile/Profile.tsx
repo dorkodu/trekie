@@ -25,6 +25,7 @@ import React from "react"; // Added for useState, useEffect
 import { relativeDateString } from "@web/utils/format";
 import { useLiveQuery } from "dexie-react-hooks";
 import { getProfile } from "./getProfile";
+import { Skeleton } from "@web/components/ui/skeleton";
 
 // Helper hook to replace useMediaQuery
 const useIsMobile = (maxWidth = 768) => {
@@ -68,7 +69,7 @@ export function Profile({ username }: { username: string }) {
   // TODO: remove this forced type, let trpc handle it
   const user = data as IUser
 
-  if (isPending) return <CenterLoader />
+  if (isPending) return <Loader />
   if (isError)
     return (
       <ShadAlert variant="destructive" className="mt-4">
@@ -241,6 +242,15 @@ export function LifeGoalSummary() {
           <GoalCard id={goal.id} key={goal.id} />
         ))}
       </div>
+    </div>
+  )
+}
+
+
+function Loader() {
+  return (
+    <div className="flex items-center justify-center h-full">
+      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
     </div>
   )
 }

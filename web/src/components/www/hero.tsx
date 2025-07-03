@@ -45,7 +45,7 @@ export function Hero() {
                     size="lg"
                     variant="ghost"
                     className="h-10.5 rounded-xl px-0 py-6">
-                    <a className="block px-8 py-3">
+                    <a className="block px-8 py-3" href='#features'>
                       <span className="text-nowrap text-lg">See Features</span>
                       <IconArrowRight className="size-6" />
                     </a>

@@ -1,4 +1,5 @@
-import { Badge, Flex, Group, Image, Paper, Text, Title } from "../../components/ui/shadcn-clones";
+import { Badge } from "@web/components/ui/badge";
+import { Card } from "@web/components/ui/card";
 import { items as marketItems } from "./data";
 import { useMarketStore } from "./store";
 
@@ -16,36 +17,34 @@ export function InventoryDisplay() {
     }));
 
   return (
-    <Paper withBorder p="md" mb="md">
-      <Title order={4} mb="sm">
+    <Card className="p-6 mb-6">
+      <h3 className="text-lg font-semibold mb-4">
         Your Inventory
-      </Title>
+      </h3>
 
-      <Flex direction="column" gap="md">
+      <div className="flex flex-col gap-4">
         {ownedPowerUps.length > 0 ? (
-          <Flex gap="md" wrap="wrap">
+          <div className="gap-6 wrap">
             {ownedPowerUps.map((item) => (
-              <Paper key={item.id} withBorder p="xs" radius="md">
-                <Group gap="sm">
-                  <Image
+              <Card key={item.id} className="p-2 rounded-md shadow-sm">
+                <div className="flex items-center gap-2">
+                  <img
                     src={item.image}
-                    width={30}
-                    height={30}
+                    className="w-8 h-8 rounded"
                     alt={item.name}
-                    fallbackSrc="https://placehold.co/30x30?text=Item"
                   />
-                  <Text size="sm">{item.name}</Text>
+                  <p className="text-sm">{item.name}</p>
                   <Badge>{item.count}</Badge>
-                </Group>
-              </Paper>
+                </div>
+              </Card>
             ))}
-          </Flex>
+          </div>
         ) : (
-          <Text color="dimmed" size="sm">
+          <p className="text-sm text-muted-foreground">
             You don't have any power-ups yet.
-          </Text>
+          </p>
         )}
-      </Flex>
-    </Paper>
+      </div>
+    </Card>
   );
 }

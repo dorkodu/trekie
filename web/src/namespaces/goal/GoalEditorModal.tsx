@@ -2,7 +2,9 @@ import { IconTrash } from "@tabler/icons-react";
 import { FieldApi, useForm } from "@tanstack/react-form";
 
 import { Input } from "@web/components/ui/input";
+import { Label } from "@web/components/ui/label";
 import { Stack } from "@web/components/ui/layout";
+
 import { trekie } from "@web/lib/trekie";
 import {
   goals,
@@ -51,14 +53,6 @@ const GoalEditorModal = ({
         await onUpdate(value);
       }
     },
-    validate: async (values) => {
-      try {
-        GoalTemplateSchema.parse(values);
-        return {};
-      } catch (err: any) {
-        return err.formErrors?.fieldErrors || {};
-      }
-    },
   });
 
   // Ensure commitments are set after options load in EDIT mode, but only if the IDs exist in the options
@@ -86,26 +80,26 @@ const GoalEditorModal = ({
   }, [commitmentOptions, innerProps.goal, innerProps.mode]);
 
   const onCreate = async (values: typeof form.state.values) => {
-    await tryCatch(async () => {
-      await goals.create(values);
-    });
+    await tryCatch(
+      goals.create(values)
+    );
     context.closeModal(id);
   };
 
   const onUpdate = async (values: typeof form.state.values) => {
     if (!innerProps.goal?.id) return;
-    const { error } = await tryCatch(async () => {
-      await goals.update(innerProps.goal!.id, values);
-    });
+    const { error } = await tryCatch(
+      goals.update(innerProps.goal!.id, values)
+    );
     if (error) return;
     context.closeModal(id);
   };
 
   const onDelete = async () => {
     if (!innerProps.goal?.id) return;
-    const { error } = await tryCatch(async () => {
-      await goals.delete(innerProps.goal!.id);
-    });
+    const { error } = await tryCatch((async () =>
+      goals.delete(innerProps.goal!.id))
+      ());
     if (error) return;
     context.closeModal(id);
   };
@@ -119,14 +113,12 @@ const GoalEditorModal = ({
       <Stack gap="sm">
         <form.Field name="title">
           {(field: FieldApi<any, string>) => (
-            <Input
-              withAsterisk
-              label="Title"
-              placeholder="Title"
-              value={field.state.value}
-              onChange={(e) => field.handleChange(e.target.value)}
-              error={field.state.meta.errors?.[0]}
-            />
+            <div className="*:not-first:mt-2">
+              <Label htmlFor={'title'} withAsterisk>
+                Required input <span className="text-destructive">*</span>
+              </Label>
+              <Input id={'title'} placeholder="Email" type="email" required />
+            </div>
           )}
         </form.Field>
 

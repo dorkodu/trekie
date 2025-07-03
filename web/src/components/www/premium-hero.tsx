@@ -1,4 +1,4 @@
-import { IconAd, IconAdOff, IconArrowRight, IconBuildings, IconCheck, IconHourglass, IconInfinity, IconMail, IconMultiplier2x, IconPin, IconUserHeart, IconUsersGroup, IconWorld, IconX } from "@tabler/icons-react";
+import { IconAd, IconAdOff, IconArrowRight, IconBuildings, IconCheck, IconClock, IconInfinity, IconMail, IconMultiplier2x, IconPin, IconUserHeart, IconUsersGroup, IconWorld, IconX } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@web/components/ui/button";
 import Emoji from "../misc/Emoji";
@@ -181,30 +181,30 @@ export function PricingSection() {
           </div>
         </div>
 
-        <div className="bg-gray-50 rounded-xl p-4 border-2 border-slate-200 shadow-md shadow-slate-100">
+        <div className="rounded-xl p-4 border-2 shadow-xs">
           <div className="flex items-center gap-3 mb-3">
             <div className="bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white p-2 rounded-lg">
               <IconUserHeart className="w-8 h-8" stroke={2.25} />
             </div>
             <h3 className="text-xl font-bold">Group Plan</h3>
           </div>
-          <p className="text-gray-700 mb-4">
-            A better place for <b>small groups, teams and families</b> to gamify and get productive together!
+          <p className="mb-4">
+            A better place for <b>friend groups, teams and families</b> to gamify and get productive together!
           </p>
-          <div className="flex items-center gap-2">
-            <IconHourglass className="w-6 h-6" />
-            <span className="font-medium italic">Coming Soon!</span>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <IconClock className="w-6 h-6" />
+            <span className="text-lg">Coming Soon!</span>
           </div>
         </div>
 
-        <div className="bg-gray-50 rounded-xl p-4 border-2 border-slate-200 shadow-md shadow-slate-100">
+        <div className="rounded-xl p-4 border-2 shadow-xs">
           <div className="flex items-center gap-3 mb-3">
             <div className="bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white p-2 rounded-lg">
               <IconBuildings className="w-8 h-8" stroke={2.25} />
             </div>
             <h3 className="text-xl font-bold">For Business</h3>
           </div>
-          <p className="text-gray-700 mb-4">
+          <p className="mb-4">
             Advanced controls & support to gamify your organization. <strong>Contact us, we can offer a solution that suit your needs.</strong>
           </p>
           <a href="mailto:hey@dorkodu.com">

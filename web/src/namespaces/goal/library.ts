@@ -1,7 +1,6 @@
 import { db } from "@web/lib/db"
 import { errors } from "@web/lib/errors"
 import { trekie } from "@web/lib/trekie"
-import { trpc } from "@web/lib/trpc"
 import { arrayRemoveItem } from "@web/utils"
 import { ulid } from "ulidx"
 import { IGoal, type Interface } from "."
@@ -28,7 +27,7 @@ export const Component: Interface = {
 
     trekie.commitments.delete(removedGoal.commitmentId)
 
-    await db.goals.delete(id)
+    return await db.goals.delete(id)
   },
 
   async create(props) {
