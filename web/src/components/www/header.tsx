@@ -1,4 +1,4 @@
-import { IconBook, IconInfoCircle, IconLifebuoy, IconMenu2 } from "@tabler/icons-react"
+import { IconBook, IconBuildingArch, IconCode, IconMenu2 } from "@tabler/icons-react"
 import { Link, useNavigate } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@web/components/ui/navigation-menu"
@@ -8,24 +8,24 @@ import ThemeToggle from "../theme-toggles"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/about", label: "Home" },
+  { href: "/", label: "Home" },
   {
     label: "Features",
     submenu: true,
     type: "description",
     items: [
       {
-        href: "/#todos",
+        href: "/#feature-commitments",
         label: "Commitments",
         description: `Track "things" in your life.`,
       },
       {
-        href: "/#goals",
+        href: "/#feature-goals",
         label: "Life Goals",
         description: "Change your life, one goal at a time.",
       },
       {
-        href: "#",
+        href: "/#feature-stats",
         label: "Stats",
         description: "See your progress in numbers.",
       },
@@ -36,9 +36,9 @@ const navigationLinks = [
     submenu: true,
     type: "icon",
     items: [
-      { href: "#", label: "Manifesto", icon: IconBook },
-      { href: "#", label: "Tutorials", icon: IconLifebuoy },
-      { href: "#", label: "Dorkodu", icon: IconInfoCircle },
+      { href: "/manifesto", label: "Manifesto", icon: IconBook },
+      { href: "/docs", label: "For Developers", icon: IconCode },
+      { href: "https://dorkodu.com", label: "Our Company", icon: IconBuildingArch },
     ],
   },
 ]
@@ -151,8 +151,8 @@ export function Header() {
                                       {link.type === "icon" && "icon" in item && (
                                         <div className="flex items-center gap-2">
                                           <item.icon
-                                            size={16}
-                                            className="text-foreground opacity-60"
+                                            size={18}
+                                            className="text-muted-foreground"
                                             aria-hidden="true"
                                           />
                                           <span>{item.label}</span>
@@ -162,7 +162,7 @@ export function Header() {
                                       {/* Display label with description if present */}
                                       {link.type === "description" &&
                                         "description" in item ? (
-                                        <div className="space-y-1">
+                                        <div>
                                           <div className="font-medium">
                                             {item.label}
                                           </div>
@@ -197,6 +197,19 @@ export function Header() {
                         )}
                       </NavigationMenuItem>
                     ))}
+                    <NavigationMenuItem key="supra">
+                      <NavigationMenuLink
+                        className="hover:bg-background hover:opacity-80"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          navigate({ to: "/super" });
+                        }}
+                        href={'/super'}>
+                        <img src="/images/trekie_SUPER_Badge.svg" className="h-8" />
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>

@@ -132,12 +132,12 @@ export const Footer = ({
             <p className="order-2 lg:order-1 text-sm">{copyright}</p>
             <ul className="order-1 flex flex-col gap-2 md:order-2 md:flex-row">
               {legalLinks.map((link, idx) => (
-                <>
+                <React.Fragment key={idx}>
                   {idx != 0 && <>·</>}
-                  <li key={idx} className="hover:text-primary">
+                  <li className="hover:text-primary">
                     <a href={link.href}> {link.name}</a>
                   </li>
-                </>
+                </React.Fragment>
 
               ))}
             </ul>

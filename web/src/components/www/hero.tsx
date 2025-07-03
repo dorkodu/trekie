@@ -18,11 +18,11 @@ export function Hero() {
                     <span>
                       Your Gamified Life Dashboard
                     </span><br />
-                    <span className='text-2xl leading-0 md:text-3xl xl:text-[3rem] text-gray-400'>
+                    <span className='text-2xl leading-0 md:text-4xl lg:text-4xl xl:text-5xl text-gray-400 font-medium'>
                       With AI Productivity Companion
                     </span>
                   </h1>
-                  <p className="mx-auto mt-8 max-w-4xl text-balance text-lg lg:text-xl">
+                  <p className="mx-auto mt-4 max-w-4xl text-balance text-lg lg:text-xl">
                     Trekie is a gamified productivity app that treats your real life like a game.
                     With rewards to motivate you and social features to share your journey with close friends.
                   </p>
@@ -45,10 +45,10 @@ export function Hero() {
                     size="lg"
                     variant="ghost"
                     className="h-10.5 rounded-xl px-0 py-6">
-                    <Link to="/" className="block px-8 py-3">
+                    <a className="block px-8 py-3">
                       <span className="text-nowrap text-lg">See Features</span>
                       <IconArrowRight className="size-6" />
-                    </Link>
+                    </a>
                   </Button>
                 </div>
               </div>
