@@ -16,8 +16,7 @@ export function PremiumHero() {
               Supercharge Your<br />Gamified Productivity.
             </h1>
             <p className="text-lg text-shadow-xs leading-tight">
-              Reaching your life goals never been more fun. <br /> Your first super-week
-              is on us.
+              Reinventing your life has never been more fun and easy. Your first super-week is on us.
             </p>
             <Button
               className="w-full px-8! py-6 border-b-4
@@ -33,21 +32,21 @@ export function PremiumHero() {
           </div>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <div className="p-1.5 rounded-lg bg-white/15"><IconAd className="w-7 h-7" /></div>
+              <div className="p-2 rounded-lg bg-black/10"><IconAd className="size-8" /></div>
               <div>
                 <h3 className="font-bold">Ad-free</h3>
                 <p>No interruptions, full productivity.</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="p-1.5 rounded-lg bg-white/15"><IconMultiplier2x className="w-7 h-7" /></div>
+              <div className="p-2 rounded-lg bg-black/10"><IconMultiplier2x className="size-8" /></div>
               <div>
                 <h3 className="font-bold">Doubled Gains</h3>
                 <p>More coins, XP and items available.</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="p-1.5 rounded-lg bg-white/20"><IconUsersGroup className="w-7 h-7" /></div>
+              <div className="p-2 rounded-lg bg-black/10"><IconUsersGroup className="size-8" /></div>
               <div>
                 <h3 className="font-bold">Groups</h3>
                 <p>
@@ -137,7 +136,7 @@ export function PricingSection() {
 
           <div className="my-4">
             <div className="flex items-baseline gap-0 mb-2">
-              <span className="text-5xl font-bold font-mono">$6</span>
+              <span className="text-5xl font-bold font-mono">$8</span>
               <span className="text-lg opacity-80 font-mono">/month</span>
             </div>
             <div className="text-lg mb-4 opacity-90">Say hello to your new <strong>supercharged life</strong>!</div>

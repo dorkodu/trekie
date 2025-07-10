@@ -215,8 +215,8 @@ export function Header() {
               </div>
             </div>
             {/* Right side */}
-            <div className="hidden md:flex items-center gap-2">
-              <Button variant="default" asChild className="text-sm rounded-xl font-extrabold uppercase">
+            <div className="flex items-center gap-2">
+              <Button variant="default" asChild className="text-sm rounded-xl font-extrabold uppercase hidden md:block">
                 <a href="#">Get Started</a>
               </Button>
               <ThemeToggle />
