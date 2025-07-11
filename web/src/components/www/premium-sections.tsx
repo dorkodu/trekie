@@ -135,11 +135,11 @@ export function PricingSection() {
           </div>
 
           <div className="my-4">
-            <div className="flex items-baseline gap-0 mb-2">
-              <span className="text-5xl font-bold font-mono">$8</span>
+            <div className="flex items-baseline gap-0 mb-1">
+              <span className="text-4xl font-bold font-mono">$8</span>
               <span className="text-lg opacity-80 font-mono">/month</span>
             </div>
-            <div className="text-lg mb-4 opacity-90">Say hello to your new <strong>supercharged life</strong>!</div>
+            <div className="text-lg mb-3 opacity-90">Say hello to your new <strong>supercharged life</strong>!</div>
 
             <Button
               className="w-full px-8! py-6 border-b-4
