@@ -48,6 +48,11 @@ const items = [
     "answer": "Trekie is currently available as a web app. Native iOS and Android apps are planned in the future. Your progress syncs across devices, so you can check in from anywhere."
   },
   {
+    "id": 12,
+    "question": "Why did you build Trekie?",
+    "answer": "We built Trekie because personal growth shouldn’t feel boring or lonely. We believe productivity and self-improvement work better when they feel like a game you actually enjoy playing, not an obligation you dread. Trekie is our way of making real-life progress joyful, social, and motivating for anyone."
+  },
+  {
     "id": 10,
     "question": "Is my data safe? How do you handle privacy?",
     "answer": "Privacy and trust are core to Trekie. Your data belongs to you—we don’t sell your personal information. All user data is securely stored and encrypted. You control what you share publicly or with friends. We follow industry best practices for data security and privacy compliance."
@@ -56,13 +61,7 @@ const items = [
     "id": 11,
     "question": "Will Trekie stay ad-free?",
     "answer": "Yes, Trekie is built to be supported by subscriptions, not ads. Our goal is to make an empowering, user-focused tool without distracting ads or manipulative business models. Supporting Premium helps keep the free version sustainable and ad-free."
-  },
-  {
-    "id": 12,
-    "question": "Why did you build Trekie?",
-    "answer": "We built Trekie because personal growth shouldn’t feel boring or lonely. We believe productivity and self-improvement work better when they feel like a game you actually enjoy playing, not an obligation you dread. Trekie is our way of making real-life progress joyful, social, and motivating for anyone."
   }
-
 ]
 
 export default function FAQ() {
