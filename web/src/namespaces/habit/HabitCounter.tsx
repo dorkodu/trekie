@@ -7,7 +7,7 @@ import EnhancedText from "@web/components/misc/TextParser";
 import { Badge } from "@web/components/ui/badge";
 import { Button } from "@web/components/ui/button";
 import { Card } from "@web/components/ui/card";
-import { Tooltip } from "@web/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@web/components/ui/tooltip";
 import { habits } from "@web/namespaces/habit";
 import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
 
@@ -126,18 +126,20 @@ const WeekGraph: React.FC<{ counts: number[] }> = ({ counts }) => {
     <div className="flex gap-0.5" title="Weekly Activity">
       {counts.map((count, index) => (
         <Tooltip
-          key={index}
-          label={`${count} commits on day ${index + 1}`}
-          side="top"
-        >
-          <div
-            className={
-              count === 0
-                ? "w-3 h-3 rounded-sm bg-gray-200 dark:bg-gray-700"
-                : "w-3 h-3 rounded-sm bg-green-600"
-            }
-            style={count !== 0 ? { opacity: Math.max(0.2, Math.min(1.0, count / maxCount)) } : {}}
-          />
+          key={index}>
+          <TooltipTrigger>
+            <div
+              className={
+                count === 0
+                  ? "w-3 h-3 rounded-sm bg-gray-200 dark:bg-gray-700"
+                  : "w-3 h-3 rounded-sm bg-green-600"
+              }
+              style={count !== 0 ? { opacity: Math.max(0.2, Math.min(1.0, count / maxCount)) } : {}}
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <span className="text-xs text-gray-500">{`${count} commits on day ${index + 1}`}</span>
+          </TooltipContent>
         </Tooltip>
       ))}
     </div>

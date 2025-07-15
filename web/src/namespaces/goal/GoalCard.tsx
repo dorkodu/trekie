@@ -3,7 +3,8 @@ import { IGoal } from "@web/namespaces/goal";
 import { useLiveQuery } from "dexie-react-hooks";
 import GoalMenu from "./GoalCardMenu";
 
-import { goals } from ".";
+import { Alert, AlertDescription, AlertTitle } from "@web/components/ui/alert";
+import { Badge } from "@web/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -12,8 +13,7 @@ import {
   CardTitle,
 } from "@web/components/ui/card";
 import { Progress } from "@web/components/ui/progress";
-import { Badge } from "@web/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@web/components/ui/alert";
+import { goals } from ".";
 
 interface Props {
   id: IGoal["id"];
@@ -23,7 +23,7 @@ export default function GoalCard({ id }: Props) {
   const goal = useLiveQuery(() => goals.get(id), [id]);
   const progress = useLiveQuery(() => goals.calculateProgress(id), [id]);
 
-  if (!goal) return GoalNotFound;
+  if (!goal) return NotFound;
 
   const percentage = progress?.percent ?? 0;
   const xp = progress?.xp ?? 0;
@@ -66,7 +66,7 @@ export default function GoalCard({ id }: Props) {
   );
 }
 
-const GoalNotFound = (
+const NotFound = (
   <Alert>
     <AlertTitle>Oops!</AlertTitle>
     <AlertDescription>Goal not found.</AlertDescription>

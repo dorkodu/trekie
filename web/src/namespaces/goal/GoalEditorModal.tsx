@@ -1,23 +1,19 @@
 import { IconTrash } from "@tabler/icons-react";
-import { FieldApi, useForm } from "@tanstack/react-form";
+import { useForm } from "@tanstack/react-form";
 
+import { Button } from "@web/components/ui/button";
 import { Input } from "@web/components/ui/input";
 import { Label } from "@web/components/ui/label";
-import { Stack } from "@web/components/ui/layout";
-
-import { trekie } from "@web/lib/trekie";
+import { Box, Group, Stack } from "@web/components/ui/layout";
+import { Textarea } from "@web/components/ui/textarea";
 import {
   goals,
-  schema as GoalSchema,
   IGoal,
   IGoalTemplate,
 } from "@web/namespaces/goal";
 import { tryCatch } from "@web/utils/tryCatch";
 import { useEffect, useState } from "react";
 import { ChoiceCombobox, type ChoiceOption } from "./ChoiceCombobox";
-
-// Zod schema for validation
-const GoalTemplateSchema = GoalSchema.GoalTemplate;
 
 type GoalEditorMode = "CREATE" | "EDIT";
 
@@ -32,9 +28,7 @@ const GoalEditorModal = ({
   id,
   innerProps = { mode: "CREATE" },
 }: GoalEditorModalProps) => {
-  const [commitmentOptions, setCommitmentOptions] = useState<ChoiceOption[]>([]);
-  const user = trekie.use(($) => $.user);
-
+  const [commitmentOptions] = useState<ChoiceOption[]>([]);
 
   // TanStack React Form
   const form = useForm({
@@ -112,46 +106,68 @@ const GoalEditorModal = ({
     >
       <Stack gap="sm">
         <form.Field name="title">
-          {(field: FieldApi<any, string>) => (
-            <div className="*:not-first:mt-2">
-              <Label htmlFor={'title'} withAsterisk>
-                Required input <span className="text-destructive">*</span>
+          {(field) => (
+            <div>
+              <Label htmlFor="title">
+                Title <span className="text-destructive">*</span>
               </Label>
-              <Input id={'title'} placeholder="Email" type="email" required />
+              <Input
+                id="title"
+                placeholder="Enter goal title"
+                type="text"
+                required
+                value={field.state.value || ''}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+              {field.state.meta.errors?.[0] && (
+                <p className="text-sm text-red-600 mt-1">{field.state.meta.errors[0]}</p>
+              )}
             </div>
           )}
         </form.Field>
 
         <form.Field name="description">
-          {(field: FieldApi<any, string>) => (
-            <Textarea
-              withAsterisk
-              label="Description"
-              placeholder="Description"
-              value={field.state.value}
-              onChange={(e) => field.handleChange(e.target.value)}
-              error={field.state.meta.errors?.[0]}
-            />
+          {(field) => (
+            <>
+              <Label htmlFor="description">
+                Description <span className="text-lg text-destructive">*</span>
+              </Label>
+              <Textarea
+                id="description"
+                required
+                placeholder="Description"
+                value={field.state.value || ''}
+                onChange={(e) => field.handleChange(e.target.value)}
+              />
+              {field.state.meta.errors?.[0] && (
+                <p className="text-sm text-red-600 mt-1">{field.state.meta.errors[0]}</p>
+              )}
+            </>
           )}
         </form.Field>
 
         <form.Field name="xpTarget">
-          {(field: FieldApi<any, number>) => (
-            <NumberInput
-              withAsterisk
-              label="XP Target"
-              placeholder="0"
-              value={field.state.value}
-              onChange={(v) => field.handleChange(Number(v))}
-              error={field.state.meta.errors?.[0]}
-            />
+          {(field) => (
+            <div>
+              <Label htmlFor="xpTarget">XP Target *</Label>
+              <Input
+                id="xpTarget"
+                type="number"
+                placeholder="0"
+                value={field.state.value || ''}
+                onChange={(e) => field.handleChange(Number(e.target.value))}
+              />
+              {field.state.meta.errors?.[0] && (
+                <p className="text-sm text-red-600 mt-1">{field.state.meta.errors[0]}</p>
+              )}
+            </div>
           )}
         </form.Field>
 
         <Box>
-          <Text fw={500} mb={5}>
+          <Label className="text-sm font-medium mb-2 block">
             Commitments
-          </Text>
+          </Label>
           <ChoiceCombobox
             options={commitmentOptions}
             value={form.state.values.commitments}
@@ -161,25 +177,23 @@ const GoalEditorModal = ({
         </Box>
 
         {innerProps.mode === "CREATE" && (
-          <Button size="md" type="submit">
+          <Button size="default" type="submit">
             CREATE
           </Button>
         )}
         {innerProps.mode === "EDIT" && (
-          <Flex gap={6}>
-            <ActionIcon
-              size="xl"
-              color="red"
-              variant="light"
-              radius="lg"
+          <Group gap={6}>
+            <Button
+              size="default"
+              variant="destructive"
               onClick={onDelete}
             >
-              <IconTrash />
-            </ActionIcon>
-            <Button size="md" style={{ flexGrow: 1 }} type="submit">
+              <IconTrash className="w-4 h-4" />
+            </Button>
+            <Button size="default" className="flex-1" type="submit">
               UPDATE
             </Button>
-          </Flex>
+          </Group>
         )}
       </Stack>
     </form>

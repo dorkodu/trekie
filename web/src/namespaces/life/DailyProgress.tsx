@@ -1,9 +1,5 @@
-import React from "react";
+import { Tooltip, TooltipTrigger } from "@web/components/ui/tooltip";
 import { trekie } from "@web/lib/trekie";
-import { format } from "@web/utils/format";
-import confetti from "canvas-confetti";
-import { Progress } from "@web/components/ui/progress";
-import { Tooltip } from "@web/components/ui/tooltip";
 import { cn } from "@web/lib/utils";
 
 export function DailyProgress() {
@@ -61,18 +57,20 @@ export function DailyProgress() {
   );
 
   const progressBar = (
-    <Tooltip label={format.percentage(value)} side="top">
-      <div className="relative w-full h-5 rounded-lg bg-gray-200 overflow-hidden group">
-        <div
-          className={cn("h-full transition-all duration-100", barColor)}
-          style={{ width: `${value}%` }}
-        />
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <span className="text-sm font-medium text-white drop-shadow-md">
-            {message}
-          </span>
+    <Tooltip>
+      <TooltipTrigger>
+        <div className="relative w-full h-5 rounded-lg bg-gray-200 overflow-hidden group">
+          <div
+            className={cn("h-full transition-all duration-100", barColor)}
+            style={{ width: `${value}%` }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <span className="text-sm font-medium text-white drop-shadow-md">
+              {message}
+            </span>
+          </div>
         </div>
-      </div>
+      </TooltipTrigger>
     </Tooltip>
   );
 
