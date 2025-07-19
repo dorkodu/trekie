@@ -1,6 +1,5 @@
 import Emoji from "@web/components/misc/Emoji";
-import { Card } from "@web/components/ui/card";
-import { SimpleGrid, Stack } from "@web/components/ui/layout";
+import { SimpleGrid } from "@web/components/ui/layout";
 import { trekie } from "@web/lib/trekie";
 
 import { DailyProgress } from "./DailyProgress";
@@ -11,18 +10,16 @@ export function DailyStats() {
   trekie.game().refresh();
 
   return (
-    <Card>
-      <Stack>
-        <SimpleGrid cols={{ base: 2 }} spacing="xs">
-          <MomentumStatus />
-          <StreakStatus />
-          <XPStatus />
-          <CoinStatus />
-        </SimpleGrid>
+    <div className="flex flex-col gap-4">
+      <SimpleGrid cols={{ base: 2 }} spacing={1}>
+        <MomentumStatus />
+        <StreakStatus />
+        <XPStatus />
+        <CoinStatus />
+      </SimpleGrid>
 
-        <DailyProgress />
-      </Stack>
-    </Card>
+      <DailyProgress />
+    </div>
   );
 }
 

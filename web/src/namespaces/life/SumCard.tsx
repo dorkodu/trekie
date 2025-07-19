@@ -3,32 +3,38 @@ import React from "react";
 // Utility to map color prop to Tailwind classes
 const colorMap: Record<string, { bg: string; border: string; text: string; accent: string }> = {
   blue: {
-    bg: "bg-blue-100 dark:bg-blue-900",
-    border: "border-blue-200 dark:border-blue-800",
+    bg: "bg-blue-100 dark:bg-blue-900/40",
+    border: "border-2 border-blue-200 dark:border-blue-800",
     text: "text-blue-900 dark:text-blue-100",
     accent: "text-blue-600 dark:text-blue-400",
   },
   green: {
-    bg: "bg-green-100 dark:bg-green-900",
-    border: "border-green-200 dark:border-green-800",
+    bg: "bg-green-100 dark:bg-green-900/40",
+    border: "border-2 border-green-200 dark:border-green-800",
     text: "text-green-900 dark:text-green-100",
     accent: "text-green-600 dark:text-green-400",
   },
   red: {
-    bg: "bg-red-100 dark:bg-red-900",
-    border: "border-red-200 dark:border-red-800",
+    bg: "bg-red-100 dark:bg-red-900/40",
+    border: "border-2 border-red-200 dark:border-red-800",
     text: "text-red-900 dark:text-red-100",
     accent: "text-red-600 dark:text-red-400",
   },
+  orange: {
+    bg: "bg-orange-100 dark:bg-orange-900/40",
+    border: "border-2 border-orange-200 dark:border-orange-800",
+    text: "text-orange-900 dark:text-orange-100",
+    accent: "text-orange-600 dark:text-orange-400",
+  },
   yellow: {
-    bg: "bg-yellow-100 dark:bg-yellow-900",
-    border: "border-yellow-200 dark:border-yellow-800",
+    bg: "bg-yellow-100 dark:bg-yellow-900/40",
+    border: "border-2 border-yellow-200 dark:border-yellow-800",
     text: "text-yellow-900 dark:text-yellow-100",
     accent: "text-yellow-600 dark:text-yellow-400",
   },
   gray: {
-    bg: "bg-gray-100 dark:bg-gray-900",
-    border: "border-gray-200 dark:border-gray-800",
+    bg: "bg-gray-100 dark:bg-gray-900/40",
+    border: "border-2 border-gray-200 dark:border-gray-800",
     text: "text-gray-900 dark:text-gray-100",
     accent: "text-gray-600 dark:text-gray-400",
   },
@@ -54,10 +60,10 @@ export function SumCard({
       style={{ boxShadow: "0px 3px 0px 0px rgba(0,0,0,0.04)" }}
     >
       <div className="flex flex-row items-stretch justify-between w-full">
-        <div className="flex flex-col gap-1 px-3 py-3 pt-4">
+        <div className="flex flex-col gap-0 px-2 py-1.5">
           <div className="flex flex-row items-end gap-1">
             <span
-              className={`font-extrabold text-2xl leading-tight ${colors?.text}`}
+              className={`font-extrabold text-lg leading-tight ${colors?.text}`}
               style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
             >
               {value}
@@ -79,7 +85,7 @@ export function SumCard({
             </span>
           )}
         </div>
-        <div className="pr-3 flex items-center">
+        <div className="pr-2 flex items-center">
           <div className="flex items-center justify-center">{icon}</div>
         </div>
       </div>
