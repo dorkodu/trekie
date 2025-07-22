@@ -8,6 +8,13 @@
       "when": 1745083574629,
       "tag": "0000_daffy_machine_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753104366388,
+      "tag": "0001_panoramic_doctor_spectrum",
+      "breakpoints": true
     }
   ]
 }
