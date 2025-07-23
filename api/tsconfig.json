@@ -16,7 +16,6 @@
     "downlevelIteration": true,
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
   },
   "include": [
     "src"

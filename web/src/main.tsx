@@ -8,6 +8,7 @@ import { routeTree } from "./routeTree.gen";
 
 import { ThemeProvider } from "./components/theme-provider";
 import { SpotlightProvider } from "./hooks/useSpotlight";
+import { AuthProvider } from "./lib/auth/AuthProvider";
 import "./styles.css";
 
 declare module "@tanstack/react-router" {
@@ -37,9 +38,11 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <TanstackQuery.Provider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <SpotlightProvider>
-            <RouterProvider router={router} />
-          </SpotlightProvider>
+          <AuthProvider>
+            <SpotlightProvider>
+              <RouterProvider router={router} />
+            </SpotlightProvider>
+          </AuthProvider>
         </ThemeProvider>
       </TanstackQuery.Provider>
     </StrictMode>
