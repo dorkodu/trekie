@@ -2,11 +2,15 @@
   "name": "trekie",
   "version": "1.0.0",
   "private": true,
+  "dependencies": {},
+  "devDependencies": {},
   "workspaces": [
     "web",
     "api",
-    "sdk"
+    "sdk",
+    "db"
   ],
-  "dependencies": {},
-  "devDependencies": {}
+  "scripts": {
+    "clean": "rm -rf node_modules web/node_modules api/node_modules sdk/node_modules db/node_modules bun.lockb web/bun.lockb api/bun.lockb sdk/bun.lockb db/bun.lockb"
+  }
 }

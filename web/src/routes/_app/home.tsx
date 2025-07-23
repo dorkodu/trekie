@@ -39,12 +39,12 @@ function Home() {
         </Box>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="habits" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-2 cursor-pointer">
+            <TabsTrigger value="habits" className="flex items-center gap-2 cursor-pointer">
               <IconCopyCheck className="w-5 h-5" />
               <span>Commitments</span>
             </TabsTrigger>
-            <TabsTrigger value="goals" className="flex items-center gap-2">
+            <TabsTrigger value="goals" className="flex items-center gap-2 cursor-pointer">
               <IconTargetArrow className="w-5 h-5" />
               <span>Goals</span>
             </TabsTrigger>

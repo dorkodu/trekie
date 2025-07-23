@@ -1,8 +1,7 @@
 import * as React from "react"
 
 import { Link } from "@tanstack/react-router"
-import { NavUser } from "@web/components/app/layout/nav-user"
-import ThemeToggle from "@web/components/theme-toggles"
+import { NavHeader } from "@web/components/app/layout/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -31,8 +30,7 @@ export function SidebarRight({
       {...props}
     >
       <SidebarHeader className="flex border-sidebar-border h-16 border-b">
-        <NavUser user={data.user} />
-        <ThemeToggle />
+        <NavHeader user={data.user} />
       </SidebarHeader>
       <SidebarContent>
         <DailyStats />

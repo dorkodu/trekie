@@ -20,11 +20,11 @@ export default function AppLayout() {
           <SidebarLeft />
           <SidebarInset>
             <header className="bg-background sticky top-0 flex h-14 shrink-0 items-center gap-2">
-              <div className="flex flex-1 items-center gap-2 px-3">
+              <div className="flex flex-1 items-center justify-center gap-2 px-3 pt-2">
                 <Spotlight />
               </div>
             </header>
-            <div className="flex flex-1 flex-col gap-4 p-4">
+            <div className="flex flex-1 flex-col gap-4 px-4">
               <Outlet />
             </div>
           </SidebarInset>

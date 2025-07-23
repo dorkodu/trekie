@@ -1,6 +1,8 @@
-import React from "react"
 import { type LucideIcon } from "lucide-react"
+import React from "react"
 
+import type { TablerIcon } from "@tabler/icons-react"
+import { Link } from "@tanstack/react-router"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -17,7 +19,7 @@ export function NavSecondary({
   items: {
     title: string
     url: string
-    icon: LucideIcon
+    icon: LucideIcon | TablerIcon
     badge?: React.ReactNode
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
@@ -28,10 +30,10 @@ export function NavSecondary({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <Link to={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
               {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
             </SidebarMenuItem>
