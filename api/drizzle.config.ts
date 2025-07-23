@@ -4,7 +4,7 @@ import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({
   out: './drizzle',
-  schema: './src/db/schema.ts', // Glob imports all the schemas from namespaces.
+  schema: './src/namespaces/*/schemas/db.ts',
   dialect: 'postgresql',
   dbCredentials: {
     user: process.env.POSTGRES_USER,
