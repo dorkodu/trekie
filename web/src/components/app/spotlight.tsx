@@ -1,104 +1,134 @@
-import * as React from "react"
 
 import {
-  ArrowUpRightIcon, CircleFadingPlusIcon, FileInputIcon, FolderPlusIcon, SearchIcon
+  BookmarkIcon,
+  CalendarIcon,
+  CircleFadingPlusIcon,
+  CommandIcon,
+  CompassIcon,
+  FileInputIcon,
+  FolderPlusIcon,
+  HelpCircleIcon,
+  HistoryIcon,
+  HomeIcon,
+  SettingsIcon,
+  TrendingUpIcon,
+  UsersIcon
 } from "lucide-react"
 
+import { useNavigate } from "@tanstack/react-router"
 import {
-  CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
 } from "@web/components/ui/command"
+import { useSpotlight } from "@web/hooks/useSpotlight"
+import { SpotlightTrigger } from "./spotlight-trigger"
 
 export default function Spotlight() {
-  const [open, setOpen] = React.useState(false)
+  const { isOpen, close, open: openSpotlight, actions } = useSpotlight()
+  const navigate = useNavigate()
 
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((open) => !open)
-      }
-    }
+  const handleNavigation = (path: string) => {
+    navigate({ to: path })
+    close()
+  }
 
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [])
+  const handleAction = (action: () => void) => {
+    action()
+    close()
+  }
 
   return (
     <>
-      <button
-        className="border-input bg-background text-foreground placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-9 w-fit rounded-md border px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
-        onClick={() => setOpen(true)}
-      >
-        <span className="flex grow items-center">
-          <SearchIcon
-            className="text-muted-foreground/80 -ms-1 me-3"
-            size={16}
-            aria-hidden="true"
-          />
-          <span className="text-muted-foreground/70 font-normal">Search</span>
-        </span>
-        <kbd className="bg-background text-muted-foreground/70 ms-12 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-          ⌘K
-        </kbd>
-      </button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <SpotlightTrigger className="w-2/4" />
+      <CommandDialog open={isOpen} onOpenChange={(isOpenState) => isOpenState ? openSpotlight() : close()}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Quick start">
-            <CommandItem>
-              <FolderPlusIcon
-                size={16}
-                className="opacity-60"
-                aria-hidden="true"
-              />
-              <span>New folder</span>
-              <CommandShortcut className="justify-center">⌘N</CommandShortcut>
+
+          <CommandGroup heading="Quick Actions">
+            <CommandItem onSelect={() => handleAction(actions.createGoal)}>
+              <CircleFadingPlusIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Create new goal</span>
+              <CommandShortcut>⌘G</CommandShortcut>
             </CommandItem>
-            <CommandItem>
-              <FileInputIcon
-                size={16}
-                className="opacity-60"
-                aria-hidden="true"
-              />
+            <CommandItem onSelect={() => handleAction(actions.createProject)}>
+              <FolderPlusIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Create new project</span>
+              <CommandShortcut>⌘⇧P</CommandShortcut>
+            </CommandItem>
+            <CommandItem onSelect={() => handleAction(actions.importDocument)}>
+              <FileInputIcon size={16} className="opacity-60" aria-hidden="true" />
               <span>Import document</span>
-              <CommandShortcut className="justify-center">⌘I</CommandShortcut>
+              <CommandShortcut>⌘I</CommandShortcut>
             </CommandItem>
-            <CommandItem>
-              <CircleFadingPlusIcon
-                size={16}
-                className="opacity-60"
-                aria-hidden="true"
-              />
-              <span>Add block</span>
-              <CommandShortcut className="justify-center">⌘B</CommandShortcut>
+            <CommandItem onSelect={() => handleAction(actions.quickNote)}>
+              <BookmarkIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Quick note</span>
+              <CommandShortcut>⌘N</CommandShortcut>
             </CommandItem>
           </CommandGroup>
+
           <CommandSeparator />
+
           <CommandGroup heading="Navigation">
-            <CommandItem>
-              <ArrowUpRightIcon
-                size={16}
-                className="opacity-60"
-                aria-hidden="true"
-              />
-              <span>Go to dashboard</span>
+            <CommandItem onSelect={() => handleNavigation("/home")}>
+              <HomeIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Go to home</span>
             </CommandItem>
-            <CommandItem>
-              <ArrowUpRightIcon
-                size={16}
-                className="opacity-60"
-                aria-hidden="true"
-              />
-              <span>Go to apps</span>
+            <CommandItem onSelect={() => handleNavigation("/explore")}>
+              <CompassIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Go to explore</span>
             </CommandItem>
-            <CommandItem>
-              <ArrowUpRightIcon
-                size={16}
-                className="opacity-60"
-                aria-hidden="true"
-              />
-              <span>Go to connections</span>
+            <CommandItem onSelect={() => handleNavigation("/social")}>
+              <UsersIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Go to social</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleNavigation("/market")}>
+              <TrendingUpIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Go to market</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleNavigation("/calendar")}>
+              <CalendarIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Go to calendar</span>
+            </CommandItem>
+          </CommandGroup>
+
+          <CommandSeparator />
+
+          <CommandGroup heading="Settings & Help">
+            <CommandItem onSelect={() => handleNavigation("/settings")}>
+              <SettingsIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Open settings</span>
+              <CommandShortcut>⌘,</CommandShortcut>
+            </CommandItem>
+            <CommandItem onSelect={() => handleNavigation("/help")}>
+              <HelpCircleIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Help & support</span>
+              <CommandShortcut>⌘?</CommandShortcut>
+            </CommandItem>
+            <CommandItem onSelect={() => handleAction(actions.showShortcuts)}>
+              <CommandIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Keyboard shortcuts</span>
+              <CommandShortcut>⌘/</CommandShortcut>
+            </CommandItem>
+          </CommandGroup>
+
+          <CommandSeparator />
+
+          <CommandGroup heading="Recent">
+            <CommandItem onSelect={() => handleAction(() => console.log("Recent goals"))}>
+              <HistoryIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Recent goals</span>
+            </CommandItem>
+            <CommandItem onSelect={() => handleAction(() => console.log("Recent projects"))}>
+              <HistoryIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Recent projects</span>
             </CommandItem>
           </CommandGroup>
         </CommandList>

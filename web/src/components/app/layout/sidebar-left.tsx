@@ -1,10 +1,8 @@
-import { IconBuildingStore } from "@tabler/icons-react"
-import { NavFavorites } from "@web/components/app/layout/nav-favorites"
+import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconMessageQuestion, IconSettings, IconUsers } from "@tabler/icons-react"
 import { NavMain } from "@web/components/app/layout/nav-main"
 import { NavSecondary } from "@web/components/app/layout/nav-secondary"
-import { NavWorkspaces } from "@web/components/app/layout/nav-workspaces"
+import { SpotlightTrigger } from "@web/components/app/spotlight-trigger"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, useSidebar } from "@web/components/ui/sidebar"
-import { Blocks, Calendar, Home, MessageCircleQuestion, Search, Settings2, Sparkles, Trash2 } from "lucide-react"
 import * as React from "react"
 
 // Logo component that switches based on sidebar state and theme
@@ -39,7 +37,7 @@ function SidebarLogo() {
     return (
       <img
         src="/images/trekie_Icon.svg"
-        className="w-8 h-8 my-2 mx-auto"
+        className="w-10 h-10 my-2 mx-auto"
         alt="Trekie"
       />
     )
@@ -58,24 +56,23 @@ const data = {
   navMain: [
     {
       title: "Home",
-      url: "#",
-      icon: Home,
-      isActive: true,
+      url: "/home",
+      icon: IconHome,
     },
     {
       title: "Explore",
-      url: "#",
-      icon: Search,
+      url: "/explore",
+      icon: IconCompass,
     },
     {
       title: "Social",
-      url: "#",
-      icon: Sparkles,
+      url: "/social",
+      icon: IconUsers,
     },
 
     {
       title: "Market",
-      url: "#",
+      url: "/market",
       icon: IconBuildingStore,
       badge: "10",
     },
@@ -83,28 +80,18 @@ const data = {
   navSecondary: [
     {
       title: "Calendar",
-      url: "#",
-      icon: Calendar,
+      url: "/calendar",
+      icon: IconCalendar,
     },
     {
       title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
-    {
-      title: "Templates",
-      url: "#",
-      icon: Blocks,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
+      url: "/settings",
+      icon: IconSettings,
     },
     {
       title: "Help",
-      url: "#",
-      icon: MessageCircleQuestion,
+      url: "/help",
+      icon: IconMessageQuestion,
     },
   ],
   favorites: [
@@ -119,46 +106,32 @@ const data = {
       emoji: "🍳",
     },
   ],
-  workspaces: [
-    {
-      name: "Personal Life Management",
-      emoji: "🏠",
-      pages: [
-        {
-          name: "Daily Journal & Reflection",
-          url: "#",
-          emoji: "📔",
-        },
-        {
-          name: "Health & Wellness Tracker",
-          url: "#",
-          emoji: "🍏",
-        },
-        {
-          name: "Personal Growth & Learning Goals",
-          url: "#",
-          emoji: "🌟",
-        },
-      ],
-    },
-  ],
 }
 
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const { state } = useSidebar()
+
   return (
     <Sidebar collapsible="icon" className="border-r-0 border-transparent" {...props}>
       <SidebarHeader>
         <SidebarLogo />
+        <div className="px-2 pb-2">
+          <SpotlightTrigger
+            variant={state === "collapsed" ? "icon" : "compact"}
+            className={state === "collapsed" ? "w-full" : "w-full"}
+            showShortcut={state === "expanded"}
+          />
+        </div>
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
-        <NavFavorites favorites={data.favorites} />
-        <NavWorkspaces workspaces={data.workspaces} />
+        {/* Favorites, Pinned Things etc. */}
       </SidebarContent>
       <NavSecondary items={data.navSecondary} className="mt-auto" />
       <SidebarRail />
-    </Sidebar>
+    </Sidebar >
   )
 }
+

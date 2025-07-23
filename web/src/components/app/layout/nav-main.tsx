@@ -1,9 +1,13 @@
-import type { TablerIcon } from "@tabler/icons-react"
+import { IconSparkles, type TablerIcon } from "@tabler/icons-react"
+import { Link, useRouterState } from "@tanstack/react-router"
+import { Button } from "@web/components/ui/button"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@web/components/ui/sidebar"
+import { useSpotlight } from "@web/hooks/useSpotlight"
 import { type LucideIcon } from "lucide-react"
 
 export function NavMain({
@@ -13,23 +17,41 @@ export function NavMain({
     title: string
     url: string
     icon: LucideIcon | TablerIcon
-    isActive?: boolean
   }[]
 }) {
+  const { state } = useSidebar()
+  const s = useRouterState()
+  const { open: openSpotlight } = useSpotlight()
+
   return (
     <SidebarMenu>
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild isActive={item.isActive} size="lg" variant="outline" className="rounded-xl 
+          <SidebarMenuButton asChild isActive={item.url === s.location.pathname} size="lg" variant="outline" className="rounded-2xl 
           data-[active=true]:bg-blue-600/10 data-[active=true]:text-blue-500/80">
-            <a href={item.url} className="flex pl-6 pr-2">
-              <item.icon className="size-6! text-inherit opacity-60" />
-              <span data-active={item.isActive} className="text-[18px]">{item.title}</span>
-            </a>
+            <Link to={item.url} className="flex pl-6 pr-2">
+              <item.icon className="size-6! text-inherit opacity-80" />
+              <span className="text-[16.5px]">{item.title}</span>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))
       }
+
+      <Button
+        onClick={openSpotlight}
+        size={state === "collapsed" ? "icon" : "xl"}
+        className={`mt-2 bg-gradient-to-tr from-lime-700 to-emerald-400 rounded-2xl font-bold transition-all duration-200 ${state === "collapsed"
+          ? "w-10 h-10 p-2 justify-center"
+          : "text-lg"
+          }`}
+      >
+        <IconSparkles className="size-6" stroke={2.25} />
+        {state === "expanded" && <span className="text-shadow-xs">CREATE</span>}
+      </Button>
+
     </SidebarMenu>
   )
 }
+
+
