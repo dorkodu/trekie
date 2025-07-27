@@ -1,5 +1,6 @@
+import { auth } from "@api/lib/auth";
 import { Elysia } from "elysia";
-import { auth } from "./service";
+
 
 export const authEndpoints = new Elysia({ prefix: "/auth" })
   .options("/sign-in/*", ({ request }) => {
