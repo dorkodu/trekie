@@ -8,74 +8,24 @@ import { USERNAME_REGEX } from "@sdk/core"
 import { useForm } from '@tanstack/react-form'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useAuth } from "@web/lib/auth/AuthProvider"
+import { FieldInfo } from "@web/lib/forms"
 import z from "zod"
 
 export const Route = createFileRoute('/_www/login')({ component: Page })
 
 interface Credentials {
-  loginName: string | null,
-  password: string | null
+  loginName: string
+  password: string
 }
 
 const defaultCredentials: Credentials = {
-  loginName: null,
-  password: null
+  loginName: '',
+  password: ''
 }
-
 
 function Page() {
   const { login, socialLogin, loading, error, clearError } = useAuth()
-
-  useForm({
-    defaultValues: defaultCredentials,
-    onSubmit: async ({ value }) => {
-      if (!value.loginName || !value.password)
-        return // Set error and return
-
-      // Validate loginName as email or username
-      const safecheckEmail = z.email().trim().safeParse(value.loginName)
-      const safecheckUsername = z.string().trim().regex(USERNAME_REGEX).safeParse(value.loginName)
-
-      if (safecheckEmail.success) // detailed email check with zod instead
-      {
-        login({ email: safecheckEmail.data, password: value.password })
-      }
-      else if (value.loginName) // Username regex check instead
-      {
-        login({ username: value.loginName, password: value.password })
-      }
-    },
-  })
-
   const navigate = useNavigate()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!loginName || !password) return
-
-    // Validate loginName as email or username
-    const safecheckEmail = z.email().trim().safeParse(loginName)
-    const safecheckUsername = z.string().trim().regex(USERNAME_REGEX).safeParse(loginName)
-
-    clearError();
-
-    if (safecheckEmail.success) {
-      const success = await login({ email: safecheckEmail.data, password });
-    }
-
-    else if (safecheckUsername.success) {
-      const success = await login({ username: safecheckUsername.data, password })
-    }
-
-    else {
-      // can not login with this loginName
-      error = "Invalid email or username"
-    }
-    if (success) {
-      navigate({ to: "/home" });
-    }
-  }
 
   const handleSocialLogin = async (provider: 'github') => {
     clearError();
@@ -92,40 +42,8 @@ function Page() {
           <CardTitle className="text-center">Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={loginName}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                className="mt-1"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="mt-1"
-                disabled={loading}
-              />
-            </div>
-            {error && (
-              <div className="text-red-500 text-sm">{error}</div>
-            )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing In..." : "Sign In"}
-            </Button>
-          </form>
+
+          <LoginForm />
 
           {/* Social and wallet login buttons, stacked vertically */}
           <div className="my-6 flex flex-col gap-3">
@@ -154,10 +72,151 @@ function Page() {
             className="w-full mt-2"
             onClick={() => navigate({ to: "/create-account" })}
           >
-            Register New Account
+            Create Account
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </div >
   )
+}
+
+const safecheckEmail = (x: string) => z.email().trim().safeParse(x)
+const safecheckUsername = (x: string) => z.string().trim().regex(USERNAME_REGEX).safeParse(x)
+
+function LoginForm() {
+  const { login, socialLogin, loading, error, clearError } = useAuth()
+
+
+
+  const form = useForm({
+    defaultValues: defaultCredentials,
+    validators: {
+      onBlur: ({ value, formApi }) => {
+        if (!value.loginName)
+          return 'Your email or username is required.'
+
+        if (!value.password)
+          return 'Password is required.'
+
+        if (safecheckEmail(value.loginName).success) {
+          return undefined
+        } else if (safecheckUsername(value.loginName).success) {
+          return undefined
+        } else {
+          return 'Please enter a valid email or username.'
+        }
+      },
+      onSubmit: ({ value, formApi }) => {
+        if (!value.loginName || !value.password) {
+          return 'Both email/username and password are required.'
+        }
+
+        if (safecheckEmail(value.loginName).success || safecheckUsername(value.loginName).success) {
+          return undefined
+        } else {
+          return 'Please enter a valid email or username.'
+        }
+      }
+    },
+    onSubmit: async ({ value, formApi }) => {
+      // Do something with form data
+      alert(JSON.stringify(value, null, 2))
+
+      // Validate loginName as email or username
+    }
+  })
+
+  const navigate = useNavigate()
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        form.handleSubmit()
+      }}
+      className="space-y-6">
+
+      <form.Field
+        name="loginName"
+        validators={{
+          onChange: ({ value }) =>
+            !value
+              ? 'A email or username is required'
+              : undefined,
+          onChangeAsyncDebounceMs: 500,
+          onChangeAsync: async ({ value }) => {
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            return (
+              value.includes('error') && 'No "error" allowed in email or username'
+            )
+          },
+        }}
+        children={(field) => {
+          return (
+            <>
+              <Label htmlFor={field.name}>Email or Username</Label>
+              <Input
+                id={field.name}
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+
+                placeholder="you@example.com"
+                type="email"
+                required
+                className="mt-1"
+                disabled={loading}
+              />
+              <FieldInfo field={field} />
+            </>
+          )
+        }}
+      />
+
+      <form.Field
+        name="password"
+        validators={{
+          onChange: ({ value }) =>
+            !value ? 'Password is required' : undefined,
+        }}
+        children={(field) => {
+          return (
+            <>
+              <Label htmlFor={field.name}>Password</Label>
+              <Input
+                id={field.name}
+                name={field.name}
+                type="password"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="Enter your password"
+                required
+                className="mt-1"
+                disabled={loading}
+              />
+              <FieldInfo field={field} />
+            </>
+          )
+        }}
+      />
+
+      <form.Subscribe
+        selector={(state) => [state.errorMap]}
+        children={([errorMap]) => errorMap.onSubmit ? (
+          <div>
+            <em>There was an error on the form: {errorMap.onSubmit}</em>
+          </div>
+        ) : null
+        }
+      />
+
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Signing In..." : "Sign In"}
+      </Button>
+    </form>
+  )
+
 }
