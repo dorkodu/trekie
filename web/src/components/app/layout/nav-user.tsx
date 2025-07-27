@@ -2,18 +2,23 @@ import ThemeToggle from "@web/components/theme-toggles"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@web/components/ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@web/components/ui/sidebar"
+import { useAuth } from "@web/lib/auth/AuthProvider"
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react"
+import { useEffect } from "react"
 
-export function NavHeader({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavHeader() {
   const { isMobile } = useSidebar()
+
+  const { user, session } = useAuth()
+
+  useEffect
+    (() => {
+      console.log(user);
+      console.log(session);
+      if (!user) {
+        console.warn("User is not defined");
+      }
+    }, [user])
 
   return (
     <SidebarMenu>
@@ -25,12 +30,12 @@ export function NavHeader({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer hover:bg-sidebar-accent"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={user?.image} alt={user?.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">{user?.name}</span>
+                <span className="truncate text-xs">{user?.email}</span>
               </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>

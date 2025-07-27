@@ -6,14 +6,12 @@ import { createContext, useContext, useEffect, useState } from 'react';
 export const authClient = createAuthClient({
   baseURL: "http://localhost:8000/auth/",
   apiPath: "/", // Prevents /api from being appended
+
   plugins: [
     usernameClient()
   ],
   fetchOptions: {
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json"
-    }
   }
 });
 
@@ -194,7 +192,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setLoading(true);
       setError(null);
 
-      const result = await authClient.signIn.social({ provider });
+      const result = await authClient.signIn.social({
+        provider,
+        callbackURL: "http://localhost:5173/home"
+      });
 
       if (result?.error) {
         setError(result.error.message || `${provider} login failed.`);

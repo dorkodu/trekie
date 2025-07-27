@@ -30,7 +30,7 @@ export function SidebarRight({
       {...props}
     >
       <SidebarHeader className="flex border-sidebar-border h-16 border-b">
-        <NavHeader user={data.user} />
+        <NavHeader />
       </SidebarHeader>
       <SidebarContent>
         <DailyStats />
