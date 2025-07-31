@@ -1,13 +1,8 @@
 import { IconSparkles, type TablerIcon } from "@tabler/icons-react"
 import { Link, useRouterState } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@web/components/ui/sidebar"
-import { useSpotlight } from "@web/hooks/useSpotlight"
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar, } from "@web/components/ui/sidebar"
+import { useSpotlight } from "@web/lib/spotlight"
 import { type LucideIcon } from "lucide-react"
 
 export function NavMain({
@@ -39,9 +34,9 @@ export function NavMain({
       }
 
       <Button
-        onClick={openSpotlight}
+        onClick={() => openSpotlight({ searchString: "create" })}
         size={state === "collapsed" ? "icon" : "xl"}
-        className={`mt-2 bg-gradient-to-tr from-lime-700 to-emerald-400 rounded-2xl font-bold transition-all duration-200 ${state === "collapsed"
+        className={`mt-2 bg-gradient-to-tr from-lime-700 to-emerald-400 rounded-2xl font-bold transition-all duration-100 ${state === "collapsed"
           ? "w-10 h-10 p-2 justify-center"
           : "text-lg"
           }`}

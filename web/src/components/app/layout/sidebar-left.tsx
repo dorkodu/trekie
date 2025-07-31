@@ -1,37 +1,29 @@
 import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconMessageQuestion, IconSettings, IconUsers } from "@tabler/icons-react"
+import { Link } from "@tanstack/react-router"
 import { NavMain } from "@web/components/app/layout/nav-main"
 import { NavSecondary } from "@web/components/app/layout/nav-secondary"
-import { SpotlightTrigger } from "@web/components/app/spotlight-trigger"
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, useSidebar } from "@web/components/ui/sidebar"
+import { useTheme } from "@web/components/theme-provider"
+import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
+import { Separator } from "@web/components/ui/separator"
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail, useSidebar } from "@web/components/ui/sidebar"
+import { useIsMobile } from "@web/hooks/use-mobile"
+import { useAuth } from "@web/lib/auth/AuthProvider"
+import {
+  Bell,
+  HelpCircle,
+  LogOut,
+  Settings,
+  Shield,
+  Sparkles,
+  User
+} from "lucide-react"
 import * as React from "react"
 
 // Logo component that switches based on sidebar state and theme
 function SidebarLogo() {
   const { state } = useSidebar()
-  const [isDark, setIsDark] = React.useState(false)
-
-  React.useEffect(() => {
-    // Check if dark mode is enabled
-    const checkDarkMode = () => {
-      const isDarkMode = document.documentElement.classList.contains('dark') ||
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      setIsDark(isDarkMode)
-    }
-
-    checkDarkMode()
-
-    // Listen for theme changes
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    mediaQuery.addEventListener('change', checkDarkMode)
-
-    return () => {
-      observer.disconnect()
-      mediaQuery.removeEventListener('change', checkDarkMode)
-    }
-  }, [])
+  const { theme, setTheme } = useTheme()
+  const isDark = theme === 'dark'
 
   if (state === "collapsed") {
     return (
@@ -108,28 +100,170 @@ const data = {
   ],
 }
 
+// Mobile User Menu Component
+function MobileUserMenu() {
+  const { user } = useAuth()
+
+  const userMenuItems = [
+    {
+      icon: User,
+      label: "Profile",
+      description: "Manage your profile",
+      href: "/profile",
+    },
+    {
+      icon: Settings,
+      label: "Settings",
+      description: "Account settings & preferences",
+      href: "/settings",
+    },
+    {
+      icon: Sparkles,
+      label: "Upgrade to Pro",
+      description: "Unlock premium features",
+      href: "/premium",
+      highlight: true,
+    },
+    {
+      icon: Shield,
+      label: "Privacy",
+      description: "Privacy & security settings",
+      href: "/settings/privacy",
+    },
+    {
+      icon: Bell,
+      label: "Notifications",
+      description: "Manage your notifications",
+      href: "/settings/notifications",
+    },
+    {
+      icon: HelpCircle,
+      label: "Help & Support",
+      description: "Get help with Trekie",
+      href: "/help",
+    },
+  ]
+
+  return (
+    <div className="px-2 py-4">
+      {/* User Profile Section */}
+      <div className="flex items-center gap-3 p-3 mb-4 rounded-2xl bg-accent/50">
+        <Avatar className="h-12 w-12 border-2 border-border">
+          <AvatarImage src={user?.image} alt={user?.name} />
+          <AvatarFallback className="text-sm font-semibold bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+            {user?.name?.charAt(0) || "U"}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex-1 text-left min-w-0">
+          <div className="font-medium text-sm truncate">
+            {user?.name || "User"}
+          </div>
+          <div className="text-xs text-muted-foreground truncate">
+            {user?.email || "user@example.com"}
+          </div>
+          <div className="flex items-center gap-1 mt-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+            <span className="text-xs text-green-600 font-medium">Online</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navigation on Mobile */}
+      {/* Navigation is now in bottom bar on mobile, so we don't show it here */}
+
+      {/* User Menu Items */}
+      <div className="mb-6">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-3">
+          Account
+        </h3>
+        <SidebarMenu>
+          {userMenuItems.map((item) => (
+            <SidebarMenuItem key={item.label}>
+              <SidebarMenuButton
+                asChild
+                size="lg"
+                className={`rounded-xl transition-all duration-200 ${item.highlight
+                  ? "bg-gradient-to-r from-lime-600 to-emerald-500 text-white hover:from-lime-700 hover:to-emerald-600"
+                  : "hover:bg-accent/80"
+                  }`}
+              >
+                <Link to={item.href}>
+                  <item.icon className={`size-5 ${item.highlight ? "text-white" : ""}`} />
+                  <div className="flex-1 text-left min-w-0">
+                    <div className={`font-medium text-sm truncate ${item.highlight ? "text-white" : ""}`}>
+                      {item.label}
+                    </div>
+                    <div className={`text-xs truncate ${item.highlight ? "text-white/80" : "text-muted-foreground"
+                      }`}>
+                      {item.description}
+                    </div>
+                  </div>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </div>
+
+      <Separator className="my-4" />
+
+      {/* Sign Out */}
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            size="lg"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl"
+            onClick={() => {
+              // Add logout logic here
+              console.log("Logout clicked")
+            }}
+          >
+            <LogOut className="size-5" />
+            <div className="flex-1 text-left min-w-0">
+              <div className="font-medium text-sm">Sign out</div>
+              <div className="text-xs text-muted-foreground">
+                Sign out of your account
+              </div>
+            </div>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </div>
+  )
+}
+
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar()
+  const isMobile = useIsMobile()
 
   return (
-    <Sidebar collapsible="icon" className="border-r-0 border-transparent" {...props}>
-      <SidebarHeader>
-        <SidebarLogo />
-        <div className="px-2 pb-2">
-          <SpotlightTrigger
-            variant={state === "collapsed" ? "icon" : "compact"}
-            className={state === "collapsed" ? "w-full" : "w-full"}
-            showShortcut={state === "expanded"}
-          />
-        </div>
-        <NavMain items={data.navMain} />
-      </SidebarHeader>
-      <SidebarContent>
-        {/* Favorites, Pinned Things etc. */}
-      </SidebarContent>
-      <NavSecondary items={data.navSecondary} className="mt-auto" />
+    <Sidebar
+      collapsible="icon"
+      className="border-r-0 border-transparent"
+      side="left"
+      variant="sidebar"
+      {...props}
+    >
+      {isMobile ? (
+        // Mobile sidebar content - User menu
+        <SidebarContent>
+          <MobileUserMenu />
+        </SidebarContent>
+      ) : (
+        // Desktop sidebar content - Regular navigation
+        <>
+          <SidebarHeader>
+            <SidebarLogo />
+            <NavMain items={data.navMain} />
+          </SidebarHeader>
+          <SidebarContent>
+            {/* Favorites, Pinned Things etc. */}
+          </SidebarContent>
+          <NavSecondary items={data.navSecondary} className="mt-auto" />
+        </>
+      )}
       <SidebarRail />
     </Sidebar >
   )
