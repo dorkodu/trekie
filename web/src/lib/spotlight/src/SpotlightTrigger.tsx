@@ -1,26 +1,33 @@
-import { useSpotlight } from "@web/hooks/useSpotlight"
 import { cn } from "@web/lib/utils"
 import { SearchIcon } from "lucide-react"
+import type { SpotlightOpenConfig } from "./types"
+import { useSpotlight } from "./useSpotlight"
 
 interface SpotlightTriggerProps {
   variant?: "default" | "compact" | "icon"
   className?: string
   placeholder?: string
   showShortcut?: boolean
+  config?: SpotlightOpenConfig
 }
 
 export function SpotlightTrigger({
   variant = "default",
   className,
   placeholder = "Search",
-  showShortcut = true
+  showShortcut = true,
+  config
 }: SpotlightTriggerProps) {
   const { open } = useSpotlight()
+
+  const handleClick = () => {
+    open(config)
+  }
 
   if (variant === "icon") {
     return (
       <button
-        onClick={open}
+        onClick={handleClick}
         className={cn(
           "inline-flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors",
           "hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -36,7 +43,7 @@ export function SpotlightTrigger({
   if (variant === "compact") {
     return (
       <button
-        onClick={open}
+        onClick={handleClick}
         className={cn(
           "inline-flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors",
           "hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -60,7 +67,7 @@ export function SpotlightTrigger({
         "hover:bg-accent/50",
         className
       )}
-      onClick={open}
+      onClick={handleClick}
     >
       <span className="flex grow items-center">
         <SearchIcon
