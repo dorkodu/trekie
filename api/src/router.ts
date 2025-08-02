@@ -1,12 +1,9 @@
-import { Router } from "@api/lib/trpc"
-import { gameEndpoints } from "./namespaces/game/endpoints"
-import { goalEndpoints } from "./namespaces/goal/endpoints"
-import { userEndpoints } from "./namespaces/user/endpoints"
+import { initTRPC } from "@trpc/server";
 
-export const router = Router({
-  user: userEndpoints.router,
-  game: gameEndpoints.router,
-  goal: goalEndpoints.router,
-})
+const t = initTRPC.create();
 
-export type AppRouter = typeof router
+export const router = t.router({
+
+});
+
+export type AppRouter = typeof router;

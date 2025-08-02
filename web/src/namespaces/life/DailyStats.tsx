@@ -1,36 +1,30 @@
-import {
-  Paper,
-  SimpleGrid,
-  Stack,
-} from '@mantine/core'
-import Emoji from '@web/shared/components/misc/Emoji'
-import { trekie } from "@web/shared/lib/trekie"
+import Emoji from "@web/components/misc/Emoji";
+import { SimpleGrid } from "@web/components/ui/layout";
+import { trekie } from "@web/lib/trekie";
 
-import { DailyProgress } from './DailyProgress'
-import { SumCard } from './SumCard'
+import { DailyProgress } from "./DailyProgress";
+import { SumCard } from "./SumCard";
 
 export function DailyStats() {
   // refresh every time daily stats is rendered
-  trekie.game().refresh()
+  trekie.game().refresh();
 
   return (
-    <Paper>
-      <Stack>
-        <SimpleGrid cols={{ base: 2 }} spacing="xs">
-          <MomentumStatus />
-          <StreakStatus />
-          <XPStatus />
-          <CoinStatus />
-        </SimpleGrid>
+    <div className="flex flex-col gap-4">
+      <SimpleGrid cols={{ base: 2 }} spacing={1}>
+        <MomentumStatus />
+        <StreakStatus />
+        <XPStatus />
+        <CoinStatus />
+      </SimpleGrid>
 
-        <DailyProgress />
-      </Stack>
-    </Paper>
-  )
+      <DailyProgress />
+    </div>
+  );
 }
 
 export function StreakStatus() {
-  const streak = trekie.use($ => $.streak)
+  const streak = trekie.use(($) => $.streak);
 
   return (
     <SumCard
@@ -39,11 +33,11 @@ export function StreakStatus() {
       value={streak}
       color="orange"
     />
-  )
+  );
 }
 
 export function XPStatus() {
-  const xp = trekie.use($ => $.xp)
+  const xp = trekie.use(($) => $.xp);
 
   return (
     <SumCard
@@ -52,11 +46,11 @@ export function XPStatus() {
       value={xp}
       color="blue"
     />
-  )
+  );
 }
 
 export function CoinStatus() {
-  const coins = trekie.use($ => $.coins)
+  const coins = trekie.use(($) => $.coins);
 
   return (
     <SumCard
@@ -65,19 +59,19 @@ export function CoinStatus() {
       value={coins}
       color="yellow"
     />
-  )
+  );
 }
 
 export function MomentumStatus() {
-  const momentum = trekie.use($ => $.momentum)
+  const momentum = trekie.use(($) => $.momentum);
 
   return (
     <SumCard
       icon={<Emoji emoji="🚀" size={24} />}
       kind="MOMENTUM"
       value={momentum}
-      subtext='xp/day'
+      subtext="xp/day"
       color="green"
     />
-  )
+  );
 }

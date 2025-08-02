@@ -1,82 +1,98 @@
-import { Center, Divider, MantineColor, Overlay, Progress, Stack, Text, Tooltip } from '@mantine/core'
-import { trekie } from '@web/shared/lib/trekie'
-import { format } from "@web/shared/utils/format"
-import { vanilla } from '@web/styles/theme'
-import confetti from 'canvas-confetti'
+import { Tooltip, TooltipTrigger } from "@web/components/ui/tooltip";
+import { trekie } from "@web/lib/trekie";
+import { cn } from "@web/lib/utils";
 
 export function DailyProgress() {
-  let progress = trekie.use($ => $.dailyProgress())
+  let progress = trekie.use(($) => $.dailyProgress());
 
-  let color: MantineColor
-  let message: string
+  let color: string;
+  let message: string;
 
-  let value = progress * 100
-  let haveProgressToday = value > 0
+  let value = progress * 100;
+  let haveProgressToday = value > 0;
 
   if (value > 0 && value < 30) {
-    message = 'Bad'
-    color = 'red'
+    message = "Bad";
+    color = "red";
   } else if (value >= 30 && value < 45) {
-    message = 'Meh'
-    color = 'orange'
+    message = "Meh";
+    color = "orange";
   } else if (value >= 45 && value < 60) {
-    message = 'OK'
-    color = 'yellow'
+    message = "OK";
+    color = "yellow";
   } else if (value >= 60 && value < 80) {
-    message = 'Good'
-    color = 'lime'
+    message = "Good";
+    color = "lime";
   } else if (value >= 80 && value < 95) {
-    message = 'Great'
-    color = 'green'
+    message = "Great";
+    color = "green";
   } else if (value >= 95) {
-    message = 'Awesome!'
-    color = 'green'
+    message = "Awesome!";
+    color = "green";
   } else {
-    message = 'Nothing'
-    color = 'gray'
+    message = "Nothing";
+    color = "gray";
   }
 
-  const noProgressToday =
-    <Progress.Root color="gray" radius="lg" size={20}>
-      <Progress.Section color="gray" striped value={100}>
-        <Overlay color="#fff" backgroundOpacity={0} blur={2} zIndex={10}>
-          <Center>
-            <Text tt="uppercase" lh={"20px"} size="xs" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dark}` }} fw={500}>NO PROGRESS TODAY</Text>
-          </Center>
-        </Overlay>
-      </Progress.Section>
-    </Progress.Root>
+  // Tailwind color map
+  const colorMap: Record<string, string> = {
+    red: "bg-red-500",
+    orange: "bg-orange-400",
+    yellow: "bg-yellow-400",
+    lime: "bg-lime-400",
+    green: "bg-green-500",
+    gray: "bg-gray-400",
+  };
+  const barColor = colorMap[color] || colorMap.gray;
 
-  const progressBar =
-    <Progress.Root
-      color={color}
-      radius="lg"
-      size={20}
-      styles={{ section: { transition: 'width 100ms linear 0s' } }}
-      id='daily-progress-bar'
-      onChange={(e) => {
+  const noProgressToday = (
+    <div className="relative w-full h-5 rounded-lg bg-gray-200 overflow-hidden">
+      <div className="absolute inset-0 flex items-center justify-center z-10">
+        <span className="uppercase text-xs font-medium text-white drop-shadow-md tracking-wide">
+          NO PROGRESS TODAY
+        </span>
+      </div>
+      <div className="w-full h-full bg-gray-400 opacity-60 animate-stripes" />
+    </div>
+  );
 
-      }}>
-      <Tooltip
-        label={format.percentage(value)}
-        arrowOffset={5}
-        arrowSize={6}
-        arrowRadius={2}
-        withArrow>
-        <Progress.Section color={color} striped value={value}>
-          <Overlay color="#fff" backgroundOpacity={0} zIndex={10}>
-            <Center>
-              <Text size="sm" c="white" style={{ textShadow: `1px 1px 5px ${vanilla.colors.dimmed}` }} fw={500}>{message}</Text>
-            </Center>
-          </Overlay>
-        </Progress.Section>
-      </Tooltip>
-    </Progress.Root>
+  const progressBar = (
+    <Tooltip>
+      <TooltipTrigger>
+        <div className="relative w-full h-5 rounded-lg bg-gray-200 overflow-hidden group">
+          <div
+            className={cn("h-full transition-all duration-100", barColor)}
+            style={{ width: `${value}%` }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <span className="text-sm font-medium text-white drop-shadow-md">
+              {message}
+            </span>
+          </div>
+        </div>
+      </TooltipTrigger>
+    </Tooltip>
+  );
 
   return (
-    <Stack gap={2}>
-      <Divider label="Your Daily Progress" labelPosition="left" />
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex items-center gap-2 mb-1">
+        <span className="text-xs font-semibold text-gray-500">
+          Your Daily Progress
+        </span>
+        <div className="flex-1 border-t border-gray-200" />
+      </div>
       {haveProgressToday ? progressBar : noProgressToday}
-    </Stack >
-  )
+    </div>
+  );
 }
+
+// Tailwind animation for stripes (add to your global CSS if not present)
+// .animate-stripes {
+//   background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.15) 0 8px, transparent 8px 16px);
+//   animation: stripes 1s linear infinite;
+// }
+// @keyframes stripes {
+//   0% { background-position: 0 0; }
+//   100% { background-position: 32px 0; }
+// }

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { items as marketItems } from './data'
-import { Item, UserInventory } from './types'
+import type { Item, UserInventory } from './types'
 
 interface MarketState {
   // Market data

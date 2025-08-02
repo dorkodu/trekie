@@ -1,7 +1,7 @@
 import { ulid } from "ulidx"
-import { IDexieDb } from "../../app/db"
-import { GameMutations, ReadOnlyGame } from "../game"
-import { ICommitmentInstance, ICommitmentKind, ICommitRecord } from "./schema"
+import { type IDexieDb } from "../../app/db"
+import type { GameMutations, ReadOnlyGame } from "../game"
+import type { ICommitmentInstance, ICommitmentKind, ICommitRecord } from "./schema"
 
 /**
  * Commitments Module for use in Trekie superconstruct

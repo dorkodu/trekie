@@ -3,8 +3,8 @@
 
 <svg
    width="341.99658"
-   height="130.12144"
-   viewBox="0 0 90.486599 34.427965"
+   height="130.12146"
+   viewBox="0 0 90.486601 34.427969"
    version="1.1"
    id="svg5"
    xml:space="preserve"
@@ -54,7 +54,7 @@
        y2="456.93073"
        gradientTransform="matrix(2.1608646,0,0,2.1608646,-170.86189,156.99081)" /></defs><g
      id="layer1"
-     transform="translate(-635.89569,-1118.4603)"><rect
+     transform="translate(-635.8957,-1118.4603)"><rect
        style="fill:url(#linearGradient21);stroke:none;stroke-width:6.20534;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.397343;paint-order:stroke fill markers"
        id="rect1-5"
        width="87.061607"

@@ -1,9 +1,9 @@
-import StatusCard from "@web/shared/components/cards/StatusCard"
-import Emoji from "@web/shared/components/misc/Emoji"
+import Emoji from "@web/components/misc/Emoji"
+import StatusCard from "@web/components/ui/status-card"
 
 function NoGoalsCard() {
   return (
-    <StatusCard icon={<Emoji emoji="🎯" size={24} />} title="No goals">
+    <StatusCard icon={<Emoji emoji="🎯" size={24} />} title="No goals" color="default">
       Set up some targets!
     </StatusCard>
   )

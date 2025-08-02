@@ -1,11 +1,11 @@
-import Dexie, { Table, Transaction } from 'dexie'
-import { ICommitmentInstance, ICommitRecord } from '../core/commitments'
+import Dexie, { type EntityTable, type Transaction } from 'dexie';
+import type { ICommitmentInstance, ICommitRecord } from '../core/commitments';
 
 export const createDb = () => new Dexie('trekie') as IDexieDb
 
 export type IDexieDb = Dexie & {
-  commitRecords: Table<ICommitRecord<any>, string>
-  commitments: Table<ICommitmentInstance, string>
+  commitRecords: EntityTable<ICommitRecord<any>, 'id'>
+  commitments: EntityTable<ICommitmentInstance, 'id'>
 }
 
 export function startDb<T extends Dexie>(

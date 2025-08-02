@@ -1,91 +1,94 @@
-import { ActionIcon, Menu } from '@mantine/core'
-import { modals } from "@mantine/modals"
-import { IconClipboardText, IconDots, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from '@tabler/icons-react'
-import { IHabit } from '@web/namespaces/habit'
-import { trekie } from "@web/shared/lib/trekie"
-import { useAppStore } from '@web/shared/stores/appStore'
-import { vanilla } from '@web/styles/theme'
-import { MouseEvent } from 'react'
-import { habits } from '.'
+import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
+import { ActionIcon } from "@web/components/ui/action-icon";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@web/components/ui/dropdown-menu";
+import { modals } from "@web/lib/modals";
+import { trekie } from "@web/lib/trekie";
+import { IHabit } from "@web/namespaces/habit";
+import { habits } from ".";
 
 interface Props {
-  habit: IHabit
+  habit: IHabit;
 }
 
 function HabitCounterMenu({ habit }: Props) {
-  const currentUserId = trekie.use($ => $.user?.id)
-  const isHabitOwner = habit.userId === currentUserId
+  const currentUserId = trekie.use(($) => $.user?.id);
+  const isHabitOwner = habit.userId === currentUserId;
 
-  const onShare = (ev: MouseEvent) => { ev.stopPropagation() }
-  const onClipboard = (ev: MouseEvent) => { ev.stopPropagation() }
+  const onShare = (ev) => {
+    ev.stopPropagation();
+  };
+  const onClipboard = (ev) => {
+    ev.stopPropagation();
+  };
 
-  const onEdit = (ev: MouseEvent) => {
-    ev.stopPropagation()
-
+  const onEdit = (ev) => {
+    ev.stopPropagation();
     modals.openContextModal({
       modal: "habitEditor",
       title: "Edit Habit",
       innerProps: {
         mode: "EDIT",
         habit: habit,
-      }
-    })
-  }
+      },
+    });
+  };
 
-  const onReport = (ev: MouseEvent) => {
-    ev.stopPropagation()
-  }
+  const onReport = (ev) => {
+    ev.stopPropagation();
+  };
 
-  const onDelete = (ev: MouseEvent) => {
-    ev.stopPropagation()
-
-    habits.delete(habit.id)
-  }
+  const onDelete = (ev) => {
+    ev.stopPropagation();
+    habits.delete(habit.id);
+  };
 
   return (
-    <Menu position="bottom-end" withArrow>
-      <Menu.Target>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <ActionIcon
-          variant="subtle"
+          variant="ghost"
           color="gray"
-          onClick={ev => ev.stopPropagation()}
+          onClick={(ev) => ev.stopPropagation()}
           size="lg"
         >
-          <IconDotsVertical color={vanilla.colors.gray.lightColor} />
+          <IconDotsVertical className="text-gray-500" />
         </ActionIcon>
-      </Menu.Target>
-
-      <Menu.Dropdown style={{
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-      }}>
-        <Menu.Item onClick={onShare} leftSection={<IconShare />}>
-          Share
-        </Menu.Item>
-
-        <Menu.Item onClick={onClipboard} leftSection={<IconClipboardText />}>
-          Copy To Clipboard
-        </Menu.Item>
-
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="shadow-lg">
+        <DropdownMenuItem onClick={onShare}>
+          <IconShare className="mr-2 w-4 h-4" /> Share
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onClipboard}>
+          <IconClipboardText className="mr-2 w-4 h-4" /> Copy To Clipboard
+        </DropdownMenuItem>
         {currentUserId && (
           <>
-            <Menu.Divider />
-
-            {isHabitOwner ? (<>
-              <Menu.Item onClick={onEdit} leftSection={<IconEdit />}>
-                Edit Habit
-              </Menu.Item>
-              <Menu.Item onClick={onDelete} leftSection={<IconTrash />} c="red">
-                Delete Habit
-              </Menu.Item>
-            </>) :
-              (<Menu.Item onClick={onReport} color="red" leftSection={<IconExclamationCircle />}>
-                Report habit
-              </Menu.Item>)}
+            <DropdownMenuSeparator />
+            {isHabitOwner ? (
+              <>
+                <DropdownMenuItem onClick={onEdit}>
+                  <IconEdit className="mr-2 w-4 h-4" /> Edit Habit
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onDelete} className="text-red-600 focus:bg-red-50">
+                  <IconTrash className="mr-2 w-4 h-4" /> Delete Habit
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem onClick={onReport} className="text-red-600 focus:bg-red-50">
+                <IconExclamationCircle className="mr-2 w-4 h-4" /> Report habit
+              </DropdownMenuItem>
+            )}
           </>
         )}
-      </Menu.Dropdown>
-    </Menu>
-  )
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 }
 
-export default HabitCounterMenu
+export default HabitCounterMenu;

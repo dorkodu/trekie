@@ -1,36 +1,30 @@
 {
   "compilerOptions": {
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-
     "alwaysStrict": true,
     "allowUnreachableCode": false,
     "noImplicitAny": false,
     "strictNullChecks": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
-
     "baseUrl": ".",
-
     "paths": {
-        "@api/*": ["./api/src/*"],
-        "@web/*": ["./web/src/*"],
-        "@sdk/*": ["./sdk/src/*"]
+      "@sdk/*": [
+        "./sdk/src/*"
+      ],
+      "@api/*": [
+        "./api/src/*"
+      ],
+      "@web/*": [
+        "./web/src/*"
+      ],
     }
   },
-  "references": [
-    {
-      "path": "web"
-    },
-    {
-      "path": "api"
-    },
-    {
-      "path": "sdk"
-    },
+  "exclude": [
+    "node_modules"
   ]
 }

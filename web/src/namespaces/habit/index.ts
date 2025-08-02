@@ -1,6 +1,5 @@
-import { Maybe } from "@web/shared/utils"
-import { habits } from "./library"
-import { IHabit, IHabitTemplate } from "./schema"
+import type { Maybe } from "@web/utils";
+import type { IHabit, IHabitTemplate } from "../social/schema";
 
 //? Interfaces
 
@@ -15,8 +14,8 @@ export interface Interface {
   count: () => Promise<number>
 }
 
-export * from "./commitment"
-export * from "./library"
-export * from "./schema"
+export * from "../social/schema";
+export * from "./commitment";
+export * from "./library";
 
 

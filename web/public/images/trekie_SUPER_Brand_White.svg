@@ -4,7 +4,7 @@
 <svg
    width="852.29755"
    height="297.34741"
-   viewBox="0 0 225.50373 78.673169"
+   viewBox="0 0 225.50374 78.673169"
    version="1.1"
    id="svg5"
    xml:space="preserve"
@@ -127,7 +127,7 @@
        style="color-interpolation-filters:sRGB"
        id="filter134"
        x="-0.31698496"
-       y="-0.65781927"
+       y="-0.65781928"
        width="1.6566369"
        height="2.362689"><feFlood
          result="flood"
@@ -196,7 +196,7 @@
        x2="301.67172"
        y2="672.24414" /></defs><g
      id="layer1"
-     transform="translate(-525.31921,-987.98258)"><rect
+     transform="translate(-525.31921,-987.98254)"><rect
        style="fill:url(#linearGradient156);fill-opacity:1;stroke-width:4.14699"
        id="rect142"
        width="66.145836"

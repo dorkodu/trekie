@@ -1,48 +1,61 @@
-import { Alert, Badge, Card, Center, Flex, Grid, Group, Overlay, Progress, SimpleGrid, Stack, Text, Tooltip } from "@mantine/core"
-import { IconCalendar, IconCheck, IconCheckbox, IconChecks, IconCheckupList, IconCircleCheck, IconDiamond, IconFlagCheck, IconFlame, IconSparkles } from "@tabler/icons-react"
-import { goals, IGoal } from "@web/namespaces/goal"
-import { trekie } from "@web/shared/lib/trekie"
-import { useLiveQuery } from "dexie-react-hooks"
+import { IconCalendar, IconChecks } from "@tabler/icons-react";
+import { Alert, AlertTitle } from "@web/components/ui/alert";
+import { Badge } from "@web/components/ui/badge";
+import { Card, CardContent } from "@web/components/ui/card";
+import { goals, IGoal } from "@web/namespaces/goal";
+import { useLiveQuery } from "dexie-react-hooks";
 
 interface Props {
-  id: IGoal["id"]
+  id: IGoal["id"];
 }
 
 export default function FeedItemCard({ id }: Props) {
-  const goal = useLiveQuery(() => goals.get(id), [id])
-  if (!goal) return ItemNotFound
+  const goal = useLiveQuery(() => goals.get(id), [id]);
+  if (!goal) return ItemNotFound;
 
   return (
-    <Card shadow="sm" p="sm" radius="lg">
+    <Card className="shadow-sm p-4 rounded-lg">
+      <CardContent className="p-0">
+        <div className="flex flex-nowrap justify-between items-start">
+          <div className="flex flex-col gap-0">
+            <h3 className="font-semibold">{goal.title}</h3>
+            <p className="text-sm text-muted-foreground">{goal.description}</p>
+          </div>
+        </div>
 
-      <Group wrap="nowrap" justify="space-between" align="flex-start">
-        <Stack gap={0}>
-          <Text fw={600}>{goal.title}</Text>
-          <Text size="sm">{goal.description}</Text>
-        </Stack>
-      </Group>
+        <div className="mt-3 flex gap-1 justify-start items-center">
+          <Badge
+            variant="outline"
+            className="text-xs h-8 pl-3 bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800"
+          >
+            <div className="flex gap-1.5 h-full justify-center items-center">
+              <IconChecks size={16} />
+              <span className="text-xs leading-6 font-bold">
+                5
+              </span>
+            </div>
+          </Badge>
 
-      <Flex mt="xs" gap={4} justify="flex-start" align="center" direction="row" wrap="nowrap">
-        <Badge size="lg" variant="light" color="green" pl={6}>
-          <Group gap={6} h="100%" justify="center" align="center">
-            <IconChecks size={22} />
-            <Text fz={13} lh="24px" fw={700}>5</Text>
-          </Group>
-        </Badge>
-
-        <Badge size="lg" variant="light" color="red" pl={6}>
-          <Group gap={6} h="100%" justify="center" align="center">
-            <IconCalendar size={21} />
-            <Text fz={13} lh="24px" fw={700}>30</Text>
-          </Group>
-        </Badge>
-      </Flex>
+          <Badge
+            variant="outline"
+            className="text-xs h-8 pl-3 bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800"
+          >
+            <div className="flex gap-1.5 h-full justify-center items-center">
+              <IconCalendar size={16} />
+              <span className="text-xs leading-6 font-bold">
+                30
+              </span>
+            </div>
+          </Badge>
+        </div>
+      </CardContent>
     </Card>
-  )
+  );
 }
 
 const ItemNotFound = (
-  <Alert title="Oops!">
-    Update not found.
+  <Alert>
+    <AlertTitle>Oops!</AlertTitle>
+    <p>Update not found.</p>
   </Alert>
-)
+);
