@@ -14,7 +14,6 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as WwwIndexRouteImport } from './routes/_www/index'
 import { Route as WwwSuperRouteImport } from './routes/_www/super'
 import { Route as WwwLoginRouteImport } from './routes/_www/login'
-import { Route as WwwGetStartedRouteImport } from './routes/_www/get-started'
 import { Route as WwwErrorRouteImport } from './routes/_www/error'
 import { Route as WwwCreateAccountRouteImport } from './routes/_www/create-account'
 import { Route as WwwAboutRouteImport } from './routes/_www/about'
@@ -65,11 +64,6 @@ const WwwSuperRoute = WwwSuperRouteImport.update({
 const WwwLoginRoute = WwwLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => WwwRoute,
-} as any)
-const WwwGetStartedRoute = WwwGetStartedRouteImport.update({
-  id: '/get-started',
-  path: '/get-started',
   getParentRoute: () => WwwRoute,
 } as any)
 const WwwErrorRoute = WwwErrorRouteImport.update({
@@ -227,7 +221,6 @@ export interface FileRoutesByFullPath {
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
-  '/get-started': typeof WwwGetStartedRoute
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
   '/': typeof WwwIndexRoute
@@ -261,7 +254,6 @@ export interface FileRoutesByTo {
   '/about': typeof WwwAboutRoute
   '/create-account': typeof WwwCreateAccountRoute
   '/error': typeof WwwErrorRoute
-  '/get-started': typeof WwwGetStartedRoute
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
   '/': typeof WwwIndexRoute
@@ -298,7 +290,6 @@ export interface FileRoutesById {
   '/_www/about': typeof WwwAboutRoute
   '/_www/create-account': typeof WwwCreateAccountRoute
   '/_www/error': typeof WwwErrorRoute
-  '/_www/get-started': typeof WwwGetStartedRoute
   '/_www/login': typeof WwwLoginRoute
   '/_www/super': typeof WwwSuperRoute
   '/_www/': typeof WwwIndexRoute
@@ -334,7 +325,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/create-account'
     | '/error'
-    | '/get-started'
     | '/login'
     | '/super'
     | '/'
@@ -368,7 +358,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/create-account'
     | '/error'
-    | '/get-started'
     | '/login'
     | '/super'
     | '/'
@@ -404,7 +393,6 @@ export interface FileRouteTypes {
     | '/_www/about'
     | '/_www/create-account'
     | '/_www/error'
-    | '/_www/get-started'
     | '/_www/login'
     | '/_www/super'
     | '/_www/'
@@ -465,13 +453,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof WwwLoginRouteImport
-      parentRoute: typeof WwwRoute
-    }
-    '/_www/get-started': {
-      id: '/_www/get-started'
-      path: '/get-started'
-      fullPath: '/get-started'
-      preLoaderRoute: typeof WwwGetStartedRouteImport
       parentRoute: typeof WwwRoute
     }
     '/_www/error': {
@@ -726,7 +707,6 @@ interface WwwRouteChildren {
   WwwAboutRoute: typeof WwwAboutRoute
   WwwCreateAccountRoute: typeof WwwCreateAccountRoute
   WwwErrorRoute: typeof WwwErrorRoute
-  WwwGetStartedRoute: typeof WwwGetStartedRoute
   WwwLoginRoute: typeof WwwLoginRoute
   WwwSuperRoute: typeof WwwSuperRoute
   WwwIndexRoute: typeof WwwIndexRoute
@@ -746,7 +726,6 @@ const WwwRouteChildren: WwwRouteChildren = {
   WwwAboutRoute: WwwAboutRoute,
   WwwCreateAccountRoute: WwwCreateAccountRoute,
   WwwErrorRoute: WwwErrorRoute,
-  WwwGetStartedRoute: WwwGetStartedRoute,
   WwwLoginRoute: WwwLoginRoute,
   WwwSuperRoute: WwwSuperRoute,
   WwwIndexRoute: WwwIndexRoute,

@@ -89,7 +89,7 @@ export function PricingSection() {
               bg-gradient-to-tr from-green-600 to-emerald-500 hover:from-green-600 hover:to-emerald-400 
               text-white font-bold 
               border-b-4 border-green-700"
-              onClick={() => navigate({ to: "/get-started" })}>
+              onClick={() => navigate({ to: "/create-account" })}>
               GET STARTED
             </Button>
           </div>
