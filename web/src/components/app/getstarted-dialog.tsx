@@ -1,13 +1,15 @@
-import React, { useId } from "react"
+import React, { useId, useState } from "react"
 
+import { Link } from "@tanstack/react-router"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@web/components/ui/dialog"
-import { LoginForm } from "../login-form"
+import { LoginForm } from "../forms/login-form"
 import { Button } from "../ui/button"
 
 export default function KickstartDialog({ children }: { children?: React.ReactNode }) {
   const id = useId()
+  const [dialogOpen, setDialogOpen] = useState(false)
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={(x) => setDialogOpen(x)} modal>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
@@ -42,8 +44,10 @@ export default function KickstartDialog({ children }: { children?: React.ReactNo
             </span>
             <span>CONTINUE WITH GOOGLE</span>
           </Button>
-          <Button className="w-full font-bold" variant="light" aria-label="Create Account">
-            CREATE YOUR ACCOUNT
+          <Button className="w-full font-bold" variant="light" aria-label="Create Account" asChild onClick={() => {
+            setDialogOpen(false)
+          }}>
+            <Link to="/create-account">CREATE YOUR ACCOUNT</Link>
           </Button>
         </div>
 
