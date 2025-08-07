@@ -43,6 +43,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   signup: (email: string, password: string, name: string) => Promise<boolean>;
   socialLogin: (provider: 'github') => Promise<boolean>;
+  forgotPassword: (email: string) => Promise<boolean>;
   clearError: () => void;
 }
 
@@ -230,6 +231,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const forgotPassword = async (email: string): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // TODO: Better-auth might have a forgetPassword method
+      // For now, we'll simulate the API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // You would typically call something like:
+      // const result = await authClient.forgetPassword({ email });
+      // if (result?.error) {
+      //   setError(result.error.message || "Failed to send reset email.");
+      //   return false;
+      // }
+
+      return true;
+    } catch (err: any) {
+      setError(err?.message || "Failed to send reset email.");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const clearError = () => {
     setError(null);
   };
@@ -243,6 +269,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     signup,
     socialLogin,
+    forgotPassword,
     clearError
   };
 

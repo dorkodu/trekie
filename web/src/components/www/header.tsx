@@ -4,7 +4,6 @@ import { Button } from "@web/components/ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@web/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@web/components/ui/popover"
 import { cn } from "@web/lib/utils"
-import KickstartDialog from "../app/kickstart-dialog"
 import ThemeToggle from "../theme-toggles"
 
 // Navigation links array to be used in both desktop and mobile menus
@@ -217,11 +216,10 @@ export function Header() {
             </div>
             {/* Right side */}
             <div className="flex items-center gap-2">
-              <KickstartDialog>
-                <Button variant="default" className="text-sm rounded-xl font-extrabold uppercase hidden md:block">
-                  Get Started
-                </Button>
-              </KickstartDialog>
+
+              <Button variant="default" asChild className="text-sm rounded-xl font-extrabold uppercase hidden md:block">
+                <Link to="/login">GET STARTED</Link>
+              </Button>
 
               <ThemeToggle />
             </div>

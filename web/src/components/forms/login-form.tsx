@@ -1,12 +1,15 @@
-import { USERNAME_REGEX } from "@sdk/core"
+import { IconLoader } from "@tabler/icons-react"
 import { useForm } from "@tanstack/react-form"
-import { useNavigate } from "@tanstack/react-router"
+import { Link } from "@tanstack/react-router"
+import z from "zod"
+
 import { useAuth } from "@web/lib/auth/AuthProvider"
 import { FieldInfo } from "@web/lib/forms"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { Label } from "./ui/label"
 
+import { Button } from "@web/components/ui/button"
+import { Input } from "@web/components/ui/input"
+
+import { USERNAME_REGEX } from "@sdk/core"
 
 interface Credentials {
   loginName: string
@@ -62,8 +65,6 @@ export function LoginForm() {
     }
   })
 
-  const navigate = useNavigate()
-
   return (
     <form
       onSubmit={(e) => {
@@ -71,7 +72,7 @@ export function LoginForm() {
         e.stopPropagation()
         form.handleSubmit()
       }}
-      className="space-y-6">
+      className="space-y-3">
 
       <form.Field
         name="loginName"
@@ -119,7 +120,6 @@ export function LoginForm() {
         children={(field) => {
           return (
             <>
-              <Label htmlFor={field.name}>Password</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -127,7 +127,7 @@ export function LoginForm() {
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="∗∗∗∗∗∗"
+                placeholder="Password"
                 required
                 className="mt-1"
                 disabled={loading}
@@ -138,9 +138,15 @@ export function LoginForm() {
         }}
       />
 
+      <div className="flex items-center justify-between">
+        <Link to="/forgot-password" className="ml-auto text-sm underline-offset-2 hover:underline">
+          Forgot your password?
+        </Link>
+      </div>
+
       <form.Subscribe
         selector={(state) => [state.errorMap]}
-        children={([errorMap]) => errorMap.onSubmit ? (
+        children={([errorMap]) => errorMap?.onSubmit ? (
           <div>
             <em>There was an error on the form: {errorMap.onSubmit}</em>
           </div>
@@ -148,8 +154,12 @@ export function LoginForm() {
         }
       />
 
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Signing In..." : "Sign In"}
+      <Button type="submit" className="w-full font-bold" disabled={loading}>
+        {loading ? <IconLoader
+          className="-ms-1 animate-spin opacity-70"
+          size={16}
+          aria-hidden="true"
+        /> : "LOGIN"}
       </Button>
     </form>
   )

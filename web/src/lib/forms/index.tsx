@@ -4,9 +4,8 @@ export function FieldInfo({ field }: { field: AnyFieldApi }) {
   return (
     <>
       {field.state.meta.isTouched && !field.state.meta.isValid ? (
-        <em>{field.state.meta.errors.join(',')}</em>
+        <p className="text-sm text-red-500">{field.state.meta.errors.join(',')}</p>
       ) : null}
-      {field.state.meta.isValidating ? 'Validating...' : null}
     </>
   )
 }

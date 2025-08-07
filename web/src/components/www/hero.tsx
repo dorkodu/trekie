@@ -35,7 +35,7 @@ export function Hero() {
                     bg-gradient-to-tr from-green-600 to-emerald-500 
                     hover:from-green-600 hover:to-emerald-400
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
-                    <Link to="/" className="block px-8 py-3">
+                    <Link to="/login" className="block px-8 py-3">
                       <span className="text-nowrap font-extrabold text-white text-shadow-xs">GET STARTED</span>
                     </Link>
                   </Button>
