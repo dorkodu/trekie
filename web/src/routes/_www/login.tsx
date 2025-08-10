@@ -31,7 +31,7 @@ function Page() {
 
   return (
     <main className="flex h-screen items-center justify-center">
-      <div className="w-full max-w-xs gap-6">
+      <div className="w-full max-w-xs gap-6 mx-4">
 
         <div className="flex flex-col items-center gap-2 text-center mb-6 -mt-25">
           <h1 className="text-2xl font-bold">Welcome to Trekie!</h1>
