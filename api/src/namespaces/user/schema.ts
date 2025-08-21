@@ -5,6 +5,10 @@ export const getUser = z.strictObject({
   username: commonSchemas.username.optional(),
 })
 
+export const checkUsernameAvailability = z.strictObject({
+  username: commonSchemas.username,
+})
+
 export const updateUser = z.strictObject({
   username: commonSchemas.username,
 })
