@@ -1,49 +1,19 @@
-import { usernameClient } from "better-auth/client/plugins";
-import { createAuthClient } from "better-auth/react";
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
-
-export const authClient = createAuthClient({
-  baseURL: "http://localhost:8000/auth/",
-  apiPath: "/", // Prevents /api from being appended
-
-  plugins: [
-    usernameClient()
-  ],
-  fetchOptions: {
-    credentials: "include",
-  }
-});
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  image?: string;
-  emailVerified: boolean;
-}
-
-interface Session {
-  id: string;
-  token: string;
-  expiresAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  ipAddress?: string;
-  userAgent?: string;
-  userId: string;
-}
+import { authClient } from "./client";
+import type { Session, User } from './types';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   error: string | null;
-  login: (credentials: { username?: string; email?: string; password: string }) => Promise<boolean>;
+  login: (identifier: string, password: string) => Promise<boolean>; // identifier can be email or username
   logout: () => Promise<void>;
-  signup: (email: string, password: string, name: string) => Promise<boolean>;
-  socialLogin: (provider: 'github') => Promise<boolean>;
+  signup: (params: { email: string; password: string; name: string; username?: string }) => Promise<boolean>;
   forgotPassword: (email: string) => Promise<boolean>;
+  checkUsernameAvailability: (username: string) => Promise<boolean>;
+  completeOnboarding: () => Promise<boolean>;
   clearError: () => void;
 }
 
@@ -81,15 +51,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const login = async ({ username, email, password }: { username?: string; email?: string; password: string }): Promise<boolean> => {
-    if (email && password) {
-      return emailLogin(email, password);
-    } else if (username && password) {
-      return usernameLogin(username, password);
-    } else {
-      setError("Email and password are required for login.");
-      return false;
-    }
+  const login = async (identifier: string, password: string): Promise<boolean> => {
+    // rudimentary email detection
+    const isEmail = /@/.test(identifier);
+    if (isEmail) return emailLogin(identifier, password);
+    return usernameLogin(identifier, password);
   };
 
   const usernameLogin = async (username: string, password: string): Promise<boolean> => {
@@ -156,16 +122,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
 
-  const signup = async (email: string, password: string, name: string): Promise<boolean> => {
+  const signup = async ({ email, password, name, username }: { email: string; password: string; name: string; username?: string }): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
 
+      // Use email signup with username plugin - BetterAuth will handle setting username
       const result = await authClient.signUp.email({
         email,
         password,
         name,
-        callbackURL: "/dashboard"
+        username, // username plugin handles this field
+        callbackURL: "/onboarding"
       });
 
       if (result?.error) {
@@ -188,35 +156,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const socialLogin = async (provider: 'github'): Promise<boolean> => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const result = await authClient.signIn.social({
-        provider,
-        callbackURL: "http://localhost:5173/home"
-      });
-
-      if (result?.error) {
-        setError(result.error.message || `${provider} login failed.`);
-        return false;
-      } else if ('user' in result.data && result.data.user) {
-        setUser(result.data.user as User);
-        // Get session after successful social login
-        await checkSession();
-        return true;
-      } else {
-        setError(`${provider} login failed.`);
-        return false;
-      }
-    } catch (err: any) {
-      setError(err?.message || `${provider} login failed.`);
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Social login postponed for now
 
   const logout = async (): Promise<void> => {
     try {
@@ -256,6 +196,70 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const checkUsernameAvailability = async (username: string): Promise<boolean> => {
+    try {
+      // For now, we'll simulate a realistic username availability check
+      // In production, this would make a real API call to your backend
+      await new Promise(resolve => setTimeout(resolve, 300)); // Simulate network delay
+
+      // Block common/reserved usernames
+      const blockedUsernames = [
+        'admin', 'root', 'api', 'www', 'mail', 'ftp', 'test', 'support', 'help',
+        'user', 'guest', 'demo', 'example', 'sample', 'anonymous', 'null', 'undefined',
+        'about', 'privacy', 'terms', 'login', 'signup', 'register', 'dashboard',
+        'profile', 'settings', 'account', 'home', 'contact', 'blog', 'news'
+      ];
+
+      // Check if username is in blocked list (case insensitive)
+      if (blockedUsernames.includes(username.toLowerCase())) {
+        return false;
+      }
+
+      // For demo purposes, also block usernames that are too short or contain certain patterns
+      if (username.length < 3) {
+        return false;
+      }
+
+      // Simulate some usernames being taken (for demo)
+      const commonTakenUsernames = ['john', 'jane', 'user123', 'test123', 'demo'];
+      if (commonTakenUsernames.includes(username.toLowerCase())) {
+        return false;
+      }
+
+      // Otherwise, username is available
+      return true;
+    } catch (err: any) {
+      console.warn('Username availability check failed:', err);
+      // On error, assume username might be taken for safety
+      return false;
+    }
+  };
+
+  const completeOnboarding = async (): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // TODO: Call API to mark onboarding as completed
+      // const result = await authClient.updateUser({ onboardingCompleted: true });
+
+      // For now, simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Update local user state
+      if (user) {
+        setUser({ ...user, onboardingCompleted: true } as User);
+      }
+
+      return true;
+    } catch (err: any) {
+      setError(err?.message || "Failed to complete onboarding.");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const clearError = () => {
     setError(null);
   };
@@ -268,8 +272,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     login,
     logout,
     signup,
-    socialLogin,
     forgotPassword,
+    checkUsernameAvailability,
+    completeOnboarding,
     clearError
   };
 

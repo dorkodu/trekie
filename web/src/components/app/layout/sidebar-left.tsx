@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { Separator } from "@web/components/ui/separator"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail, useSidebar } from "@web/components/ui/sidebar"
 import { useIsMobile } from "@web/hooks/use-mobile"
-import { useAuth } from "@web/lib/auth/AuthProvider"
+import { useAuth } from "@web/lib/auth/provider"
 import {
   Bell,
   HelpCircle,

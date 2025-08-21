@@ -8,7 +8,7 @@ import { routeTree } from "./routeTree.gen";
 
 import { spotlightActions, spotlightKeyboardShortcuts } from "./components/app/spotlight";
 import { ThemeProvider } from "./components/theme-provider";
-import { AuthProvider } from "./lib/auth/AuthProvider";
+import { AuthProvider } from "./lib/auth/provider";
 import { SpotlightProvider } from "./lib/spotlight";
 
 import "./styles.css";

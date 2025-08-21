@@ -10,37 +10,40 @@ import { SidebarLeft } from "@web/components/app/layout/sidebar-left";
 import { SidebarRight } from "@web/components/app/layout/sidebar-right";
 import { SidebarInset, SidebarProvider } from "@web/components/ui/sidebar";
 import { Spotlight } from "@web/lib/spotlight";
+import { OnboardingGuard } from "@web/components/guards/onboarding-guard";
 
 export default function AppLayout() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-6xl">
+    <OnboardingGuard>
+      <main className="flex min-h-screen items-center justify-center">
+        <div className="w-full max-w-6xl">
 
-        <SidebarProvider>
-          <SidebarLeft />
-          <SidebarInset>
+          <SidebarProvider>
+            <SidebarLeft />
+            <SidebarInset>
 
-            <MobileTopBar />
+              <MobileTopBar />
 
-            {/* Desktop Header - hidden on mobile */}
-            <header className="bg-background sticky top-0 hidden lg:flex h-14 shrink-0 items-center gap-2">
-              <div className="flex flex-1 items-center justify-center gap-2 px-3 pt-2">
-                <Spotlight />
+              {/* Desktop Header - hidden on mobile */}
+              <header className="bg-background sticky top-0 hidden lg:flex h-14 shrink-0 items-center gap-2">
+                <div className="flex flex-1 items-center justify-center gap-2 px-3 pt-2">
+                  <Spotlight />
+                </div>
+              </header>
+
+              {/* Main Content - with mobile padding for top and bottom bars */}
+              <div className="flex flex-1 flex-col gap-4 px-4 pt-16 pb-20 lg:pt-4 lg:pb-4">
+                <Outlet />
               </div>
-            </header>
+            </SidebarInset>
+            <SidebarRight />
+          </SidebarProvider>
 
-            {/* Main Content - with mobile padding for top and bottom bars */}
-            <div className="flex flex-1 flex-col gap-4 px-4 pt-16 pb-20 lg:pt-4 lg:pb-4">
-              <Outlet />
-            </div>
-          </SidebarInset>
-          <SidebarRight />
-        </SidebarProvider>
+          {/* Mobile Bottom Bar */}
+          <MobileBottomBar />
 
-        {/* Mobile Bottom Bar */}
-        <MobileBottomBar />
-
-      </div>
-    </main>
+        </div>
+      </main>
+    </OnboardingGuard>
   )
 }

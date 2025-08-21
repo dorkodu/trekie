@@ -2,7 +2,7 @@ import ThemeToggle from "@web/components/theme-toggles"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@web/components/ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@web/components/ui/sidebar"
-import { useAuth } from "@web/lib/auth/AuthProvider"
+import { useAuth } from "@web/lib/auth/provider"
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react"
 import { useEffect } from "react"
 

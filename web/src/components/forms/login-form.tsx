@@ -1,10 +1,10 @@
 import { IconLoader } from "@tabler/icons-react"
 import { useForm } from "@tanstack/react-form"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import z from "zod"
 
-import { useAuth } from "@web/lib/auth/AuthProvider"
-import { FieldInfo } from "@web/lib/forms"
+import { useAuth } from "@web/lib/auth/provider"
+import { FieldInfo } from "@web/lib/forms/field-info"
 
 import { Button } from "@web/components/ui/button"
 import { Input } from "@web/components/ui/input"
@@ -25,7 +25,8 @@ export const safecheckEmail = (x: string) => z.email().trim().safeParse(x)
 export const safecheckUsername = (x: string) => z.string().trim().regex(USERNAME_REGEX).safeParse(x)
 
 export function LoginForm() {
-  const { login, socialLogin, loading, error, clearError } = useAuth()
+  const { login, loading, error, clearError } = useAuth()
+  const navigate = useNavigate()
 
   const form = useForm({
     defaultValues: defaultCredentials,
@@ -57,11 +58,12 @@ export function LoginForm() {
         }
       }
     },
-    onSubmit: async ({ value, formApi }) => {
-      // Do something with form data
-      alert(JSON.stringify(value, null, 2))
-
-      // Validate loginName as email or username
+    onSubmit: async ({ value }) => {
+      clearError()
+      const success = await login(value.loginName, value.password)
+      if (success) {
+        navigate({ to: "/home" })
+      }
     }
   })
 

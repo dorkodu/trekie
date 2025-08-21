@@ -2,7 +2,7 @@ import { IconMenu2 } from "@tabler/icons-react"
 import { Link } from "@tanstack/react-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { SidebarTrigger, useSidebar } from "@web/components/ui/sidebar"
-import { useAuth } from "@web/lib/auth/AuthProvider"
+import { useAuth } from "@web/lib/auth/provider"
 import * as React from "react"
 
 export function MobileTopBar() {
