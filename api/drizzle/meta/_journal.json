@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1745083574629,
-      "tag": "0000_daffy_machine_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1753104366388,
-      "tag": "0001_panoramic_doctor_spectrum",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1753277121933,
-      "tag": "0002_thick_green_goblin",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1753282600921,
-      "tag": "0003_flowery_daredevil",
+      "when": 1755793824722,
+      "tag": "0000_wooden_night_nurse",
       "breakpoints": true
     }
   ]
