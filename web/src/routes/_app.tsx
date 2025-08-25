@@ -1,6 +1,19 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { authClient } from "@web/lib/auth/client";
 
 export const Route = createFileRoute("/_app")({
+  beforeLoad: async ({ location }) => {
+    const session = await authClient.getSession();
+
+    if (!session.data?.session) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
   component: AppLayout,
 });
 
@@ -8,10 +21,9 @@ import { MobileBottomBar } from "@web/components/app/layout/mobile-bottom-bar";
 import { MobileTopBar } from "@web/components/app/layout/mobile-top-bar";
 import { SidebarLeft } from "@web/components/app/layout/sidebar-left";
 import { SidebarRight } from "@web/components/app/layout/sidebar-right";
+import { OnboardingGuard } from "@web/components/guards/onboarding-guard";
 import { SidebarInset, SidebarProvider } from "@web/components/ui/sidebar";
 import { Spotlight } from "@web/lib/spotlight";
-import { OnboardingGuard } from "@web/components/guards/onboarding-guard";
-
 export default function AppLayout() {
   return (
     <OnboardingGuard>

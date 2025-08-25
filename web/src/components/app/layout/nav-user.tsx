@@ -5,11 +5,12 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@we
 import { useAuth } from "@web/lib/auth/provider"
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react"
 import { useEffect } from "react"
+import { useNavigate } from "@tanstack/react-router";
 
 export function NavHeader() {
   const { isMobile } = useSidebar()
-
-  const { user, session } = useAuth()
+  const { user, session, logout } = useAuth()
+  const navigate = useNavigate()
 
   useEffect
     (() => {
@@ -67,7 +68,10 @@ export function NavHeader() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={async () => {
+              await logout();
+              navigate({ to: "/login" });
+            }}>
               <LogOut />
               Log out
             </DropdownMenuItem>

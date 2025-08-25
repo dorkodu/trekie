@@ -8,6 +8,7 @@ import { Separator } from "@web/components/ui/separator"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail, useSidebar } from "@web/components/ui/sidebar"
 import { useIsMobile } from "@web/hooks/use-mobile"
 import { useAuth } from "@web/lib/auth/provider"
+import { useNavigate } from "@tanstack/react-router";
 import {
   Bell,
   HelpCircle,
@@ -102,7 +103,8 @@ const data = {
 
 // Mobile User Menu Component
 function MobileUserMenu() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
 
   const userMenuItems = [
     {
@@ -213,9 +215,9 @@ function MobileUserMenu() {
           <SidebarMenuButton
             size="lg"
             className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl"
-            onClick={() => {
-              // Add logout logic here
-              console.log("Logout clicked")
+            onClick={async () => {
+              await logout();
+              navigate({ to: "/login" });
             }}
           >
             <LogOut className="size-5" />

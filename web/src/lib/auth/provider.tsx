@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
+import z from 'zod';
 import { authClient } from "./client";
 import type { Session, User } from './types';
 
@@ -53,12 +54,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (identifier: string, password: string): Promise<boolean> => {
     // rudimentary email detection
-    const isEmail = /@/.test(identifier);
-    if (isEmail) return emailLogin(identifier, password);
-    return usernameLogin(identifier, password);
+
+    const isEmail = z.email().safeParse(identifier).success;
+    if (isEmail) return loginWithEmail(identifier, password);
+    return loginWithUsername(identifier, password);
   };
 
-  const usernameLogin = async (username: string, password: string): Promise<boolean> => {
+  const loginWithUsername = async (username: string, password: string): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
@@ -89,7 +91,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  const emailLogin = async (email: string, password: string): Promise<boolean> => {
+  const loginWithEmail = async (email: string, password: string): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
