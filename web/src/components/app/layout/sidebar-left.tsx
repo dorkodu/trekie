@@ -1,18 +1,17 @@
-import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconMessageQuestion, IconSettings, IconUsers } from "@tabler/icons-react"
-import { Link } from "@tanstack/react-router"
+import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconLogout2, IconMessageQuestion, IconSettings, IconUsers } from "@tabler/icons-react"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { NavMain } from "@web/components/app/layout/nav-main"
 import { NavSecondary } from "@web/components/app/layout/nav-secondary"
 import { useTheme } from "@web/components/theme-provider"
+import { ThemeSwitch } from "@web/components/theme-toggles"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { Separator } from "@web/components/ui/separator"
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail, useSidebar } from "@web/components/ui/sidebar"
 import { useIsMobile } from "@web/hooks/use-mobile"
 import { useAuth } from "@web/lib/auth/provider"
-import { useNavigate } from "@tanstack/react-router";
 import {
   Bell,
   HelpCircle,
-  LogOut,
   Settings,
   Shield,
   Sparkles,
@@ -171,7 +170,6 @@ function MobileUserMenu() {
       </div>
 
       {/* Main Navigation on Mobile */}
-      {/* Navigation is now in bottom bar on mobile, so we don't show it here */}
 
       {/* User Menu Items */}
       <div className="mb-6">
@@ -207,6 +205,13 @@ function MobileUserMenu() {
         </SidebarMenu>
       </div>
 
+      {/* Appearance / Theme Toggle */}
+      <div className="mb-6">
+        <div className="px-3">
+          <ThemeSwitch />
+        </div>
+      </div>
+
       <Separator className="my-4" />
 
       {/* Sign Out */}
@@ -220,12 +225,9 @@ function MobileUserMenu() {
               navigate({ to: "/login" });
             }}
           >
-            <LogOut className="size-5" />
+            <IconLogout2 className="size-6" />
             <div className="flex-1 text-left min-w-0">
-              <div className="font-medium text-sm">Sign out</div>
-              <div className="text-xs text-muted-foreground">
-                Sign out of your account
-              </div>
+              <div className="font-medium text-sm">Log Out</div>
             </div>
           </SidebarMenuButton>
         </SidebarMenuItem>
