@@ -1,6 +1,5 @@
-import { authOptionalProcedure, authRequiredProcedure, Router } from "@api/lib/trpc"
+import { Router, authOptionalProcedure } from "@api/lib/trpc"
 import { z } from "zod"
-import { gameService } from "./service"
 
 const helloSchema = z.object({ message: z.string() })
 

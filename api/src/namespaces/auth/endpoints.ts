@@ -1,21 +1,21 @@
 import { auth } from "@api/lib/auth";
-import { Context, Elysia } from "elysia";
+import { Elysia } from "elysia";
 
-
-export const authEndpoints = new Elysia({ prefix: "/auth" })
-  .options("/sign-in/*", ({ request }) => {
-    return new Response(null, {
-      status: 204,
-    });
-  })
-  .get("/test", () => "auth ok")
+export const betterAuthMiddleware = new Elysia({ name: 'better-auth' })
   .mount(auth.handler)
+  .macro({
+    auth: {
+      async resolve({ status, request: { headers } }) {
+        const session = await auth.api.getSession({
+          headers
+        })
 
-export const betterAuthView = (context: Context) => {
-  const BETTER_AUTH_ACCEPT_METHODS = ["POST", "GET"]
-  // validate request method
-  if (BETTER_AUTH_ACCEPT_METHODS.includes(context.request.method))
-    return auth.handler(context.request);
-  else
-    return context.error(405);
-}
+        if (!session) return status(401)
+
+        return {
+          user: session.user,
+          session: session.session
+        }
+      }
+    }
+  })

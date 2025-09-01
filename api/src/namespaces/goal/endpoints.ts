@@ -1,7 +1,6 @@
 import {
-  authOptionalProcedure,
-  authRequiredProcedure,
   Router,
+  authRequiredProcedure
 } from "@api/lib/trpc"
 import { goalSchemas } from "./schema"
 

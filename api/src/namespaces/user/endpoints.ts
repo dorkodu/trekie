@@ -1,12 +1,11 @@
 import {
+  Router,
   authOptionalProcedure,
   authRequiredProcedure,
-  Router,
 } from "@api/lib/trpc";
 import * as userRepository from "./repository";
+import * as userService from "./repository";
 import { userSchemas } from "./schema";
-
-export function getUser() { }
 
 export const router = Router({
   getUser: authOptionalProcedure

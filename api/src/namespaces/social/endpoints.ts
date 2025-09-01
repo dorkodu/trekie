@@ -1,7 +1,5 @@
 import {
-  authOptionalProcedure,
-  authRequiredProcedure,
-  Router,
+  Router
 } from "@api/lib/trpc"
 
 export const router = Router({
