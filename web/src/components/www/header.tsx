@@ -37,6 +37,7 @@ const navigationLinks = [
     type: "icon",
     items: [
       { href: "/manifesto", label: "Manifesto", icon: IconBook },
+      { href: "/help", label: "Help Center", icon: IconBook },
       { href: "/docs", label: "For Developers", icon: IconCode },
       { href: "https://dorkodu.com", label: "Our Company", icon: IconBuildingArch },
     ],
