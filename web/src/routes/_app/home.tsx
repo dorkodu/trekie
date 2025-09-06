@@ -7,6 +7,7 @@ export const Route = createFileRoute('/_app/home')({
   component: Home,
 })
 
+import { useQuery } from "@tanstack/react-query";
 import { Alert, AlertDescription } from "@web/components/ui/alert";
 import { Badge } from "@web/components/ui/badge";
 import { Box, Flex, Stack } from "@web/components/ui/layout";
@@ -15,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@web/components/ui/tab
 import { db } from "@web/lib/db";
 import { errors } from "@web/lib/errors";
 import { trekie } from "@web/lib/trekie";
-import { cn } from "@web/lib/utils";
 import GoalCard from "@web/namespaces/goal/GoalCard";
 import { default as NoGoalsCard } from "@web/namespaces/goal/NoGoalsCard";
 import HabitCounter from "@web/namespaces/habit/HabitCounter";
@@ -29,7 +29,7 @@ function Home() {
     return <Alert><AlertDescription>Failed to load user in home page.</AlertDescription></Alert>;
   }
 
-  const [tab, setTab] = useState("habits");
+  const [tab, setTab] = useState("commitments");
 
   return (
     <Box className="m-2">
@@ -39,18 +39,18 @@ function Home() {
         </Box>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 cursor-pointer">
-            <TabsTrigger value="habits" className="flex items-center gap-2 cursor-pointer">
+          <TabsList className="grid w-full grid-cols-2 cursor-pointer rounded-lg ">
+            <TabsTrigger value="commitments" className="flex items-center gap-2 cursor-pointer rounded-lg">
               <IconCopyCheck className="w-5 h-5" />
               <span>Commitments</span>
             </TabsTrigger>
-            <TabsTrigger value="goals" className="flex items-center gap-2 cursor-pointer">
+            <TabsTrigger value="goals" className="flex items-center gap-2 cursor-pointer rounded-lg">
               <IconTargetArrow className="w-5 h-5" />
               <span>Goals</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="habits" className="mt-2">
+          <TabsContent value="commitments" className="mt-2">
             <CommitmentsFeed />
           </TabsContent>
           <TabsContent value="goals" className="mt-2">
@@ -67,16 +67,16 @@ export default Home;
 function CommitmentsFeed() {
   const userId = trekie.use($ => $.user.id);
 
-  const query = useLiveQuery(
-    () =>
+  const habitsQuery = useQuery({
+    queryKey: ['habits', userId],
+    queryFn: async () =>
       db.habits
         .where({ userId: userId })
         .filter(habit => !Object.hasOwn(habit, "isDeleted"))
         .toArray(),
-    []
-  );
+  });
 
-  if (!query)
+  if (habitsQuery.isLoading)
     return (
       <Box className="h-60">
         <Stack gap={2}>
@@ -87,13 +87,13 @@ function CommitmentsFeed() {
       </Box>
     );
 
-  const hasAnyHabits = query?.length > 0;
+  const hasAnyHabits = habitsQuery.isSuccess && habitsQuery.data.length > 0;
   if (!hasAnyHabits) return <NoHabitsCard />;
 
   return (
-    <Box className={cn("bg-muted p-1.5 rounded-2xl min-h-[150px]")}>
+    <Box className="rounded-2xl min-h-[150px] max-w-lg">
       <Stack gap={0}>
-        {query.map(habit => (
+        {habitsQuery.data.map(habit => (
           <HabitCounter habitId={habit.id} key={habit.id} />
         ))}
       </Stack>

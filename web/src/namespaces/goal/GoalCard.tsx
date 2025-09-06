@@ -1,8 +1,8 @@
 import { IconSparkles } from "@tabler/icons-react";
 import { IGoal } from "@web/namespaces/goal";
-import { useLiveQuery } from "dexie-react-hooks";
 import GoalMenu from "./GoalCardMenu";
 
+import { useQuery } from "@tanstack/react-query";
 import { Alert, AlertDescription, AlertTitle } from "@web/components/ui/alert";
 import { Badge } from "@web/components/ui/badge";
 import {
@@ -20,16 +20,25 @@ interface Props {
 }
 
 export default function GoalCard({ id }: Props) {
-  const goal = useLiveQuery(() => goals.get(id), [id]);
-  const progress = useLiveQuery(() => goals.calculateProgress(id), [id]);
+  const goalQuery = useQuery({
+    queryKey: ["goal", id],
+    queryFn: () => goals.get(id),
+  })
 
-  if (!goal) return NotFound;
+  const progressQuery = useQuery({
+    queryKey: ["goal-progress", id],
+    queryFn: () => goals.calculateProgress(id),
+    enabled: !!goalQuery.data,
+  })
 
-  const percentage = progress?.percent ?? 0;
-  const xp = progress?.xp ?? 0;
+  if (!goalQuery.data) return NotFound;
+
+  const percentage = progressQuery.data?.percent ?? 0;
+  const xp = progressQuery.data?.xp ?? 0;
+  const goal = goalQuery.data
 
   return (
-    <Card className="shadow-sm rounded-lg">
+    <Card className="shadow-sm rounded-lg cursor-pointer" onClick={() => { window.location.href = `/goals/${id}` }}>
       <CardHeader className="flex flex-row items-start justify-between p-4">
         <div className="space-y-0">
           <CardTitle className="font-semibold">{goal.title}</CardTitle>

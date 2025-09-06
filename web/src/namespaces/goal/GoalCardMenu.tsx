@@ -7,7 +7,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@web/components/ui/dropdown-menu";
-import { modals } from "@web/lib/modals";
+// import { modals } from "@web/lib/modals";
+import { useQueryClient } from "@tanstack/react-query";
 import { trekie } from "@web/lib/trekie";
 import { goals, IGoal } from ".";
 
@@ -17,6 +18,7 @@ interface Props {
 
 function GoalMenu({ goal }: Props) {
   const currentUserId = trekie.use(($) => $.user.id);
+  const qc = useQueryClient();
 
   const onShare = (ev) => {
     ev.stopPropagation();
@@ -30,19 +32,17 @@ function GoalMenu({ goal }: Props) {
 
   const onEdit = (ev) => {
     ev.stopPropagation();
-    modals.openContextModal({
-      modal: "goalEditor",
-      title: "Edit Goal",
-      innerProps: {
-        mode: "EDIT",
-        goal,
-      },
-    });
+    window.location.href = `/goals/${goal.id}`
   };
 
-  const onDelete = (ev) => {
+  const onDelete = async (ev) => {
     ev.stopPropagation();
-    goals.delete(goal.id);
+    await goals.delete(goal.id);
+    await Promise.all([
+      qc.invalidateQueries({ queryKey: ["goals", currentUserId] }),
+      qc.invalidateQueries({ queryKey: ["goal", goal.id] }),
+      qc.invalidateQueries({ queryKey: ["goal-progress", goal.id] }),
+    ]);
   };
 
   return (

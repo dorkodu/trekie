@@ -8,8 +8,8 @@ export interface Interface {
   create: (template: IGoalTemplate) => Promise<Maybe<IGoal>>
   add: (goal: IGoal) => Promise<string>
   update: (id: IGoal["id"], props: IGoalTemplate) => Promise<number>
-  delete: (id: IGoal["id"]) => void
-  giveup: (id: IGoal["id"]) => void
+  delete: (id: IGoal["id"]) => Promise<void>
+  giveup: (id: IGoal["id"]) => Promise<void>
   count: () => Promise<number>
   addCommitment: (goalId: IGoal['id'], commitmentId: ICommitmentInstance['id']) => Promise<boolean>
   dropCommitment: (goalId: IGoal['id'], commitmentId: ICommitmentInstance['id']) => Promise<boolean>

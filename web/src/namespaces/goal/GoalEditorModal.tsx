@@ -6,12 +6,8 @@ import { Input } from "@web/components/ui/input";
 import { Label } from "@web/components/ui/label";
 import { Box, Group, Stack } from "@web/components/ui/layout";
 import { Textarea } from "@web/components/ui/textarea";
-import {
-  goals,
-  IGoal,
-  IGoalTemplate,
-} from "@web/namespaces/goal";
-import { tryCatch } from "@web/utils/tryCatch";
+import { goals, IGoal, IGoalTemplate } from "@web/namespaces/goal";
+import { tryCatch } from '@web/utils/tryCatch';
 import { useEffect, useState } from "react";
 import { ChoiceCombobox, type ChoiceOption } from "./ChoiceCombobox";
 
@@ -74,28 +70,20 @@ const GoalEditorModal = ({
   }, [commitmentOptions, innerProps.goal, innerProps.mode]);
 
   const onCreate = async (values: typeof form.state.values) => {
-    await tryCatch(
-      goals.create(values)
-    );
-    context.closeModal(id);
+    await tryCatch(goals.create(values))
+    context.closeModal(id)
   };
 
   const onUpdate = async (values: typeof form.state.values) => {
     if (!innerProps.goal?.id) return;
-    const { error } = await tryCatch(
-      goals.update(innerProps.goal!.id, values)
-    );
-    if (error) return;
-    context.closeModal(id);
+    const { error } = await tryCatch(goals.update(innerProps.goal!.id, values))
+    if (!error) context.closeModal(id)
   };
 
   const onDelete = async () => {
     if (!innerProps.goal?.id) return;
-    const { error } = await tryCatch((async () =>
-      goals.delete(innerProps.goal!.id))
-      ());
-    if (error) return;
-    context.closeModal(id);
+    const { error } = await tryCatch((async () => goals.delete(innerProps.goal!.id))())
+    if (!error) context.closeModal(id)
   };
 
   return (

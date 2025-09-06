@@ -63,21 +63,19 @@ export const Component: Interface = {
 
   async giveup(id) {
     const goal = await db.goals.get(id)
-    if (!goal) return false
+    if (!goal) return
 
     await db.goals.update(id, {
       giveupAt: Date.now(),
       lastUpdated: Date.now()
     })
 
-    trekie.commitments.act({
+    await trekie.commitments.act({
       kind: 'Goal',
       event: 'GIVEUP',
       id: goal.commitmentId,
       data: { goalId: goal.id }
     })
-
-    return true
   },
 
   async addCommitment(goalId, commitmentId) {
