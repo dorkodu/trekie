@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router"
 import ThemeToggle from "@web/components/theme-toggles"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@web/components/ui/dropdown-menu"
@@ -5,7 +6,6 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@we
 import { useAuth } from "@web/lib/auth/provider"
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react"
 import { useEffect } from "react"
-import { useNavigate } from "@tanstack/react-router";
 
 export function NavHeader() {
   const { isMobile } = useSidebar()
@@ -31,7 +31,7 @@ export function NavHeader() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer hover:bg-sidebar-accent"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user?.image} alt={user?.name} />
+                <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? undefined} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">

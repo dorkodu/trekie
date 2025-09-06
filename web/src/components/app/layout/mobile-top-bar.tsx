@@ -1,3 +1,4 @@
+import { DEFAULT_AVATAR, UNAUTHENTICATED_DISPLAYNAME } from "@sdk/core"
 import { IconMenu2 } from "@tabler/icons-react"
 import { Link } from "@tanstack/react-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
@@ -53,7 +54,7 @@ export function MobileTopBar() {
         {/* Profile Picture - Just decorative on mobile */}
         <div className="h-10 w-10 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.image} alt={user?.name} />
+            <AvatarImage src={user?.image ?? DEFAULT_AVATAR} alt={user?.name ?? UNAUTHENTICATED_DISPLAYNAME} />
             <AvatarFallback>
               {user?.name?.charAt(0) || "U"}
             </AvatarFallback>
