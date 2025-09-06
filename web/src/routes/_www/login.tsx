@@ -1,9 +1,8 @@
-
-
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { LoginForm } from '@web/components/forms/login-form'
 import { Button } from '@web/components/ui/button'
 import { useAuth } from "@web/lib/auth/provider"
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_www/login')({ component: Page })
 
@@ -18,13 +17,15 @@ const defaultCredentials: Credentials = {
 }
 
 function Page() {
-  const { user } = useAuth()
+  const { session, loading } = useAuth()
   const navigate = useNavigate()
-  // Actual login handled inside LoginForm; this wrapper could inspect user to redirect.
-  if (user) {
-    // naive redirect (could check onboarding)
-    // navigate is safe in effect but for simplicity skip here
-  }
+
+  // If a session already exists, redirect to home by default
+  useEffect(() => {
+    if (!loading && session) {
+      navigate({ to: "/home", replace: true })
+    }
+  }, [loading, session, navigate])
 
   return (
     <main className="flex h-screen items-center justify-center">

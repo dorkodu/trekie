@@ -44,7 +44,7 @@ export default function AppLayout() {
               </header>
 
               {/* Main Content - with mobile padding for top and bottom bars */}
-              <div className="flex flex-1 flex-col gap-4 px-4 pt-16 pb-20 lg:pt-4 lg:pb-4">
+              <div className="flex flex-1 flex-col gap-4 px-1 pt-16 pb-20 lg:pt-4 lg:pb-4">
                 <Outlet />
               </div>
             </SidebarInset>

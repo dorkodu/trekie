@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { useAuth } from '@web/lib/auth/provider'
+import { useEffect } from 'react'
 
 interface OnboardingGuardProps {
   children: React.ReactNode
@@ -16,9 +16,9 @@ export function OnboardingGuard({ children }: OnboardingGuardProps) {
       // Check if user has completed onboarding
       // For now, we'll check if user has basic required fields
       // In a real app, you'd check the onboardingCompleted field from the database
-      const hasCompletedOnboarding = user.onboardingCompleted === true
-      
-      if (!hasCompletedOnboarding) {
+  // TODO: Replace heuristic with real flag when backend adds onboardingCompleted
+  const heuristicCompleted = Boolean(user.name && user.username);
+  if (!heuristicCompleted) {
         navigate({ to: '/onboarding' })
       }
     }

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import z from 'zod';
 import { authClient } from "./client";
 import type { Session, User } from './types';
@@ -25,44 +25,30 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: sessionData, isPending: sessionPending, error: sessionError } = authClient.useSession();
+  const derivedUser = (sessionData?.user ?? null) as User | null;
+  const derivedSession = (sessionData?.session ?? null) as Session | null;
+
+  // local operation loading & error
+  const [opLoading, setOpLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Check for existing session on mount
-  useEffect(() => {
-    checkSession();
-  }, []);
-
-  const checkSession = async () => {
-    try {
-      setLoading(true);
-      const sessionData = await authClient.getSession();
-      if (sessionData.data?.user) {
-        setUser(sessionData.data.user as User);
-      }
-      if (sessionData.data?.session) {
-        setSession(sessionData.data.session as Session);
-      }
-    } catch (err: any) {
-      console.error('Session check failed:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loading = opLoading || sessionPending;
+  // prefer local error, else session hook error message
+  const combinedError = error || (sessionError ? (sessionError as any)?.message || 'Session error' : null);
 
   const login = async (identifier: string, password: string): Promise<boolean> => {
     // rudimentary email detection
-
     const isEmail = z.email().safeParse(identifier).success;
-    if (isEmail) return loginWithEmail(identifier, password);
-    return loginWithUsername(identifier, password);
+
+    return isEmail
+      ? loginWithEmail(identifier, password)
+      : loginWithUsername(identifier, password);
   };
 
   const loginWithUsername = async (username: string, password: string): Promise<boolean> => {
     try {
-      setLoading(true);
+      setOpLoading(true);
       setError(null);
 
       const result = await authClient.signIn.username({ username, password });
@@ -75,9 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         'user' in result.data &&
         result.data.user
       ) {
-        setUser(result.data.user as User);
-        // Get session after successful login
-        await checkSession();
+        // session hook will revalidate automatically
         return true;
       } else {
         setError("Login failed.");
@@ -87,13 +71,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(err?.message || "Login failed.");
       return false;
     } finally {
-      setLoading(false);
+      setOpLoading(false);
     }
   }
 
   const loginWithEmail = async (email: string, password: string): Promise<boolean> => {
     try {
-      setLoading(true);
+      setOpLoading(true);
       setError(null);
 
       const result = await authClient.signIn.email({ email, password });
@@ -106,9 +90,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         'user' in result.data &&
         result.data.user
       ) {
-        setUser(result.data.user as User);
-        // Get session after successful login
-        await checkSession();
+        // session hook will revalidate automatically
         return true;
       } else {
         setError("Login failed.");
@@ -118,16 +100,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(err?.message || "Login failed.");
       return false;
     } finally {
-      setLoading(false);
+      setOpLoading(false);
     }
   };
 
-
-
   const signup = async ({ email, password, name, username }: { email: string; password: string; name: string; username?: string }): Promise<boolean> => {
     try {
-      setLoading(true);
+      setOpLoading(true);
       setError(null);
+
+      // If a user is already logged in, sign out so we can switch to the new account cleanly
+      if (derivedSession || derivedUser) {
+        try {
+          await authClient.signOut();
+        } catch (e) {
+          console.warn('Sign out before signup failed, proceeding anyway:', e);
+        }
+      }
 
       // Use email signup with username plugin - BetterAuth will handle setting username
       const result = await authClient.signUp.email({
@@ -142,9 +131,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setError(result.error.message || "Signup failed.");
         return false;
       } else if (result.data && 'user' in result.data && result.data.user) {
-        setUser(result.data.user as User);
-        // Get session after successful signup
-        await checkSession();
+        // session hook will update
         return true;
       } else {
         setError("Signup failed.");
@@ -154,7 +141,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(err?.message || "Signup failed.");
       return false;
     } finally {
-      setLoading(false);
+      setOpLoading(false);
     }
   };
 
@@ -162,20 +149,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async (): Promise<void> => {
     try {
-      setLoading(true);
+      setOpLoading(true);
       await authClient.signOut();
-      setUser(null);
-      setSession(null);
     } catch (err: any) {
       console.error('Logout failed:', err);
     } finally {
-      setLoading(false);
+      setOpLoading(false);
     }
   };
 
   const forgotPassword = async (email: string): Promise<boolean> => {
     try {
-      setLoading(true);
+      setOpLoading(true);
       setError(null);
 
       // TODO: Better-auth might have a forgetPassword method
@@ -194,7 +179,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(err?.message || "Failed to send reset email.");
       return false;
     } finally {
-      setLoading(false);
+      setOpLoading(false);
     }
   };
 
@@ -239,7 +224,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const completeOnboarding = async (): Promise<boolean> => {
     try {
-      setLoading(true);
+      setOpLoading(true);
       setError(null);
 
       // TODO: Call API to mark onboarding as completed
@@ -249,16 +234,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Update local user state
-      if (user) {
-        setUser({ ...user, onboardingCompleted: true } as User);
-      }
+      // On success, could optimistically update user object if needed via mutation endpoint
 
       return true;
     } catch (err: any) {
       setError(err?.message || "Failed to complete onboarding.");
       return false;
     } finally {
-      setLoading(false);
+      setOpLoading(false);
     }
   };
 
@@ -267,10 +250,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const value: AuthContextType = {
-    user,
-    session,
+    user: derivedUser,
+    session: derivedSession,
     loading,
-    error,
+    error: combinedError,
     login,
     logout,
     signup,
