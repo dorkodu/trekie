@@ -51,7 +51,7 @@ export function SumCard({
   value: number;
   color?: keyof typeof colorMap;
   kind?: string;
-  subtext?: string;
+  subtext?: React.ReactNode | string;
 }) {
   const colors = colorMap[color] ?? colorMap.blue;
   return (
@@ -69,12 +69,16 @@ export function SumCard({
               {value}
             </span>
             {subtext && (
-              <span
-                className={`font-medium text-xs leading-tight ${colors?.text}`}
-                style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
-              >
-                {subtext}
-              </span>
+              typeof subtext === "string" ? (
+                <span
+                  className={`font-medium text-xs leading-tight ${colors?.text}`}
+                  style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
+                >
+                  {subtext}
+                </span>
+              ) : (
+                subtext
+              )
             )}
           </div>
           {kind && (

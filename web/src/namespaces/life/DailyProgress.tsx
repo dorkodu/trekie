@@ -46,20 +46,28 @@ export function DailyProgress() {
   const barColor = colorMap[color] || colorMap.gray;
 
   const noProgressToday = (
-    <div className="relative w-full h-5 rounded-lg bg-gray-200 overflow-hidden">
+    <div className="relative w-full h-6 rounded-xl bg-gray-200 overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center z-10">
-        <span className="uppercase text-xs font-medium text-white drop-shadow-md tracking-wide">
+        <span className="uppercase text-xs font-medium text-white text-shadow-lg tracking-wide">
           NO PROGRESS TODAY
         </span>
       </div>
-      <div className="w-full h-full bg-gray-400 opacity-60 animate-stripes" />
+      <div
+        className="w-full h-full bg-gray-600 opacity-80"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(135deg, rgba(255,255,255,0.15) 0 8px, transparent 8px 16px)",
+          backgroundSize: "auto",
+          backgroundPosition: "0 0",
+        }}
+      />
     </div>
   );
 
   const progressBar = (
     <Tooltip>
       <TooltipTrigger>
-        <div className="relative w-full h-5 rounded-lg bg-gray-200 overflow-hidden group">
+        <div className="relative w-full h-6 rounded-lg bg-gray-200 overflow-hidden group">
           <div
             className={cn("h-full transition-all duration-100", barColor)}
             style={{ width: `${value}%` }}

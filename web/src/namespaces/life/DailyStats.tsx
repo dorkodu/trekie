@@ -70,7 +70,14 @@ export function MomentumStatus() {
       icon={<Emoji emoji="🚀" size={24} />}
       kind="MOMENTUM"
       value={momentum}
-      subtext="xp/day"
+      subtext={
+        <span
+          className="font-medium text-xs leading-none text-green-200"
+          style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
+        >
+          xp<br />day
+        </span>
+      }
       color="green"
     />
   );

@@ -29,13 +29,13 @@ function HabitCounter({ habitId, onClick }: Props) {
 
   return (
     <Card
-      className="overflow-visible mb-2 rounded-lg shadow-sm p-0"
+      className="bg-transparent border-0 overflow-visible mb-2 rounded-2xl shadow-md p-0"
       onClick={onClick}
     >
       <div className="flex flex-row items-stretch min-h-20">
         {/* Increment Button */}
         <Button
-          className="rounded-none rounded-l-lg flex items-center justify-center px-2 min-w-0"
+          className="rounded-none rounded-l-2xl flex items-center justify-center px-2 min-w-0"
           style={{
             background: "linear-gradient(45deg, hsl(135, 95%, 30%), hsl(170, 95%, 35%))",
             height: "auto",
@@ -43,12 +43,12 @@ function HabitCounter({ habitId, onClick }: Props) {
           onClick={(ev) => onChangeCount(ev, +1)}
         >
           <div className="flex items-center justify-center bg-white/30 w-8 h-8 rounded-md p-0.5">
-            <IconPlus stroke={2.5} size={28} />
+            <IconPlus stroke={2.5} className="size-7" />
           </div>
         </Button>
 
         {/* Main Content */}
-        <div className="flex flex-col flex-1 justify-center py-3 pl-3 pr-2 min-w-0">
+        <div className="flex flex-col flex-1 justify-center py-3 pl-3 pr-2 min-w-0 bg-white/5 ring-1 ring-black/5">
           <div className="flex flex-row justify-between items-center">
             <div className="grid grid-rows-1 min-w-0">
               <h5 className="truncate font-bold text-base">
@@ -97,7 +97,7 @@ function HabitCounter({ habitId, onClick }: Props) {
 
         {/* Decrement Button */}
         <Button
-          className="rounded-none rounded-r-lg flex items-center justify-center px-2 min-w-0"
+          className="rounded-none rounded-r-2xl flex items-center justify-center px-2 min-w-0"
           style={{
             background: "linear-gradient(135deg, hsl(15, 90%, 60%), hsl(0, 96%, 45%))",
             height: "auto",
@@ -105,7 +105,7 @@ function HabitCounter({ habitId, onClick }: Props) {
           onClick={(ev) => onChangeCount(ev, -1)}
         >
           <div className="flex items-center justify-center bg-white/25 w-8 h-8 rounded-md p-0.5">
-            <IconMinus stroke={2.5} size={28} />
+            <IconMinus stroke={2.5} className="size-7" />
           </div>
         </Button>
       </div>
