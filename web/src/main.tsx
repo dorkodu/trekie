@@ -6,10 +6,8 @@ import * as TanstackQuery from "./lib/tanstack-query/root-provider";
 import reportWebVitals from "./reportWebVitals";
 import { routeTree } from "./routeTree.gen";
 
-import { spotlightActions, spotlightKeyboardShortcuts } from "./components/app/spotlight";
 import { ThemeProvider } from "./components/theme-provider";
 import { AuthProvider } from "./lib/auth/provider";
-import { SpotlightProvider } from "./lib/spotlight";
 
 import "./styles.css";
 
@@ -41,12 +39,7 @@ if (rootElement && !rootElement.innerHTML) {
       <TanstackQuery.Provider>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <AuthProvider>
-            <SpotlightProvider
-              actions={spotlightActions}
-              keyboardShortcuts={spotlightKeyboardShortcuts}
-            >
-              <RouterProvider router={router} />
-            </SpotlightProvider>
+            <RouterProvider router={router} />
           </AuthProvider>
         </ThemeProvider>
       </TanstackQuery.Provider>

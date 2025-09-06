@@ -35,19 +35,20 @@ import { Route as WwwDocsIndexRouteImport } from './routes/_www/docs/index'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
 import { Route as AppOnboardingIndexRouteImport } from './routes/_app/onboarding/index'
 import { Route as AppMarketIndexRouteImport } from './routes/_app/market/index'
-import { Route as AppCommunityIndexRouteImport } from './routes/_app/community/index'
 import { Route as WwwLegalTermsOfServiceRouteImport } from './routes/_www/legal/terms-of-service'
 import { Route as WwwLegalRefundPolicyRouteImport } from './routes/_www/legal/refund-policy'
 import { Route as WwwLegalPrivacyPolicyRouteImport } from './routes/_www/legal/privacy-policy'
 import { Route as WwwLegalCookiePolicyRouteImport } from './routes/_www/legal/cookie-policy'
 import { Route as WwwLegalCompanyRouteImport } from './routes/_www/legal/company'
 import { Route as WwwLegalCommunityRulesRouteImport } from './routes/_www/legal/community-rules'
+import { Route as WwwHelpSlugRouteImport } from './routes/_www/help/$slug'
 import { Route as AppProfileEditRouteImport } from './routes/_app/profile/edit'
 import { Route as AppProfileUsernameRouteImport } from './routes/_app/profile/$username'
 import { Route as AppOnboardingProfileRouteImport } from './routes/_app/onboarding/profile'
 import { Route as AppOnboardingGoalsRouteImport } from './routes/_app/onboarding/goals'
 import { Route as AppOnboardingCompleteRouteImport } from './routes/_app/onboarding/complete'
-import { Route as AppCommunityIdRouteImport } from './routes/_app/community/$id'
+import { Route as AppGoalsNewRouteImport } from './routes/_app/goals/new'
+import { Route as AppGoalsGoalIdRouteImport } from './routes/_app/goals/$goalId'
 
 const WwwRoute = WwwRouteImport.update({
   id: '/_www',
@@ -177,11 +178,6 @@ const AppMarketIndexRoute = AppMarketIndexRouteImport.update({
   path: '/market/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCommunityIndexRoute = AppCommunityIndexRouteImport.update({
-  id: '/community/',
-  path: '/community/',
-  getParentRoute: () => AppRoute,
-} as any)
 const WwwLegalTermsOfServiceRoute = WwwLegalTermsOfServiceRouteImport.update({
   id: '/legal/terms-of-service',
   path: '/legal/terms-of-service',
@@ -212,6 +208,11 @@ const WwwLegalCommunityRulesRoute = WwwLegalCommunityRulesRouteImport.update({
   path: '/legal/community-rules',
   getParentRoute: () => WwwRoute,
 } as any)
+const WwwHelpSlugRoute = WwwHelpSlugRouteImport.update({
+  id: '/help/$slug',
+  path: '/help/$slug',
+  getParentRoute: () => WwwRoute,
+} as any)
 const AppProfileEditRoute = AppProfileEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -237,9 +238,14 @@ const AppOnboardingCompleteRoute = AppOnboardingCompleteRouteImport.update({
   path: '/complete',
   getParentRoute: () => AppOnboardingRoute,
 } as any)
-const AppCommunityIdRoute = AppCommunityIdRouteImport.update({
-  id: '/community/$id',
-  path: '/community/$id',
+const AppGoalsNewRoute = AppGoalsNewRouteImport.update({
+  id: '/goals/new',
+  path: '/goals/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGoalsGoalIdRoute = AppGoalsGoalIdRouteImport.update({
+  id: '/goals/$goalId',
+  path: '/goals/$goalId',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -262,19 +268,20 @@ export interface FileRoutesByFullPath {
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
   '/': typeof WwwIndexRoute
-  '/community/$id': typeof AppCommunityIdRoute
+  '/goals/$goalId': typeof AppGoalsGoalIdRoute
+  '/goals/new': typeof AppGoalsNewRoute
   '/onboarding/complete': typeof AppOnboardingCompleteRoute
   '/onboarding/goals': typeof AppOnboardingGoalsRoute
   '/onboarding/profile': typeof AppOnboardingProfileRoute
   '/profile/$username': typeof AppProfileUsernameRoute
   '/profile/edit': typeof AppProfileEditRoute
+  '/help/$slug': typeof WwwHelpSlugRoute
   '/legal/community-rules': typeof WwwLegalCommunityRulesRoute
   '/legal/company': typeof WwwLegalCompanyRoute
   '/legal/cookie-policy': typeof WwwLegalCookiePolicyRoute
   '/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
   '/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
   '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
-  '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
   '/onboarding/': typeof AppOnboardingIndexRoute
   '/settings': typeof AppSettingsIndexRoute
@@ -300,19 +307,20 @@ export interface FileRoutesByTo {
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
   '/': typeof WwwIndexRoute
-  '/community/$id': typeof AppCommunityIdRoute
+  '/goals/$goalId': typeof AppGoalsGoalIdRoute
+  '/goals/new': typeof AppGoalsNewRoute
   '/onboarding/complete': typeof AppOnboardingCompleteRoute
   '/onboarding/goals': typeof AppOnboardingGoalsRoute
   '/onboarding/profile': typeof AppOnboardingProfileRoute
   '/profile/$username': typeof AppProfileUsernameRoute
   '/profile/edit': typeof AppProfileEditRoute
+  '/help/$slug': typeof WwwHelpSlugRoute
   '/legal/community-rules': typeof WwwLegalCommunityRulesRoute
   '/legal/company': typeof WwwLegalCompanyRoute
   '/legal/cookie-policy': typeof WwwLegalCookiePolicyRoute
   '/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
   '/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
   '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
-  '/community': typeof AppCommunityIndexRoute
   '/market': typeof AppMarketIndexRoute
   '/onboarding': typeof AppOnboardingIndexRoute
   '/settings': typeof AppSettingsIndexRoute
@@ -342,19 +350,20 @@ export interface FileRoutesById {
   '/_www/login': typeof WwwLoginRoute
   '/_www/super': typeof WwwSuperRoute
   '/_www/': typeof WwwIndexRoute
-  '/_app/community/$id': typeof AppCommunityIdRoute
+  '/_app/goals/$goalId': typeof AppGoalsGoalIdRoute
+  '/_app/goals/new': typeof AppGoalsNewRoute
   '/_app/onboarding/complete': typeof AppOnboardingCompleteRoute
   '/_app/onboarding/goals': typeof AppOnboardingGoalsRoute
   '/_app/onboarding/profile': typeof AppOnboardingProfileRoute
   '/_app/profile/$username': typeof AppProfileUsernameRoute
   '/_app/profile/edit': typeof AppProfileEditRoute
+  '/_www/help/$slug': typeof WwwHelpSlugRoute
   '/_www/legal/community-rules': typeof WwwLegalCommunityRulesRoute
   '/_www/legal/company': typeof WwwLegalCompanyRoute
   '/_www/legal/cookie-policy': typeof WwwLegalCookiePolicyRoute
   '/_www/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
   '/_www/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
   '/_www/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
-  '/_app/community/': typeof AppCommunityIndexRoute
   '/_app/market/': typeof AppMarketIndexRoute
   '/_app/onboarding/': typeof AppOnboardingIndexRoute
   '/_app/settings/': typeof AppSettingsIndexRoute
@@ -383,19 +392,20 @@ export interface FileRouteTypes {
     | '/login'
     | '/super'
     | '/'
-    | '/community/$id'
+    | '/goals/$goalId'
+    | '/goals/new'
     | '/onboarding/complete'
     | '/onboarding/goals'
     | '/onboarding/profile'
     | '/profile/$username'
     | '/profile/edit'
+    | '/help/$slug'
     | '/legal/community-rules'
     | '/legal/company'
     | '/legal/cookie-policy'
     | '/legal/privacy-policy'
     | '/legal/refund-policy'
     | '/legal/terms-of-service'
-    | '/community'
     | '/market'
     | '/onboarding/'
     | '/settings'
@@ -421,19 +431,20 @@ export interface FileRouteTypes {
     | '/login'
     | '/super'
     | '/'
-    | '/community/$id'
+    | '/goals/$goalId'
+    | '/goals/new'
     | '/onboarding/complete'
     | '/onboarding/goals'
     | '/onboarding/profile'
     | '/profile/$username'
     | '/profile/edit'
+    | '/help/$slug'
     | '/legal/community-rules'
     | '/legal/company'
     | '/legal/cookie-policy'
     | '/legal/privacy-policy'
     | '/legal/refund-policy'
     | '/legal/terms-of-service'
-    | '/community'
     | '/market'
     | '/onboarding'
     | '/settings'
@@ -462,19 +473,20 @@ export interface FileRouteTypes {
     | '/_www/login'
     | '/_www/super'
     | '/_www/'
-    | '/_app/community/$id'
+    | '/_app/goals/$goalId'
+    | '/_app/goals/new'
     | '/_app/onboarding/complete'
     | '/_app/onboarding/goals'
     | '/_app/onboarding/profile'
     | '/_app/profile/$username'
     | '/_app/profile/edit'
+    | '/_www/help/$slug'
     | '/_www/legal/community-rules'
     | '/_www/legal/company'
     | '/_www/legal/cookie-policy'
     | '/_www/legal/privacy-policy'
     | '/_www/legal/refund-policy'
     | '/_www/legal/terms-of-service'
-    | '/_app/community/'
     | '/_app/market/'
     | '/_app/onboarding/'
     | '/_app/settings/'
@@ -672,13 +684,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMarketIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/community/': {
-      id: '/_app/community/'
-      path: '/community'
-      fullPath: '/community'
-      preLoaderRoute: typeof AppCommunityIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_www/legal/terms-of-service': {
       id: '/_www/legal/terms-of-service'
       path: '/legal/terms-of-service'
@@ -721,6 +726,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WwwLegalCommunityRulesRouteImport
       parentRoute: typeof WwwRoute
     }
+    '/_www/help/$slug': {
+      id: '/_www/help/$slug'
+      path: '/help/$slug'
+      fullPath: '/help/$slug'
+      preLoaderRoute: typeof WwwHelpSlugRouteImport
+      parentRoute: typeof WwwRoute
+    }
     '/_app/profile/edit': {
       id: '/_app/profile/edit'
       path: '/edit'
@@ -756,11 +768,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOnboardingCompleteRouteImport
       parentRoute: typeof AppOnboardingRoute
     }
-    '/_app/community/$id': {
-      id: '/_app/community/$id'
-      path: '/community/$id'
-      fullPath: '/community/$id'
-      preLoaderRoute: typeof AppCommunityIdRouteImport
+    '/_app/goals/new': {
+      id: '/_app/goals/new'
+      path: '/goals/new'
+      fullPath: '/goals/new'
+      preLoaderRoute: typeof AppGoalsNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/goals/$goalId': {
+      id: '/_app/goals/$goalId'
+      path: '/goals/$goalId'
+      fullPath: '/goals/$goalId'
+      preLoaderRoute: typeof AppGoalsGoalIdRouteImport
       parentRoute: typeof AppRoute
     }
   }
@@ -809,8 +828,8 @@ interface AppRouteChildren {
   AppPremiumRoute: typeof AppPremiumRoute
   AppProfileRoute: typeof AppProfileRouteWithChildren
   AppSocialRoute: typeof AppSocialRoute
-  AppCommunityIdRoute: typeof AppCommunityIdRoute
-  AppCommunityIndexRoute: typeof AppCommunityIndexRoute
+  AppGoalsGoalIdRoute: typeof AppGoalsGoalIdRoute
+  AppGoalsNewRoute: typeof AppGoalsNewRoute
   AppMarketIndexRoute: typeof AppMarketIndexRoute
   AppSettingsIndexRoute: typeof AppSettingsIndexRoute
 }
@@ -826,8 +845,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppPremiumRoute: AppPremiumRoute,
   AppProfileRoute: AppProfileRouteWithChildren,
   AppSocialRoute: AppSocialRoute,
-  AppCommunityIdRoute: AppCommunityIdRoute,
-  AppCommunityIndexRoute: AppCommunityIndexRoute,
+  AppGoalsGoalIdRoute: AppGoalsGoalIdRoute,
+  AppGoalsNewRoute: AppGoalsNewRoute,
   AppMarketIndexRoute: AppMarketIndexRoute,
   AppSettingsIndexRoute: AppSettingsIndexRoute,
 }
@@ -843,6 +862,7 @@ interface WwwRouteChildren {
   WwwLoginRoute: typeof WwwLoginRoute
   WwwSuperRoute: typeof WwwSuperRoute
   WwwIndexRoute: typeof WwwIndexRoute
+  WwwHelpSlugRoute: typeof WwwHelpSlugRoute
   WwwLegalCommunityRulesRoute: typeof WwwLegalCommunityRulesRoute
   WwwLegalCompanyRoute: typeof WwwLegalCompanyRoute
   WwwLegalCookiePolicyRoute: typeof WwwLegalCookiePolicyRoute
@@ -863,6 +883,7 @@ const WwwRouteChildren: WwwRouteChildren = {
   WwwLoginRoute: WwwLoginRoute,
   WwwSuperRoute: WwwSuperRoute,
   WwwIndexRoute: WwwIndexRoute,
+  WwwHelpSlugRoute: WwwHelpSlugRoute,
   WwwLegalCommunityRulesRoute: WwwLegalCommunityRulesRoute,
   WwwLegalCompanyRoute: WwwLegalCompanyRoute,
   WwwLegalCookiePolicyRoute: WwwLegalCookiePolicyRoute,
