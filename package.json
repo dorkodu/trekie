@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "shadcn": "^3.2.1"
+  },
   "workspaces": [
     "web",
     "api",
