@@ -1,4 +1,4 @@
-import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconMessageQuestion, IconSettings, IconUsers } from "@tabler/icons-react"
+import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconLeaf, IconMessageQuestion, IconPlant2, IconSettings } from "@tabler/icons-react"
 import MobileUserMenu from "@web/components/app/layout/mobile-menu"
 import { NavMain } from "@web/components/app/layout/nav-main"
 import { NavSecondary } from "@web/components/app/layout/nav-secondary"
@@ -31,7 +31,6 @@ function SidebarLogo() {
     />
   )
 }
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -45,9 +44,9 @@ const data = {
       icon: IconCompass,
     },
     {
-      title: "Social",
-      url: "/social",
-      icon: IconUsers,
+      title: "Life",
+      url: "/life",
+      icon: IconPlant2,
     },
 
     {
@@ -79,11 +78,6 @@ const data = {
       name: "Project Management & Task Tracking",
       url: "#",
       emoji: "📊",
-    },
-    {
-      name: "Family Recipe Collection & Meal Planning",
-      url: "#",
-      emoji: "🍳",
     },
   ],
 }

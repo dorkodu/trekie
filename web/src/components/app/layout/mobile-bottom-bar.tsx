@@ -1,4 +1,4 @@
-import { IconBuildingStore, IconCompass, IconHome, IconSparkles, IconUsers } from "@tabler/icons-react"
+import { IconBuildingStore, IconCompass, IconHome, IconPlant2, IconSparkles, IconUsers } from "@tabler/icons-react"
 import { Link, useRouterState } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
 import { useSpotlight } from "@web/lib/spotlight"
@@ -16,9 +16,9 @@ const navigationItems = [
     icon: IconCompass,
   },
   {
-    title: "Social",
-    url: "/social",
-    icon: IconUsers,
+    title: "Life",
+    url: "/life",
+    icon: IconPlant2,
   },
   {
     title: "Market",

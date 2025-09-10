@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { trpc } from '@web/lib/trpc'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -37,14 +38,17 @@ export const useSettingsStore = create<SettingsState>()(persist((set, get) => ({
     if (get().loaded) return
     try {
       set({ syncing: true })
-      const data = await trpc.user.getSettings.query({})
+
+      const getSettingsQuery = useQuery(trpc.user.getSettings.queryOptions({}))
+
       set({
         loaded: true,
-        preferences: data.preferences || initial.preferences,
-        config: data.config || initial.config,
-        onboarding: data.onboarding || initial.onboarding,
+        preferences: getSettingsQuery.data?.preferences || initial.preferences,
+        config: getSettingsQuery.data?.config || initial.config,
+        onboarding: getSettingsQuery.data?.onboarding || initial.onboarding,
         syncing: false,
       })
+
     } catch (e: any) {
       set({ error: e?.message || 'Failed to load settings', syncing: false })
     }
@@ -60,7 +64,10 @@ export const useSettingsStore = create<SettingsState>()(persist((set, get) => ({
     const snapshot = get()
     get().optimisticUpdate(data)
     try {
-      await trpc.user.updateSettings.mutate(data)
+
+      await useMutation(trpc.user.updateSettings.mutationOptions())
+        .mutateAsync(data)
+
     } catch (e: any) {
       // rollback
       set({

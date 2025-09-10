@@ -1,5 +1,14 @@
+import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query';
+
 import type { AppRouter } from '@api/router';
+import { queryClient } from '@web/lib/tanstack-query';
 
-import { createTRPCContext } from '@trpc/tanstack-react-query';
+const trpcClient = createTRPCClient<AppRouter>({
+  links: [httpBatchLink({ url: 'http://localhost:2022' })],
+});
 
-export const { TRPCProvider, useTRPC, useTRPCClient } = createTRPCContext<AppRouter>();
+export const trpc = createTRPCOptionsProxy<AppRouter>({
+  client: trpcClient,
+  queryClient,
+});
