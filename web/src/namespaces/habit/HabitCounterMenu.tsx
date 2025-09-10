@@ -1,13 +1,6 @@
-import { IconClipboardText, IconDotsVertical, IconEdit, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
+import { IconClipboardText, IconDotsVertical, IconExclamationCircle, IconShare, IconTrash } from "@tabler/icons-react";
 import { ActionIcon } from "@web/components/ui/action-icon";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@web/components/ui/dropdown-menu";
-import { modals } from "@web/lib/modals";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@web/components/ui/dropdown-menu";
 import { trekie } from "@web/lib/trekie";
 import { IHabit } from "@web/namespaces/habit";
 import { habits } from ".";
@@ -23,20 +16,9 @@ function HabitCounterMenu({ habit }: Props) {
   const onShare = (ev) => {
     ev.stopPropagation();
   };
+
   const onClipboard = (ev) => {
     ev.stopPropagation();
-  };
-
-  const onEdit = (ev) => {
-    ev.stopPropagation();
-    modals.openContextModal({
-      modal: "habitEditor",
-      title: "Edit Habit",
-      innerProps: {
-        mode: "EDIT",
-        habit: habit,
-      },
-    });
   };
 
   const onReport = (ev) => {
@@ -71,14 +53,9 @@ function HabitCounterMenu({ habit }: Props) {
           <>
             <DropdownMenuSeparator />
             {isHabitOwner ? (
-              <>
-                <DropdownMenuItem onClick={onEdit}>
-                  <IconEdit className="mr-2 w-4 h-4" /> Edit Habit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={onDelete} className="text-red-600 focus:bg-red-50">
-                  <IconTrash className="mr-2 w-4 h-4" /> Delete Habit
-                </DropdownMenuItem>
-              </>
+              <DropdownMenuItem onClick={onDelete} className="text-red-600 focus:bg-red-50">
+                <IconTrash className="mr-2 w-4 h-4" /> Delete Habit
+              </DropdownMenuItem>
             ) : (
               <DropdownMenuItem onClick={onReport} className="text-red-600 focus:bg-red-50">
                 <IconExclamationCircle className="mr-2 w-4 h-4" /> Report habit

@@ -1,4 +1,5 @@
 import { IconMinus, IconPlus, IconPlusMinus } from "@tabler/icons-react";
+import { useNavigate } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
 import React, { type MouseEvent } from "react";
 
@@ -13,10 +14,10 @@ import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
 
 interface Props {
   habitId: string;
-  onClick?: () => void;
 }
 
-function HabitCounter({ habitId, onClick }: Props) {
+function HabitCounter({ habitId }: Props) {
+  const navigate = useNavigate();
   const habit = useLiveQuery(() => habits.get(habitId), [habitId]);
 
   const onChangeCount = (ev: MouseEvent, count: number) => {
@@ -25,11 +26,15 @@ function HabitCounter({ habitId, onClick }: Props) {
     habits.changeCount(habitId, count);
   };
 
+  const onClick = () => {
+    navigate({ to: `/habit/${habitId}` });
+  };
+
   if (!habit) return null;
 
   return (
     <Card
-      className="bg-transparent border-0 overflow-visible mb-2 rounded-2xl shadow-md p-0"
+      className="bg-transparent border-0 overflow-visible mb-2 rounded-2xl shadow-md p-0 cursor-pointer hover:shadow-lg transition-shadow"
       onClick={onClick}
     >
       <div className="flex flex-row items-stretch min-h-20">

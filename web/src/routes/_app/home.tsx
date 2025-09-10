@@ -135,17 +135,17 @@ function GoalsFeed() {
   if (!hasAnyLifeGoals) return <NoGoalsCard />;
 
   return (
-    <Box style={{ borderRadius: 20, padding: 6 }}>
-      <Stack gap="xs">
+    <div className="rounded-lg">
+      <div className="flex flex-col gap-2">
         {goals.map(goal => (
           <GoalCard id={goal.id} key={goal.id} />
         ))}
-      </Stack>
+      </div>
       <Flex className="mt-2">
         <Badge variant="default" color="gray" className="mx-auto">
           Track your goals!
         </Badge>
       </Flex>
-    </Box>
+    </div>
   );
 }
