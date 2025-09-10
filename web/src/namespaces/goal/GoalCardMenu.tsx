@@ -9,6 +9,8 @@ import {
 } from "@web/components/ui/dropdown-menu";
 // import { modals } from "@web/lib/modals";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { error, success } from "@web/lib/notifications/system";
 import { trekie } from "@web/lib/trekie";
 import { goals, IGoal } from ".";
 
@@ -19,20 +21,70 @@ interface Props {
 function GoalMenu({ goal }: Props) {
   const currentUserId = trekie.use(($) => $.user.id);
   const qc = useQueryClient();
+  const navigate = useNavigate();
 
-  const onShare = (ev) => {
+  const buildGoalURL = (goalId: string) => `${window.location.origin}/goal/${goalId}`;
+
+  const onShare = async (ev) => {
     ev.stopPropagation();
+    const url = buildGoalURL(goal.id);
+    try {
+      // Try native share on supported devices
+      const navAny = globalThis.navigator as unknown as {
+        share?: (data: { title?: string; text?: string; url?: string }) => Promise<void>
+        clipboard?: { writeText: (text: string) => Promise<void> }
+      } | undefined;
+      if (navAny?.share) {
+        await navAny.share({ title: goal.title, text: goal.description, url });
+        success("Share sheet opened");
+        return;
+      }
+      if (navAny?.clipboard?.writeText) {
+        await navAny.clipboard.writeText(url);
+        success("Link copied to clipboard");
+        return;
+      }
+      // Fallback to legacy approach
+      success("Link copied to clipboard");
+      const input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    } catch (e) {
+      error("Share failed", "Couldn’t share or copy the link.");
+    }
   };
   const onReport = (ev) => {
     ev.stopPropagation();
   };
-  const onClipboard = (ev) => {
+  const onClipboard = async (ev) => {
     ev.stopPropagation();
+    const url = buildGoalURL(goal.id);
+    try {
+      const navAny = globalThis.navigator as unknown as { clipboard?: { writeText: (text: string) => Promise<void> } } | undefined;
+      if (navAny?.clipboard?.writeText) {
+        await navAny.clipboard.writeText(url);
+        success("Link copied to clipboard");
+        return;
+      }
+      // Fallback to legacy approach
+      const input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      success("Link copied to clipboard");
+    } catch (e) {
+      error("Copy failed", "Couldn’t copy the link.");
+    }
   };
 
   const onEdit = (ev) => {
     ev.stopPropagation();
-    window.location.href = `/goals/${goal.id}`
+    navigate({ to: '/goal/$goalId/edit', params: { goalId: goal.id } })
   };
 
   const onDelete = async (ev) => {
@@ -51,10 +103,10 @@ function GoalMenu({ goal }: Props) {
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 p-0"
+          className="size-9 p-0"
           onClick={(e) => e.stopPropagation()}
         >
-          <IconDotsVertical className="text-gray-400" />
+          <IconDotsVertical className="size-6 text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 shadow-lg">

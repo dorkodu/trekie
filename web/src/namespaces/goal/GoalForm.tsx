@@ -34,12 +34,14 @@ export function GoalForm({ mode, goal, onSuccess, onDelete, commitmentOptions = 
     defaultValues: goal ?? { title: '', description: '', xpTarget: 0, commitments: [] },
 
     async onSubmit({ value }) {
+
       const parsed = GoalTemplateSchema.safeParse({
         title: value.title,
         description: value.description,
-        xpTarget: typeof value.xpTarget === 'string' ? Number(value.xpTarget) : value.xpTarget,
+        xpTarget: Number(value.xpTarget),
         commitments: Array.isArray(value.commitments) ? value.commitments : []
       })
+
       if (!parsed.success) return
 
       if (mode === 'create') {
