@@ -27,7 +27,7 @@ function GoalsListPage() {
       <div className='flex items-center justify-between mb-3'>
         <h2 className='text-2xl font-bold'>My Goals</h2>
         <Button asChild size='sm'>
-          <Link to='/goals/new'>New</Link>
+          <Link to='/goal/new'>New</Link>
         </Button>
       </div>
 
