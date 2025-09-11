@@ -8,45 +8,43 @@ import { Progress } from '@web/components/ui/progress'
 import { Plus, X } from 'lucide-react'
 import { useState } from 'react'
 
-export function OnboardingGoals() {
+export function OnboardingTodos() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  const [newGoal, setNewGoal] = useState('')
-  const [goals, setGoals] = useState<string[]>([])
+  const [newTodo, setNewTodo] = useState('')
+  const [todos, setTodos] = useState<string[]>([])
 
-  const suggestedGoals = [
-    'Exercise 3 times a week',
-    'Read 12 books this year',
-    'Learn a new skill',
-    'Save $1000',
-    'Meditate daily',
-    'Drink more water',
-    'Sleep 8 hours a night',
-    'Eat healthier'
+  const suggestedTodos = [
+    'Set up my workspace',
+    'Review project documentation',
+    'Plan my daily routine',
+    'Organize my files',
+    'Learn something new today',
+    'Call a friend or family',
+    'Prepare healthy meals',
+    'Exercise for 30 minutes'
   ]
 
-  const addGoal = (goal: string) => {
-    if (goal.trim() && !goals.includes(goal)) {
-      setGoals(prev => [...prev, goal])
-      setNewGoal('')
+  const addTodo = (todo: string) => {
+    if (todo.trim() && !todos.includes(todo)) {
+      setTodos(prev => [...prev, todo])
+      setNewTodo('')
     }
   }
 
-  const removeGoal = (goalToRemove: string) => {
-    setGoals(prev => prev.filter(goal => goal !== goalToRemove))
+  const removeTodo = (todoToRemove: string) => {
+    setTodos(prev => prev.filter(todo => todo !== todoToRemove))
   }
 
   const handleContinue = async () => {
     setLoading(true)
 
-    // TODO: Save goals to backend
-    // await createInitialGoals(goals)
-
-    // Simulate API call
+    // TODO: Save todos to backend
+    // await createInitialTodos(todos)
     await new Promise(resolve => setTimeout(resolve, 1000))
 
     setLoading(false)
-    navigate({ to: '/onboarding/todos' })
+    navigate({ to: '/onboarding/complete' })
   }
 
   const handleSkip = () => {
@@ -58,42 +56,42 @@ export function OnboardingGoals() {
       {/* Progress Bar */}
       <div className="space-y-2">
         <div className="flex justify-between text-sm text-muted-foreground">
-          <span>Step 3 of 4</span>
-          <span>75%</span>
+          <span>Step 4 of 4</span>
+          <span>100%</span>
         </div>
-        <Progress value={75} className="h-2" />
+        <Progress value={100} className="h-2" />
       </div>
 
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">What would you like to achieve?</h1>
+        <h1 className="text-3xl font-bold">What tasks are on your mind?</h1>
         <p className="text-muted-foreground">
-          Set some initial goals to get started. You can always add more later!
+          Add some initial todos to get started. You can always add more later!
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Goals</CardTitle>
+          <CardTitle>Your Todos</CardTitle>
           <CardDescription>
-            Add goals that matter to you. Be specific and make them actionable.
+            Add tasks that need your attention. Be specific and actionable.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Add Custom Goal */}
+          {/* Add Custom Todo */}
           <div className="space-y-2">
-            <Label htmlFor="newGoal">Add a custom goal</Label>
+            <Label htmlFor="newTodo">Add a custom todo</Label>
             <div className="flex gap-2">
               <Input
-                id="newGoal"
-                placeholder="e.g., Run a 5K in 3 months"
-                value={newGoal}
-                onChange={(e) => setNewGoal(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && addGoal(newGoal)}
+                id="newTodo"
+                placeholder="e.g., Finish reading that book"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addTodo(newTodo)}
               />
               <Button
-                onClick={() => addGoal(newGoal)}
-                disabled={!newGoal.trim()}
+                onClick={() => addTodo(newTodo)}
+                disabled={!newTodo.trim()}
                 size="icon"
               >
                 <Plus className="h-4 w-4" />
@@ -101,19 +99,19 @@ export function OnboardingGoals() {
             </div>
           </div>
 
-          {/* Suggested Goals */}
+          {/* Suggested Todos */}
           <div className="space-y-3">
-            <Label>Or choose from these popular goals</Label>
+            <Label>Or choose from these popular tasks</Label>
             <div className="flex flex-wrap gap-2">
-              {suggestedGoals.map((goal) => (
+              {suggestedTodos.map((todo) => (
                 <Badge
-                  key={goal}
-                  variant={goals.includes(goal) ? "default" : "outline"}
+                  key={todo}
+                  variant={todos.includes(todo) ? "default" : "outline"}
                   className="cursor-pointer hover:bg-primary/80"
-                  onClick={() => goals.includes(goal) ? removeGoal(goal) : addGoal(goal)}
+                  onClick={() => todos.includes(todo) ? removeTodo(todo) : addTodo(todo)}
                 >
-                  {goal}
-                  {goals.includes(goal) && (
+                  {todo}
+                  {todos.includes(todo) && (
                     <X className="ml-1 h-3 w-3" />
                   )}
                 </Badge>
@@ -121,21 +119,21 @@ export function OnboardingGoals() {
             </div>
           </div>
 
-          {/* Selected Goals */}
-          {goals.length > 0 && (
+          {/* Selected Todos */}
+          {todos.length > 0 && (
             <div className="space-y-3">
-              <Label>Your selected goals ({goals.length})</Label>
+              <Label>Your selected todos ({todos.length})</Label>
               <div className="space-y-2">
-                {goals.map((goal, index) => (
+                {todos.map((todo, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between p-3 bg-muted rounded-lg"
                   >
-                    <span>{goal}</span>
+                    <span>{todo}</span>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => removeGoal(goal)}
+                      onClick={() => removeTodo(todo)}
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -160,7 +158,7 @@ export function OnboardingGoals() {
           onClick={handleContinue}
           disabled={loading}
         >
-          {loading ? 'Creating goals...' : 'Continue'}
+          {loading ? 'Creating todos...' : 'Complete Setup'}
         </Button>
       </div>
     </div>

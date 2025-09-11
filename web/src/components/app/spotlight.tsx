@@ -7,7 +7,9 @@ import type { SpotlightAction, SpotlightKeyboardShortcut } from "@web/lib/spotli
 import { SpotlightProvider, createCallbackAction, createKeyboardShortcut, createNavigationAction } from "@web/lib/spotlight"
 
 import {
-  BookmarkIcon, CalendarIcon, CircleFadingPlusIcon, CommandIcon, CompassIcon, FileInputIcon, FolderPlusIcon, HelpCircleIcon, HistoryIcon, HomeIcon, PlusIcon, SettingsIcon, TargetIcon, TrendingUpIcon, UsersIcon
+  BookmarkIcon, CalendarIcon, CheckSquareIcon, CircleFadingPlusIcon, CommandIcon, CompassIcon,
+  HelpCircleIcon, HistoryIcon, HomeIcon, PlusIcon, SettingsIcon,
+  TrendingUpIcon, UsersIcon
 } from "lucide-react"
 
 function buildActions(navigate: ReturnType<typeof useNavigate>): SpotlightAction[] {
@@ -19,34 +21,18 @@ function buildActions(navigate: ReturnType<typeof useNavigate>): SpotlightAction
       searchTerms: ["create", "habit", "new", "add"],
       navigate,
     }),
-    createNavigationAction("create-goal", "Create new goal", "/goals/new", {
+    createNavigationAction("create-goal", "Create new goal", "/goal/new", {
       icon: CircleFadingPlusIcon,
       shortcut: "⌘G",
       searchTerms: ["create", "goal", "new"],
       navigate,
     }),
-    createCallbackAction(
-      "create-project",
-      "Create new project",
-      () => console.log("Creating new project..."),
-      {
-        icon: FolderPlusIcon,
-        shortcut: "⌘⇧P",
-        searchTerms: ["create", "project", "new"],
-        group: "Quick Actions",
-      },
-    ),
-    createCallbackAction(
-      "import-document",
-      "Import document",
-      () => console.log("Importing document..."),
-      {
-        icon: FileInputIcon,
-        shortcut: "⌘I",
-        searchTerms: ["import", "document", "upload"],
-        group: "Quick Actions",
-      },
-    ),
+    createNavigationAction("create-todo", "Create new todo", "/todo/new", {
+      icon: CheckSquareIcon,
+      shortcut: "⌘T",
+      searchTerms: ["create", "todo", "task", "new", "add"],
+      navigate,
+    }),
     createCallbackAction(
       "quick-note",
       "Quick note",
@@ -65,11 +51,6 @@ function buildActions(navigate: ReturnType<typeof useNavigate>): SpotlightAction
     createNavigationAction("go-home", "Go to home", "/home", {
       icon: HomeIcon,
       searchTerms: ["home", "dashboard"],
-      navigate,
-    }),
-    createNavigationAction("go-habits", "Go to habits", "/home", {
-      icon: TargetIcon,
-      searchTerms: ["habits", "commitments", "daily"],
       navigate,
     }),
     createNavigationAction("go-explore", "Go to explore", "/explore", {
@@ -123,16 +104,6 @@ function buildActions(navigate: ReturnType<typeof useNavigate>): SpotlightAction
 
   // Recent
   const recentActions: SpotlightAction[] = [
-    createCallbackAction("recent-habits", "Recent habits", () => console.log("Recent habits"), {
-      icon: HistoryIcon,
-      searchTerms: ["recent", "history", "habits"],
-      group: "Recent",
-    }),
-    createCallbackAction("recent-goals", "Recent goals", () => console.log("Recent goals"), {
-      icon: HistoryIcon,
-      searchTerms: ["recent", "history", "goals"],
-      group: "Recent",
-    }),
     createCallbackAction("recent-projects", "Recent projects", () => console.log("Recent projects"), {
       icon: HistoryIcon,
       searchTerms: ["recent", "history", "projects"],
@@ -150,6 +121,7 @@ export function AppSpotlightProvider({ children }: { children: React.ReactNode }
   const spotlightKeyboardShortcuts: SpotlightKeyboardShortcut[] = [
     createKeyboardShortcut("h", "create-habit"),
     createKeyboardShortcut("g", "create-goal"),
+    createKeyboardShortcut("t", "create-todo"),
     createKeyboardShortcut("p", "create-project", { meta: true, shift: true }),
     createKeyboardShortcut("i", "import-document"),
     createKeyboardShortcut("n", "quick-note"),

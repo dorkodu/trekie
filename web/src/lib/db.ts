@@ -3,6 +3,7 @@ import Dexie, { type Table, type Transaction } from 'dexie'
 import { IUser } from '@sdk/core'
 import { IGoal } from '@web/namespaces/goal'
 import { IHabit } from '@web/namespaces/habit'
+import { ITodo } from '@web/namespaces/todo'
 
 import { trekie } from './trekie'
 
@@ -11,6 +12,7 @@ export type IAppDb = Dexie & {
   users: Table<IUser, string>
   habits: Table<IHabit, string>
   goals: Table<IGoal, string>
+  todos: Table<ITodo, string>
 }
 
 export const createAppDb = () => new Dexie('app') as IAppDb
@@ -29,6 +31,7 @@ export function startAppDb(
     users: 'id, &username',
     habits: 'id, userId, &commitmentId',
     goals: 'id, userId',
+    todos: 'id, userId, completed',
   })
 
   db.on("populate", onPopulate)

@@ -1,4 +1,4 @@
-import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconLeaf, IconMessageQuestion, IconPlant2, IconSettings } from "@tabler/icons-react"
+import { IconBuildingStore, IconCalendar, IconCompass, IconHome, IconMessageQuestion, IconPlant2, IconSettings } from "@tabler/icons-react"
 import MobileUserMenu from "@web/components/app/layout/mobile-menu"
 import { NavMain } from "@web/components/app/layout/nav-main"
 import { NavSecondary } from "@web/components/app/layout/nav-secondary"
