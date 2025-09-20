@@ -6,8 +6,10 @@ import { Label } from '@web/components/ui/label'
 import { Stack } from '@web/components/ui/layout'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@web/components/ui/select'
 import { Textarea } from '@web/components/ui/textarea'
+import { notifications } from '@web/lib/notifications'
 import { ITodo, todos } from '@web/namespaces/todo'
 import { tryCatch } from '@web/utils/tryCatch'
+import React from 'react'
 import { z } from 'zod'
 
 // Validation schema (client-side)
@@ -28,6 +30,8 @@ export interface TodoFormProps {
 
 export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
   const qc = useQueryClient()
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isDeleting, setIsDeleting] = React.useState(false)
 
   const form = useForm({
     defaultValues: todo ?? {
@@ -39,6 +43,7 @@ export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
     },
 
     async onSubmit({ value }) {
+      setIsSubmitting(true)
       const parsed = TodoTemplateSchema.safeParse({
         title: value.title,
         description: value.description || undefined,
@@ -47,20 +52,40 @@ export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
         tags: value.tags || [],
       })
 
-      if (!parsed.success) return
+      if (!parsed.success) {
+        notifications.error("Validation Error", "Please check your input and try again.");
+        setIsSubmitting(false)
+        return;
+      }
 
-      if (mode === 'create') {
-        const { data, error } = await tryCatch(todos.create(parsed.data))
-        if (!error && data) {
-          qc.invalidateQueries({ queryKey: ['todos'] })
-          onSuccess?.(data)
-        }
-      } else if (mode === 'edit' && todo) {
-        const { error } = await tryCatch(todos.update(todo.id, parsed.data))
-        if (!error) {
+      try {
+        if (mode === 'create') {
+          const { data, error } = await tryCatch(todos.create(parsed.data))
+          if (error) {
+            notifications.error("Failed to Create Todo", error.message || "An unexpected error occurred.");
+            setIsSubmitting(false)
+            return;
+          }
+          if (data) {
+            qc.invalidateQueries({ queryKey: ['todos'] })
+            notifications.success("Todo created successfully!");
+            onSuccess?.(data)
+          }
+        } else if (mode === 'edit' && todo) {
+          const { error } = await tryCatch(todos.update(todo.id, parsed.data))
+          if (error) {
+            notifications.error("Failed to Update Todo", error.message || "An unexpected error occurred.");
+            setIsSubmitting(false)
+            return;
+          }
           qc.invalidateQueries({ queryKey: ['todo', todo.id] })
+          notifications.success("Todo updated successfully!");
           onSuccess?.({ ...todo, ...parsed.data })
         }
+      } catch (err) {
+        notifications.error("Unexpected Error", "Something went wrong. Please try again.");
+      } finally {
+        setIsSubmitting(false)
       }
     },
   })
@@ -103,7 +128,7 @@ export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
           {field => (
             <div>
               <Label htmlFor='todo-priority'>Priority</Label>
-              <Select value={field.state.value} onValueChange={field.handleChange}>
+              <Select value={field.state.value} onValueChange={(value) => field.handleChange(value as "low" | "medium" | "high")}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
@@ -136,19 +161,31 @@ export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
             <Button
               type='button'
               variant='destructive'
+              disabled={isDeleting}
               onClick={async () => {
-                const { error } = await tryCatch(todos.delete(todo.id))
-                if (!error) {
+                setIsDeleting(true)
+                try {
+                  const { error } = await tryCatch(todos.delete(todo.id))
+                  if (error) {
+                    notifications.error("Failed to Delete Todo", error.message || "An unexpected error occurred.");
+                    setIsDeleting(false)
+                    return;
+                  }
                   qc.invalidateQueries({ queryKey: ['todos'] })
+                  notifications.success("Todo deleted successfully!");
                   onDelete?.(todo)
+                } catch (err) {
+                  notifications.error("Unexpected Error", "Something went wrong. Please try again.");
+                } finally {
+                  setIsDeleting(false)
                 }
               }}
             >
-              Delete
+              {isDeleting ? 'Deleting...' : 'Delete'}
             </Button>
           )}
-          <Button type='submit' className='flex-1'>
-            {mode === 'create' ? 'Create Todo' : 'Save Changes'}
+          <Button type='submit' className='flex-1' disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : (mode === 'create' ? 'Create Todo' : 'Save Changes')}
           </Button>
         </div>
       </Stack>

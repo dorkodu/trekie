@@ -1,3 +1,4 @@
+
 import { ulid } from "ulidx"
 
 import { db } from "@web/lib/db"
@@ -26,6 +27,49 @@ async function getDailyChecksToday(commitmentId: string) {
     .toArray()
 
   return existingChecks
+}
+
+// Helper function to handle daily target logic
+async function handleDailyTarget(habit: IHabit, todaysCount: number, updatedCount: number) {
+  // Only trigger DAILYCHECK event if we're crossing the threshold today
+  // (going from below target to at/above target) and haven't already triggered it today
+  if (
+    todaysCount < habit.dailyTarget
+    && updatedCount >= habit.dailyTarget
+  ) {
+    // Check if we've already logged a DAILYCHECK today
+    const alreadyCheckedToday = (await getDailyChecksToday(habit.commitmentId)).length > 0
+
+    if (!alreadyCheckedToday) {
+      await trekie.commitments.act({
+        kind: 'Habit',
+        event: 'DAILYCHECK',
+        id: habit.commitmentId,
+        data: null
+      })
+    }
+  }
+  // If we previously crossed the threshold but now fall below it, rollback the DAILYCHECK rewards
+  else if (
+    todaysCount >= habit.dailyTarget
+    && updatedCount < habit.dailyTarget
+  ) {
+    // Find today's DAILYCHECK event for this habit and roll it back
+    const today = daystamp.today()
+    const todayStart = new Date(today.split('-').join('/')).setHours(0, 0, 0, 0)
+    const todayEnd = new Date(todayStart).setHours(23, 59, 59, 999)
+
+    // Query for today's DAILYCHECK commit for this habit
+    const { data: dailyChecks, error } = await tryCatch(getDailyChecksToday(habit.commitmentId))
+
+    if (error) console.error("Error fetching DAILYCHECK records:", error)
+    else {
+      // Rollback any DAILYCHECK commits found
+      for (const checkRecord of dailyChecks) {
+        await trekie.commitments.rollback(checkRecord.id)
+      }
+    }
+  }
 }
 
 export const habits: Interface = {
@@ -85,49 +129,9 @@ export const habits: Interface = {
       })
     }
 
-    // Store the daily check commit ID if we trigger one
-    let dailyCheckCommitId: string | undefined
-    // Only trigger DAILYCHECK event if we're crossing the threshold today
-    // (going from below target to at/above target) and haven't already triggered it today
-    if (
-      todaysCount < habit.dailyTarget
-      && updatedCount >= habit.dailyTarget
-    ) {
-      // Check if we've already logged a DAILYCHECK today
-      const alreadyCheckedToday = (await getDailyChecksToday(habit.commitmentId)).length > 0
+    // Handle daily target logic
+    await handleDailyTarget(habit, todaysCount, updatedCount)
 
-      if (!alreadyCheckedToday) {
-        const r = await trekie.commitments.act({
-          kind: 'Habit',
-          event: 'DAILYCHECK',
-          id: habit.commitmentId,
-          data: null
-        })
-
-        dailyCheckCommitId = r.id
-      }
-    }
-    // If we previously crossed the threshold but now fall below it, rollback the DAILYCHECK rewards
-    else if (
-      todaysCount >= habit.dailyTarget
-      && updatedCount < habit.dailyTarget
-    ) {
-      // Find today's DAILYCHECK event for this habit and roll it back
-      const today = daystamp.today()
-      const todayStart = new Date(today.split('-').join('/')).setHours(0, 0, 0, 0)
-      const todayEnd = new Date(todayStart).setHours(23, 59, 59, 999)
-
-      // Query for today's DAILYCHECK commit for this habit
-      const { data: dailyChecks, error } = await tryCatch(getDailyChecksToday(habit.commitmentId))
-
-      if (error) console.error("Error fetching DAILYCHECK records:", error)
-      else {
-        // Rollback any DAILYCHECK commits found
-        for (const checkRecord of dailyChecks) {
-          await trekie.commitments.rollback(checkRecord.id)
-        }
-      }
-    }
     return habit.count
   },
 

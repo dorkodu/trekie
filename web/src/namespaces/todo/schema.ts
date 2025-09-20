@@ -12,12 +12,12 @@ export const ITodoTemplate = z.object({
 })
 
 export const ITodo = ITodoTemplate.extend({
-  id: z.string().ulid(),
-  userId: z.string().ulid(),
+  id: z.ulid(),
+  userId: z.ulid(),
   completed: z.boolean().default(false),
   createdAt: z.number(),
   updatedAt: z.number(),
-  completedAt: z.number().nullable(),
+  completedAt: z.number().nullable().default(null),
 })
 
 export const schema = { TodoTemplate: ITodoTemplate, Todo: ITodo }

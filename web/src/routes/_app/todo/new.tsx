@@ -27,7 +27,7 @@ function NewTodoPage() {
           <TodoForm
             mode="create"
             onSuccess={(todo) => {
-              navigate({ to: '/todo/$todoId', params: { todoId: todo.id } })
+              navigate({ to: '/home' })
             }}
           />
           <Group className='pt-4'>

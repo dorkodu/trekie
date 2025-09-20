@@ -14,9 +14,10 @@ import HabitCounterMenu from "@web/namespaces/habit/HabitCounterMenu";
 
 interface Props {
   habitId: string;
+  compact?: boolean;
 }
 
-function HabitCounter({ habitId }: Props) {
+function HabitCounter({ habitId, compact = false }: Props) {
   const navigate = useNavigate();
   const habit = useLiveQuery(() => habits.get(habitId), [habitId]);
 
@@ -34,13 +35,13 @@ function HabitCounter({ habitId }: Props) {
 
   return (
     <Card
-      className="bg-transparent border-0 overflow-visible mb-2 rounded-2xl shadow-md p-0 cursor-pointer hover:shadow-lg transition-shadow"
+      className="bg-transparent border-0 overflow-visible mb-1 rounded-2xl shadow-md p-0 cursor-pointer hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 transition-all duration-200"
       onClick={onClick}
     >
       <div className="flex flex-row items-stretch min-h-20">
         {/* Increment Button */}
         <Button
-          className="rounded-none rounded-l-2xl flex items-center justify-center px-2 min-w-0"
+          className="rounded-none rounded-l-2xl flex items-center justify-center px-2 min-w-0 transition-all duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
           style={{
             background: "linear-gradient(45deg, hsl(135, 95%, 30%), hsl(170, 95%, 35%))",
             height: "auto",
@@ -63,9 +64,9 @@ function HabitCounter({ habitId }: Props) {
             <HabitCounterMenu habit={habit} />
           </div>
 
-          {habit.description && habit.description.length > 0 && (
-            <div className="pt-0.5">
-              <span className="text-sm leading-tight">
+          {habit.description && habit.description.length > 0 && !compact && (
+            <div>
+              <span className="text-sm leading-tight text-muted-foreground">
                 <EnhancedText
                   ids={["emoji", "url", "username"]}
                   text={habit.description}
@@ -74,9 +75,9 @@ function HabitCounter({ habitId }: Props) {
             </div>
           )}
 
-          <div className="flex flex-row gap-2 mt-1.5 justify-between pt-1">
+          <div className={`flex flex-row gap-2 ${compact ? 'mt-0.5' : 'mt-1.5'} justify-between pt-1`}>
             <div className="flex flex-row gap-3 items-start">
-              <Badge className="block text-lg font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-800">
+              <Badge className="block text-lg font-bold px-2 py-0.5 rounded-md bg-blue-600/10 text-blue-500">
                 <span>{habit.count}</span>
               </Badge>
 
@@ -94,7 +95,7 @@ function HabitCounter({ habitId }: Props) {
               </div>
             </div>
 
-            <span className="inline-flex items-center justify-center text-gray-400">
+            <span className="inline-flex items-center justify-center text-muted">
               <IconPlusMinus />
             </span>
           </div>
@@ -102,7 +103,7 @@ function HabitCounter({ habitId }: Props) {
 
         {/* Decrement Button */}
         <Button
-          className="rounded-none rounded-r-2xl flex items-center justify-center px-2 min-w-0"
+          className="rounded-none rounded-r-2xl flex items-center justify-center px-2 min-w-0 transition-all duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
           style={{
             background: "linear-gradient(135deg, hsl(15, 90%, 60%), hsl(0, 96%, 45%))",
             height: "auto",

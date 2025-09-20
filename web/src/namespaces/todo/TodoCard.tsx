@@ -1,22 +1,26 @@
 import { IconCheck, IconCircle, IconClock } from "@tabler/icons-react";
-import { ITodo } from "@web/namespaces/todo";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@web/components/ui/alert";
 import { Badge } from "@web/components/ui/badge";
-import { Card, CardDescription, CardHeader, CardTitle } from "@web/components/ui/card";
-import { Checkbox } from "@web/components/ui/checkbox";
+import { Button } from "@web/components/ui/button";
+import { Card } from "@web/components/ui/card";
 import { Skeleton } from "@web/components/ui/skeleton";
 
+import React from "react";
+
+import { ITodo } from "@web/namespaces/todo";
 import { todos } from ".";
 
 interface Props {
   id: ITodo["id"];
+  compact?: boolean;
 }
 
-export default function TodoCard({ id }: Props) {
+export default function TodoCard({ id, compact = false }: Props) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const todoQuery = useQuery({
     queryKey: ["todo", id],
@@ -36,6 +40,17 @@ export default function TodoCard({ id }: Props) {
     queryClient.invalidateQueries({ queryKey: ["todo", id] });
     // Also invalidate the todos list query with userId
     queryClient.invalidateQueries({ queryKey: ["todos", todo.userId] });
+  };
+
+  const handleCardClick = () => {
+    navigate({ to: "/todo/$todoId", params: { todoId: todo.id } });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
   };
 
   function priorityBadge() {
@@ -86,66 +101,93 @@ export default function TodoCard({ id }: Props) {
   }
 
   return (
-    <Link
-      to="/todo/$todoId"
-      params={{ todoId: todo.id }}
-      className="block"
+    <Card
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      aria-label={`Todo ${todo.title}`}
+      className="bg-transparent border-0 overflow-visible mb-1 shadow-none p-0 cursor-pointer hover:shadow-none transition-all duration-200"
+      tabIndex={0}
     >
-      <Card
-        role="link"
-        aria-label={`Todo ${todo.title}`}
-        className="p-0 group relative shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-border/60 hover:border-border hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-        tabIndex={0}
-      >
-        <CardHeader className="flex flex-row items-start justify-between gap-3 p-4 pb-2">
-          <div className="flex items-start gap-3 flex-1">
-            <div onClick={(e) => e.stopPropagation()}>
-              <Checkbox
-                checked={todo.completed}
-                onCheckedChange={handleToggle}
-                className="mt-0.5"
-              />
-            </div>
-            <div className="flex-1 space-y-1 pr-2">
-              <div className="flex items-start justify-between gap-2">
-                <CardTitle className={`font-semibold leading-tight line-clamp-1 pr-6 ${todo.completed ? 'line-through text-muted-foreground' : ''}`}>
-                  {todo.title}
-                </CardTitle>
-              </div>
-              {todo.description && (
-                <CardDescription className="text-xs text-muted-foreground leading-snug line-clamp-2 min-h-[1.5rem]">
-                  {todo.description}
-                </CardDescription>
-              )}
-              <div className="mt-1 flex flex-wrap items-center gap-2">
-                {statusBadge()}
-                {priorityBadge()}
-                {todo.dueDate && (
-                  <Badge variant="outline" className="text-xs">
-                    Due: {new Date(todo.dueDate).toLocaleDateString()}
-                  </Badge>
-                )}
-              </div>
+      <div className="flex flex-row items-stretch min-h-16 rounded-2xl overflow-hidden">
+        {/* Checkbox Button - Full Height Left */}
+        <Button
+          className="rounded-none rounded-l-2xl flex items-center justify-center px-1.5 min-w-0 bg-transparent hover:bg-transparent transition-all duration-200 hover:scale-105"
+          style={{
+            height: "auto",
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleToggle(!todo.completed);
+          }}
+        >
+          <div className={`flex items-center justify-center w-8 h-8 rounded-md p-0.5 transition-all ${todo.completed
+            ? 'bg-blue-500'
+            : 'bg-gray-200 dark:bg-gray-700'
+            }`}>
+            {todo.completed && <IconCheck stroke={2.5} className="size-7 text-white" />}
+          </div>
+        </Button>
+
+        {/* Main Content */}
+        <div className="flex flex-col flex-1 justify-center py-1.5 pl-1.5 pr-1 min-w-0 bg-transparent rounded-r-2xl">
+          <div className="flex flex-row justify-between items-center">
+            <div className="grid grid-rows-1 min-w-0">
+              <h5 className={`truncate font-bold text-base leading-tight ${todo.completed ? 'line-through text-muted-foreground' : ''}`}>
+                {todo.title}
+              </h5>
             </div>
           </div>
-        </CardHeader>
-      </Card>
-    </Link>
+
+          {todo.description && !compact && (
+            <div>
+              <span className="text-sm leading-tight text-muted-foreground">
+                {todo.description}
+              </span>
+            </div>
+          )}
+
+          <div className="flex flex-row gap-2 mt-0 justify-between">
+            <div className="flex flex-row gap-3 items-start">
+              {statusBadge()}
+              {priorityBadge()}
+              {todo.dueDate && (
+                <Badge variant="outline" className="text-xs">
+                  Due: {new Date(todo.dueDate).toLocaleDateString()}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
   );
 }
 
 function TodoCardSkeleton() {
   return (
-    <Card className="relative shadow-sm rounded-xl">
-      <CardHeader className="flex flex-row items-start justify-between gap-3 p-4 pb-2">
-        <div className="flex items-start gap-3 flex-1">
-          <Skeleton className="h-4 w-4 rounded" />
-          <div className="flex-1 space-y-2">
+    <Card className="bg-transparent border-0 overflow-visible mb-2 shadow-md dark:shadow-lg p-0">
+      <div className="flex flex-row items-stretch min-h-20 rounded-2xl overflow-hidden">
+        {/* Checkbox Button Skeleton */}
+        <Skeleton className="rounded-none rounded-l-2xl w-12 h-auto" />
+
+        {/* Main Content Skeleton */}
+        <div className="flex flex-col flex-1 justify-center py-3 pl-3 pr-2 min-w-0 bg-white/5 dark:bg-black/10 ring-1 ring-black/5 dark:ring-white/10 rounded-r-2xl">
+          <div className="flex flex-row justify-between items-center">
             <Skeleton className="h-4 w-1/2" />
+          </div>
+          <div className="mt-2">
             <Skeleton className="h-3 w-5/6" />
           </div>
+          <div className="flex flex-row gap-2 mt-1.5 justify-between pt-1">
+            <div className="flex flex-row gap-3 items-start">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-12" />
+            </div>
+          </div>
         </div>
-      </CardHeader>
+      </div>
     </Card>
   );
 }

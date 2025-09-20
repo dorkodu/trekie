@@ -23,6 +23,7 @@ import { SidebarLeft } from "@web/components/app/layout/sidebar-left";
 import { SidebarRight } from "@web/components/app/layout/sidebar-right";
 import { OnboardingGuard } from "@web/components/guards/onboarding-guard";
 import { SidebarInset, SidebarProvider } from "@web/components/ui/sidebar";
+import { Toaster } from "@web/components/ui/sonner";
 import { Spotlight } from "@web/lib/spotlight";
 export default function AppLayout() {
   return (
@@ -56,6 +57,7 @@ export default function AppLayout() {
 
         </div>
       </main>
+      <Toaster />
     </OnboardingGuard>
   )
 }

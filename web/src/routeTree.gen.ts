@@ -32,6 +32,7 @@ import { Route as AppChar58usernameRouteImport } from './routes/_app/:username'
 import { Route as WwwLegalIndexRouteImport } from './routes/_www/legal/index'
 import { Route as WwwHelpIndexRouteImport } from './routes/_www/help/index'
 import { Route as WwwDocsIndexRouteImport } from './routes/_www/docs/index'
+import { Route as AppTodosIndexRouteImport } from './routes/_app/todos/index'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
 import { Route as AppOnboardingIndexRouteImport } from './routes/_app/onboarding/index'
 import { Route as AppMarketIndexRouteImport } from './routes/_app/market/index'
@@ -43,14 +44,19 @@ import { Route as WwwLegalCookiePolicyRouteImport } from './routes/_www/legal/co
 import { Route as WwwLegalCompanyRouteImport } from './routes/_www/legal/company'
 import { Route as WwwLegalCommunityRulesRouteImport } from './routes/_www/legal/community-rules'
 import { Route as WwwHelpSlugRouteImport } from './routes/_www/help/$slug'
+import { Route as AppTodoNewRouteImport } from './routes/_app/todo/new'
 import { Route as AppProfileEditRouteImport } from './routes/_app/profile/edit'
 import { Route as AppProfileUsernameRouteImport } from './routes/_app/profile/$username'
+import { Route as AppOnboardingTodosRouteImport } from './routes/_app/onboarding/todos'
 import { Route as AppOnboardingProfileRouteImport } from './routes/_app/onboarding/profile'
 import { Route as AppOnboardingGoalsRouteImport } from './routes/_app/onboarding/goals'
 import { Route as AppOnboardingCompleteRouteImport } from './routes/_app/onboarding/complete'
 import { Route as AppHabitNewRouteImport } from './routes/_app/habit/new'
+import { Route as AppGoalNewRouteImport } from './routes/_app/goal/new'
+import { Route as AppTodoTodoIdIndexRouteImport } from './routes/_app/todo/$todoId/index'
 import { Route as AppHabitHabitIdIndexRouteImport } from './routes/_app/habit/$habitId/index'
 import { Route as AppGoalGoalIdIndexRouteImport } from './routes/_app/goal/$goalId/index'
+import { Route as AppTodoTodoIdEditRouteImport } from './routes/_app/todo/$todoId/edit'
 import { Route as AppHabitHabitIdEditRouteImport } from './routes/_app/habit/$habitId/edit'
 import { Route as AppGoalGoalIdEditRouteImport } from './routes/_app/goal/$goalId/edit'
 
@@ -167,6 +173,11 @@ const WwwDocsIndexRoute = WwwDocsIndexRouteImport.update({
   path: '/docs/',
   getParentRoute: () => WwwRoute,
 } as any)
+const AppTodosIndexRoute = AppTodosIndexRouteImport.update({
+  id: '/todos/',
+  path: '/todos/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
@@ -222,6 +233,11 @@ const WwwHelpSlugRoute = WwwHelpSlugRouteImport.update({
   path: '/help/$slug',
   getParentRoute: () => WwwRoute,
 } as any)
+const AppTodoNewRoute = AppTodoNewRouteImport.update({
+  id: '/todo/new',
+  path: '/todo/new',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppProfileEditRoute = AppProfileEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -231,6 +247,11 @@ const AppProfileUsernameRoute = AppProfileUsernameRouteImport.update({
   id: '/$username',
   path: '/$username',
   getParentRoute: () => AppProfileRoute,
+} as any)
+const AppOnboardingTodosRoute = AppOnboardingTodosRouteImport.update({
+  id: '/todos',
+  path: '/todos',
+  getParentRoute: () => AppOnboardingRoute,
 } as any)
 const AppOnboardingProfileRoute = AppOnboardingProfileRouteImport.update({
   id: '/profile',
@@ -252,6 +273,16 @@ const AppHabitNewRoute = AppHabitNewRouteImport.update({
   path: '/habit/new',
   getParentRoute: () => AppRoute,
 } as any)
+const AppGoalNewRoute = AppGoalNewRouteImport.update({
+  id: '/goal/new',
+  path: '/goal/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTodoTodoIdIndexRoute = AppTodoTodoIdIndexRouteImport.update({
+  id: '/todo/$todoId/',
+  path: '/todo/$todoId/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHabitHabitIdIndexRoute = AppHabitHabitIdIndexRouteImport.update({
   id: '/habit/$habitId/',
   path: '/habit/$habitId/',
@@ -260,6 +291,11 @@ const AppHabitHabitIdIndexRoute = AppHabitHabitIdIndexRouteImport.update({
 const AppGoalGoalIdIndexRoute = AppGoalGoalIdIndexRouteImport.update({
   id: '/goal/$goalId/',
   path: '/goal/$goalId/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTodoTodoIdEditRoute = AppTodoTodoIdEditRouteImport.update({
+  id: '/todo/$todoId/edit',
+  path: '/todo/$todoId/edit',
   getParentRoute: () => AppRoute,
 } as any)
 const AppHabitHabitIdEditRoute = AppHabitHabitIdEditRouteImport.update({
@@ -292,12 +328,15 @@ export interface FileRoutesByFullPath {
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
   '/': typeof WwwIndexRoute
+  '/goal/new': typeof AppGoalNewRoute
   '/habit/new': typeof AppHabitNewRoute
   '/onboarding/complete': typeof AppOnboardingCompleteRoute
   '/onboarding/goals': typeof AppOnboardingGoalsRoute
   '/onboarding/profile': typeof AppOnboardingProfileRoute
+  '/onboarding/todos': typeof AppOnboardingTodosRoute
   '/profile/$username': typeof AppProfileUsernameRoute
   '/profile/edit': typeof AppProfileEditRoute
+  '/todo/new': typeof AppTodoNewRoute
   '/help/$slug': typeof WwwHelpSlugRoute
   '/legal/community-rules': typeof WwwLegalCommunityRulesRoute
   '/legal/company': typeof WwwLegalCompanyRoute
@@ -309,13 +348,16 @@ export interface FileRoutesByFullPath {
   '/market': typeof AppMarketIndexRoute
   '/onboarding/': typeof AppOnboardingIndexRoute
   '/settings': typeof AppSettingsIndexRoute
+  '/todos': typeof AppTodosIndexRoute
   '/docs': typeof WwwDocsIndexRoute
   '/help': typeof WwwHelpIndexRoute
   '/legal': typeof WwwLegalIndexRoute
   '/goal/$goalId/edit': typeof AppGoalGoalIdEditRoute
   '/habit/$habitId/edit': typeof AppHabitHabitIdEditRoute
+  '/todo/$todoId/edit': typeof AppTodoTodoIdEditRoute
   '/goal/$goalId': typeof AppGoalGoalIdIndexRoute
   '/habit/$habitId': typeof AppHabitHabitIdIndexRoute
+  '/todo/$todoId': typeof AppTodoTodoIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/:username': typeof AppChar58usernameRoute
@@ -335,12 +377,15 @@ export interface FileRoutesByTo {
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
   '/': typeof WwwIndexRoute
+  '/goal/new': typeof AppGoalNewRoute
   '/habit/new': typeof AppHabitNewRoute
   '/onboarding/complete': typeof AppOnboardingCompleteRoute
   '/onboarding/goals': typeof AppOnboardingGoalsRoute
   '/onboarding/profile': typeof AppOnboardingProfileRoute
+  '/onboarding/todos': typeof AppOnboardingTodosRoute
   '/profile/$username': typeof AppProfileUsernameRoute
   '/profile/edit': typeof AppProfileEditRoute
+  '/todo/new': typeof AppTodoNewRoute
   '/help/$slug': typeof WwwHelpSlugRoute
   '/legal/community-rules': typeof WwwLegalCommunityRulesRoute
   '/legal/company': typeof WwwLegalCompanyRoute
@@ -352,13 +397,16 @@ export interface FileRoutesByTo {
   '/market': typeof AppMarketIndexRoute
   '/onboarding': typeof AppOnboardingIndexRoute
   '/settings': typeof AppSettingsIndexRoute
+  '/todos': typeof AppTodosIndexRoute
   '/docs': typeof WwwDocsIndexRoute
   '/help': typeof WwwHelpIndexRoute
   '/legal': typeof WwwLegalIndexRoute
   '/goal/$goalId/edit': typeof AppGoalGoalIdEditRoute
   '/habit/$habitId/edit': typeof AppHabitHabitIdEditRoute
+  '/todo/$todoId/edit': typeof AppTodoTodoIdEditRoute
   '/goal/$goalId': typeof AppGoalGoalIdIndexRoute
   '/habit/$habitId': typeof AppHabitHabitIdIndexRoute
+  '/todo/$todoId': typeof AppTodoTodoIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -382,12 +430,15 @@ export interface FileRoutesById {
   '/_www/login': typeof WwwLoginRoute
   '/_www/super': typeof WwwSuperRoute
   '/_www/': typeof WwwIndexRoute
+  '/_app/goal/new': typeof AppGoalNewRoute
   '/_app/habit/new': typeof AppHabitNewRoute
   '/_app/onboarding/complete': typeof AppOnboardingCompleteRoute
   '/_app/onboarding/goals': typeof AppOnboardingGoalsRoute
   '/_app/onboarding/profile': typeof AppOnboardingProfileRoute
+  '/_app/onboarding/todos': typeof AppOnboardingTodosRoute
   '/_app/profile/$username': typeof AppProfileUsernameRoute
   '/_app/profile/edit': typeof AppProfileEditRoute
+  '/_app/todo/new': typeof AppTodoNewRoute
   '/_www/help/$slug': typeof WwwHelpSlugRoute
   '/_www/legal/community-rules': typeof WwwLegalCommunityRulesRoute
   '/_www/legal/company': typeof WwwLegalCompanyRoute
@@ -399,13 +450,16 @@ export interface FileRoutesById {
   '/_app/market/': typeof AppMarketIndexRoute
   '/_app/onboarding/': typeof AppOnboardingIndexRoute
   '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_app/todos/': typeof AppTodosIndexRoute
   '/_www/docs/': typeof WwwDocsIndexRoute
   '/_www/help/': typeof WwwHelpIndexRoute
   '/_www/legal/': typeof WwwLegalIndexRoute
   '/_app/goal/$goalId/edit': typeof AppGoalGoalIdEditRoute
   '/_app/habit/$habitId/edit': typeof AppHabitHabitIdEditRoute
+  '/_app/todo/$todoId/edit': typeof AppTodoTodoIdEditRoute
   '/_app/goal/$goalId/': typeof AppGoalGoalIdIndexRoute
   '/_app/habit/$habitId/': typeof AppHabitHabitIdIndexRoute
+  '/_app/todo/$todoId/': typeof AppTodoTodoIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -428,12 +482,15 @@ export interface FileRouteTypes {
     | '/login'
     | '/super'
     | '/'
+    | '/goal/new'
     | '/habit/new'
     | '/onboarding/complete'
     | '/onboarding/goals'
     | '/onboarding/profile'
+    | '/onboarding/todos'
     | '/profile/$username'
     | '/profile/edit'
+    | '/todo/new'
     | '/help/$slug'
     | '/legal/community-rules'
     | '/legal/company'
@@ -445,13 +502,16 @@ export interface FileRouteTypes {
     | '/market'
     | '/onboarding/'
     | '/settings'
+    | '/todos'
     | '/docs'
     | '/help'
     | '/legal'
     | '/goal/$goalId/edit'
     | '/habit/$habitId/edit'
+    | '/todo/$todoId/edit'
     | '/goal/$goalId'
     | '/habit/$habitId'
+    | '/todo/$todoId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/:username'
@@ -471,12 +531,15 @@ export interface FileRouteTypes {
     | '/login'
     | '/super'
     | '/'
+    | '/goal/new'
     | '/habit/new'
     | '/onboarding/complete'
     | '/onboarding/goals'
     | '/onboarding/profile'
+    | '/onboarding/todos'
     | '/profile/$username'
     | '/profile/edit'
+    | '/todo/new'
     | '/help/$slug'
     | '/legal/community-rules'
     | '/legal/company'
@@ -488,13 +551,16 @@ export interface FileRouteTypes {
     | '/market'
     | '/onboarding'
     | '/settings'
+    | '/todos'
     | '/docs'
     | '/help'
     | '/legal'
     | '/goal/$goalId/edit'
     | '/habit/$habitId/edit'
+    | '/todo/$todoId/edit'
     | '/goal/$goalId'
     | '/habit/$habitId'
+    | '/todo/$todoId'
   id:
     | '__root__'
     | '/_app'
@@ -517,12 +583,15 @@ export interface FileRouteTypes {
     | '/_www/login'
     | '/_www/super'
     | '/_www/'
+    | '/_app/goal/new'
     | '/_app/habit/new'
     | '/_app/onboarding/complete'
     | '/_app/onboarding/goals'
     | '/_app/onboarding/profile'
+    | '/_app/onboarding/todos'
     | '/_app/profile/$username'
     | '/_app/profile/edit'
+    | '/_app/todo/new'
     | '/_www/help/$slug'
     | '/_www/legal/community-rules'
     | '/_www/legal/company'
@@ -534,13 +603,16 @@ export interface FileRouteTypes {
     | '/_app/market/'
     | '/_app/onboarding/'
     | '/_app/settings/'
+    | '/_app/todos/'
     | '/_www/docs/'
     | '/_www/help/'
     | '/_www/legal/'
     | '/_app/goal/$goalId/edit'
     | '/_app/habit/$habitId/edit'
+    | '/_app/todo/$todoId/edit'
     | '/_app/goal/$goalId/'
     | '/_app/habit/$habitId/'
+    | '/_app/todo/$todoId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -711,6 +783,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WwwDocsIndexRouteImport
       parentRoute: typeof WwwRoute
     }
+    '/_app/todos/': {
+      id: '/_app/todos/'
+      path: '/todos'
+      fullPath: '/todos'
+      preLoaderRoute: typeof AppTodosIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/settings/': {
       id: '/_app/settings/'
       path: '/settings'
@@ -788,6 +867,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WwwHelpSlugRouteImport
       parentRoute: typeof WwwRoute
     }
+    '/_app/todo/new': {
+      id: '/_app/todo/new'
+      path: '/todo/new'
+      fullPath: '/todo/new'
+      preLoaderRoute: typeof AppTodoNewRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/profile/edit': {
       id: '/_app/profile/edit'
       path: '/edit'
@@ -801,6 +887,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/profile/$username'
       preLoaderRoute: typeof AppProfileUsernameRouteImport
       parentRoute: typeof AppProfileRoute
+    }
+    '/_app/onboarding/todos': {
+      id: '/_app/onboarding/todos'
+      path: '/todos'
+      fullPath: '/onboarding/todos'
+      preLoaderRoute: typeof AppOnboardingTodosRouteImport
+      parentRoute: typeof AppOnboardingRoute
     }
     '/_app/onboarding/profile': {
       id: '/_app/onboarding/profile'
@@ -830,6 +923,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHabitNewRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/goal/new': {
+      id: '/_app/goal/new'
+      path: '/goal/new'
+      fullPath: '/goal/new'
+      preLoaderRoute: typeof AppGoalNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/todo/$todoId/': {
+      id: '/_app/todo/$todoId/'
+      path: '/todo/$todoId'
+      fullPath: '/todo/$todoId'
+      preLoaderRoute: typeof AppTodoTodoIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/habit/$habitId/': {
       id: '/_app/habit/$habitId/'
       path: '/habit/$habitId'
@@ -842,6 +949,13 @@ declare module '@tanstack/react-router' {
       path: '/goal/$goalId'
       fullPath: '/goal/$goalId'
       preLoaderRoute: typeof AppGoalGoalIdIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/todo/$todoId/edit': {
+      id: '/_app/todo/$todoId/edit'
+      path: '/todo/$todoId/edit'
+      fullPath: '/todo/$todoId/edit'
+      preLoaderRoute: typeof AppTodoTodoIdEditRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/habit/$habitId/edit': {
@@ -865,6 +979,7 @@ interface AppOnboardingRouteChildren {
   AppOnboardingCompleteRoute: typeof AppOnboardingCompleteRoute
   AppOnboardingGoalsRoute: typeof AppOnboardingGoalsRoute
   AppOnboardingProfileRoute: typeof AppOnboardingProfileRoute
+  AppOnboardingTodosRoute: typeof AppOnboardingTodosRoute
   AppOnboardingIndexRoute: typeof AppOnboardingIndexRoute
 }
 
@@ -872,6 +987,7 @@ const AppOnboardingRouteChildren: AppOnboardingRouteChildren = {
   AppOnboardingCompleteRoute: AppOnboardingCompleteRoute,
   AppOnboardingGoalsRoute: AppOnboardingGoalsRoute,
   AppOnboardingProfileRoute: AppOnboardingProfileRoute,
+  AppOnboardingTodosRoute: AppOnboardingTodosRoute,
   AppOnboardingIndexRoute: AppOnboardingIndexRoute,
 }
 
@@ -904,14 +1020,19 @@ interface AppRouteChildren {
   AppPremiumRoute: typeof AppPremiumRoute
   AppProfileRoute: typeof AppProfileRouteWithChildren
   AppSocialRoute: typeof AppSocialRoute
+  AppGoalNewRoute: typeof AppGoalNewRoute
   AppHabitNewRoute: typeof AppHabitNewRoute
+  AppTodoNewRoute: typeof AppTodoNewRoute
   AppGoalsIndexRoute: typeof AppGoalsIndexRoute
   AppMarketIndexRoute: typeof AppMarketIndexRoute
   AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+  AppTodosIndexRoute: typeof AppTodosIndexRoute
   AppGoalGoalIdEditRoute: typeof AppGoalGoalIdEditRoute
   AppHabitHabitIdEditRoute: typeof AppHabitHabitIdEditRoute
+  AppTodoTodoIdEditRoute: typeof AppTodoTodoIdEditRoute
   AppGoalGoalIdIndexRoute: typeof AppGoalGoalIdIndexRoute
   AppHabitHabitIdIndexRoute: typeof AppHabitHabitIdIndexRoute
+  AppTodoTodoIdIndexRoute: typeof AppTodoTodoIdIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -925,14 +1046,19 @@ const AppRouteChildren: AppRouteChildren = {
   AppPremiumRoute: AppPremiumRoute,
   AppProfileRoute: AppProfileRouteWithChildren,
   AppSocialRoute: AppSocialRoute,
+  AppGoalNewRoute: AppGoalNewRoute,
   AppHabitNewRoute: AppHabitNewRoute,
+  AppTodoNewRoute: AppTodoNewRoute,
   AppGoalsIndexRoute: AppGoalsIndexRoute,
   AppMarketIndexRoute: AppMarketIndexRoute,
   AppSettingsIndexRoute: AppSettingsIndexRoute,
+  AppTodosIndexRoute: AppTodosIndexRoute,
   AppGoalGoalIdEditRoute: AppGoalGoalIdEditRoute,
   AppHabitHabitIdEditRoute: AppHabitHabitIdEditRoute,
+  AppTodoTodoIdEditRoute: AppTodoTodoIdEditRoute,
   AppGoalGoalIdIndexRoute: AppGoalGoalIdIndexRoute,
   AppHabitHabitIdIndexRoute: AppHabitHabitIdIndexRoute,
+  AppTodoTodoIdIndexRoute: AppTodoTodoIdIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
