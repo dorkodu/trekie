@@ -35,9 +35,9 @@ function HabitCounterMenu({ habit }: Props) {
       <DropdownMenuTrigger asChild>
         <ActionIcon
           variant="ghost"
-          color="gray"
           onClick={(ev) => ev.stopPropagation()}
           size="lg"
+          className="cursor-pointer"
         >
           <IconDotsVertical className="text-gray-500" />
         </ActionIcon>
