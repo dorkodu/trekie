@@ -1,6 +1,5 @@
 import { IconAlertTriangle, IconCheck, IconFlag, IconPlayerPause, IconSparkles } from "@tabler/icons-react";
-import { IGoal } from "@web/namespaces/goal";
-import GoalMenu from "./GoalCardMenu";
+
 
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -9,13 +8,17 @@ import { Badge } from "@web/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@web/components/ui/card";
 import { Skeleton } from "@web/components/ui/skeleton";
 
+import { IGoal } from "@web/namespaces/goal";
+import GoalMenu from "./GoalCardMenu";
+
 import { goals } from ".";
 
 interface Props {
   id: IGoal["id"];
+  compact?: boolean;
 }
 
-export default function GoalCard({ id }: Props) {
+export default function GoalCard({ id, compact = false }: Props) {
   const navigate = useNavigate();
 
   const goalQuery = useQuery({
@@ -91,7 +94,7 @@ export default function GoalCard({ id }: Props) {
             </CardTitle>
           </div>
           <CardDescription className="text-xs text-muted-foreground leading-snug line-clamp-2 min-h-[1.5rem]">
-            {goal.description}
+            {!compact && goal.description}
           </CardDescription>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {statusBadge()}

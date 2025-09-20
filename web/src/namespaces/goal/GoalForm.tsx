@@ -1,14 +1,19 @@
+import { IconCheckbox, IconPlusMinus, IconTarget, IconTrash } from '@tabler/icons-react'
 import { useForm } from '@tanstack/react-form'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import Emoji from '@web/components/misc/Emoji'
 import { Button } from '@web/components/ui/button'
 import { Input } from '@web/components/ui/input'
 import { Label } from '@web/components/ui/label'
 import { Group, Stack } from '@web/components/ui/layout'
 import { Textarea } from '@web/components/ui/textarea'
+import { db } from '@web/lib/db'
+import { trekie } from '@web/lib/trekie'
 import { IGoal, goals } from '@web/namespaces/goal'
 import { tryCatch } from '@web/utils/tryCatch'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { z } from 'zod'
+import { useHabits } from '../habit/habits-db'
 import { ChoiceCombobox, type ChoiceOption } from './ChoiceCombobox'
 
 // Validation schema (client-side)
@@ -29,6 +34,102 @@ export interface GoalFormProps {
 
 export function GoalForm({ mode, goal, onSuccess, onDelete, commitmentOptions = [] }: GoalFormProps) {
   const qc = useQueryClient()
+  const userId = trekie.use($ => $.user?.id)
+
+  // Fetch habits for commitment options
+  const habitsQuery = useHabits(userId)
+
+  // Fetch todos for commitment options
+  const todosQuery = useQuery({
+    queryKey: ['todos', userId],
+    queryFn: async () => {
+      if (userId) {
+        return db.todos.where('userId').equals(userId).toArray()
+      }
+      return []
+    },
+    enabled: !!userId,
+  })
+
+  // Create icon mapping for different types
+  const getItemIcon = (type: string) => {
+    switch (type) {
+      case 'habit':
+        return <IconPlusMinus className="w-4 h-4" />
+      case 'todo':
+        return <IconCheckbox className="w-4 h-4" />
+      case 'goal':
+        return <IconTarget className="w-4 h-4" />
+      default:
+        return <Emoji emoji="📌" size={16} />
+    }
+  }
+
+  const defaultCommitmentOptions = useMemo(() => {
+    const options: ChoiceOption[] = []
+
+    // Add habits
+    if (habitsQuery.data) {
+      habitsQuery.data.forEach(habit => {
+        options.push({
+          value: `habit-${habit.id}`,
+          label: habit.title,
+          content: (
+            <div className="flex items-center gap-2 w-full">
+              {getItemIcon('habit')}
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="font-medium truncate">
+                  {habit.title}
+                </span>
+                {habit.description && (
+                  <span className="text-xs text-muted-foreground truncate">
+                    {habit.description}
+                  </span>
+                )}
+              </div>
+            </div>
+          )
+        })
+      })
+    }
+
+    // Add todos
+    if (todosQuery.data) {
+      todosQuery.data
+        .filter(todo => !todo.completed) // Only show incomplete todos
+        .forEach(todo => {
+          options.push({
+            value: `todo-${todo.id}`,
+            label: todo.title,
+            content: (
+              <div className="flex items-center gap-2 w-full">
+                {getItemIcon('todo')}
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="font-medium truncate">
+                    {todo.title}
+                  </span>
+                  {todo.description && (
+                    <span className="text-xs text-muted-foreground truncate">
+                      {todo.description}
+                    </span>
+                  )}
+                  {todo.dueDate && (
+                    <span className="text-xs text-orange-600">
+                      Due: {new Date(todo.dueDate).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )
+          })
+        })
+    }
+
+    // Sort by creation date (most recent first) - for now just return as is
+    return options
+  }, [habitsQuery.data, todosQuery.data])
+
+  const finalCommitmentOptions = commitmentOptions.length > 0 ? commitmentOptions : defaultCommitmentOptions
 
   const form = useForm({
     defaultValues: goal ?? { title: '', description: '', xpTarget: 0, commitments: [] },
@@ -62,10 +163,10 @@ export function GoalForm({ mode, goal, onSuccess, onDelete, commitmentOptions = 
   })
 
   useEffect(() => {
-    if (mode === 'edit' && goal && commitmentOptions.length > 0) {
-      form.setFieldValue('commitments', goal.commitments.filter(id => commitmentOptions.some(o => o.value === id)))
+    if (mode === 'edit' && goal && finalCommitmentOptions.length > 0) {
+      form.setFieldValue('commitments', goal.commitments.filter(id => finalCommitmentOptions.some(o => o.value === id)))
     }
-  }, [mode, goal, commitmentOptions])
+  }, [mode, goal, finalCommitmentOptions])
 
   return (
     <form onSubmit={form.handleSubmit} className='space-y-4'>
@@ -100,8 +201,13 @@ export function GoalForm({ mode, goal, onSuccess, onDelete, commitmentOptions = 
         <form.Field name='commitments'>
           {field => (
             <div>
-              <Label>Commitments</Label>
-              <ChoiceCombobox options={commitmentOptions} value={field.state.value || []} onChange={(ids) => field.handleChange(ids)} placeholder='Select commitments' />
+              <Label>Link Commitments</Label>
+              <p className="text-xs text-muted-foreground mb-2">Connect existing habits to track progress toward this goal</p>
+              {(habitsQuery.isLoading || todosQuery.isLoading) ? (
+                <div className="text-sm text-muted-foreground py-2">Loading your habits and todos...</div>
+              ) : (
+                <ChoiceCombobox options={finalCommitmentOptions} value={field.state.value || []} onChange={(ids) => field.handleChange(ids)} placeholder='Search and select commitments to include in your goal...' />
+              )}
             </div>
           )}
         </form.Field>
@@ -113,7 +219,9 @@ export function GoalForm({ mode, goal, onSuccess, onDelete, commitmentOptions = 
                 qc.invalidateQueries({ queryKey: ['goals'] })
                 onDelete?.(goal)
               }
-            }}>Delete</Button>
+            }}>
+              <IconTrash className="w-4 h-4" />
+            </Button>
           )}
           <Button type='submit' className='flex-1'>{mode === 'create' ? 'Create Goal' : 'Save Changes'}</Button>
         </Group>
