@@ -45,8 +45,8 @@ export function MobileTopBar() {
         {/* Logo */}
         <Link to="/home" className="flex items-center">
           <img
-            src={isDark ? "/images/trekie_Brand_White.svg" : "/images/trekie_Brand.svg"}
-            className="h-10"
+            src="/images/trekie_Icon.svg"
+            className="h-8"
             alt="Trekie"
           />
         </Link>
