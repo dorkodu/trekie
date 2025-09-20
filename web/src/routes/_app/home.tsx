@@ -6,8 +6,8 @@ export const Route = createFileRoute('/_app/home')({
   component: Home,
 })
 
-import { CommitmentsFeed } from "@web/components/home/CommitmentsFeed";
-import { GoalsFeed } from "@web/components/home/GoalsFeed";
+import { CommitmentsFeed } from "@web/components/feeds/CommitmentsFeed";
+import { GoalsFeed } from "@web/components/feeds/GoalsFeed";
 import { Alert, AlertDescription } from "@web/components/ui/alert";
 import { Box } from "@web/components/ui/layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@web/components/ui/tabs";
