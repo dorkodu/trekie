@@ -29,7 +29,6 @@ function NewGoalPage() {
             onSuccess={(goal) => {
               navigate({ to: '/goal/$goalId', params: { goalId: goal.id } })
             }}
-            commitmentOptions={[]} // TODO: Add commitment options from existing habits
           />
           <Group className='pt-4'>
             <Button

@@ -1,25 +1,18 @@
 import { IconCopyCheck, IconTargetArrow } from "@tabler/icons-react";
 import { createFileRoute } from '@tanstack/react-router';
-import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 
 export const Route = createFileRoute('/_app/home')({
   component: Home,
 })
 
-import { useQuery } from "@tanstack/react-query";
+import { CommitmentsFeed } from "@web/components/home/CommitmentsFeed";
+import { GoalsFeed } from "@web/components/home/GoalsFeed";
 import { Alert, AlertDescription } from "@web/components/ui/alert";
-import { Badge } from "@web/components/ui/badge";
-import { Box, Flex, Stack } from "@web/components/ui/layout";
-import { Skeleton } from "@web/components/ui/skeleton";
+import { Box } from "@web/components/ui/layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@web/components/ui/tabs";
-import { db } from "@web/lib/db";
 import { errors } from "@web/lib/errors";
 import { trekie } from "@web/lib/trekie";
-import GoalCard from "@web/namespaces/goal/GoalCard";
-import { default as NoGoalsCard } from "@web/namespaces/goal/NoGoalsCard";
-import HabitCounter from "@web/namespaces/habit/HabitCounter";
-import NoHabitsCard from "@web/namespaces/habit/NoHabitsCard";
 import { DailyStats } from "@web/namespaces/life/DailyStats";
 
 function Home() {
@@ -30,10 +23,11 @@ function Home() {
   }
 
   const [tab, setTab] = useState("commitments");
+  const [filter, setFilter] = useState<"all" | "habits" | "todos">("all");
 
   return (
-    <Box className="m-2">
-      <Stack gap={4}>
+    <div className="m-2">
+      <div className="flex flex-col gap-2">
         <Box className="mb-6 sm:hidden">
           <DailyStats />
         </Box>
@@ -51,101 +45,15 @@ function Home() {
           </TabsList>
 
           <TabsContent value="commitments" className="mt-2">
-            <CommitmentsFeed />
+            <CommitmentsFeed filter={filter} onFilterChange={setFilter} />
           </TabsContent>
           <TabsContent value="goals" className="mt-2">
             <GoalsFeed />
           </TabsContent>
         </Tabs>
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 }
 
 export default Home;
-
-function CommitmentsFeed() {
-  const userId = trekie.use($ => $.user.id);
-
-  const habitsQuery = useQuery({
-    queryKey: ['habits', userId],
-    queryFn: async () =>
-      db.habits
-        .where({ userId: userId })
-        .filter(habit => !Object.hasOwn(habit, "isDeleted"))
-        .toArray(),
-  });
-
-  if (habitsQuery.isLoading)
-    return (
-      <Box className="h-60">
-        <Stack gap={2}>
-          <Skeleton className="h-2 rounded-xl" />
-          <Skeleton className="h-2 rounded-xl" />
-          <Skeleton className="h-2 w-[70%] rounded-xl" />
-        </Stack>
-      </Box>
-    );
-
-  const hasAnyHabits = habitsQuery.isSuccess && habitsQuery.data.length > 0;
-  if (!hasAnyHabits) return <NoHabitsCard />;
-
-  return (
-    <Box className="rounded-2xl min-h-[150px] max-w-lg">
-      <Stack gap={0}>
-        {habitsQuery.data.map(habit => (
-          <HabitCounter habitId={habit.id} key={habit.id} />
-        ))}
-      </Stack>
-      <div className="flex mt-2">
-        <Badge variant="secondary" className="mx-auto">
-          Check your daily habits!
-        </Badge>
-      </div>
-    </Box>
-  );
-}
-
-function GoalsFeed() {
-  const userId = trekie.use($ => $.user?.id);
-
-  if (!userId)
-    return (
-      <Box className="py-2.5 md:hidden">
-        <NoHabitsCard />
-      </Box>
-    );
-
-  const goals = useLiveQuery(
-    async () => db.goals.where("userId").equals(userId).toArray(),
-    [userId]
-  );
-
-  if (!goals)
-    return (
-      <>
-        <Skeleton className="h-2 rounded-xl radius-xl" />
-        <Skeleton className="h-2 rounded-xl mt-8 radius-xl" />
-        <Skeleton className="h-2 w-[70%] rounded-xl mt-8 radius-xl" />
-      </>
-    );
-
-  const hasAnyLifeGoals = goals.length > 0;
-
-  if (!hasAnyLifeGoals) return <NoGoalsCard />;
-
-  return (
-    <div className="rounded-lg">
-      <div className="flex flex-col gap-2">
-        {goals.map(goal => (
-          <GoalCard id={goal.id} key={goal.id} />
-        ))}
-      </div>
-      <Flex className="mt-2">
-        <Badge variant="default" color="gray" className="mx-auto">
-          Track your goals!
-        </Badge>
-      </Flex>
-    </div>
-  );
-}

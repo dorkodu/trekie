@@ -72,10 +72,10 @@ export function MomentumStatus() {
       value={momentum}
       subtext={
         <span
-          className="font-medium text-xs leading-none text-green-200"
+          className="font-medium text-xs text-green-600/20 dark:text-green-300/50"
           style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.08)" }}
         >
-          xp<br />day
+          xp
         </span>
       }
       color="green"
