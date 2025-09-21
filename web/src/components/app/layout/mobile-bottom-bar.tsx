@@ -55,8 +55,8 @@ export function MobileBottomBar() {
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isScrollingUp, setIsScrollingUp] = useState(false)
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>()
-  const hideTimeoutRef = useRef<NodeJS.Timeout>()
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
+  const hideTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   // Pages where bottom bar should be hidden
   const hiddenPages = [

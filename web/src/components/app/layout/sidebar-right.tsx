@@ -27,9 +27,12 @@ export function SidebarRight({
     <Sidebar
       collapsible="none"
       className="sticky top-0 hidden h-svh lg:flex px-2"
+      style={{
+        "--sidebar-width": "18rem", // Larger width for desktop/tablet
+      } as React.CSSProperties & { '--sidebar-width': string }}
       {...props}
     >
-      <SidebarHeader className="flex border-sidebar-border h-16 border-b">
+      <SidebarHeader className="flex border-sidebar-border h-16">
         <NavHeader />
       </SidebarHeader>
       <SidebarContent>

@@ -13,6 +13,20 @@ export type IAppDb = Dexie & {
   habits: Table<IHabit, string>
   goals: Table<IGoal, string>
   todos: Table<ITodo, string>
+  momentumSnapshots: Table<IMomentumSnapshot, string>
+}
+
+export interface IMomentumSnapshot {
+  id: string // day or timestamp id
+  createdAt: number
+  windowDays: number
+  score: number
+  trend?: number
+  bands?: any
+  states?: any
+  explanation?: any
+  impact?: any
+  recommendations?: any
 }
 
 export const createAppDb = () => new Dexie('app') as IAppDb
@@ -27,11 +41,12 @@ export function startAppDb(
     }
 ) {
   // Schema declaration:
-  db.version(1).stores({
+  db.version(2).stores({
     users: 'id, &username',
     habits: 'id, userId, &commitmentId',
     goals: 'id, userId',
     todos: 'id, userId, completed',
+    momentumSnapshots: 'id, windowDays, createdAt'
   })
 
   db.on("populate", onPopulate)

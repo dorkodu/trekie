@@ -5,7 +5,7 @@ import type { AppRouter } from '@api/router';
 import { queryClient } from '@web/lib/tanstack-query';
 
 const trpcClient = createTRPCClient<AppRouter>({
-  links: [httpBatchLink({ url: 'http://localhost:2022' })],
+  links: [httpBatchLink({ url: 'http://localhost:8000/trpc' })],
 });
 
 export const trpc = createTRPCOptionsProxy<AppRouter>({

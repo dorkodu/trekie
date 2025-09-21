@@ -36,7 +36,7 @@ export function NavMain({
       <Button
         onClick={() => openSpotlight({ searchString: "create" })}
         size={state === "collapsed" ? "icon" : "xl"}
-        className={`mt-2 bg-gradient-to-tr from-lime-700 to-emerald-400 rounded-2xl font-bold transition-all duration-100 ${state === "collapsed"
+        className={`mt-2 bg-gradient-to-tr from-lime-700 to-emerald-400 rounded-2xl font-bold ${state === "collapsed"
           ? "w-10 h-10 p-2 justify-center"
           : "text-lg"
           }`}
