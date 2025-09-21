@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Momentum Library</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="momentum-library">Momentum Library</h1>
+<p>Pure functional momentum score computation module based on the product specification in <code>docs/04 - Momentum.md</code>.</p>
+<h2 id="design-goals">Design Goals</h2>
+<ul>
+<li>Deterministic pure calculations (no side-effects)\n- Explicit inputs, typed outputs\n- Modular factor calculators\n- Stable defaults + overridable weights/options\n- Defensive against abuse vectors (diminishing returns, caps)</li>
+</ul>
+<h2 id="quick-start">Quick Start</h2>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createMomentumEngine, <span class="hljs-title class_">MomentumInputDay</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@trekie/sdk&#x27;</span>
+
+<span class="hljs-keyword">const</span> engine = <span class="hljs-title function_">createMomentumEngine</span>()
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">days</span>: <span class="hljs-title class_">MomentumInputDay</span>[] = [
+  {
+    <span class="hljs-attr">day</span>: <span class="hljs-string">&#x27;2025-09-11&#x27;</span>,
+    <span class="hljs-attr">habits</span>: { <span class="hljs-attr">target</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">count</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">reached</span>: <span class="hljs-literal">true</span> },
+    <span class="hljs-attr">tasks</span>: {
+      <span class="hljs-attr">planned</span>: [{ <span class="hljs-attr">importance</span>: <span class="hljs-string">&#x27;normal&#x27;</span> }],
+      <span class="hljs-attr">completed</span>: [{ <span class="hljs-attr">importance</span>: <span class="hljs-string">&#x27;normal&#x27;</span> }],
+      <span class="hljs-attr">microTaskCount</span>: <span class="hljs-number">0</span>,
+    },
+    <span class="hljs-attr">focus</span>: { <span class="hljs-attr">deepBlocks</span>: [{ <span class="hljs-attr">minutes</span>: <span class="hljs-number">50</span> }] },
+    <span class="hljs-attr">xp</span>: { <span class="hljs-attr">xpGained</span>: <span class="hljs-number">25</span> },
+  },
+  <span class="hljs-comment">// ... more days</span>
+]
+
+<span class="hljs-keyword">const</span> result = engine.<span class="hljs-title function_">compute</span>(days)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">score</span>, result.<span class="hljs-property">trend</span>, result.<span class="hljs-property">factors</span>)
+</code></pre>
+<h2 id="public-api">Public API</h2>
+<h3 id="createmomentumengineinit-momentumengineinit"><code>createMomentumEngine(init?: MomentumEngineInit)</code></h3>
+<p>Returns an engine with <code>compute(days)</code>.</p>
+<h4 id="options">Options</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>windowDays</td>
+<td>10</td>
+<td>Rolling window for most factors</td>
+</tr>
+<tr>
+<td>trendShortWindow</td>
+<td>3</td>
+<td>Short-term slice for trend delta</td>
+</tr>
+<tr>
+<td>trendPrevWindow</td>
+<td>7</td>
+<td>Previous slice window</td>
+</tr>
+<tr>
+<td>emaAlpha</td>
+<td>0.35</td>
+<td>Smoothing factor (0..1)</td>
+</tr>
+<tr>
+<td>activityThreshold.minActions</td>
+<td>1</td>
+<td>Minimal domain actions to count as active</td>
+</tr>
+</tbody>
+</table>
+<h4 id="weights">Weights</h4>
+<p>Defaults: consistency 0.30, habits 0.25, tasks 0.20, trend 0.15, focus 0.10.</p>
+<h3 id="input-shape-momentuminputday">Input Shape (<code>MomentumInputDay</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>day</td>
+<td>ISO date string (YYYY-MM-DD)</td>
+</tr>
+<tr>
+<td>habits</td>
+<td><code>{ target, count, reached }</code></td>
+</tr>
+<tr>
+<td>tasks</td>
+<td>planned/completed arrays with importance &amp; microTaskCount</td>
+</tr>
+<tr>
+<td>focus</td>
+<td>deepBlocks with minutes</td>
+</tr>
+<tr>
+<td>xp</td>
+<td>currently only used indirectly in activity detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="output-momentumresult">Output (<code>MomentumResult</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>score</td>
+<td>0-100 smoothed composite</td>
+</tr>
+<tr>
+<td>raw</td>
+<td>0-1 smoothed composite before scaling</td>
+</tr>
+<tr>
+<td>factors</td>
+<td>Array of each raw factor value &amp; applied weight</td>
+</tr>
+<tr>
+<td>trend</td>
+<td>Direction + label + deltaPct</td>
+</tr>
+<tr>
+<td>bands</td>
+<td>Current band (Fragile, Building, Strong, Peak)</td>
+</tr>
+<tr>
+<td>states</td>
+<td>Recovery &amp; risk booleans</td>
+</tr>
+<tr>
+<td>history</td>
+<td>Per-day raw &amp; scaled (unsmoothed) values</td>
+</tr>
+<tr>
+<td>missingDomains</td>
+<td>Map of domains absent (for UI fallback)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="factor-logic-summary">Factor Logic Summary</h2>
+<ul>
+<li>Consistency: Active day density + streak bonus - void penalty</li>
+<li>Habit Target: Success + capped excess bonus</li>
+<li>Task Quality: Weighted coverage with spill &amp; micro-task penalties</li>
+<li>Focus Depth: Log-scaled block accumulation + continuity bonus</li>
+<li>Trend: Normalized multi-day ratio (short vs previous window)</li>
+</ul>
+<h2 id="anti-abuse-controls">Anti-Abuse Controls</h2>
+<ul>
+<li>Micro-task diminishing returns (2% each)</li>
+<li>Excess habit cap <code>MAX_HABIT_EXCESS_BONUS</code></li>
+<li>Streak bonus cap <code>MAX_STREAK_BONUS</code></li>
+<li>Void penalty cap <code>MAX_VOID_PENALTY</code></li>
+<li>Trend clamped between DOWN_CAP &amp; UP_CAP before normalization</li>
+</ul>
+<h2 id="extensibility">Extensibility</h2>
+<p>Add new factors by extending <code>MomentumFactorValuesRaw</code>, weights, and <code>computeFactors</code>.</p>
+<h3 id="detailed-algorithm-reference">Detailed Algorithm Reference</h3>
+<p>See <code>ALGORITHM.md</code> in this directory for formal equations, pseudocode, and calibration levers. The product-level narrative remains in <code>docs/04 - Momentum.md</code> (section 24 hosts a synchronized summary). Keep all three aligned when modifying factor logic.</p>
+<h2 id="explanations--coaching-hooks">Explanations &amp; Coaching Hooks</h2>
+<p>Use the explanation helper to convert a <code>MomentumResult</code> into human-readable factor insights.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> {
+  createMomentumEngine,
+  explainMomentum,
+  summarizeMomentum,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@trekie/sdk&#x27;</span>
+
+<span class="hljs-keyword">const</span> engine = <span class="hljs-title function_">createMomentumEngine</span>()
+<span class="hljs-keyword">const</span> result = engine.<span class="hljs-title function_">compute</span>(days)
+
+<span class="hljs-keyword">const</span> detailed = <span class="hljs-title function_">explainMomentum</span>(result)
+<span class="hljs-comment">// detailed.factors -&gt; array with strength, message, contribution</span>
+<span class="hljs-comment">// detailed.summary -&gt; high-level sentence</span>
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">summarizeMomentum</span>(result))
+<span class="hljs-comment">// e.g. &quot;Momentum 72 (accelerating). Consistency strong; biggest lift opportunity: Focus Depth.&quot;</span>
+</code></pre>
+<p>Options:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minContribution</td>
+<td>0</td>
+<td>Hide very tiny factors by contribution (weight * value)</td>
+</tr>
+<tr>
+<td>includeContributions</td>
+<td>true</td>
+<td>If false, zero out numeric contribution field</td>
+</tr>
+<tr>
+<td>round</td>
+<td>toFixed(2)</td>
+<td>Custom rounding function</td>
+</tr>
+</tbody>
+</table>
+<p>Each factor explanation includes:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td>Factor id (consistency, habits, tasks, trend, focus)</td>
+</tr>
+<tr>
+<td>value</td>
+<td>Normalized 0..1 factor value (rounded)</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>Effective weight used</td>
+</tr>
+<tr>
+<td>contribution</td>
+<td>weight * value (0..1 share)</td>
+</tr>
+<tr>
+<td>strength</td>
+<td>qualitative bucket (weak/neutral/strong)</td>
+</tr>
+<tr>
+<td>message</td>
+<td>Coaching-friendly sentence</td>
+</tr>
+</tbody>
+</table>
+<h2 id="delta--impact-utilities">Delta &amp; Impact Utilities</h2>
+<h3 id="factor-delta-comparison">Factor Delta Comparison</h3>
+<p>Use <code>diffMomentum(prev, curr)</code> to inspect how each factor changed:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { diffMomentum } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@trekie/sdk&#x27;</span>
+<span class="hljs-keyword">const</span> diff = <span class="hljs-title function_">diffMomentum</span>(previousResult, currentResult)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(diff.<span class="hljs-property">scoreDelta</span>, diff.<span class="hljs-property">biggestPositive</span>, diff.<span class="hljs-property">biggestNegative</span>)
+</code></pre>
+<p>Returned fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scoreDelta</td>
+<td>Current score - previous score</td>
+</tr>
+<tr>
+<td>factors[]</td>
+<td>Per-factor prev/curr/delta/weightedDelta info</td>
+</tr>
+<tr>
+<td>biggestPositive</td>
+<td>Highest positive weightedDelta factor</td>
+</tr>
+<tr>
+<td>biggestNegative</td>
+<td>Most negative weightedDelta factor</td>
+</tr>
+</tbody>
+</table>
+<h3 id="point-impact-estimation">Point Impact Estimation</h3>
+<p>Estimate potential upside if weaker factors reach a target (default 0.8):</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { computePointImpact } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@trekie/sdk&#x27;</span>
+<span class="hljs-keyword">const</span> impact = <span class="hljs-title function_">computePointImpact</span>(result, { <span class="hljs-attr">strongTarget</span>: <span class="hljs-number">0.85</span> })
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(impact.<span class="hljs-property">estimatedPointUpside</span>, impact.<span class="hljs-property">factors</span>)
+</code></pre>
+<p>Each entry:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>potentialRawGain</td>
+<td>Added raw composite (before *100) if improved</td>
+</tr>
+<tr>
+<td>potentialPoints</td>
+<td>potentialRawGain * 100</td>
+</tr>
+<tr>
+<td>target</td>
+<td>Target factor value used</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recommendations--reason-codes">Recommendations &amp; Reason Codes</h2>
+<p>Generate prioritized coaching actions:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { recommendMomentumActions } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@trekie/sdk&#x27;</span>
+<span class="hljs-keyword">const</span> recs = <span class="hljs-title function_">recommendMomentumActions</span>(result)
+recs.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(r.<span class="hljs-property">code</span>, r.<span class="hljs-property">title</span>))
+</code></pre>
+<p>Reason codes (stable identifiers):</p>
+<pre><code>CONSISTENCY_STRONG, CONSISTENCY_WEAK,
+HABITS_STRONG, HABITS_WEAK,
+TASKS_STRONG, TASKS_WEAK,
+TREND_UP, TREND_DOWN,
+FOCUS_STRONG, FOCUS_WEAK,
+RECOVERY_ACTIVE, RISK_STATE
+</code></pre>
+<p>Recommendation object:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code</td>
+<td>Machine reason code for UI mapping</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Short headline</td>
+</tr>
+<tr>
+<td>detail</td>
+<td>Human explanation</td>
+</tr>
+<tr>
+<td>actions</td>
+<td>Optional quick action verb phrases</td>
+</tr>
+<tr>
+<td>factor</td>
+<td>Related factor key (if any)</td>
+</tr>
+<tr>
+<td>priority</td>
+<td>high / medium / low ordering</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>code</code> and <code>priority</code> for iconography &amp; escalation logic.</p>
+<h2 id="using-with-existing-trekie-data">Using with Existing Trekie Data</h2>
+<p>The app already stores: habit entities (with <code>history</code> &amp; <code>dailyTarget</code>) and commit records. Tasks and focus may be missing initially—Momentum will automatically reweight remaining factors when domains are absent.</p>
+<h3 id="adapter">Adapter</h3>
+<p>Use <code>buildMomentumDays</code> from <code>adapters.ts</code> to transform existing data:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { buildMomentumDays, createMomentumEngine } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@trekie/sdk&#x27;</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">computeMomentum</span>(<span class="hljs-params">db: <span class="hljs-built_in">any</span>, trekie: <span class="hljs-built_in">any</span>, userId: <span class="hljs-built_in">string</span></span>) {
+  <span class="hljs-keyword">const</span> habits = <span class="hljs-keyword">await</span> db.<span class="hljs-property">habits</span>.<span class="hljs-title function_">where</span>(<span class="hljs-string">&#x27;userId&#x27;</span>).<span class="hljs-title function_">equals</span>(userId).<span class="hljs-title function_">toArray</span>()
+  <span class="hljs-keyword">const</span> commits = <span class="hljs-keyword">await</span> trekie.<span class="hljs-property">db</span>.<span class="hljs-property">commitRecords</span>
+    .<span class="hljs-title function_">where</span>(<span class="hljs-string">&#x27;userId&#x27;</span>)
+    .<span class="hljs-title function_">equals</span>(userId)
+    .<span class="hljs-title function_">toArray</span>()
+
+  <span class="hljs-keyword">const</span> days = <span class="hljs-title function_">buildMomentumDays</span>({
+    habits,
+    <span class="hljs-attr">commitRecords</span>: commits,
+    <span class="hljs-attr">windowDays</span>: <span class="hljs-number">10</span>,
+  })
+  <span class="hljs-keyword">const</span> engine = <span class="hljs-title function_">createMomentumEngine</span>()
+  <span class="hljs-keyword">return</span> engine.<span class="hljs-title function_">compute</span>(days)
+}
+</code></pre>
+<p>Adapter behavior:</p>
+<ul>
+<li>Aggregates multiple habits into a single virtual per-day habit metric</li>
+<li>Uses <code>habit.history</code> for authoritative counts</li>
+<li>Marks <code>reached</code> if DAILYCHECK or counts &gt;= target</li>
+<li>Omits tasks &amp; xp until data wired</li>
+<li>Accepts optional focus blocks array: <code>{ day, minutes }[]</code></li>
+</ul>
+<h3 id="minimal-usage-habits-only">Minimal Usage (Habits Only)</h3>
+<pre><code class="language-ts"><span class="hljs-keyword">const</span> engine = <span class="hljs-title function_">createMomentumEngine</span>()
+<span class="hljs-keyword">const</span> days = <span class="hljs-title function_">buildMomentumDays</span>({ habits, commitRecords })
+<span class="hljs-keyword">const</span> result = engine.<span class="hljs-title function_">compute</span>(days)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">score</span>, result.<span class="hljs-property">missingDomains</span>)
+</code></pre>
+<h3 id="interpreting-missingdomains">Interpreting <code>missingDomains</code></h3>
+<p>If <code>tasks</code> missing =&gt; weight redistributed among present domains. UI can hide task factor rows.</p>
+<h2 id="testing-suggestions">Testing Suggestions</h2>
+<ul>
+<li>Edge: empty days array -&gt; score 0</li>
+<li>Partial domain absence -&gt; reweight? (Currently factor = 0; future: proportional reweighting)</li>
+<li>Trend with flat series -&gt; Stable</li>
+<li>Recovery detection after 10 point rebound</li>
+</ul>
+<h2 id="roadmap-todos">Roadmap TODOs</h2>
+<ul>
+<li>Reweighting when domains missing</li>
+<li>Configurable importance weights per workspace</li>
+<li>XP velocity factor integration</li>
+<li>Confidence flag for imported/backfilled days</li>
+</ul>
+<hr>
+<p>MIT (internal usage).</p>
+
+            
+            
+        </body>
+        </html>
