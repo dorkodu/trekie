@@ -23,7 +23,7 @@ export async function initDb() {
 
     console.log('✅ Connected to PostgreSQL successfully.');
   } catch (err) {
-    console.error('❌ Failed to connect to PostgreSQL:', err);
-    process.exit(1); // fail fast
+    console.error('❌ Failed to connect to PostgreSQL (continuing in mock mode):', err);
+    // Do not exit; allow application to run with in-memory/mock repositories
   }
 }

@@ -1,9 +1,12 @@
-import { createMiniApp } from '@sdk/app'
+import { useEffect } from 'react'
+
+import { createApp } from '@sdk/app'
 import { type GameState } from '@sdk/core'
 
 import { goalCommitment } from '@web/namespaces/goal/commitment'
 import { habitCommitment } from '@web/namespaces/habit/commitment'
-import { useEffect } from 'react'
+import { todoCommitment } from '@web/namespaces/todo/commitment'
+
 import { generateMockGameState } from './mock'
 
 const initialState: GameState = generateMockGameState()
@@ -18,9 +21,10 @@ const initialState: GameState = generateMockGameState()
 const commitments = {
   'Habit': habitCommitment,
   'Goal': goalCommitment,
+  'Todo': todoCommitment,
 }
 
-export const trekie = createMiniApp({
+export const trekie = createApp({
   initialState,
   commitments
 })

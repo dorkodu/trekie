@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query'
+import { trpc } from '@web/lib/trpc'
 import { useMomentumUI } from '@web/namespaces/momentum/store'
 import { useMomentum } from '../useMomentum'
 import FactorBreakdown from './factor-breakdown'
@@ -14,14 +16,22 @@ function CoolingMeta({ decayEvents }: { decayEvents?: any[] }) {
 
 export function MomentumPanel() {
   const { showAdvanced, toggleAdvanced } = useMomentumUI()
-
-  const { data } = useMomentum({
+  const { data, refetch } = useMomentum({
     windowDays: 10,
     explain: showAdvanced,
     recommendations: showAdvanced,
     impact: showAdvanced,
     persist: true
   })
+
+  const logEventMutation = useMutation(trpc.momentum.logEvent.mutationOptions())
+
+  async function logEvent() {
+    try {
+      await logEventMutation.mutateAsync({ amount: 1, instanceId: 'habit-1' })
+      await refetch()
+    } catch (e) { console.error('logEvent failed', e) }
+  }
 
   const roundedCoverageRatio = data?.coverage ? Math.round(data.coverage.ratio * 100) : 0
   const roundedConfidence = data?.confidence !== undefined ? Math.round(data.confidence * 100) : undefined
@@ -35,7 +45,17 @@ export function MomentumPanel() {
           {showAdvanced ? 'Basic View' : 'Advanced'}
         </button>
       </div>
-      <MomentumCard windowDays={10} showExplanation={showAdvanced} />
+      <div className='flex items-start gap-3'>
+        <MomentumCard windowDays={10} showExplanation={showAdvanced} />
+        <div className='flex flex-col gap-2'>
+          <button
+            onClick={() => logEvent()}
+            className='px-3 py-2 text-xs rounded-md border bg-background hover:bg-muted'>Log +1</button>
+          <button
+            onClick={() => { refetch() }}
+            className='px-3 py-2 text-xs rounded-md border bg-background hover:bg-muted'>Refresh</button>
+        </div>
+      </div>
       {showAdvanced && (
         <div className='grid md:grid-cols-2 gap-3'>
           {data?.coverage && (

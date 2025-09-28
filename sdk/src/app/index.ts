@@ -1,3 +1,3 @@
-export * from "./createMiniApp"
+export * from "./createApp"
 export * from "./hooks"
 

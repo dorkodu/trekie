@@ -7,7 +7,7 @@ export const router = Router({
   "hello": authOptionalProcedure
     .input(helloSchema)
     .query((opts) =>
-      `Hello, ${opts.input.message ?? "world"}!`
+      `Hello, ${opts.input.message ?? "(no name)"}!`
     ),
 })
 

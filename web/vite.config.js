@@ -31,6 +31,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    cors: false, // because of Hono.js, disable Vite's built-in CORS setting
     proxy: {
       "/api": {
         target: "http://localhost:8000",

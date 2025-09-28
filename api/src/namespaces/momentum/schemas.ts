@@ -1,12 +1,24 @@
 import { z } from 'zod'
 
+export const commitRecordSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  kind: z.string(),
+  instanceId: z.string(),
+  timestamp: z.number(),
+  event: z.string(),
+  data: z.any().optional(),
+  reward: z.any().optional()
+})
+
 export const momentumSnapshotInputSchema = z.object({
   windowDays: z.number().int().min(5).max(30).default(10),
   explain: z.boolean().optional(),
   delta: z.boolean().optional(),
   impact: z.boolean().optional(),
-  recommendations: z.boolean().optional()
-}).partial({ explain: true, delta: true, impact: true, recommendations: true })
+  recommendations: z.boolean().optional(),
+  commitRecords: z.array(commitRecordSchema).optional()
+}).partial({ explain: true, delta: true, impact: true, recommendations: true, commitRecords: true })
 
 export const momentumExpansionFlags = ['explain', 'delta', 'impact', 'recommendations'] as const
 export type MomentumExpansionFlag = typeof momentumExpansionFlags[number]
