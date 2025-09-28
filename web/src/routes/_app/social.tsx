@@ -25,8 +25,6 @@ function Social() {
   );
 }
 
-export default Social;
-
 function NewsFeed() {
   const userId = trekie.use($ => $.user.id);
   const records =

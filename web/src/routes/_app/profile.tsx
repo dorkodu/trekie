@@ -9,7 +9,7 @@ import { useLocation } from "@tanstack/react-router";
 import { Text } from "@web/components/ui/typography";
 import { Profile } from "@web/namespaces/social/profile/Profile";
 
-export default function Page() {
+function Page() {
   const location = useLocation();
   const username = location.pathname.slice(2); // '/@username' => 'username'
   let result;

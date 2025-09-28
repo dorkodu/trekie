@@ -6,7 +6,7 @@ export const Route = createFileRoute("/_www/legal/terms-of-service")({
   component: TermsOfService,
 });
 
-export function TermsOfService() {
+function TermsOfService() {
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-3xl p-6 mx-auto space-y-6">
       <div className="flex items-center gap-4 mb-6 mt-[8vh]">

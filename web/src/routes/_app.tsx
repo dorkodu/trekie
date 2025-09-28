@@ -2,6 +2,9 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { authClient } from "@web/lib/auth/client";
 
 export const Route = createFileRoute("/_app")({
+
+
+
   beforeLoad: async ({ location }) => {
     const session = await authClient.getSession();
 
@@ -25,7 +28,8 @@ import { OnboardingGuard } from "@web/components/guards/onboarding-guard";
 import { SidebarInset, SidebarProvider } from "@web/components/ui/sidebar";
 import { Toaster } from "@web/components/ui/sonner";
 import { Spotlight } from "@web/lib/spotlight";
-export default function AppLayout() {
+
+function AppLayout() {
   return (
     <OnboardingGuard>
       <main className="flex min-h-screen items-center justify-center">

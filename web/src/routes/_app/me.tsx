@@ -8,7 +8,7 @@ import { Flex } from "@web/components/ui/layout";
 import { Text, Title } from "@web/components/ui/typography";
 import { trekie } from "@web/lib/trekie";
 
-export default function Me() {
+function Me() {
   const user = trekie.use($ => $.user);
 
   const loading = false;

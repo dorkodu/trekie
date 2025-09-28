@@ -1,17 +1,50 @@
-import { IconBrain, IconCalendar, IconCheck, IconCheckbox, IconChevronRight, IconHeart, IconPlus, IconTarget, IconTrendingUp, IconUsers } from '@tabler/icons-react'
+import { IconBrain, IconCalendar, IconCheckbox, IconChevronRight, IconHeart, IconPlus, IconTarget, IconTrendingUp, IconUsers } from '@tabler/icons-react'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { Alert, AlertDescription } from '@web/components/ui/alert'
-import { Badge } from '@web/components/ui/badge'
 import { Button } from '@web/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@web/components/ui/card'
-import { Progress } from '@web/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@web/components/ui/tabs'
+import { db } from '@web/lib/db'
+import { trekie } from '@web/lib/trekie'
+import GoalCard from '@web/namespaces/goal/GoalCard'
+import NoGoalsCard from '@web/namespaces/goal/NoGoalsCard'
+import HabitCounter from '@web/namespaces/habit/HabitCounter'
+import NoHabitsCard from '@web/namespaces/habit/NoHabitsCard'
+import MomentumPanel from '@web/namespaces/momentum/components/momentum-panel'
+import { useMomentum } from '@web/namespaces/momentum/useMomentum'
 
 export const Route = createFileRoute('/_app/life')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const userId = trekie.use($ => $.user?.id)
+
+  const goalsQuery = useQuery({
+    queryKey: ['goals', userId],
+    queryFn: async () => userId ? db.goals.where('userId').equals(userId).toArray() : [],
+    enabled: !!userId
+  })
+
+  const habitsQuery = useQuery({
+    queryKey: ['habits', userId],
+    queryFn: async () => userId ? db.habits.where({ userId }).filter(habit => !Object.hasOwn(habit, "isDeleted")).toArray() : [],
+    enabled: !!userId
+  })
+
+  const { data: momentumData, isLoading: momentumLoading } = useMomentum({ windowDays: 10 })
+
+  if (!userId) {
+    return (
+      <div className="container mx-auto p-6">
+        <Alert>
+          <AlertDescription>Please log in to view your life dashboard.</AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header Section */}
@@ -26,64 +59,84 @@ function RouteComponent() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="text-center">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-orange-500">🔥 7</div>
-            <p className="text-sm text-muted-foreground">Day Streak</p>
+            <div className="text-2xl font-bold text-orange-500">
+              {momentumLoading ? '...' : (momentumData?.score ? Math.round(momentumData.score) : '--')}
+            </div>
+            <p className="text-sm text-muted-foreground">Momentum</p>
           </CardContent>
         </Card>
         <Card className="text-center">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-blue-500">💠 1,250</div>
-            <p className="text-sm text-muted-foreground">XP Points</p>
+            <div className="text-2xl font-bold text-blue-500">
+              {goalsQuery.isLoading ? '...' : (goalsQuery.data?.length || 0)}
+            </div>
+            <p className="text-sm text-muted-foreground">Active Goals</p>
           </CardContent>
         </Card>
         <Card className="text-center">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-green-500">✓ 12/15</div>
-            <p className="text-sm text-muted-foreground">Tasks Done</p>
+            <div className="text-2xl font-bold text-green-500">
+              {habitsQuery.isLoading ? '...' : (habitsQuery.data?.length || 0)}
+            </div>
+            <p className="text-sm text-muted-foreground">Active Habits</p>
           </CardContent>
         </Card>
         <Card className="text-center">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-purple-500">🏆 3</div>
-            <p className="text-sm text-muted-foreground">Achievements</p>
+            <div className="text-2xl font-bold text-purple-500">
+              {momentumData?.trend ? `${momentumData.trend > 0 ? '+' : ''}${(momentumData.trend * 100).toFixed(1)}%` : '--'}
+            </div>
+            <p className="text-sm text-muted-foreground">Trend</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="overview" className="w-full">
+      <Tabs defaultValue="momentum" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="momentum">Momentum</TabsTrigger>
           <TabsTrigger value="goals">Goals</TabsTrigger>
           <TabsTrigger value="habits">Habits</TabsTrigger>
-          <TabsTrigger value="insights">Insights</TabsTrigger>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
         </TabsList>
 
+        <TabsContent value="momentum" className="space-y-6">
+          <MomentumPanel />
+        </TabsContent>
+
         <TabsContent value="overview" className="space-y-6">
-          {/* Daily Progress */}
+          {/* Momentum Overview */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <IconTrendingUp className="h-5 w-5" />
-                Today's Progress
+                Momentum Overview
               </CardTitle>
-              <CardDescription>Track your daily achievements</CardDescription>
+              <CardDescription>Your current momentum status and key metrics</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Daily Tasks</span>
-                  <span>12/15 completed</span>
+              {momentumLoading ? (
+                <div className="text-center py-4">Loading momentum data...</div>
+              ) : momentumData ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold">{Math.round(momentumData.score || 0)}</div>
+                    <p className="text-sm text-muted-foreground">Momentum Score</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold">{momentumData.bands?.current?.label || 'Unknown'}</div>
+                    <p className="text-sm text-muted-foreground">Current Band</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold">
+                      {momentumData.trend ? `${momentumData.trend > 0 ? '+' : ''}${(momentumData.trend * 100).toFixed(1)}%` : '--'}
+                    </div>
+                    <p className="text-sm text-muted-foreground">7-Day Trend</p>
+                  </div>
                 </div>
-                <Progress value={80} className="h-2" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Weekly Goals</span>
-                  <span>3/5 completed</span>
-                </div>
-                <Progress value={60} className="h-2" />
-              </div>
+              ) : (
+                <div className="text-center py-4">No momentum data available</div>
+              )}
             </CardContent>
           </Card>
 
@@ -97,7 +150,9 @@ function RouteComponent() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-3">Set and track your life goals</p>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {goalsQuery.data ? `${goalsQuery.data.length} active goals` : 'Set and track your life goals'}
+                </p>
                 <Button size="sm" className="w-full">
                   <IconPlus className="h-4 w-4 mr-1" />
                   Add Goal
@@ -188,121 +243,39 @@ function RouteComponent() {
         </TabsContent>
 
         <TabsContent value="goals" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Active Goals</CardTitle>
-              <CardDescription>Your current objectives and progress</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="font-medium">Run a Marathon</span>
-                  <Badge variant="secondary">75%</Badge>
-                </div>
-                <Progress value={75} />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="font-medium">Learn Spanish</span>
-                  <Badge variant="secondary">45%</Badge>
-                </div>
-                <Progress value={45} />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="font-medium">Save $10,000</span>
-                  <Badge variant="secondary">30%</Badge>
-                </div>
-                <Progress value={30} />
-              </div>
-            </CardContent>
-          </Card>
+          {goalsQuery.isLoading ? (
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center">Loading goals...</div>
+              </CardContent>
+            </Card>
+          ) : goalsQuery.data && goalsQuery.data.length > 0 ? (
+            <div className="space-y-4">
+              {goalsQuery.data.map(goal => (
+                <GoalCard key={goal.id} id={goal.id} />
+              ))}
+            </div>
+          ) : (
+            <NoGoalsCard />
+          )}
         </TabsContent>
 
         <TabsContent value="habits" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Habit Streaks</CardTitle>
-              <CardDescription>Build consistency with daily habits</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">🏃</div>
-                  <div>
-                    <p className="font-medium">Morning Run</p>
-                    <p className="text-sm text-muted-foreground">7 day streak</p>
-                  </div>
-                </div>
-                <Badge className="bg-orange-100 text-orange-800">🔥 7</Badge>
-              </div>
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">📚</div>
-                  <div>
-                    <p className="font-medium">Read 30 minutes</p>
-                    <p className="text-sm text-muted-foreground">12 day streak</p>
-                  </div>
-                </div>
-                <Badge className="bg-green-100 text-green-800">🔥 12</Badge>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="insights" className="space-y-4">
-          <Alert>
-            <IconTrendingUp className="h-4 w-4" />
-            <AlertDescription>
-              <strong>AI Insight:</strong> You're most productive between 9-11 AM. Consider scheduling important tasks during this time.
-            </AlertDescription>
-          </Alert>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {habitsQuery.isLoading ? (
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Weekly Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Tasks Completed</span>
-                    <span className="font-medium">42</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Goals Progress</span>
-                    <span className="font-medium">+15%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Best Day</span>
-                    <span className="font-medium">Tuesday</span>
-                  </div>
-                </div>
+              <CardContent className="pt-6">
+                <div className="text-center">Loading habits...</div>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Recommendations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <IconCheck className="h-4 w-4 text-green-500 mt-0.5" />
-                    <span>Try the "2-minute rule" for starting new habits</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <IconCheck className="h-4 w-4 text-green-500 mt-0.5" />
-                    <span>Schedule your most important task for 9 AM</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <IconCheck className="h-4 w-4 text-green-500 mt-0.5" />
-                    <span>Consider joining a running group for motivation</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+          ) : habitsQuery.data && habitsQuery.data.length > 0 ? (
+            <div className="space-y-4">
+              {habitsQuery.data.map(habit => (
+                <HabitCounter key={habit.id} habitId={habit.id} />
+              ))}
+            </div>
+          ) : (
+            <NoHabitsCard />
+          )}
         </TabsContent>
       </Tabs>
     </div>
