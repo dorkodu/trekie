@@ -6,7 +6,7 @@ export const Route = createRootRouteWithContext<{}>()({
 
 function RootComponent() {
   return (
-    <div>
+    <div className="min-h-screen bg-[#030712] text-slate-100 antialiased">
       <Outlet />
     </div>
   );

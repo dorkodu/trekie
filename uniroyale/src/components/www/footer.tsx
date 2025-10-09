@@ -1,4 +1,4 @@
-import { IconBrandInstagram, IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandTiktok } from "@tabler/icons-react";
 import { cn } from "@web/lib/utils";
 import React from "react";
 import { Image } from "../ui/image";
@@ -57,9 +57,8 @@ const defaultSections = [
 ];
 
 const defaultSocialLinks = [
-  { icon: <IconBrandInstagram className="size-5" />, href: "https://instagram.com/trekieapp", label: "Instagram" },
-  { icon: <IconBrandTwitter className="size-5" />, href: "https://twitter.com/trekieapp", label: "Twitter" },
-  { icon: <IconBrandLinkedin className="size-5" />, href: "https://linkedin.com/company/dorkodu", label: "The Company" },
+  { icon: <IconBrandInstagram className="size-5" />, href: "https://instagram.com/uniturnuva_cr", label: "Instagram" },
+  { icon: <IconBrandTiktok className="size-5" />, href: "https://www.tiktok.com/@uni.turnuva.cr", label: "TikTok" },
 ];
 
 const defaultLegalLinks = [
@@ -93,7 +92,7 @@ export const Footer = ({
                     src={logo.src}
                     alt={logo.alt}
                     title={logo.title}
-                    className="size-16"
+                    className="size-24"
                   />
                 </a>
               </div>

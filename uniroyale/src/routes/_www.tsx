@@ -1,7 +1,6 @@
-import { IconBrandInstagram, IconBrandTelegram, IconBrandTwitter } from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandTiktok } from "@tabler/icons-react";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Footer } from "@web/components/www/footer";
-import { Header } from "@web/components/www/header";
 
 export const Route = createFileRoute("/_www")({
   component: WebsiteLayout,
@@ -10,7 +9,6 @@ export const Route = createFileRoute("/_www")({
 function WebsiteLayout() {
   return (
     <>
-      <Header />
       <Outlet />
       <Footer
         copyright={`© Dorkodu, ${new Date().getFullYear()}`}
@@ -33,23 +31,20 @@ function WebsiteLayout() {
           {
             title: "Organizasyon",
             links: [
-              { name: "İstanbul Teknik Üniversitesi", href: "https://itu.edu.tr" },
-              { name: "Bilgisayar Mühendisliği", href: "https://bm.itu.edu.tr" },
-              { name: "Öğrenci Kulüpleri", href: "#" },
+              { name: "AD432 Entrepreneurship Dersi Öğrencileri", href: "#" },
             ],
           },
         ]}
-        description="Türkiye'nin en büyük üniversiteler arası mobil oyun turnuvası"
+        description="Türkiye'nin en eğlenceli öğrenciler arası Clash Royale turnuvası."
         logo={{
-          src: "/images/trekie_Icon.svg",
+          src: "/uniturnuva-logo.png",
           alt: "Uniturnuva Logo",
           title: "Uniturnuva",
           url: "/"
         }}
         socialLinks={[
-          { icon: <IconBrandInstagram />, href: "https://instagram.com/uniturnuva", label: "Instagram" },
-          { icon: <IconBrandTelegram />, href: "https://t.me/uniturnuva", label: "Telegram" },
-          { icon: <IconBrandTwitter />, href: "https://twitter.com/uniturnuva", label: "Twitter" },
+          { icon: <IconBrandInstagram />, href: "https://instagram.com/uniturnuva_cr", label: "Instagram" },
+          { icon: <IconBrandTiktok />, href: "https://www.tiktok.com/@uni.turnuva.cr", label: "TikTok" },
         ]}
       />
     </>

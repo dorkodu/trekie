@@ -14,17 +14,12 @@ const navigationLinks = [
 ]
 
 export function Header() {
-  const onRegister = () => {
-    window.open('https://forms.google.com/uniturnuva-kayit', '_blank')
-  }
-
   return (
     <header>
       <nav data-state={'active'} className="w-full px-2 group">
         <div className={cn('mx-auto mt-2 px-3 transition-all duration-300 max-w-4xl lg:px-4')}>
-          <div className="flex h-16 items-center justify-between gap-4 w-full">
-            {/* Left side */}
-            <div className="flex items-center gap-2">
+          <div className="flex h-16 w-full items-center gap-4">
+            <div className="flex items-center gap-3">
               {/* Mobile menu trigger */}
               <Popover>
                 <PopoverTrigger asChild>
@@ -60,32 +55,16 @@ export function Header() {
                 </div>
               </Link>
             </div>
-            <div className="flex items-center gap-2">
-              {/* Main nav */}
-              <div className="flex items-center gap-6">
-                {/* Navigation menu */}
-                <div className="max-md:hidden">
-                  <div className="gap-2 flex">
-                    {navigationLinks.map((link, index) => (
-                      <a key={index} href={link.href} className="text-muted-foreground hover:text-primary py-1 font-medium">
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Right side */}
-            <div className="flex items-center gap-2">
-              <Button
-                className="text-xl rounded-xl px-12 py-8 font-extrabold hidden md:block duration-200 
-                bg-gradient-to-r from-green-500 to-emerald-600
-                hover:from-green-600 hover:to-emerald-700
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-                onClick={onRegister}
-              >
-                KAYIT OL
-              </Button>
+            <div className="ml-auto hidden items-center gap-10 max-md:hidden">
+              {navigationLinks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.href}
+                  className="rounded-lg px-3 py-1 text-sm font-semibold uppercase tracking-[0.25em] text-white/70 transition hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>

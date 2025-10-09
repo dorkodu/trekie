@@ -26,21 +26,22 @@ export function PrizesSection() {
   ]
 
   return (
-    <section id="oduller" className="py-20">
+    <section id="oduller" className="relative py-20">
+      <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(248,113,113,0.05),transparent_60%)]" />
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
             Ödül Havuzu
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Toplam 50.000₺'lik ödül havuzu ile kazananları bekliyor!
+          <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+            Toplam 50.000₺'lik havuz ve özel ödüller, arenanın en iyilerini bekliyor.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {prizes.map((prize, index) => (
             <div key={index} className="relative">
-              <div className={`bg-gradient-to-br ${prize.color} rounded-2xl p-8 text-white text-center shadow-2xl transform hover:scale-105 transition-transform`}>
+              <div className={`bg-gradient-to-br ${prize.color} rounded-2xl p-8 text-white text-center shadow-2xl shadow-black/30 ring-1 ring-white/20 transition-transform duration-300 hover:-translate-y-1`}>
                 <div className="flex justify-center mb-4">
                   <prize.icon className="w-16 h-16" />
                 </div>
@@ -49,7 +50,7 @@ export function PrizesSection() {
                 <p className="text-sm opacity-90">{prize.description}</p>
               </div>
               {index === 0 && (
-                <div className="absolute -top-4 -right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                <div className="absolute -top-4 -right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg shadow-red-500/30">
                   ŞAMPİYON
                 </div>
               )}
@@ -57,29 +58,29 @@ export function PrizesSection() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-red-500/10 via-blue-500/10 to-yellow-500/10 rounded-2xl p-8">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-black/20 backdrop-blur">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">🎁 Özel Ödüller</h3>
+            <h3 className="text-2xl font-bold mb-4 text-white">🎁 Özel Ödüller</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="text-center">
                 <div className="text-3xl mb-2">🎮</div>
-                <p className="font-semibold">Gaming Setup</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Mekanik klavye ve mouse</p>
+                <p className="font-semibold text-white">Gaming Setup</p>
+                <p className="text-sm text-slate-300">Mekanik klavye ve mouse</p>
               </div>
               <div className="text-center">
                 <div className="text-3xl mb-2">📱</div>
-                <p className="font-semibold">Telefon</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">En yeni model</p>
+                <p className="font-semibold text-white">Telefon</p>
+                <p className="text-sm text-slate-300">Yeni nesil akıllı cihaz</p>
               </div>
               <div className="text-center">
                 <div className="text-3xl mb-2">🎧</div>
-                <p className="font-semibold">Kulaklık</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Kablosuz gaming kulaklık</p>
+                <p className="font-semibold text-white">Kulaklık</p>
+                <p className="text-sm text-slate-300">Kablosuz gaming kulaklık</p>
               </div>
               <div className="text-center">
                 <div className="text-3xl mb-2">💰</div>
-                <p className="font-semibold">Nakit Ödül</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Para ödülü</p>
+                <p className="font-semibold text-white">Nakit Ödül</p>
+                <p className="text-sm text-slate-300">Ek nakit sürprizleri</p>
               </div>
             </div>
           </div>

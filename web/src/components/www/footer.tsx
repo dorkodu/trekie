@@ -50,7 +50,6 @@ const defaultSections = [
     title: "Resources",
     links: [
       { name: "Help", href: "/help" },
-      { name: "Help", href: "/help" },
       { name: "Privacy", href: "/legal/privacy-policy" },
     ],
   },
@@ -93,7 +92,7 @@ export const Footer = ({
                     src={logo.src}
                     alt={logo.alt}
                     title={logo.title}
-                    className="size-16"
+                    className="size-20"
                   />
                 </a>
               </div>
