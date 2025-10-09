@@ -26,7 +26,8 @@ The core functionality with domain related things lives in the SDK library insid
 - Double quotes, semicolons, no trailing commas
 - Use JSDoc docstrings for documenting TypeScript definitions, not `//` comments
 - 100 character line limit
-- Imports: Use consistent-type-imports
+- Imports: Use consistent-type-imports. use only "import" syntax, no "require"
+- Use absolute imports from the `src/` folder with aliases `@api`, `@web`, `@sdk` not relative paths, except for same folder like `./thing`
 - Use descriptive variable/function names
 - In CamelCase names, use "URL" (not "Url"), "API" (not "Api"), "ID" (not "Id")
 - Prefer functional programming patterns

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router"
 import { Button } from "@web/components/ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@web/components/ui/navigation-menu"
 import { Popover, PopoverContent, PopoverTrigger } from "@web/components/ui/popover"
+import { useAuth } from "@web/lib/auth/provider"
 import { cn } from "@web/lib/utils"
 import ThemeToggle from "../theme-toggles"
 
@@ -46,6 +47,11 @@ const navigationLinks = [
 
 export function Header() {
   const navigate = useNavigate()
+  const { session } = useAuth()
+  const onGetStarted = () => {
+    if (session) navigate({ to: '/home' })
+    else navigate({ to: '/login' })
+  }
 
   return (
     <header>
@@ -218,8 +224,8 @@ export function Header() {
             {/* Right side */}
             <div className="flex items-center gap-2">
 
-              <Button variant="default" asChild className="text-sm rounded-xl font-extrabold uppercase hidden md:block">
-                <Link to="/login">GET STARTED</Link>
+              <Button variant="default" className="text-sm rounded-xl font-extrabold uppercase hidden md:block" onClick={onGetStarted}>
+                GET STARTED
               </Button>
 
               <ThemeToggle />

@@ -1,10 +1,17 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { LoginForm } from '@web/components/forms/login-form'
 import { Button } from '@web/components/ui/button'
-import { useAuth } from "@web/lib/auth/provider"
-import { useEffect } from 'react'
+import { authClient } from '@web/lib/auth/client'
 
-export const Route = createFileRoute('/_www/login')({ component: Page })
+export const Route = createFileRoute('/_www/login')({
+  beforeLoad: async () => {
+    const session = await authClient.getSession()
+    if (session.data?.session) {
+      throw redirect({ to: '/home', replace: true })
+    }
+  },
+  component: Page,
+})
 
 interface Credentials {
   loginName: string
@@ -17,16 +24,6 @@ const defaultCredentials: Credentials = {
 }
 
 function Page() {
-  const { session, loading } = useAuth()
-  const navigate = useNavigate()
-
-  // If a session already exists, redirect to home by default
-  useEffect(() => {
-    if (!loading && session) {
-      navigate({ to: "/home", replace: true })
-    }
-  }, [loading, session, navigate])
-
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="w-full max-w-xs gap-6 mx-4">

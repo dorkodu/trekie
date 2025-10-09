@@ -27,7 +27,7 @@ export function startDb<T extends Dexie>(
 
   db.on("ready", onReady)
 
-  db.open().then(async (db) => {
+  db.open().then(async (_db) => {
     console.info("[sdk] db opened successfully.")
   }).catch(
     onError

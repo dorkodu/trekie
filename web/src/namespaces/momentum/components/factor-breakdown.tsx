@@ -18,7 +18,7 @@ function FactorRow({ factor }: { factor: any }) {
 }
 
 export const FactorBreakdown: React.FC<FactorBreakdownProps> = ({ windowDays = 10, limit = 6 }) => {
-  const { data, isLoading, isError, refetch } = useMomentum({ windowDays, explain: true })
+  const { data, isLoading, isError, refetch } = useMomentum({ windowDays })
 
   if (isLoading) {
     return (

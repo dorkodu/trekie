@@ -1,9 +1,15 @@
 import { IconArrowRight } from '@tabler/icons-react'
-import { Link } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@web/components/ui/button'
-
+import { useAuth } from '@web/lib/auth/provider'
 
 export function Hero() {
+  const { session } = useAuth()
+  const navigate = useNavigate()
+  const onGetStarted = () => {
+    if (session) navigate({ to: '/home' })
+    else navigate({ to: '/login' })
+  }
   return (
     <>
       <div className="overflow-hidden">
@@ -34,10 +40,10 @@ export function Hero() {
                     text-lg duration-200 
                     bg-gradient-to-tr from-green-600 to-emerald-500 
                     hover:from-green-600 hover:to-emerald-400
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
-                    <Link to="/login" className="block px-8 py-3">
-                      <span className="text-nowrap font-extrabold text-white text-shadow-xs">GET STARTED</span>
-                    </Link>
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                    onClick={onGetStarted}
+                  >
+                    <span className="text-nowrap font-extrabold text-white text-shadow-xs">GET STARTED</span>
                   </Button>
                   <Button
                     key={2}

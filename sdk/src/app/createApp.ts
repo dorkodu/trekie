@@ -1,6 +1,7 @@
 import { Commitments, Game, type GameState, type ICommitmentKind } from "../core"
 import { createDb, startDb } from "./db"
 import { dailyTask } from "./hooks"
+import { createMomentumHelpers } from "./momentum"
 
 export type CreateConfig<TCommitments extends Record<any, ICommitmentKind>> = {
   initialState: GameState,
@@ -75,6 +76,8 @@ export function createApp<TCommitments extends Record<any, ICommitmentKind>>
     db,
 
     commitments: Commitments(readOnlyGame, mutations, commitments, db),
+
+    momentum: createMomentumHelpers(useReadonlyGame),
 
     dailyRefresh: dailyTask(() => game.getState().refresh()),
   }

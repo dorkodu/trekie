@@ -73,7 +73,7 @@ export function Commitments
     },
 
     getCommitmentsByUser: async (userId: string) => {
-      const commitments = await db.commitments
+      return await db.commitments
         .where('userId')
         .equals(userId)
         .toArray()

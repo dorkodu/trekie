@@ -31,7 +31,7 @@ function CoolingBadge({ decayCount }: { decayCount: number }) {
 }
 
 export const MomentumCard: React.FC<MomentumCardProps> = ({ windowDays = 10, showExplanation = false }) => {
-  const { data, isLoading, isError, calibrating, refetch } = useMomentum({ windowDays, explain: showExplanation })
+  const { data, isLoading, isError, calibrating, refetch } = useMomentum({ windowDays })
 
   if (isLoading) {
     return (

@@ -22,6 +22,9 @@
       "@web/*": [
         "./web/src/*"
       ],
+      "@/*": [
+        "./uniroyale/src/*"
+      ],
     }
   },
   "exclude": [

@@ -16,13 +16,7 @@ function CoolingMeta({ decayEvents }: { decayEvents?: any[] }) {
 
 export function MomentumPanel() {
   const { showAdvanced, toggleAdvanced } = useMomentumUI()
-  const { data, refetch } = useMomentum({
-    windowDays: 10,
-    explain: showAdvanced,
-    recommendations: showAdvanced,
-    impact: showAdvanced,
-    persist: true
-  })
+  const { data, refetch } = useMomentum({ windowDays: 10, persist: true })
 
   const logEventMutation = useMutation(trpc.momentum.logEvent.mutationOptions())
 

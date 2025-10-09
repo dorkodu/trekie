@@ -15,7 +15,7 @@ function RecommendationItem({ rec }: { rec: any }) {
 }
 
 export const RecommendationsPanel: React.FC<RecommendationsPanelProps> = ({ windowDays = 10 }) => {
-  const { data, isLoading, isError, refetch } = useMomentum({ windowDays, explain: true })
+  const { data, isLoading, isError, refetch } = useMomentum({ windowDays })
 
   if (isLoading) {
     return (
