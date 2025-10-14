@@ -23,6 +23,7 @@ import { Route as AppSocialRouteImport } from './routes/_app/social'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppPremiumRouteImport } from './routes/_app/premium'
 import { Route as AppOnboardingRouteImport } from './routes/_app/onboarding'
+import { Route as AppMomentumPlaygroundRouteImport } from './routes/_app/momentum-playground'
 import { Route as AppMeRouteImport } from './routes/_app/me'
 import { Route as AppLifeRouteImport } from './routes/_app/life'
 import { Route as AppHomeRouteImport } from './routes/_app/home'
@@ -126,6 +127,11 @@ const AppPremiumRoute = AppPremiumRouteImport.update({
 const AppOnboardingRoute = AppOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMomentumPlaygroundRoute = AppMomentumPlaygroundRouteImport.update({
+  id: '/momentum-playground',
+  path: '/momentum-playground',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMeRoute = AppMeRouteImport.update({
@@ -316,6 +322,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof AppHomeRoute
   '/life': typeof AppLifeRoute
   '/me': typeof AppMeRoute
+  '/momentum-playground': typeof AppMomentumPlaygroundRoute
   '/onboarding': typeof AppOnboardingRouteWithChildren
   '/premium': typeof AppPremiumRoute
   '/profile': typeof AppProfileRouteWithChildren
@@ -366,6 +373,7 @@ export interface FileRoutesByTo {
   '/home': typeof AppHomeRoute
   '/life': typeof AppLifeRoute
   '/me': typeof AppMeRoute
+  '/momentum-playground': typeof AppMomentumPlaygroundRoute
   '/premium': typeof AppPremiumRoute
   '/profile': typeof AppProfileRouteWithChildren
   '/social': typeof AppSocialRoute
@@ -418,6 +426,7 @@ export interface FileRoutesById {
   '/_app/home': typeof AppHomeRoute
   '/_app/life': typeof AppLifeRoute
   '/_app/me': typeof AppMeRoute
+  '/_app/momentum-playground': typeof AppMomentumPlaygroundRoute
   '/_app/onboarding': typeof AppOnboardingRouteWithChildren
   '/_app/premium': typeof AppPremiumRoute
   '/_app/profile': typeof AppProfileRouteWithChildren
@@ -470,6 +479,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/life'
     | '/me'
+    | '/momentum-playground'
     | '/onboarding'
     | '/premium'
     | '/profile'
@@ -520,6 +530,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/life'
     | '/me'
+    | '/momentum-playground'
     | '/premium'
     | '/profile'
     | '/social'
@@ -571,6 +582,7 @@ export interface FileRouteTypes {
     | '/_app/home'
     | '/_app/life'
     | '/_app/me'
+    | '/_app/momentum-playground'
     | '/_app/onboarding'
     | '/_app/premium'
     | '/_app/profile'
@@ -718,6 +730,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof AppOnboardingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/momentum-playground': {
+      id: '/_app/momentum-playground'
+      path: '/momentum-playground'
+      fullPath: '/momentum-playground'
+      preLoaderRoute: typeof AppMomentumPlaygroundRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/me': {
@@ -1016,6 +1035,7 @@ interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
   AppLifeRoute: typeof AppLifeRoute
   AppMeRoute: typeof AppMeRoute
+  AppMomentumPlaygroundRoute: typeof AppMomentumPlaygroundRoute
   AppOnboardingRoute: typeof AppOnboardingRouteWithChildren
   AppPremiumRoute: typeof AppPremiumRoute
   AppProfileRoute: typeof AppProfileRouteWithChildren
@@ -1042,6 +1062,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
   AppLifeRoute: AppLifeRoute,
   AppMeRoute: AppMeRoute,
+  AppMomentumPlaygroundRoute: AppMomentumPlaygroundRoute,
   AppOnboardingRoute: AppOnboardingRouteWithChildren,
   AppPremiumRoute: AppPremiumRoute,
   AppProfileRoute: AppProfileRouteWithChildren,
