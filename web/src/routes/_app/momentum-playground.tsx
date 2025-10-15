@@ -3,6 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { computeMomentumSnapshotFromInputDays, isSnapshotCalibrating, type MomentumSnapshot } from "@web/namespaces/momentum/model";
 import { addDays, format } from "date-fns";
 import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import type { TooltipProps } from "recharts";
+import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const DEFAULT_WINDOW_DAYS = 10;
 const DEFAULT_DAILY_TARGET = 300;
@@ -326,6 +328,78 @@ function TaskMatrixEditor({
         ))}
       </div>
     </div>
+  );
+}
+
+function MomentumTooltip({ active, payload, label }: TooltipProps<number, string>) {
+  if (!active || !payload?.length) return null;
+  const [point] = payload;
+  if (!point) return null;
+  const scoreSource = point.value;
+  const scoreValue = typeof scoreSource === "number" ? scoreSource : Number(scoreSource ?? 0);
+  const rawSource = point.payload && typeof point.payload === "object" ? (point.payload as { raw?: number }).raw : undefined;
+  const rawValue = typeof rawSource === "number" ? rawSource : 0;
+
+  return (
+    <div className="rounded-md border border-muted/40 bg-background/95 p-3 text-xs shadow-lg backdrop-blur">
+      <div className="font-mono text-[11px] uppercase tracking-wide text-muted-foreground">{label}</div>
+      <div className="mt-1 flex flex-col gap-0.5 font-medium">
+        <span>Score {scoreValue.toFixed(1)}</span>
+        <span className="text-muted-foreground">Raw {(rawValue * 100).toFixed(1)}%</span>
+      </div>
+    </div>
+  );
+}
+
+function MomentumHistoryChart({ history }: { history: MomentumSnapshot["history"] }) {
+  if (history.length === 0) return null;
+
+  const data = history.map(point => ({
+    day: point.day,
+    score: point.score,
+    raw: point.raw
+  }));
+  const gradientId = "momentumScoreGradient";
+
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <AreaChart data={data} margin={{ top: 12, right: 16, bottom: 0, left: 0 }}>
+        <defs>
+          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#22c55e" stopOpacity={0.35} />
+            <stop offset="95%" stopColor="#22c55e" stopOpacity={0.05} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid stroke="rgba(148, 163, 184, 0.2)" strokeDasharray="3 3" vertical={false} />
+        <XAxis
+          dataKey="day"
+          tick={{ fontSize: 11 }}
+          axisLine={false}
+          tickLine={false}
+          minTickGap={24}
+        />
+        <YAxis
+          domain={[0, 100]}
+          tick={{ fontSize: 11 }}
+          axisLine={false}
+          tickLine={false}
+          width={32}
+        />
+        <Tooltip content={<MomentumTooltip />} cursor={{ stroke: "rgba(148, 163, 184, 0.35)", strokeWidth: 1 }} />
+        <ReferenceLine y={40} stroke="rgba(248, 113, 113, 0.5)" strokeDasharray="4 4" />
+        <ReferenceLine y={70} stroke="rgba(34, 197, 94, 0.45)" strokeDasharray="4 4" />
+        <ReferenceLine y={86} stroke="rgba(14, 165, 233, 0.45)" strokeDasharray="4 4" />
+        <Area
+          type="monotone"
+          dataKey="score"
+          stroke="#22c55e"
+          strokeWidth={2}
+          fill={`url(#${gradientId})`}
+          dot={{ r: 2.5, strokeWidth: 1, stroke: "#15803d", fill: "#bbf7d0" }}
+          activeDot={{ r: 4, strokeWidth: 0 }}
+        />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 }
 
@@ -694,7 +768,22 @@ function MomentumSnapshotView({ snapshot }: { snapshot: MomentumSnapshot }) {
       </div>
 
       <div className="space-y-3 rounded-lg border bg-background p-4">
-        <h3 className="text-sm font-semibold">History</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold">History</h3>
+          <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Hover to inspect changes</span>
+        </div>
+        {history.length ? (
+          <div className="h-56">
+            <MomentumHistoryChart history={history} />
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground">Add more days to render the history chart.</p>
+        )}
+        {history.length ? (
+          <p className="text-[11px] text-muted-foreground">
+            Hover the chart to inspect daily momentum scores; dashed lines mark band thresholds at 40, 70, and 86.
+          </p>
+        ) : null}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
