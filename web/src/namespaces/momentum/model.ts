@@ -12,7 +12,7 @@ import type {
   MomentumStates,
   MomentumTrend
 } from "@sdk/core/momentum";
-import { createMomentumEngine, explainMomentum, recommendMomentumActions } from "@sdk/core/momentum";
+import { createMomentumEngine, createMomentumEngineWithDefaults, explainMomentum, recommendMomentumActions } from "@sdk/core/momentum";
 import { computeMomentumFromGame, computeMomentumFromGameState } from "@sdk/core/momentum/compute";
 import type { MomentumExplanation } from "@sdk/core/momentum/explain";
 import type { MomentumRecommendation } from "@sdk/core/momentum/recommend";
@@ -68,6 +68,7 @@ export interface MomentumComputationParams {
 }
 
 type MomentumEngineInit = Parameters<typeof createMomentumEngine>[0];
+type MomentumEngineDefaultsInit = Parameters<typeof createMomentumEngineWithDefaults>[0];
 
 const BAND_LABEL_TO_SLUG: Record<MomentumBand["label"], MomentumBandSlug> = {
   Fragile: "meltdown",
@@ -145,8 +146,13 @@ export function computeMomentumSnapshotFromState(state: Pick<GameState, "xpHisto
   return mapMomentumResultToSnapshot(result);
 }
 
-export function computeMomentumSnapshotFromInputDays(days: MomentumInputDay[], init?: MomentumEngineInit): MomentumSnapshot {
-  const engine = createMomentumEngine(init);
+export function computeMomentumSnapshotFromInputDays(
+  days: MomentumInputDay[],
+  init?: MomentumEngineInit | MomentumEngineDefaultsInit
+): MomentumSnapshot {
+  const engine = init && "factors" in init
+    ? createMomentumEngine(init)
+    : createMomentumEngineWithDefaults(init);
   const result = engine.compute(days);
   return mapMomentumResultToSnapshot(result);
 }

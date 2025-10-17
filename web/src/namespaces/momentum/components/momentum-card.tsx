@@ -108,7 +108,7 @@ export const MomentumCard: React.FC<MomentumCardProps> = ({ windowDays = 10, sho
               <div className="font-medium text-muted-foreground mb-0.5">Top Drivers</div>
               <ul className="list-disc list-inside space-y-0.5">
                 {(data.explanation as any).topFactors.slice(0, 3).map((f: any) => (
-                  <li key={f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.key}</span> {f.message}</li>
+                  <li key={f.id || f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.label || f.id || f.key}</span> {f.message}</li>
                 ))}
               </ul>
             </div>
@@ -118,7 +118,7 @@ export const MomentumCard: React.FC<MomentumCardProps> = ({ windowDays = 10, sho
               <div className="font-medium text-muted-foreground mb-0.5">Weak Spots</div>
               <ul className="list-disc list-inside space-y-0.5">
                 {(data.explanation as any).weakFactors.slice(0, 3).map((f: any) => (
-                  <li key={f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.key}</span> {f.message}</li>
+                  <li key={f.id || f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.label || f.id || f.key}</span> {f.message}</li>
                 ))}
               </ul>
             </div>
