@@ -9,9 +9,9 @@ Pure functional momentum score computation module based on the product specifica
 ## Quick Start
 
 ```ts
-import { createMomentumEngine, MomentumInputDay } from '@trekie/sdk'
+import { createMomentumEngineWithDefaults, MomentumInputDay } from '@trekie/sdk'
 
-const engine = createMomentumEngine()
+const engine = createMomentumEngineWithDefaults()
 
 const days: MomentumInputDay[] = [
   {
@@ -34,7 +34,13 @@ console.log(result.score, result.trend, result.factors)
 
 ## Public API
 
-### `createMomentumEngine(init?: MomentumEngineInit)`
+### `createMomentumEngine(init: MomentumEngineInit)`
+
+Use [`createMomentumEngineWithDefaults()`](#createmomentumenginewithdefaults-init-omitmomentumengineinit-factors) when you want the stock factor registry without wiring plugins manually.
+
+### `createMomentumEngineWithDefaults(init?: Omit<MomentumEngineInit, 'factors'>)`
+
+Convenience helper that injects the built-in factor registry while still allowing you to override weights or options. This keeps legacy usage working while making plugin scenarios explicit. When you are ready to supply your own factors, switch to `createMomentumEngine({ factors: registry })`.
 
 ### Backend Endpoint (Integration)
 
@@ -86,7 +92,7 @@ Returns an engine with `compute(days)`.
 
 #### Weights
 
-Defaults: consistency 0.30, habits 0.25, tasks 0.20, trend 0.15, focus 0.10.
+Defaults: consistency 0.30, habits 0.25, tasks 0.20, trend 0.15, focus 0.10. Custom factor definitions contribute their own `defaultWeight` which is merged automatically when you pass a custom registry.
 
 ### Input Shape (`MomentumInputDay`)
 
@@ -100,16 +106,16 @@ Defaults: consistency 0.30, habits 0.25, tasks 0.20, trend 0.15, focus 0.10.
 
 ### Output (`MomentumResult`)
 
-| Field          | Notes                                           |
-| -------------- | ----------------------------------------------- |
-| score          | 0-100 smoothed composite                        |
-| raw            | 0-1 smoothed composite before scaling           |
-| factors        | Array of each raw factor value & applied weight |
-| trend          | Direction + label + deltaPct                    |
-| bands          | Current band (Fragile, Building, Strong, Peak)  |
-| states         | Recovery & risk booleans                        |
-| history        | Per-day raw & scaled (unsmoothed) values        |
-| missingDomains | Map of domains absent (for UI fallback)         |
+| Field          | Notes                                                                |
+| -------------- | -------------------------------------------------------------------- |
+| score          | 0-100 smoothed composite                                             |
+| raw            | 0-1 smoothed composite before scaling                                |
+| factors        | Array of `{ id, label, weight, value, observed, extras? }` summaries |
+| trend          | Direction + label + deltaPct                                         |
+| bands          | Current band (Fragile, Building, Strong, Peak)                       |
+| states         | Recovery & risk booleans                                             |
+| history        | Per-day raw & scaled (unsmoothed) values                             |
+| missingDomains | Map of factor ids absent (for UI fallback & coverage messaging)      |
 
 ## Factor Logic Summary
 
@@ -129,7 +135,45 @@ Defaults: consistency 0.30, habits 0.25, tasks 0.20, trend 0.15, focus 0.10.
 
 ## Extensibility
 
-Add new factors by extending `MomentumFactorValuesRaw`, weights, and `computeFactors`.
+Add new factors by supplying a custom registry when constructing the engine. Each factor implements the `MomentumFactorDefinition` contract (id, label, default weight, neutral value, compute). The engine will automatically merge defaults, derive weights, and surface the resulting factor in `MomentumResult.factors`. See `docs/engineering/momentum-custom-factors.md` for a step-by-step guide.
+
+```ts
+import {
+  createMomentumEngine,
+  createDefaultMomentumFactors,
+} from '@trekie/sdk/core/momentum'
+
+const energyFactor = {
+  id: 'energy',
+  label: 'Energy',
+  defaultWeight: 0.08,
+  neutralValue: 0.5,
+  requiredDomains: ['xp'],
+  compute: ({ days, windowDays }) => {
+    const window = days.slice(-windowDays)
+    const observed = window.some(day => (day.xp?.xpGained ?? 0) > 0)
+    const totalXp = window.reduce(
+      (sum, day) => sum + (day.xp?.xpGained ?? 0),
+      0
+    )
+    const value = window.length
+      ? Math.min(1, totalXp / (window.length * 120))
+      : 0
+    return {
+      value,
+      observed,
+      extras: { averageXp: window.length ? totalXp / window.length : 0 },
+    }
+  },
+}
+
+const engine = createMomentumEngine({
+  factors: [...createDefaultMomentumFactors(), energyFactor],
+})
+
+const result = engine.compute(days)
+// result.factors includes the "energy" entry with calculated weight/value/extras
+```
 
 ### Detailed Algorithm Reference
 
@@ -141,12 +185,12 @@ Use the explanation helper to convert a `MomentumResult` into human-readable fac
 
 ```ts
 import {
-  createMomentumEngine,
+  createMomentumEngineWithDefaults,
   explainMomentum,
   summarizeMomentum,
 } from '@trekie/sdk'
 
-const engine = createMomentumEngine()
+const engine = createMomentumEngineWithDefaults()
 const result = engine.compute(days)
 
 const detailed = explainMomentum(result)
@@ -167,14 +211,14 @@ Options:
 
 Each factor explanation includes:
 
-| Field        | Meaning                                              |
-| ------------ | ---------------------------------------------------- |
-| key          | Factor id (consistency, habits, tasks, trend, focus) |
-| value        | Normalized 0..1 factor value (rounded)               |
-| weight       | Effective weight used                                |
-| contribution | weight \* value (0..1 share)                         |
-| strength     | qualitative bucket (weak/neutral/strong)             |
-| message      | Coaching-friendly sentence                           |
+| Field        | Meaning                                                                   |
+| ------------ | ------------------------------------------------------------------------- |
+| id           | Factor id (consistency, habits, tasks, trend, focus, plus any custom ids) |
+| value        | Normalized 0..1 factor value (rounded)                                    |
+| weight       | Effective weight used                                                     |
+| contribution | weight \* value (0..1 share)                                              |
+| strength     | qualitative bucket (weak/neutral/strong)                                  |
+| message      | Coaching-friendly sentence                                                |
 
 ## Delta & Impact Utilities
 
@@ -258,7 +302,10 @@ The app already stores: habit entities (with `history` & `dailyTarget`) and comm
 Use `buildMomentumDays` from `adapters.ts` to transform existing data:
 
 ```ts
-import { buildMomentumDays, createMomentumEngine } from '@trekie/sdk'
+import {
+  buildMomentumDays,
+  createMomentumEngineWithDefaults,
+} from '@trekie/sdk'
 
 async function computeMomentum(db: any, trekie: any, userId: string) {
   const habits = await db.habits.where('userId').equals(userId).toArray()
@@ -272,7 +319,7 @@ async function computeMomentum(db: any, trekie: any, userId: string) {
     commitRecords: commits,
     windowDays: 10,
   })
-  const engine = createMomentumEngine()
+  const engine = createMomentumEngineWithDefaults()
   return engine.compute(days)
 }
 ```
@@ -288,7 +335,7 @@ Adapter behavior:
 ### Minimal Usage (Habits Only)
 
 ```ts
-const engine = createMomentumEngine()
+const engine = createMomentumEngineWithDefaults()
 const days = buildMomentumDays({ habits, commitRecords })
 const result = engine.compute(days)
 console.log(result.score, result.missingDomains)

@@ -1,18 +1,48 @@
 import { BANDS, DEFAULT_OPTIONS, DEFAULT_WEIGHTS, MOMENTUM_GAP_DECAY, MOMENTUM_MISSING_STRATEGY, MOMENTUM_NEUTRAL_VALUES } from './constants'
-import { computeFactors, trendDeltaRatio, trendScoreFromRatio } from './factors'
-import type { MomentumBand, MomentumCalculationOptions, MomentumCoverage, MomentumDailyPoint, MomentumEngineConfig, MomentumFactorValuesRaw, MomentumGapInfo, MomentumInputDay, MomentumResult, MomentumStates, MomentumTrend, MomentumWeights } from './types'
+import { runFactorRegistry, trendDeltaRatio, trendScoreFromRatio } from './factors'
+import type { MomentumFactorRegistry } from './factors/index'
+import { createDefaultMomentumFactors } from './factors/index'
+import type { MissingDomains, MomentumBand, MomentumCalculationOptions, MomentumCoverage, MomentumDailyPoint, MomentumEngineConfig, MomentumFactorId, MomentumFactorSummary, MomentumFactorValuesRaw, MomentumGapInfo, MomentumInputDay, MomentumResult, MomentumStates, MomentumTrend, MomentumWeights } from './types'
 import { clamp, ema, reweight } from './utils'
 
 export interface MomentumEngineInit {
   weights?: Partial<MomentumWeights>
   options?: Partial<MomentumCalculationOptions>
+  factors: MomentumFactorRegistry
 }
 
-export function createMomentumEngine(init: MomentumEngineInit = {}) {
-  const weights: MomentumWeights = {
-    ...DEFAULT_WEIGHTS,
-    ...init.weights,
+function deriveMomentumWeights(registry: MomentumFactorRegistry, overrides?: Partial<MomentumWeights>): MomentumWeights {
+  const weights: MomentumWeights = { ...DEFAULT_WEIGHTS }
+  if (overrides) {
+    for (const [id, value] of Object.entries(overrides)) {
+      if (typeof value === 'number') {
+        weights[id as MomentumFactorId] = value
+      }
+    }
   }
+  for (const definition of registry) {
+    const id = definition.id as MomentumFactorId
+    if (weights[id] == null) {
+      weights[id] = definition.defaultWeight
+    }
+  }
+  return weights
+}
+
+function resolveNeutralValue(factorId: MomentumFactorId, registry: MomentumFactorRegistry): number {
+  const neutralMap = MOMENTUM_NEUTRAL_VALUES as Record<string, number>
+  if (neutralMap[factorId] != null) return neutralMap[factorId]
+  const definition = registry.find(def => def.id === factorId)
+  if (definition?.neutralValue != null) return definition.neutralValue
+  return 0.5
+}
+
+export function createMomentumEngine(init: MomentumEngineInit) {
+  if (!init?.factors || init.factors.length === 0) {
+    throw new Error('Momentum engine requires a non-empty factor registry. Pass createDefaultMomentumFactors() for legacy behavior.')
+  }
+  const factorRegistry: MomentumFactorRegistry = init.factors
+  const weights = deriveMomentumWeights(factorRegistry, init.weights)
   const nowDay = init.options?.nowDay ?? new Date().toISOString().slice(0, 10)
   const options: MomentumEngineConfig['options'] = {
     ...DEFAULT_OPTIONS,
@@ -20,21 +50,31 @@ export function createMomentumEngine(init: MomentumEngineInit = {}) {
     nowDay,
   }
 
-  const config: MomentumEngineConfig = { weights, options }
+  const config: MomentumEngineConfig = { weights, options, factors: factorRegistry.map(f => f.id as MomentumFactorId) }
 
   function compute(days: MomentumInputDay[]): MomentumResult {
     const sorted = [...days].sort((a, b) => a.day.localeCompare(b.day))
 
     if (sorted.length === 0) {
       const weightsSnapshot = { ...weights }
+      const emptyFactors: MomentumFactorSummary[] = factorRegistry.map(def => ({
+        id: def.id as MomentumFactorId,
+        label: def.label,
+        weight: weightsSnapshot[def.id as MomentumFactorId] ?? 0,
+        value: 0,
+        observed: false
+      }))
+      emptyFactors.push({
+        id: 'trend',
+        label: 'Trend',
+        weight: weightsSnapshot.trend ?? 0,
+        value: 0,
+        observed: false
+      })
       return {
         score: 0,
         raw: 0,
-        factors: (Object.keys(weightsSnapshot) as (keyof MomentumFactorValuesRaw)[]).map(k => ({
-          key: k,
-          weight: (weightsSnapshot as any)[k],
-          value: 0,
-        })),
+        factors: emptyFactors,
         trend: { direction: 'flat', label: 'Stable', deltaPct: 0 },
         bands: { range: '0-39', label: 'Fragile' },
         states: { recovery: false, risk: false },
@@ -47,46 +87,44 @@ export function createMomentumEngine(init: MomentumEngineInit = {}) {
       }
     }
 
-    // Detect missing domains across entire window (no presence in any day)
-    const domainPresence = {
-      consistency: true, // virtual, always considered present
-      habits: sorted.some(d => d.habits != null),
-      tasks: sorted.some(d => d.tasks != null),
-      trend: true, // computed
-      focus: sorted.some(d => d.focus != null),
-    }
-    const missingDomains = Object.entries(domainPresence)
-      .filter(([, present]) => !present)
-      .map(([k]) => k as keyof MomentumFactorValuesRaw)
-      .filter(k => k !== 'consistency' && k !== 'trend') // only reweight allocatable domains
+    // Run registered factors on the entire window
+    const factorRun = runFactorRegistry(sorted, weights, options, factorRegistry)
+    const missingFactorSet = new Set<MomentumFactorId>(
+      factorRun.entries
+        .filter(entry => !entry.result.observed)
+        .map(entry => entry.definition.id as MomentumFactorId)
+    )
+    const missingFactorIds = Array.from(missingFactorSet)
 
     // Determine missing strategy
     const strategy = MOMENTUM_MISSING_STRATEGY
-    let effectiveWeights = weights
-    const imputedFactors: (keyof MomentumFactorValuesRaw)[] = []
-    if (missingDomains.length) {
+    let effectiveWeights: MomentumWeights = weights
+    const imputedFactors: MomentumFactorId[] = []
+    if (missingFactorIds.length) {
       if (strategy === 'reweight') {
-        effectiveWeights = reweight(weights, missingDomains as (keyof MomentumWeights)[])
-      } else if (strategy === 'neutral-impute') {
-        // Keep weights, mark for imputation (we'll synthesize neutral values later)
+        effectiveWeights = reweight(weights, missingFactorIds as (keyof MomentumWeights)[])
+      } else if (strategy === 'neutral-impute' || strategy === 'hybrid') {
         effectiveWeights = { ...weights }
-        imputedFactors.push(...missingDomains)
-      } else if (strategy === 'hybrid') {
-        // For now treat same as neutral-impute (extend later)
-        effectiveWeights = { ...weights }
-        imputedFactors.push(...missingDomains)
+        imputedFactors.push(...missingFactorIds)
       }
     }
 
     // Initial factor scores (trend placeholder)
-    const baseFactors = computeFactors(sorted, effectiveWeights, options)
+    const baseFactors: MomentumFactorValuesRaw = {
+      consistency: factorRun.values.consistency ?? 0,
+      habits: factorRun.values.habits ?? 0,
+      tasks: factorRun.values.tasks ?? 0,
+      trend: 0,
+      focus: factorRun.values.focus ?? 0,
+    }
 
-    // Apply neutral imputation for any missing factor values (domain absent entirely)
-    for (const f of imputedFactors) {
-      // Only overwrite if factor is non-virtual and currently zero due to absence
-      if (f in baseFactors) {
-        ; (baseFactors as any)[f] = MOMENTUM_NEUTRAL_VALUES[f]
-      }
+    for (const entry of factorRun.entries) {
+      const id = entry.definition.id as MomentumFactorId
+      baseFactors[id] = entry.result.value
+    }
+
+    for (const factorId of imputedFactors) {
+      baseFactors[factorId] = resolveNeutralValue(factorId, factorRegistry)
     }
 
     // Build composite raw per day (without trend factor at first) to compute trend
@@ -95,12 +133,12 @@ export function createMomentumEngine(init: MomentumEngineInit = {}) {
       // For daily raw we recompute per day using rolling window limited to options.windowDays
       const upto = sorted.filter(x => x.day <= d.day)
       const window = upto.slice(-options.windowDays)
-      const partialFactors = computeFactors(window, effectiveWeights, options)
+      const partialFactors = runFactorRegistry(window, effectiveWeights, options, factorRegistry)
       // exclude trend
-      const compositeNoTrend = partialFactors.consistency * effectiveWeights.consistency +
-        partialFactors.habits * effectiveWeights.habits +
-        partialFactors.tasks * effectiveWeights.tasks +
-        partialFactors.focus * effectiveWeights.focus
+      const compositeNoTrend = partialFactors.entries.reduce((sum, entry) => {
+        const id = entry.definition.id as MomentumFactorId
+        return sum + (entry.result.value ?? 0) * (effectiveWeights[id] ?? 0)
+      }, 0)
       dailyRawWithoutTrend.push(compositeNoTrend)
     }
 
@@ -111,21 +149,20 @@ export function createMomentumEngine(init: MomentumEngineInit = {}) {
     const factors: MomentumFactorValuesRaw = { ...baseFactors, trend: trendScore }
 
     // Recompute final composite raw using full factor set
-    const compositeRaw = factors.consistency * effectiveWeights.consistency +
-      factors.habits * effectiveWeights.habits +
-      factors.tasks * effectiveWeights.tasks +
-      factors.trend * effectiveWeights.trend +
-      factors.focus * effectiveWeights.focus
+    const compositeRaw = factorRun.entries.reduce((sum, entry) => {
+      const id = entry.definition.id as MomentumFactorId
+      return sum + (factors[id] ?? 0) * (effectiveWeights[id] ?? 0)
+    }, 0) + factors.trend * (effectiveWeights.trend ?? 0)
 
     // Build augmented daily values (include trend component)
-    const augmentedValues = dailyRawWithoutTrend.map(v => v + (trendScore * effectiveWeights.trend))
+    const augmentedValues = dailyRawWithoutTrend.map(v => v + (trendScore * (effectiveWeights.trend ?? 0)))
 
     const { smoothed, decayEvents } = smoothSeriesWithGaps(sorted, augmentedValues, options.emaAlpha)
 
     const latestSmoothedRaw = smoothed[smoothed.length - 1] ?? compositeRaw
 
     const history: MomentumDailyPoint[] = dailyRawWithoutTrend.map((raw, idx) => {
-      const withTrend = raw + (trendScore * effectiveWeights.trend)
+      const withTrend = raw + (trendScore * (effectiveWeights.trend ?? 0))
       const dayEntry = sorted[idx]
       return {
         day: dayEntry ? dayEntry.day : 'unknown',
@@ -139,34 +176,58 @@ export function createMomentumEngine(init: MomentumEngineInit = {}) {
     const states = resolveStates(history)
 
     // Coverage metrics
-    const expectedFactors = 3 /* habits, tasks, focus */ + 1 /* consistency always */ + 1 /* trend always */
-    const observed = 1 /* consistency */ + 1 /* trend */ + ['habits', 'tasks', 'focus'].filter(k => !(missingDomains as any).includes(k)).length
+    const expectedFactors = factorRun.entries.length + 1 /* trend */
+    const observedCount = factorRun.entries.length - missingFactorIds.length + 1 /* trend */
     const imputed = imputedFactors.length
+    const coverageRatio = expectedFactors === 0 ? 0 : observedCount / expectedFactors
+    const effectiveRatio = expectedFactors === 0 ? 0 : Math.min(1, (observedCount + imputed) / expectedFactors)
     const coverage: MomentumCoverage = {
       expected: expectedFactors,
-      observed,
+      observed: observedCount,
       imputed,
-      ratio: observed / expectedFactors,
-      effectiveRatio: (observed + imputed) / expectedFactors,
+      ratio: coverageRatio,
+      effectiveRatio,
     }
-    const confidence = Math.sqrt(coverage.ratio)
+    const confidence = Math.sqrt(coverageRatio)
 
     // Gap info (largest gap across provided days)
     const gapInfo = computeGaps(sorted)
 
+    const factorSummaries: MomentumFactorSummary[] = factorRun.entries.map(entry => {
+      const id = entry.definition.id as MomentumFactorId
+      return {
+        id,
+        label: entry.definition.label,
+        weight: effectiveWeights[id] ?? 0,
+        value: factors[id] ?? 0,
+        observed: entry.result.observed,
+        extras: entry.result.extras,
+      }
+    })
+
+    factorSummaries.push({
+      id: 'trend',
+      label: 'Trend',
+      weight: effectiveWeights.trend ?? 0,
+      value: trendScore,
+      observed: true,
+      extras: { ratio }
+    })
+
+    const missingDomains = missingFactorIds.reduce((acc, k) => {
+      acc[k] = true
+      return acc
+    }, {} as MissingDomains)
+
     return {
       score: Math.round(clamp(0, latestSmoothedRaw, 1) * 100),
       raw: clamp(0, latestSmoothedRaw, 1),
-      factors: Object.entries(factors).map(([key, value]) => ({
-        key: key as keyof MomentumFactorValuesRaw,
-        weight: effectiveWeights[key as keyof MomentumFactorValuesRaw],
-        value
-      })),
+      factors: factorSummaries,
       trend,
       bands,
       states,
       history,
-      missingDomains: missingDomains.reduce((acc, k) => { acc[k] = true; return acc }, {} as any),
+      missingDomains,
       imputedFactors,
       coverage,
       confidence,
@@ -176,6 +237,13 @@ export function createMomentumEngine(init: MomentumEngineInit = {}) {
   }
 
   return { compute, config }
+}
+
+export function createMomentumEngineWithDefaults(init: Omit<MomentumEngineInit, 'factors'> = {}) {
+  return createMomentumEngine({
+    ...init,
+    factors: createDefaultMomentumFactors(),
+  })
 }
 
 function smoothSeriesWithGaps(days: MomentumInputDay[], values: number[], alpha: number) {

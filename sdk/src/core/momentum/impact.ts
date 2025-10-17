@@ -1,4 +1,4 @@
-import type { MomentumFactorValuesRaw, MomentumResult } from './types'
+import type { MomentumFactorId, MomentumResult } from './types'
 
 export interface PointImpactConfig {
   /** Target value we consider "strong" for a factor (default 0.8) */
@@ -10,7 +10,7 @@ export interface PointImpactConfig {
 }
 
 export interface FactorImpactEstimate {
-  key: keyof MomentumFactorValuesRaw
+  id: MomentumFactorId
   current: number
   target: number
   potentialRawGain: number // raw 0..1 composite contribution increment (weight * delta)
@@ -34,7 +34,7 @@ export function computePointImpact(result: MomentumResult, cfg: PointImpactConfi
     const potentialRawGain = appliedDelta * f.weight
     const potentialPoints = potentialRawGain * 100
     estimates.push({
-      key: f.key,
+      id: f.id,
       current: f.value,
       target: strongTarget,
       potentialRawGain,

@@ -1,7 +1,7 @@
-import type { MomentumFactorValuesRaw, MomentumResult } from './types'
+import type { MomentumFactorId, MomentumResult } from './types'
 
 export interface MomentumDeltaItem {
-  key: keyof MomentumFactorValuesRaw
+  id: MomentumFactorId
   prev: number
   curr: number
   delta: number // curr - prev
@@ -29,8 +29,8 @@ export interface DiffMomentumOptions {
 
 /** Create lookup from MomentumResult factors array */
 function factorMap(r: MomentumResult) {
-  const map = new Map<keyof MomentumFactorValuesRaw, { value: number; weight: number }>()
-  for (const f of r.factors) map.set(f.key, { value: f.value, weight: f.weight })
+  const map = new Map<MomentumFactorId, { value: number; weight: number }>()
+  for (const f of r.factors) map.set(f.id, { value: f.value, weight: f.weight })
   return map
 }
 
@@ -40,9 +40,9 @@ export function diffMomentum(prev: MomentumResult, curr: MomentumResult, opts: D
   const c = factorMap(curr)
 
   const factors: MomentumDeltaItem[] = []
-  for (const key of c.keys()) {
-    const prevEntry = p.get(key)
-    const currEntry = c.get(key)
+  for (const id of c.keys()) {
+    const prevEntry = p.get(id)
+    const currEntry = c.get(id)
     if (!currEntry || !prevEntry) continue
     const delta = currEntry.value - prevEntry.value
     const weightedDelta = delta * currEntry.weight
@@ -55,7 +55,7 @@ export function diffMomentum(prev: MomentumResult, curr: MomentumResult, opts: D
     const abs = Math.abs(delta)
     if (abs >= magnitudeThresholds.moderate) magnitude = 'major'
     else if (abs >= magnitudeThresholds.minor) magnitude = 'moderate'
-    factors.push({ key, prev: prevEntry.value, curr: currEntry.value, delta, weight: currEntry.weight, weightedDelta, direction, magnitude })
+    factors.push({ id, prev: prevEntry.value, curr: currEntry.value, delta, weight: currEntry.weight, weightedDelta, direction, magnitude })
   }
 
   // Sort by absolute weighted impact descending

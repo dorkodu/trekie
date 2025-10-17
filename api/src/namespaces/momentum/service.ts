@@ -1,4 +1,4 @@
-import { buildMomentumDays, computePointImpact, createMomentumEngine, diffMomentum, explainMomentum, recommendMomentumActions } from '@sdk/core/momentum'
+import { buildMomentumDays, computePointImpact, createMomentumEngineWithDefaults, diffMomentum, explainMomentum, recommendMomentumActions } from '@sdk/core/momentum'
 import { type MomentumRepository } from './repository'
 import { type MomentumSnapshotInput } from './schemas'
 
@@ -10,7 +10,7 @@ interface MomentumServiceOpts {
 interface CacheEntry { at: number; key: string; result: any }
 
 export function createMomentumService({ repository, ttlMs = 60_000 }: MomentumServiceOpts) {
-  const engine = createMomentumEngine()
+  const engine = createMomentumEngineWithDefaults()
   let cache: CacheEntry | undefined
   // SECURITY TODO: replace in-memory cache with user-scoped LRU; ensure multi-tenant isolation
   /**

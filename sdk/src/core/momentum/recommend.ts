@@ -1,5 +1,5 @@
 import { explainMomentum } from './explain'
-import type { MomentumFactorValuesRaw, MomentumResult } from './types'
+import type { MomentumBuiltInFactorId, MomentumResult } from './types'
 
 export type MomentumReasonCode =
   | 'CONSISTENCY_STRONG'
@@ -23,7 +23,7 @@ export interface MomentumRecommendation {
   detail: string
   /** Optional quick action hints (verb phrases) */
   actions?: string[]
-  factor?: keyof MomentumFactorValuesRaw
+  factor?: MomentumBuiltInFactorId
   priority: 'high' | 'medium' | 'low'
 }
 
@@ -39,17 +39,17 @@ export function recommendMomentumActions(result: MomentumResult, opts: Recommend
 
   for (const f of explanation.factors) {
     if (f.strength === 'strong') {
-      if (f.key === 'consistency') recs.push({ code: 'CONSISTENCY_STRONG', title: 'Consistency Solid', detail: 'You are reliably completing days—maintain this cadence.', actions: ['Plan tomorrow early'], factor: 'consistency', priority: 'low' })
-      if (f.key === 'habits') recs.push({ code: 'HABITS_STRONG', title: 'Habit Targets Locked', detail: 'Daily habit targets are being met; consider gentle overage occasionally for adaptation.', actions: ['Add small stretch goal'], factor: 'habits', priority: 'low' })
-      if (f.key === 'tasks') recs.push({ code: 'TASKS_STRONG', title: 'Tasks Aligned', detail: 'Planned vs completed tasks balanced; maintain planning realism.', actions: ['Pre-plan next day tasks'], factor: 'tasks', priority: 'low' })
-      if (f.key === 'trend' && result.trend.direction === 'up') recs.push({ code: 'TREND_UP', title: 'Acceleration Detected', detail: 'Recent days are outperforming your prior baseline—protect this streak with recovery pacing.', actions: ['Schedule short recovery block'], factor: 'trend', priority: 'medium' })
-      if (f.key === 'focus') recs.push({ code: 'FOCUS_STRONG', title: 'Depth Sessions Effective', detail: 'Deep focus time is solid; ensure breaks preserve quality.', actions: ['Block next deep session'], factor: 'focus', priority: 'low' })
+      if (f.id === 'consistency') recs.push({ code: 'CONSISTENCY_STRONG', title: 'Consistency Solid', detail: 'You are reliably completing days—maintain this cadence.', actions: ['Plan tomorrow early'], factor: 'consistency', priority: 'low' })
+      if (f.id === 'habits') recs.push({ code: 'HABITS_STRONG', title: 'Habit Targets Locked', detail: 'Daily habit targets are being met; consider gentle overage occasionally for adaptation.', actions: ['Add small stretch goal'], factor: 'habits', priority: 'low' })
+      if (f.id === 'tasks') recs.push({ code: 'TASKS_STRONG', title: 'Tasks Aligned', detail: 'Planned vs completed tasks balanced; maintain planning realism.', actions: ['Pre-plan next day tasks'], factor: 'tasks', priority: 'low' })
+      if (f.id === 'trend' && result.trend.direction === 'up') recs.push({ code: 'TREND_UP', title: 'Acceleration Detected', detail: 'Recent days are outperforming your prior baseline—protect this streak with recovery pacing.', actions: ['Schedule short recovery block'], factor: 'trend', priority: 'medium' })
+      if (f.id === 'focus') recs.push({ code: 'FOCUS_STRONG', title: 'Depth Sessions Effective', detail: 'Deep focus time is solid; ensure breaks preserve quality.', actions: ['Block next deep session'], factor: 'focus', priority: 'low' })
     } else if (f.strength === 'weak') {
-      if (f.key === 'consistency') recs.push({ code: 'CONSISTENCY_WEAK', title: 'Inconsistent Days', detail: 'Missed or partial days reduce baseline momentum.', actions: ['Finish one anchor habit early'], factor: 'consistency', priority: 'high' })
-      if (f.key === 'habits') recs.push({ code: 'HABITS_WEAK', title: 'Habit Targets Missed', detail: 'Unreached habit targets are the fastest fix—close the loop today.', actions: ['Shrink target temporarily', 'Set reminder prompt'], factor: 'habits', priority: 'high' })
-      if (f.key === 'tasks') recs.push({ code: 'TASKS_WEAK', title: 'Task Execution Gap', detail: 'Task coverage low; reduce overplanning or secure focused completion blocks.', actions: ['Reduce tomorrow planned count', 'Timebox task batch'], factor: 'tasks', priority: 'medium' })
-      if (f.key === 'trend') recs.push({ code: 'TREND_DOWN', title: 'Negative Trend', detail: 'Momentum sliding; stack 2 modestly positive days to reverse.', actions: ['Pick a 30‑min quick win', 'Log a deep block'], factor: 'trend', priority: 'high' })
-      if (f.key === 'focus') recs.push({ code: 'FOCUS_WEAK', title: 'Low Deep Focus', detail: 'Shallow sessions reduce compounding effect of depth.', actions: ['Schedule 50‑min distraction-free block'], factor: 'focus', priority: 'medium' })
+      if (f.id === 'consistency') recs.push({ code: 'CONSISTENCY_WEAK', title: 'Inconsistent Days', detail: 'Missed or partial days reduce baseline momentum.', actions: ['Finish one anchor habit early'], factor: 'consistency', priority: 'high' })
+      if (f.id === 'habits') recs.push({ code: 'HABITS_WEAK', title: 'Habit Targets Missed', detail: 'Unreached habit targets are the fastest fix—close the loop today.', actions: ['Shrink target temporarily', 'Set reminder prompt'], factor: 'habits', priority: 'high' })
+      if (f.id === 'tasks') recs.push({ code: 'TASKS_WEAK', title: 'Task Execution Gap', detail: 'Task coverage low; reduce overplanning or secure focused completion blocks.', actions: ['Reduce tomorrow planned count', 'Timebox task batch'], factor: 'tasks', priority: 'medium' })
+      if (f.id === 'trend') recs.push({ code: 'TREND_DOWN', title: 'Negative Trend', detail: 'Momentum sliding; stack 2 modestly positive days to reverse.', actions: ['Pick a 30‑min quick win', 'Log a deep block'], factor: 'trend', priority: 'high' })
+      if (f.id === 'focus') recs.push({ code: 'FOCUS_WEAK', title: 'Low Deep Focus', detail: 'Shallow sessions reduce compounding effect of depth.', actions: ['Schedule a 50‑min distraction-free block'], factor: 'focus', priority: 'medium' })
     }
   }
 
