@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_app/archive')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/_app/archive"!</div>
+  return <div>Hello &quot;/_app/archive&quot;!</div>
 }

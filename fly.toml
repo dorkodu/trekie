@@ -1,0 +1,27 @@
+# Fly.io deployment config for Trekie API
+# Install flyctl: https://fly.io/docs/hands-on/install-flyctl/
+# Then: fly launch --image trekie-api (or fly deploy)
+
+app = "trekie-api"
+primary_region = "ams"
+
+[build]
+  dockerfile = "api/Dockerfile"
+  docker_build_from = "api/"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[env]
+  NODE_ENV = "production"
+  ORIGIN = "https://trekie-web.vercel.app"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

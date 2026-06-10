@@ -47,7 +47,7 @@ export function useDexieQuery<
 
     // Subscribe to the observable
     const subscription = observable.subscribe({
-      next: (data) => {
+      next: () => {
         // When Dexie detects a change, invalidate the query in TanStack Query.
         // This will trigger a refetch using the original queryFn.
         // Alternatively, you could use queryClient.setQueryData(queryKey, data)

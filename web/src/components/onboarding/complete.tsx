@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@web/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@web/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@web/components/ui/card'
 import { Progress } from '@web/components/ui/progress'
 import { CheckCircle, Sparkles } from 'lucide-react'
 import { useAuth } from '@web/lib/auth/provider'
@@ -52,9 +52,9 @@ export function OnboardingComplete() {
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-4xl font-bold">You're all set!</h1>
+          <h1 className="text-4xl font-bold">You&apos;re all set!</h1>
           <p className="text-xl text-muted-foreground">
-            Welcome to Trekie, {user?.name?.split(' ')[0]}. Let's start achieving your goals together!
+            Welcome to Trekie, {user?.name?.split(' ')[0]}. Let&apos;s start achieving your goals together!
           </p>
         </div>
       </div>
@@ -95,7 +95,7 @@ export function OnboardingComplete() {
             <p>• Set specific, measurable goals</p>
             <p>• Check in daily to build habits</p>
             <p>• Celebrate small wins along the way</p>
-            <p>• Don't be afraid to adjust your goals</p>
+            <p>• Don&apos;t be afraid to adjust your goals</p>
           </CardContent>
         </Card>
       </div>

@@ -79,7 +79,7 @@ export function CreateAccountForm() {
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold">Create Account</h1>
         <p className="text-muted-foreground text-sm">
-          Welcome, it's always a good time to start anew!
+          Welcome, it&apos;s always a good time to start anew!
         </p>
       </div>
 

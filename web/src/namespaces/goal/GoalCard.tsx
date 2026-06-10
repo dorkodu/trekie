@@ -152,14 +152,7 @@ function GoalCardSkeleton() {
 const NotFound = (
   <Alert variant="destructive">
     <AlertTitle>Goal not found</AlertTitle>
-    <AlertDescription>The referenced goal doesn't exist or was removed.</AlertDescription>
-  </Alert>
-);
-
-const EmptyState = (
-  <Alert>
-    <AlertTitle>No goals yet</AlertTitle>
-    <AlertDescription>Create your first goal to start tracking progress.</AlertDescription>
+    <AlertDescription>The referenced goal doesn&apos;t exist or was removed.</AlertDescription>
   </Alert>
 );
 

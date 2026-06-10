@@ -193,7 +193,7 @@ export function GoalForm({ mode, goal, onSuccess, onDelete, commitmentOptions = 
           {field => (
             <div>
               <Label htmlFor='goal-xp'>XP Target *</Label>
-              <Input id='goal-xp' type='number' value={field.state.value as any} onChange={e => field.handleChange(Number(e.target.value))} required />
+              <Input id='goal-xp' type='number' value={field.state.value as number} onChange={e => field.handleChange(Number(e.target.value))} required />
               {field.state.meta.errors?.[0] && <p className='text-xs text-red-500 mt-1'>{field.state.meta.errors[0]}</p>}
             </div>
           )}

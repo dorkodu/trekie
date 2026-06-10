@@ -6,11 +6,13 @@ import FactorBreakdown from './factor-breakdown'
 import MomentumCard from './momentum-card'
 import RecommendationsPanel from './recommendations-panel'
 
-function CoolingMeta({ decayEvents }: { decayEvents?: any[] }) {
+import type { DecayEvent } from '@sdk/core/momentum'
+
+function CoolingMeta({ decayEvents }: { decayEvents?: DecayEvent[] }) {
   if (!decayEvents?.length) return null
   const latest = decayEvents[decayEvents.length - 1]
   return (
-    <span className='text-[10px] font-mono text-indigo-400' title={`Cooling active. Last gap ${latest.gapDays}d before day index ${latest.index}.`}>Cooling x{decayEvents.length}</span>
+    <span className='text-[10px] font-mono text-indigo-400' title={`Cooling active. Last gap ${latest?.gapDays ?? "?"}d before day index ${latest?.index ?? "?"}.`}>Cooling x{decayEvents.length}</span>
   )
 }
 
@@ -69,7 +71,7 @@ export function MomentumPanel() {
                 <div className='mt-1 space-y-0.5'>
                   <div className='text-[10px] uppercase tracking-wide text-muted-foreground font-mono'>Recent Cooling</div>
                   <ul className='space-y-0.5'>
-                    {decayEvents.slice(-3).map((e: any, i: number) => (
+                    {decayEvents.slice(-3).map((e: DecayEvent, i: number) => (
                       <li key={i} className='text-[10px] font-mono text-indigo-400'>gap {e.gapDays}d → decay {(e.after / (e.before || 1)).toFixed(2)}x</li>
                     ))}
                   </ul>

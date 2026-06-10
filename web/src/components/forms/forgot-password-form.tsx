@@ -1,6 +1,5 @@
 import { IconAt, IconLoader, IconMail } from "@tabler/icons-react"
 import { useForm } from "@tanstack/react-form"
-import { useNavigate } from "@tanstack/react-router"
 import { useAuth } from "@web/lib/auth/provider"
 import { FieldInfo } from "@web/lib/forms/field-info"
 import { useState } from "react"
@@ -21,7 +20,6 @@ export const safecheckEmail = (x: string) => z.email().trim().safeParse(x)
 export function ForgotPasswordForm() {
   const { forgotPassword, loading, error, clearError } = useAuth()
   const [success, setSuccess] = useState(false)
-  const navigate = useNavigate()
 
   const form = useForm({
     defaultValues: defaultData,
@@ -63,7 +61,7 @@ export function ForgotPasswordForm() {
       <div className="flex flex-col items-center gap-2 text-center mb-6">
         <h1 className="text-2xl font-bold">Reset your password</h1>
         <p className="text-muted-foreground text-sm text-balance">
-          Enter your email and we'll send you a link to reset your password.
+           Enter your email and we&apos;ll send you a link to reset your password.
         </p>
       </div>
 
@@ -84,8 +82,8 @@ export function ForgotPasswordForm() {
                 : !safecheckEmail(value).success
                   ? 'Please enter a valid email address'
                   : undefined,
-          }}
-          children={(field) => {
+          }}>
+          {(field) => {
             return (
               <div className="space-y-2">
                 <div className="relative">
@@ -110,20 +108,20 @@ export function ForgotPasswordForm() {
               </div>
             )
           }}
-        />
+        </form.Field>
 
         {error && (
           <div className="text-sm text-destructive">{error}</div>
         )}
 
         <form.Subscribe
-          selector={(state) => [state.errorMap]}
-          children={([errorMap]) => errorMap?.onSubmit ? (
+          selector={(state) => [state.errorMap]}>
+          {([errorMap]) => errorMap?.onSubmit ? (
             <div className="text-sm text-destructive">
               {errorMap.onSubmit}
             </div>
           ) : null}
-        />
+        </form.Subscribe>
 
         <Button type="submit" className="w-full font-bold" disabled={loading}>
           {loading ? (

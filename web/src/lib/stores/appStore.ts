@@ -9,8 +9,6 @@ export interface AppStoreState {
   }
 }
 
-export interface AppStoreAction { }
-
 const initialState: AppStoreState = {
   loading: {
     auth: false,
@@ -20,7 +18,7 @@ const initialState: AppStoreState = {
 };
 
 export const useAppStore = create(
-  immer<AppStoreState & AppStoreAction>((_set, _get) => ({
+  immer<AppStoreState>(() => ({
     ...initialState,
   }))
 );

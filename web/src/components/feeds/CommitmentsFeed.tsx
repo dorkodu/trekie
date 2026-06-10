@@ -1,6 +1,6 @@
 import { daystamp } from "@sdk/utils";
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@web/components/ui/badge";
 import { Button } from "@web/components/ui/button";
 import { Box, Stack } from "@web/components/ui/layout";
@@ -20,7 +20,6 @@ interface CommitmentsFeedProps {
 
 export function CommitmentsFeed({ filter, onFilterChange }: CommitmentsFeedProps) {
   const userId = trekie.use($ => $.user.id);
-  const queryClient = useQueryClient();
   const [showCompleted, setShowCompleted] = React.useState(false);
 
   const habitsQuery = useQuery({

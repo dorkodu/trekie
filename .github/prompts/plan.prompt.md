@@ -4,8 +4,15 @@ description: Execute the implementation planning workflow using the plan templat
 
 Given the implementation details provided as an argument, do this:
 
-1. Run `.specify/scripts/bash/setup-plan.sh --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.
-2. Read and analyze the feature specification to understand:
+1. Load context from `wiki/`:
+   - Always read `wiki/architecture.md` for system design and data flow
+   - Always read `wiki/domain.md` for domain model and entities
+   - Always read `wiki/stack.md` for technology rationale
+   - Always read `wiki/testing.md` for test philosophy
+   - IF EXISTS: Read `wiki/agents/decision-log.md` for past architecture decisions
+
+2. Run `.specify/scripts/bash/setup-plan.sh --json` from the repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. All future file paths must be absolute.
+3. Read and analyze the feature specification to understand:
    - The feature requirements and user stories
    - Functional and non-functional requirements
    - Success criteria and acceptance criteria

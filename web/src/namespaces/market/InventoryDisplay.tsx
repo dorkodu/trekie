@@ -41,7 +41,7 @@ export function InventoryDisplay() {
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            You don't have any power-ups yet.
+            You don&apos;t have any power-ups yet.
           </p>
         )}
       </div>

@@ -8,12 +8,13 @@ export interface ModalBase {
   opened: boolean;
   title?: React.ReactNode;
   children?: React.ReactNode;
-  innerProps?: any;
+  innerProps?: unknown;
   onClose?: () => void;
   closeOnConfirm?: boolean;
   closeOnCancel?: boolean;
   confirmProps?: ConfirmModalProps;
-  contextModalProps?: ContextModalProps<any>;
+  contextModalProps?: ContextModalProps<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component?: React.ComponentType<any>;
 }
 
@@ -26,7 +27,7 @@ export interface ConfirmModalProps {
   children?: React.ReactNode;
 }
 
-export interface ContextModalProps<T = any> {
+export interface ContextModalProps<T = unknown> {
   innerProps: T;
   context: ModalsContextValue;
   id: ModalId;
@@ -34,7 +35,7 @@ export interface ContextModalProps<T = any> {
 
 export interface ModalsContextValue {
   openModal: (options: Omit<ModalBase, "opened" | "type">) => ModalId;
-  openContextModal: <T = any>(options: {
+  openContextModal: <T = unknown>(options: {
     modal: string;
     title?: React.ReactNode;
     innerProps: T;

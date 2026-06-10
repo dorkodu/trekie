@@ -68,7 +68,7 @@ function RouteComponent() {
           <label className="block text-sm font-medium">Theme</label>
           <select
             value={form.theme}
-            onChange={e => handleChange('theme', e.target.value as any)}
+            onChange={e => handleChange('theme', e.target.value as FormState['theme'])}
             className="border rounded px-2 py-1 w-full"
           >
             <option value="system">System</option>

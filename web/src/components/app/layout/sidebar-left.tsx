@@ -10,7 +10,7 @@ import * as React from "react"
 // Logo component that switches based on sidebar state and theme
 function SidebarLogo() {
   const { state } = useSidebar()
-  const { theme, setTheme } = useTheme()
+  const { theme } = useTheme()
   const isDark = theme === 'dark'
 
   if (state === "collapsed") {
@@ -86,7 +86,6 @@ const data = {
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const { state } = useSidebar()
   const isMobile = useIsMobile()
 
   return (

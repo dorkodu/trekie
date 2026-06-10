@@ -4,7 +4,7 @@
  */
 
 import { LogKind, log, reportToRemote } from "@web/utils/log"
-import { type ErrorInfo } from "react"
+
 import { notifications } from "./notifications"
 
 /**
@@ -18,7 +18,7 @@ export function globalErrorHandler(error: Error) {
   }
 }
 
-export function onError(error: Error, info: ErrorInfo) {
+export function onError(error: Error) {
   // Do something with the error, e.g. log to an external API
   globalErrorHandler(error)
 }
@@ -30,12 +30,12 @@ export function onReset() {
 export interface AppError {
   code: string,
   message: string,
-  action: (e?: Error, data?: any) => void
+  action: (e?: Error, data?: unknown) => void
 }
 
 export const AppError = (e: AppError) => e
 
-export function handle(code: Kind, e?: Error, data?: any) {
+export function handle(code: Kind, e?: Error, data?: unknown) {
   const error = kinds[code]
   if (error)
     error.action(e, data)
@@ -46,7 +46,7 @@ export const kinds = {
   UNKNOWN_ERROR: AppError({
     code: "UNKNOWN_ERROR",
     message: "An unknown error occured. Please try again or restart the application.",
-    action(err, data) {
+    action(err?: Error) {
       log("Unknown Error: " + err, LogKind.ERROR)
       notifications.error("Error", this.message)
     }
@@ -54,28 +54,28 @@ export const kinds = {
   NO_SESSION: AppError({
     code: "NO_SESSION",
     message: "No active user session found. Please login first.",
-    action(err, data) {
+    action() {
       notifications.error("No Active User", this.message)
     }
   }),
   ITEM_NOT_FOUND: AppError({
     code: "ITEM_NOT_FOUND",
     message: "You tried something on a thing that does not exist.",
-    action(err, data) {
+    action() {
       notifications.error("Thing Not Found", this.message)
     }
   }),
   NOT_AUTHORIZED: AppError({
     code: "NOT_AUTHORIZED",
     message: "You don't have permissions for this action.",
-    action(err, data) {
+    action() {
       notifications.error("Not Authorized", this.message)
     }
   }),
   INDEXEDDB_ERROR: AppError({
     code: "INDEXEDDB_ERROR",
     message: "An error occured with local IndexedDB.",
-    action(err, data) {
+    action(err?: Error) {
       log("IndexedDB Error: " + err, LogKind.ERROR)
     }
   }),

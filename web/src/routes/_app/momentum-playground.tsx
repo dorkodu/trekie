@@ -17,7 +17,7 @@ const IMPORTANCE_LABEL: Record<ImportanceLevel, string> = {
   critical: "Critical"
 };
 
-interface TaskMatrix extends Record<ImportanceLevel, number> { }
+type TaskMatrix = Record<ImportanceLevel, number>
 
 interface MomentumEntry {
   day: string;

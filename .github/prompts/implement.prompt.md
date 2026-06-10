@@ -4,9 +4,17 @@ description: Execute the implementation plan by processing and executing all tas
 
 Given the current feature context, do this:
 
-1. Run `.specify/scripts/bash/check-implementation-prerequisites.sh --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+1. Load context from `wiki/`:
+   - Always read `wiki/architecture.md` for system design
+   - Always read `wiki/domain.md` for core concepts
+   - Always read `wiki/stack.md` for technology choices
+   - Always read `wiki/agents/codebase-map.md` for file paths
+   - Always read `wiki/agents/patterns.md` for coding conventions
+   - Always read `wiki/agents/quality-gates.md` for pre-ship checklist
 
-2. Load and analyze the implementation context:
+2. Run `.specify/scripts/bash/check-implementation-prerequisites.sh --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+
+3. Load and analyze the implementation context:
    - **REQUIRED**: Read tasks.md for the complete task list and execution plan
    - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
    - **IF EXISTS**: Read data-model.md for entities and relationships

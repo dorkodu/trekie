@@ -23,7 +23,7 @@ function TermsOfService() {
       </div>
 
       <p>
-        These Terms of Service ("Terms") govern your use of , accessible at{" "}
+        These Terms of Service (&quot;Terms&quot;) govern your use of , accessible at{" "}
         <a href="https://dorkodu.com">https://dorkodu.com</a>. Please read these Terms carefully
         before accessing or using the website. Your access to and use of the service is conditioned
         on your acceptance of and compliance with these Terms. These Terms apply to all visitors,
@@ -97,7 +97,7 @@ function TermsOfService() {
       <h3 className="font-bold text-lg">Changes</h3>
       <p>
         We reserve the right, at our sole discretion, to modify or replace these Terms at any time.
-        If a revision is material, we will try to provide at least 30 days' notice prior to any new
+        If a revision is material, we will try to provide at least 30 days&apos; notice prior to any new
         terms taking effect. What constitutes a material change will be determined at our sole
         discretion.
       </p>

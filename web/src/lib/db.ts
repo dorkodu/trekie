@@ -22,11 +22,11 @@ export interface IMomentumSnapshot {
   windowDays: number
   score: number
   trend?: number
-  bands?: any
-  states?: any
-  explanation?: any
-  impact?: any
-  recommendations?: any
+  bands?: unknown
+  states?: unknown
+  explanation?: unknown
+  impact?: unknown
+  recommendations?: unknown
 }
 
 export const createAppDb = () => new Dexie('app') as IAppDb
@@ -35,9 +35,9 @@ export function startAppDb(
   { db, onPopulate = () => { }, onReady = () => { }, onError = () => { }, }:
     {
       db: IAppDb,
-      onPopulate?: (t: Transaction) => any,
-      onReady?: (db: Dexie) => any,
-      onError?: (e: Error) => any,
+      onPopulate?: (t: Transaction) => void,
+      onReady?: (db: Dexie) => void,
+      onError?: (e: Error) => void,
     }
 ) {
   // Schema declaration:
@@ -53,7 +53,7 @@ export function startAppDb(
 
   db.on("ready", onReady)
 
-  db.open().then(async (db) => {
+  db.open().then(async () => {
     console.info("[app] db opened successfully.")
   }).catch((e) => {
     console.error(`[app] an error happened in dexie. `, e)
@@ -66,7 +66,7 @@ export function startAppDb(
 export const db = createAppDb()
 startAppDb({
   db,
-  onPopulate: async (t) => {
+  onPopulate: async () => {
     try {
       const user = trekie.game().user
       await db.users.add(user, user.id)
@@ -76,7 +76,7 @@ startAppDb({
       console.error("[app] db population failed!.", error)
     }
   },
-  onReady: async (db) => {
+  onReady: async () => {
     console.info("[app] db is ready.")
   },
   onError: async (e) => {

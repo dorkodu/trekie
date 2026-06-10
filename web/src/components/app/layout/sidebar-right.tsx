@@ -11,15 +11,6 @@ import {
 } from "@web/components/ui/sidebar"
 import { DailyStats } from "@web/namespaces/life/DailyStats"
 
-// This is sample data.
-const data = {
-  user: {
-    name: "Doruk Eray",
-    email: "@dorukeray",
-    avatar: "/avatars/shadcn.jpg",
-  },
-}
-
 export function SidebarRight({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
@@ -54,8 +45,8 @@ const Footer = (
       <li><Link to="/about">About</Link></li>
       · <li><Link to="/legal/terms-of-service">Terms</Link></li>
       · <li><Link to="/legal/privacy-policy">Privacy</Link></li>
-      · <li><a href="https://dorkodu.com/jobs" target="_blank">Careers</a></li>
-      · <li><a href="https://dorkodu.substack.com" target="_blank">Blog</a></li>
+      · <li><a href="https://dorkodu.com/jobs" target="_blank" rel="noreferrer">Careers</a></li>
+      · <li><a href="https://dorkodu.substack.com" target="_blank" rel="noreferrer">Blog</a></li>
     </ul>
   </div>
 )

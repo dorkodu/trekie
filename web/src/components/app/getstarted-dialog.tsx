@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react"
+import React, { useState } from "react"
 
 import { Link } from "@tanstack/react-router"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@web/components/ui/dialog"
@@ -6,7 +6,6 @@ import { LoginForm } from "../forms/login-form"
 import { Button } from "../ui/button"
 
 export default function KickstartDialog({ children }: { children?: React.ReactNode }) {
-  const id = useId()
   const [dialogOpen, setDialogOpen] = useState(false)
   return (
     <Dialog open={dialogOpen} onOpenChange={(x) => setDialogOpen(x)} modal>

@@ -3,7 +3,15 @@ import { useMomentum } from '../useMomentum'
 
 interface RecommendationsPanelProps { windowDays?: number }
 
-function RecommendationItem({ rec }: { rec: any }) {
+interface Recommendation {
+  id?: string;
+  title?: string;
+  message?: string;
+  detail?: string;
+  action?: string;
+}
+
+function RecommendationItem({ rec }: { rec: Recommendation }) {
   if (!rec) return null
   return (
     <li className="flex flex-col gap-0.5 rounded-md border p-2 bg-muted/30">
@@ -39,8 +47,8 @@ export const RecommendationsPanel: React.FC<RecommendationsPanelProps> = ({ wind
     )
   }
 
-  const explanation: any = data?.explanation
-  const recs: any[] = explanation?.recommendations || []
+  const explanation = data?.explanation as { recommendations?: Recommendation[] } | undefined
+  const recs: Recommendation[] = explanation?.recommendations || []
 
   if (!data || recs.length === 0) {
     return (

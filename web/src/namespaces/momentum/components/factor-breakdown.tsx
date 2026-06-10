@@ -3,7 +3,14 @@ import { useMomentum } from '../useMomentum';
 
 interface FactorBreakdownProps { windowDays?: number; limit?: number }
 
-function FactorRow({ factor }: { factor: any }) {
+interface Factor {
+  weight?: number;
+  label?: string;
+  id?: string;
+  key?: string;
+}
+
+function FactorRow({ factor }: { factor: Factor }) {
   if (!factor) return null
   const pct = typeof factor.weight === 'number' ? Math.round(factor.weight * 100) : undefined
   const label = factor.label || factor.id || factor.key
@@ -42,8 +49,8 @@ export const FactorBreakdown: React.FC<FactorBreakdownProps> = ({ windowDays = 1
     )
   }
 
-  const explanation: any = data?.explanation
-  const allFactors: any[] = explanation?.factors || explanation?.topFactors || []
+  const explanation = data?.explanation as { factors?: Factor[]; topFactors?: Factor[] } | undefined
+  const allFactors: Factor[] = explanation?.factors || explanation?.topFactors || []
   const factors = allFactors.slice(0, limit)
 
   if (!data || factors.length === 0) {

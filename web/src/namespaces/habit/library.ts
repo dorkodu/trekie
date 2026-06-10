@@ -55,9 +55,6 @@ async function handleDailyTarget(habit: IHabit, todaysCount: number, updatedCoun
     && updatedCount < habit.dailyTarget
   ) {
     // Find today's DAILYCHECK event for this habit and roll it back
-    const today = daystamp.today()
-    const todayStart = new Date(today.split('-').join('/')).setHours(0, 0, 0, 0)
-    const todayEnd = new Date(todayStart).setHours(23, 59, 59, 999)
 
     // Query for today's DAILYCHECK commit for this habit
     const { data: dailyChecks, error } = await tryCatch(getDailyChecksToday(habit.commitmentId))
@@ -108,12 +105,9 @@ export const habits: Interface = {
 
     await db.habits.put(habit, habit.id)
 
-    // Track the last commit result for potential rollback
-    let commitResult
-
     // If count is going up
     if (count > 0) {
-      commitResult = await trekie.commitments.act({
+      await trekie.commitments.act({
         kind: 'Habit',
         event: 'COUNT_UP',
         id: habit.commitmentId,
@@ -121,7 +115,7 @@ export const habits: Interface = {
       })
     } else {
       // If count is going down
-      commitResult = await trekie.commitments.act({
+      await trekie.commitments.act({
         kind: 'Habit',
         event: 'COUNT_DOWN',
         id: habit.commitmentId,
@@ -141,9 +135,9 @@ export const habits: Interface = {
     const userId = trekie.game().user.id
     if (!userId) return
 
-    let instance = await trekie.commitments.create('Habit')
+    const instance = await trekie.commitments.create('Habit')
 
-    let habit = {
+    const habit = {
       ...template,
       commitmentId: instance.id,
 

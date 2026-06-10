@@ -7,7 +7,7 @@ export const queryClient = new QueryClient({
       retry: 0,
     },
     mutations: {
-      onError(error, _variables, _context) {
+      onError(error) {
         console.error(error.message)
       },
     },

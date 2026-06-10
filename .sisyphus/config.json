@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "project": "trekie",
+  "description": "Gamified life dashboard — agentic-first development",
+  "workspaces": {
+    "sdk": { "path": "sdk/", "type": "library" },
+    "web": { "path": "web/", "type": "frontend" },
+    "api": { "path": "api/", "type": "backend" },
+    "db": { "path": "db/", "type": "database" }
+  },
+  "commands": {
+    "check": "bun check",
+    "check:fix": "bun check:fix",
+    "test": "bun test",
+    "dev": "bun dev",
+    "build": "bun build"
+  },
+  "quality_gates": {
+    "typecheck": true,
+    "lint": true,
+    "tests": true,
+    "lsp_diagnostics": true,
+    "verify_read_changed": true
+  },
+  "docs": {
+    "agent_primary": "AGENTS.md",
+    "wiki_prefix": "wiki/"
+  }
+}

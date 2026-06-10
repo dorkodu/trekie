@@ -34,7 +34,7 @@ export default function TodoCard({ id, compact = false }: Props) {
   const todo = todoQuery.data;
   const isOverdue = todo.dueDate && todo.dueDate < Date.now() && !todo.completed;
 
-  const handleToggle = async (checked: boolean) => {
+  const handleToggle = async () => {
     await todos.toggle(id);
     // Invalidate and refetch the todo query
     queryClient.invalidateQueries({ queryKey: ["todo", id] });
@@ -119,7 +119,7 @@ export default function TodoCard({ id, compact = false }: Props) {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            handleToggle(!todo.completed);
+            handleToggle();
           }}
         >
           <div className={`flex items-center justify-center w-8 h-8 rounded-md p-0.5 transition-all ${todo.completed
@@ -195,7 +195,7 @@ function TodoCardSkeleton() {
 const NotFound = (
   <Alert variant="destructive">
     <AlertTitle>Todo not found</AlertTitle>
-    <AlertDescription>The referenced todo doesn't exist or was removed.</AlertDescription>
+    <AlertDescription>The referenced todo doesn&apos;t exist or was removed.</AlertDescription>
   </Alert>
 );
 

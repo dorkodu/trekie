@@ -156,7 +156,7 @@ const CommandEmpty = ({
   return (
     <div
       className={cn("px-2 py-4 text-center text-sm", className)}
-      cmdk-empty=""
+      data-cmdk-empty=""
       role="presentation"
       {...props}
     />
@@ -299,7 +299,6 @@ const MultipleSelector = ({
     }
 
     void exec()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm, groupBy, open, triggerSearchOnFocus])
 
   useEffect(() => {
@@ -325,7 +324,6 @@ const MultipleSelector = ({
     }
 
     void exec()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm, groupBy, open, triggerSearchOnFocus])
 
   const CreatableItem = () => {

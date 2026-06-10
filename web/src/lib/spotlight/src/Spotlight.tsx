@@ -1,4 +1,3 @@
-import { useNavigate } from "@tanstack/react-router"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut, } from "@web/components/ui/command"
 import * as React from "react"
 import type { SpotlightAction } from "./types"
@@ -6,7 +5,6 @@ import { useSpotlight } from "./useSpotlight"
 
 export function Spotlight() {
   const { isOpen, close, open: openSpotlight, actions, searchString, setSearchString } = useSpotlight()
-  const navigate = useNavigate()
 
   // Effect to handle focusing the input when opening with initial search string
   React.useEffect(() => {
@@ -24,11 +22,6 @@ export function Spotlight() {
     }
     return undefined
   }, [isOpen, searchString])
-
-  const handleNavigation = (path: string) => {
-    navigate({ to: path })
-    close()
-  }
 
   const handleAction = (action: SpotlightAction) => {
     action.onSelect()

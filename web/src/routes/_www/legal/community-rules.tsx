@@ -48,7 +48,7 @@ function CommunityRules() {
       <h2>Help and support across all skill levels</h2>
       <p>
         We are all in this together. Life-wide gamification and productivity is hard and takes a lot
-        of courage and dedication. If someone makes "easy" mistakes or has a question you think has
+        of courage and dedication. If someone makes &quot;easy&quot; mistakes or has a question you think has
         an obvious answer, kindly and calmly help them out. Heckling and being straight up mean
         doesn’t help anyone learn. Can’t say it nicely? Don’t weigh in.
       </p>
@@ -72,12 +72,12 @@ function CommunityRules() {
       <h2>Do Not...</h2>
       <p>
         <b>
-          Please don’t use any of Dorkodu's Websites, Apps and any other Product/Services with bad
+          Please don&apos;t use any of Dorkodu&apos;s Websites, Apps and any other Product/Services with bad
           and ingeniuine intentions.
         </b>
       </p>
 
-      <h3>Don't attack anyone with words or actions.</h3>
+      <h3>Don&apos;t attack anyone with words or actions.</h3>
       <p>
         Dorkodu is a safe place for members of all backgrounds. Harassment and hurtful content will
         not be tolerated. Using symbols, names and text that promote hate—as well as harassing,
@@ -92,7 +92,7 @@ function CommunityRules() {
         such activity is verified by our team.
       </p>
 
-      <h3>Don't script or cheat maliciously.</h3>
+      <h3>Don&apos;t script or cheat maliciously.</h3>
       <p>
         Dorkodu believes in honest effort. If you are scripting for the purposes of cheating or
         sharing information and instructions about using Dorkodu in a way that may impact the
@@ -100,7 +100,7 @@ function CommunityRules() {
         manner, your account and posts may be removed.
       </p>
 
-      <h3>Don't write inflammatory comments.</h3>
+      <h3>Don&apos;t write inflammatory comments.</h3>
       <p>
         Hateful, obscene and off-topic comments don’t contribute to learning. Cursing doesn’t either
         (let people discover those words in the wild). Leave them out of the language discussions.
@@ -121,7 +121,7 @@ function CommunityRules() {
       </ul>
 
       <p>
-        <b>Please don't waste your time looking for loopholes.</b> We will remove any content that
+        <b>Please don&apos;t waste your time looking for loopholes.</b> We will remove any content that
         violates the spirit of these guidelines and you will risk losing partial or full access to
         Dorkodu without warning. By following these guidelines, we will all contribute to an
         interesting and helpful learning community.

@@ -70,7 +70,7 @@ function ActionIcon({
   const isGradient = gradient === true || (typeof gradient === "object" && "from" in gradient)
 
   if (component === "a" || href) {
-    const { onClick, onMouseDown, onMouseUp, ...anchorProps } = props as any
+    const { onClick, ...anchorProps } = props as React.ComponentProps<"a">
     return (
       <a
         href={href}

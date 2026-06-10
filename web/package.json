@@ -8,9 +8,9 @@
     "build": "vite build && tsc",
     "serve": "vite preview",
     "test": "vitest run",
-    "format": "",
-    "lint": "",
-    "check": ""
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "lint": "./node_modules/.bin/eslint src/",
+    "check": "bun run lint && bun run format && bun run build"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.52",
@@ -100,6 +100,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/parser": "^8.53.1",
     "@vitejs/plugin-react": "^4.7.0",
+    "chalk": "^4.1.2",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",

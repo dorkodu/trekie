@@ -31,7 +31,7 @@ export function OnboardingWelcome() {
           Welcome to Trekie, {user?.name?.split(' ')[0]}!
         </h1>
         <p className="text-xl text-muted-foreground">
-          Let's get you set up for success. We'll help you create goals, track your progress,
+          Let&apos;s get you set up for success. We&apos;ll help you create goals, track your progress,
           and build the habits that matter most to you.
         </p>
       </div>
@@ -76,7 +76,7 @@ export function OnboardingWelcome() {
           size="lg"
           className="px-8 font-semibold"
         >
-          Let's Get Started
+          Let&apos;s Get Started
         </Button>
         <p className="text-sm text-muted-foreground">
           This will only take 2-3 minutes

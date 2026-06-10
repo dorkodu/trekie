@@ -3,13 +3,13 @@ import { trekie } from "@web/lib/trekie";
 import { cn } from "@web/lib/utils";
 
 export function DailyProgress() {
-  let progress = trekie.use(($) => $.dailyProgress());
+  const progress = trekie.use(($) => $.dailyProgress());
 
   let color: string;
   let message: string;
 
-  let value = progress * 100;
-  let haveProgressToday = value > 0;
+  const value = progress * 100;
+  const haveProgressToday = value > 0;
 
   if (value > 0 && value < 30) {
     message = "Bad";

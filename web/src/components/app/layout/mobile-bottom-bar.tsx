@@ -54,7 +54,6 @@ export function MobileBottomBar() {
   // State for controlling visibility
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
-  const [isScrollingUp, setIsScrollingUp] = useState(false)
   const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const hideTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
@@ -79,7 +78,6 @@ export function MobileBottomBar() {
 
       // Determine scroll direction
       const scrollingUp = currentScrollY < lastScrollY
-      setIsScrollingUp(scrollingUp)
       setLastScrollY(currentScrollY)
 
       // Show bar when scrolling up or at top of page

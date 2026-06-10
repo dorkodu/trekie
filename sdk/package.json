@@ -3,7 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "@tanstack/react-query": "^5.90.20",
     "@trpc/client": "^11.8.1",
