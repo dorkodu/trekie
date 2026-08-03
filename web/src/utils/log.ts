@@ -7,7 +7,7 @@ export enum LogKind {
   WARNING = "WARNING",
 }
 
-export function log(value: any, kind?: LogKind) {
+export function log(value: unknown, kind?: LogKind) {
   if (import.meta.env.DEV) {
     switch (kind) {
       case LogKind.ERROR:
@@ -26,7 +26,7 @@ export function log(value: any, kind?: LogKind) {
   }
 }
 
-export function reportToRemote(value: any) {
+export function reportToRemote(value: unknown) {
   const message = createReportMessage(value)
 
   return fetch(url, {
@@ -37,7 +37,7 @@ export function reportToRemote(value: any) {
   })
 }
 
-function createReportMessage(value: any) {
+function createReportMessage(value: unknown) {
   return {
     meta: {
       app: "trekie/web",

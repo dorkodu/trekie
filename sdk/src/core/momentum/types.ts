@@ -58,12 +58,25 @@ export interface ActivityThreshold {
   // domain-specific minimal criteria could be added later
 }
 
+export type MomentumBuiltInFactorId = 'consistency' | 'habits' | 'tasks' | 'trend' | 'focus'
+export type MomentumFactorId = string & {}
+
+export interface MomentumFactorSummary {
+  id: MomentumFactorId
+  label: string
+  weight: number
+  value: number
+  observed: boolean
+  extras?: unknown
+}
+
 export interface MomentumFactorValuesRaw {
   consistency: number
   habits: number
   tasks: number
   trend: number
   focus: number
+  [key: MomentumFactorId]: number
 }
 
 export interface MomentumWeights {
@@ -72,12 +85,13 @@ export interface MomentumWeights {
   tasks: number
   trend: number
   focus: number
+  [key: MomentumFactorId]: number
 }
 
 export interface MomentumResult {
   score: number // 0-100 scaled
   raw: number // 0-1 composite pre-scale (smoothed)
-  factors: { key: keyof MomentumFactorValuesRaw, weight: number, value: number }[]
+  factors: MomentumFactorSummary[]
   trend: MomentumTrend
   bands: MomentumBand
   states: MomentumStates
@@ -85,8 +99,8 @@ export interface MomentumResult {
   missingDomains?: MissingDomains
   /** Data coverage metrics about factor availability */
   coverage?: MomentumCoverage
-  /** Neutral-imputed factor keys */
-  imputedFactors?: (keyof MomentumFactorValuesRaw)[]
+  /** Neutral-imputed factor ids */
+  imputedFactors?: MomentumFactorId[]
   /** Confidence derived from coverage (monotonic) */
   confidence?: number
   /** Gap metrics (day gaps >1) */
@@ -120,6 +134,7 @@ export interface MomentumStates {
 export interface MomentumEngineConfig {
   weights: MomentumWeights
   options: Required<MomentumCalculationOptions>
+  factors: MomentumFactorId[]
 }
 
 export interface MomentumComputeContext extends MomentumEngineConfig {
@@ -127,7 +142,7 @@ export interface MomentumComputeContext extends MomentumEngineConfig {
   sortedDays: MomentumInputDay[]
 }
 
-export type MissingDomains = Partial<Record<keyof MomentumFactorValuesRaw, true>>
+export type MissingDomains = Partial<Record<MomentumFactorId, true>>
 
 export interface MomentumCoverage {
   expected: number // total expected (excluding virtual like trend?)

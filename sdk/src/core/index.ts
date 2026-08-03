@@ -1,3 +1,5 @@
+export * from './abac'
+export * as abac from './abac'
 export * from './account'
 export * from './commitments'
 export * from './consts'

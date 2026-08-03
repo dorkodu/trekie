@@ -2,18 +2,16 @@ import { useNavigate } from "@tanstack/react-router"
 import ThemeToggle from "@web/components/theme-toggles"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@web/components/ui/dropdown-menu"
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@web/components/ui/sidebar"
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@web/components/ui/sidebar"
 import { useAuth } from "@web/lib/auth/provider"
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from "lucide-react"
 import { useEffect } from "react"
 
 export function NavHeader() {
-  const { isMobile } = useSidebar()
   const { user, session, logout } = useAuth()
   const navigate = useNavigate()
 
-  useEffect
-    (() => {
+  useEffect(() => {
       console.log(user);
       console.log(session);
       if (!user) {

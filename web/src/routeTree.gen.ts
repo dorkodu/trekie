@@ -316,6 +316,7 @@ const AppGoalGoalIdEditRoute = AppGoalGoalIdEditRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof WwwIndexRoute
   '/:username': typeof AppChar58usernameRoute
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
@@ -334,7 +335,6 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof WwwForgotPasswordRoute
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
-  '/': typeof WwwIndexRoute
   '/goal/new': typeof AppGoalNewRoute
   '/habit/new': typeof AppHabitNewRoute
   '/onboarding/complete': typeof AppOnboardingCompleteRoute
@@ -351,22 +351,23 @@ export interface FileRoutesByFullPath {
   '/legal/privacy-policy': typeof WwwLegalPrivacyPolicyRoute
   '/legal/refund-policy': typeof WwwLegalRefundPolicyRoute
   '/legal/terms-of-service': typeof WwwLegalTermsOfServiceRoute
-  '/goals': typeof AppGoalsIndexRoute
-  '/market': typeof AppMarketIndexRoute
+  '/goals/': typeof AppGoalsIndexRoute
+  '/market/': typeof AppMarketIndexRoute
   '/onboarding/': typeof AppOnboardingIndexRoute
-  '/settings': typeof AppSettingsIndexRoute
-  '/todos': typeof AppTodosIndexRoute
-  '/docs': typeof WwwDocsIndexRoute
-  '/help': typeof WwwHelpIndexRoute
-  '/legal': typeof WwwLegalIndexRoute
+  '/settings/': typeof AppSettingsIndexRoute
+  '/todos/': typeof AppTodosIndexRoute
+  '/docs/': typeof WwwDocsIndexRoute
+  '/help/': typeof WwwHelpIndexRoute
+  '/legal/': typeof WwwLegalIndexRoute
   '/goal/$goalId/edit': typeof AppGoalGoalIdEditRoute
   '/habit/$habitId/edit': typeof AppHabitHabitIdEditRoute
   '/todo/$todoId/edit': typeof AppTodoTodoIdEditRoute
-  '/goal/$goalId': typeof AppGoalGoalIdIndexRoute
-  '/habit/$habitId': typeof AppHabitHabitIdIndexRoute
-  '/todo/$todoId': typeof AppTodoTodoIdIndexRoute
+  '/goal/$goalId/': typeof AppGoalGoalIdIndexRoute
+  '/habit/$habitId/': typeof AppHabitHabitIdIndexRoute
+  '/todo/$todoId/': typeof AppTodoTodoIdIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof WwwIndexRoute
   '/:username': typeof AppChar58usernameRoute
   '/archive': typeof AppArchiveRoute
   '/explore': typeof AppExploreRoute
@@ -384,7 +385,6 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof WwwForgotPasswordRoute
   '/login': typeof WwwLoginRoute
   '/super': typeof WwwSuperRoute
-  '/': typeof WwwIndexRoute
   '/goal/new': typeof AppGoalNewRoute
   '/habit/new': typeof AppHabitNewRoute
   '/onboarding/complete': typeof AppOnboardingCompleteRoute
@@ -473,6 +473,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/:username'
     | '/archive'
     | '/explore'
@@ -491,7 +492,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/super'
-    | '/'
     | '/goal/new'
     | '/habit/new'
     | '/onboarding/complete'
@@ -508,22 +508,23 @@ export interface FileRouteTypes {
     | '/legal/privacy-policy'
     | '/legal/refund-policy'
     | '/legal/terms-of-service'
-    | '/goals'
-    | '/market'
+    | '/goals/'
+    | '/market/'
     | '/onboarding/'
-    | '/settings'
-    | '/todos'
-    | '/docs'
-    | '/help'
-    | '/legal'
+    | '/settings/'
+    | '/todos/'
+    | '/docs/'
+    | '/help/'
+    | '/legal/'
     | '/goal/$goalId/edit'
     | '/habit/$habitId/edit'
     | '/todo/$todoId/edit'
-    | '/goal/$goalId'
-    | '/habit/$habitId'
-    | '/todo/$todoId'
+    | '/goal/$goalId/'
+    | '/habit/$habitId/'
+    | '/todo/$todoId/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/:username'
     | '/archive'
     | '/explore'
@@ -541,7 +542,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/super'
-    | '/'
     | '/goal/new'
     | '/habit/new'
     | '/onboarding/complete'
@@ -637,14 +637,14 @@ declare module '@tanstack/react-router' {
     '/_www': {
       id: '/_www'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof WwwRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
       id: '/_app'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -784,35 +784,35 @@ declare module '@tanstack/react-router' {
     '/_www/legal/': {
       id: '/_www/legal/'
       path: '/legal'
-      fullPath: '/legal'
+      fullPath: '/legal/'
       preLoaderRoute: typeof WwwLegalIndexRouteImport
       parentRoute: typeof WwwRoute
     }
     '/_www/help/': {
       id: '/_www/help/'
       path: '/help'
-      fullPath: '/help'
+      fullPath: '/help/'
       preLoaderRoute: typeof WwwHelpIndexRouteImport
       parentRoute: typeof WwwRoute
     }
     '/_www/docs/': {
       id: '/_www/docs/'
       path: '/docs'
-      fullPath: '/docs'
+      fullPath: '/docs/'
       preLoaderRoute: typeof WwwDocsIndexRouteImport
       parentRoute: typeof WwwRoute
     }
     '/_app/todos/': {
       id: '/_app/todos/'
       path: '/todos'
-      fullPath: '/todos'
+      fullPath: '/todos/'
       preLoaderRoute: typeof AppTodosIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/settings/': {
       id: '/_app/settings/'
       path: '/settings'
-      fullPath: '/settings'
+      fullPath: '/settings/'
       preLoaderRoute: typeof AppSettingsIndexRouteImport
       parentRoute: typeof AppRoute
     }
@@ -826,14 +826,14 @@ declare module '@tanstack/react-router' {
     '/_app/market/': {
       id: '/_app/market/'
       path: '/market'
-      fullPath: '/market'
+      fullPath: '/market/'
       preLoaderRoute: typeof AppMarketIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/goals/': {
       id: '/_app/goals/'
       path: '/goals'
-      fullPath: '/goals'
+      fullPath: '/goals/'
       preLoaderRoute: typeof AppGoalsIndexRouteImport
       parentRoute: typeof AppRoute
     }
@@ -952,21 +952,21 @@ declare module '@tanstack/react-router' {
     '/_app/todo/$todoId/': {
       id: '/_app/todo/$todoId/'
       path: '/todo/$todoId'
-      fullPath: '/todo/$todoId'
+      fullPath: '/todo/$todoId/'
       preLoaderRoute: typeof AppTodoTodoIdIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/habit/$habitId/': {
       id: '/_app/habit/$habitId/'
       path: '/habit/$habitId'
-      fullPath: '/habit/$habitId'
+      fullPath: '/habit/$habitId/'
       preLoaderRoute: typeof AppHabitHabitIdIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/goal/$goalId/': {
       id: '/_app/goal/$goalId/'
       path: '/goal/$goalId'
-      fullPath: '/goal/$goalId'
+      fullPath: '/goal/$goalId/'
       preLoaderRoute: typeof AppGoalGoalIdIndexRouteImport
       parentRoute: typeof AppRoute
     }

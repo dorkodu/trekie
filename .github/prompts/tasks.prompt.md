@@ -4,8 +4,14 @@ description: Generate an actionable, dependency-ordered tasks.md for the feature
 
 Given the context provided as an argument, do this:
 
-1. Run `.specify/scripts/bash/check-task-prerequisites.sh --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
-2. Load and analyze available design documents:
+1. Load context from `wiki/`:
+   - Always read `wiki/architecture.md` for system design
+   - Always read `wiki/domain.md` for core concepts and entities
+   - Always read `wiki/stack.md` for technology choices
+   - IF EXISTS: Read `wiki/agents/codebase-map.md` for file structure
+
+2. Run `.specify/scripts/bash/check-task-prerequisites.sh --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute.
+3. Load and analyze available design documents:
    - Always read plan.md for tech stack and libraries
    - IF EXISTS: Read data-model.md for entities
    - IF EXISTS: Read contracts/ for API endpoints

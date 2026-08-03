@@ -76,6 +76,16 @@ The core functionality with domain related things lives in the SDK library insid
 - Use `git push --force-with-lease` for feature branches if needed
 - Always verify current branch before force operations
 
+## Documentation
+
+Comprehensive documentation is in `wiki/`:
+- `wiki/architecture.md` — System design
+- `wiki/domain.md` — Core concepts
+- `wiki/getting-started.md` — Dev setup
+- `wiki/glossary.md` — Key terms
+- `wiki/agents/codebase-map.md` — File-by-file map
+- `wiki/agents/patterns.md` — Conventions & style guide
+
 ## Configuration
 
 When adding new configuration options, update all relevant places:

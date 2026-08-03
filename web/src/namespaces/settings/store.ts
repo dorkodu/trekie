@@ -49,8 +49,8 @@ export const useSettingsStore = create<SettingsState>()(persist((set, get) => ({
         syncing: false,
       })
 
-    } catch (e: any) {
-      set({ error: e?.message || 'Failed to load settings', syncing: false })
+    } catch (e: unknown) {
+      set({ error: (e instanceof Error ? e.message : undefined) || 'Failed to load settings', syncing: false })
     }
   },
   optimisticUpdate(data) {
@@ -68,13 +68,13 @@ export const useSettingsStore = create<SettingsState>()(persist((set, get) => ({
       await useMutation(trpc.user.updateSettings.mutationOptions())
         .mutateAsync(data)
 
-    } catch (e: any) {
+    } catch (e: unknown) {
       // rollback
       set({
         preferences: snapshot.preferences,
         config: snapshot.config,
         onboarding: snapshot.onboarding,
-        error: e?.message || 'Failed to update settings'
+        error: (e instanceof Error ? e.message : undefined) || 'Failed to update settings'
       })
     }
   }

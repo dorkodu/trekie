@@ -10,7 +10,7 @@ import { useAuth } from '@web/lib/auth/provider'
 
 export function OnboardingProfile() {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  useAuth()
   const [loading, setLoading] = useState(false)
   
   const [formData, setFormData] = useState({

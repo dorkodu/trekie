@@ -15,21 +15,16 @@ import { goals, IGoal, IGoalTemplate } from "@web/namespaces/goal";
 import { tryCatch } from '@web/utils/tryCatch';
 import { useEffect, useMemo, useState } from "react";
 import { useHabits } from "../habit/habits-db";
+import type { ContextModalProps } from "@web/lib/modals/types";
 import { ChoiceCombobox, type ChoiceOption } from "./ChoiceCombobox";
 
 type GoalEditorMode = "CREATE" | "EDIT";
 
-type GoalEditorModalProps = {
-  context: any;
-  id: string;
-  innerProps: { mode: GoalEditorMode; goal?: IGoal };
-};
-
 const GoalEditorModal = ({
   context,
   id,
-  innerProps = { mode: "CREATE" },
-}: GoalEditorModalProps) => {
+  innerProps = { mode: "CREATE" } as { mode: GoalEditorMode; goal?: IGoal },
+}: ContextModalProps<{ mode: GoalEditorMode; goal?: IGoal }>) => {
   const userId = trekie.use($ => $.user?.id)
   const navigate = useNavigate()
   const habitsQuery = useHabits(userId)

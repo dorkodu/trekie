@@ -2,14 +2,13 @@ import { DEFAULT_AVATAR, UNAUTHENTICATED_DISPLAYNAME } from "@sdk/core"
 import { IconMenu2 } from "@tabler/icons-react"
 import { Link } from "@tanstack/react-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@web/components/ui/avatar"
-import { SidebarTrigger, useSidebar } from "@web/components/ui/sidebar"
+import { SidebarTrigger } from "@web/components/ui/sidebar"
 import { useAuth } from "@web/lib/auth/provider"
 import * as React from "react"
 
 export function MobileTopBar() {
   const { user } = useAuth()
-  const { isMobile } = useSidebar()
-  const [isDark, setIsDark] = React.useState(false)
+  const [, setIsDark] = React.useState(false)
 
   React.useEffect(() => {
     // Check if dark mode is enabled

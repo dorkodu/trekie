@@ -1,7 +1,7 @@
 import type { GameState } from '../../game'
 import type { BuildMomentumDaysParams } from '../adapters'
 import { buildMomentumDaysFromGame } from '../adapters'
-import { createMomentumEngine } from '../engine'
+import { createMomentumEngineWithDefaults } from '../engine'
 
 export function computeMomentumFromGame(
   params: {
@@ -11,7 +11,7 @@ export function computeMomentumFromGame(
   }
 ) {
   const days = buildMomentumDaysFromGame(params.xpHistory, params.dailyTarget, params.windowDays ?? 10)
-  const engine = createMomentumEngine({ options: { windowDays: params.windowDays ?? 10 } })
+  const engine = createMomentumEngineWithDefaults({ options: { windowDays: params.windowDays ?? 10 } })
   return engine.compute(days)
 }
 
@@ -38,7 +38,7 @@ export function computeMomentumFromCommitments(params: BuildMomentumDaysParams &
   const windowDays = params.windowDays ?? 10
   // Lazily import to avoid circular type coupling in some bundlers
   const { buildMomentumDays } = require('../adapters') as typeof import('../adapters')
-  const engine = createMomentumEngine({ options: { windowDays } })
+  const engine = createMomentumEngineWithDefaults({ options: { windowDays } })
   const days = buildMomentumDays({ ...params, windowDays })
   return engine.compute(days)
 }
@@ -46,6 +46,7 @@ export function computeMomentumFromCommitments(params: BuildMomentumDaysParams &
 export { BANDS, DEFAULT_OPTIONS, DEFAULT_WEIGHTS } from '../constants'
 export { diffMomentum } from '../delta'
 export { createMomentumEngine } from '../engine'
+export { createMomentumEngineWithDefaults } from '../engine'
 export { explainMomentum } from '../explain'
 export { computePointImpact } from '../impact'
 export { recommendMomentumActions } from '../recommend'

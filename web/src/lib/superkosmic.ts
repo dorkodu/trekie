@@ -14,13 +14,13 @@ export interface IEvent<TData> {
 
 export const Event = <TData>(kind: IEvent<TData>): IEvent<TData> => kind
 
-export function Cell<TKinds extends Record<any, IEvent<any>>>(kinds: TKinds) {
+export function Cell<TKinds extends Record<string, IEvent<unknown>>>(kinds: TKinds) {
   return {
     kinds,
     status<TKind extends keyof TKinds>(kind: TKind, data: Parameters<TKinds[TKind]["create"]>[0]) {
       return this.kinds[kind]!.create(data)
     },
-    share(status: IStatus<any>) {
+    share(status: IStatus<unknown>) {
       this.kinds[status.kind]!.on(status)
     }
   }

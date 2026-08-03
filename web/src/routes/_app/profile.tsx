@@ -12,14 +12,13 @@ import { Profile } from "@web/namespaces/social/profile/Profile";
 function Page() {
   const location = useLocation();
   const username = location.pathname.slice(2); // '/@username' => 'username'
-  let result;
-
   const handleRegexMatch = location.pathname.match(USERHANDLE_REGEX);
 
   if (handleRegexMatch) {
+    // TODO: validate username format
   }
 
-  !username ? <Text>User not found.</Text> : <Profile username={username} />;
+  const result = !username ? <Text>User not found.</Text> : <Profile username={username} />;
 
   return (
     <div className="flex flex-col items-center justify-center gap-0.5 m-2">

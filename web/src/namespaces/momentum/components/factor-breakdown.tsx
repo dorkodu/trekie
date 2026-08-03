@@ -3,12 +3,20 @@ import { useMomentum } from '../useMomentum';
 
 interface FactorBreakdownProps { windowDays?: number; limit?: number }
 
-function FactorRow({ factor }: { factor: any }) {
+interface Factor {
+  weight?: number;
+  label?: string;
+  id?: string;
+  key?: string;
+}
+
+function FactorRow({ factor }: { factor: Factor }) {
   if (!factor) return null
   const pct = typeof factor.weight === 'number' ? Math.round(factor.weight * 100) : undefined
+  const label = factor.label || factor.id || factor.key
   return (
     <div className="flex items-center gap-2 text-xs">
-      <div className="w-24 font-mono uppercase tracking-wide text-[10px] text-muted-foreground">{factor.key}</div>
+      <div className="w-24 font-mono uppercase tracking-wide text-[10px] text-muted-foreground">{label}</div>
       <div className="flex-1 h-2 rounded bg-muted overflow-hidden">
         <div className="h-full bg-emerald-500/70" style={{ width: pct !== undefined ? pct + '%' : '0%' }} />
       </div>
@@ -41,8 +49,8 @@ export const FactorBreakdown: React.FC<FactorBreakdownProps> = ({ windowDays = 1
     )
   }
 
-  const explanation: any = data?.explanation
-  const allFactors: any[] = explanation?.factors || explanation?.topFactors || []
+  const explanation = data?.explanation as { factors?: Factor[]; topFactors?: Factor[] } | undefined
+  const allFactors: Factor[] = explanation?.factors || explanation?.topFactors || []
   const factors = allFactors.slice(0, limit)
 
   if (!data || factors.length === 0) {
@@ -61,7 +69,7 @@ export const FactorBreakdown: React.FC<FactorBreakdownProps> = ({ windowDays = 1
         <button onClick={() => refetch()} className="text-[10px] text-muted-foreground hover:text-foreground underline-offset-2 hover:underline">Refresh</button>
       </div>
       <div className="space-y-2">
-        {factors.map((f, i) => <FactorRow key={f.key || i} factor={f} />)}
+        {factors.map((f, i) => <FactorRow key={f.id || f.key || i} factor={f} />)}
       </div>
       {allFactors.length > limit && (
         <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wide">+ {allFactors.length - limit} more factors</div>

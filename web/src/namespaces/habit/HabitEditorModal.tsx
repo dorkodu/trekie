@@ -6,6 +6,7 @@ import { Input } from "@web/components/ui/input";
 import { Label } from "@web/components/ui/label";
 import { Box, Group, Stack } from "@web/components/ui/layout";
 import { Textarea } from "@web/components/ui/textarea";
+import type { ContextModalProps } from "@web/lib/modals/types";
 import { IHabit, IHabitTemplate } from '@web/namespaces/habit';
 import { tryCatch } from "@web/utils/tryCatch";
 import { habits } from '.';
@@ -16,12 +17,6 @@ interface HabitEditorModalProps {
   mode: HabitEditorMode
   habit?: IHabit // Habit object for editing, undefined for creating
 }
-
-type ContextModalProps<T> = {
-  context: any;
-  id: string;
-  innerProps: T;
-};
 
 const HabitEditorModal = ({
   context,

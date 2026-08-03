@@ -16,7 +16,7 @@ export function wait<T>(
   let out: T
 
   return () =>
-    new Promise(async resolve => {
+    new Promise(resolve => {
       let didBefore = false
       let didAfter = false
       let loaded = false
@@ -31,10 +31,12 @@ export function wait<T>(
         didAfter = true
       }, after)
 
-      out = await start()
+      ;(async () => {
+        out = await start()
 
-      if (!didBefore || didAfter) resolve(out)
-      loaded = true
+        if (!didBefore || didAfter) resolve(out)
+        loaded = true
+      })()
     })
 }
 
@@ -67,7 +69,7 @@ export type Daystamp = Branded<string, 'Daystamp'>
 
 export const daystamp = {
   get(input?: Timestamp): Daystamp {
-    let date = new Date(input ?? Date.now())
+    const date = new Date(input ?? Date.now())
     return date.toISOString().split('T')[0] as Daystamp
   },
   fromDate(date: Date): Daystamp {

@@ -25,13 +25,13 @@ export const safecheckEmail = (x: string) => z.email().trim().safeParse(x)
 export const safecheckUsername = (x: string) => z.string().trim().regex(USERNAME_REGEX).safeParse(x)
 
 export function LoginForm() {
-  const { login, loading, error, clearError } = useAuth()
+  const { login, loading, clearError } = useAuth()
   const navigate = useNavigate()
 
   const form = useForm({
     defaultValues: defaultCredentials,
     validators: {
-      onBlur: ({ value, formApi }) => {
+      onBlur: ({ value }) => {
         if (!value.loginName)
           return 'Your email or username is required.'
 
@@ -46,7 +46,7 @@ export function LoginForm() {
           return 'Please enter a valid email or username.'
         }
       },
-      onSubmit: ({ value, formApi }) => {
+      onSubmit: ({ value }) => {
         if (!value.loginName || !value.password) {
           return 'Both email/username and password are required.'
         }
@@ -90,8 +90,8 @@ export function LoginForm() {
               value.includes('error') && 'No "error" allowed in email or username'
             )
           },
-        }}
-        children={(field) => {
+        }}>
+        {(field) => {
           return (
             <>
               <Input
@@ -111,15 +111,15 @@ export function LoginForm() {
             </>
           )
         }}
-      />
+      </form.Field>
 
       <form.Field
         name="password"
         validators={{
           onChange: ({ value }) =>
             !value ? 'Password is required' : undefined,
-        }}
-        children={(field) => {
+        }}>
+        {(field) => {
           return (
             <>
               <Input
@@ -138,7 +138,7 @@ export function LoginForm() {
             </>
           )
         }}
-      />
+      </form.Field>
 
       <div className="flex items-center justify-between">
         <Link to="/forgot-password" className="ml-auto text-sm underline-offset-2 hover:underline">
@@ -147,14 +147,13 @@ export function LoginForm() {
       </div>
 
       <form.Subscribe
-        selector={(state) => [state.errorMap]}
-        children={([errorMap]) => errorMap?.onSubmit ? (
+        selector={(state) => [state.errorMap]}>
+        {([errorMap]) => errorMap?.onSubmit ? (
           <div>
             <em>There was an error on the form: {errorMap.onSubmit}</em>
           </div>
-        ) : null
-        }
-      />
+        ) : null}
+      </form.Subscribe>
 
       <Button type="submit" className="w-full font-bold" disabled={loading}>
         {loading ? <IconLoader

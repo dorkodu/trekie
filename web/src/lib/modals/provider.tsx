@@ -86,7 +86,7 @@ const ModalsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
   // Attach context to window for global API (optional, for compatibility)
   if (typeof window !== "undefined") {
-    (window as any).___modalsContextValue = contextValue;
+    (window as unknown as Record<string, unknown>).___modalsContextValue = contextValue;
   }
 
   return (

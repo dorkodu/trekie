@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_www/error')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/_www/error"!</div>
+  return <div>Hello &quot;/_www/error&quot;!</div>
 }

@@ -19,7 +19,7 @@ describe('momentum adapters enrichment', () => {
     const d = days.find(d => d.day === day)!
     expect(d.habits?.count).toBe(2)
     expect(d.habits?.target).toBe(3)
-    const res = compute.createMomentumEngine({ options: { windowDays: 3 } }).compute(days)
+    const res = compute.createMomentumEngineWithDefaults({ options: { windowDays: 3 } }).compute(days)
     expect(res.score).toBeGreaterThan(0)
   })
 

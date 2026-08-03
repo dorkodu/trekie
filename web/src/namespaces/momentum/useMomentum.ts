@@ -58,6 +58,7 @@ export function createPlaceholderMomentumSnapshot(): MomentumSnapshot {
 }
 
 export function useMomentum(_options?: UseMomentumOptions): UseMomentumResult {
+  void _options;
   const snapshot = PLACEHOLDER_SNAPSHOT;
   const calibrating = isSnapshotCalibrating(snapshot);
   const refetch = () => undefined;

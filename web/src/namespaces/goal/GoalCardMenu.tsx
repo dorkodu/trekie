@@ -52,8 +52,8 @@ function GoalMenu({ goal }: Props) {
       input.select();
       document.execCommand('copy');
       document.body.removeChild(input);
-    } catch (e) {
-      error("Share failed", "Couldn’t share or copy the link.");
+    } catch {
+      error("Share failed", "Couldn\u2019t share or copy the link.");
     }
   };
   const onReport = (ev) => {
@@ -77,8 +77,8 @@ function GoalMenu({ goal }: Props) {
       document.execCommand('copy');
       document.body.removeChild(input);
       success("Link copied to clipboard");
-    } catch (e) {
-      error("Copy failed", "Couldn’t copy the link.");
+    } catch {
+      error("Copy failed", "Couldn\u2019t copy the link.");
     }
   };
 

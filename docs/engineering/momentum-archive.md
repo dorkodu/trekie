@@ -178,8 +178,8 @@ Core Tests Added:
 ### Basic Compute
 
 ```ts
-import { createMomentumEngine } from '@trekie/sdk/momentum'
-const engine = createMomentumEngine()
+import { createMomentumEngineWithDefaults } from '@trekie/sdk/momentum'
+const engine = createMomentumEngineWithDefaults()
 const result = engine.compute(days) // days: MomentumInputDay[]
 console.log(result.score, result.decayEvents)
 ```

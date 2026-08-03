@@ -70,7 +70,7 @@ function RefundPolicy() {
         </li>
         <li>
           <p>
-            <strong>Website</strong> refers to Dorkodu's official website, accessible from{" "}
+            <strong>Website</strong> refers to Dorkodu&apos;s official website, accessible from{" "}
             <a href="https://dorkodu.com" target="_blank" rel="noreferrer">
               https://dorkodu.com
             </a>
@@ -152,12 +152,12 @@ function RefundPolicy() {
       </p>
       <h2>Gifts</h2>
       <p>
-        If the Goods were marked as a gift when purchased and then shipped directly to you, You'll
+        If the Goods were marked as a gift when purchased and then shipped directly to you, You&apos;ll
         receive a gift credit for the value of your return. Once the returned product is received, a
         gift certificate will be mailed to You.
       </p>
       <p>
-        If the Goods weren't marked as a gift when purchased, or the gift giver had the Order
+        If the Goods weren&apos;t marked as a gift when purchased, or the gift giver had the Order
         shipped to themselves to give it to You later, We will send the refund to the gift giver.
       </p>
       <h3>Contact Us</h3>

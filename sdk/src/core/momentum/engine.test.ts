@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 import { MOMENTUM_GAP_DECAY } from './constants'
-import { createMomentumEngine, type MomentumInputDay } from './index'
+import type { MomentumFactorDefinition } from './factors/index'
+import { createDefaultMomentumFactors } from './factors/index'
+import { createMomentumEngine, createMomentumEngineWithDefaults, type MomentumInputDay } from './index'
 
 function genDays(n: number, template: Partial<MomentumInputDay> = {}): MomentumInputDay[] {
   const out: MomentumInputDay[] = []
@@ -13,14 +15,14 @@ function genDays(n: number, template: Partial<MomentumInputDay> = {}): MomentumI
 
 describe('momentum engine basic', () => {
   it('computes zero on empty input', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const r = engine.compute([])
     // With neutral-impute strategy, empty set yields 0 because no days => history empty => score 0
     expect(r.score).toBe(0)
   })
 
   it('higher activity yields higher score', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const baseDays = genDays(10, {})
     const activeDays = genDays(10, { habits: { target: 3, count: 3, reached: true }, tasks: { planned: [{ importance: 'normal' }], completed: [{ importance: 'normal' }], microTaskCount: 0 }, focus: { deepBlocks: [{ minutes: 50 }] } })
     const r1 = engine.compute(baseDays)
@@ -29,7 +31,7 @@ describe('momentum engine basic', () => {
   })
 
   it('trend detection accelerating', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const days: MomentumInputDay[] = []
     for (let i = 0; i < 10; i++) {
       days.push({
@@ -46,7 +48,7 @@ describe('momentum engine basic', () => {
   // Reweight test removed because default strategy switched to neutral-impute (weights preserved)
 
   it('reports coverage & confidence', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const days = genDays(10, { habits: { target: 2, count: 2, reached: true } })
     const r = engine.compute(days)
     expect(r.coverage).toBeDefined()
@@ -55,19 +57,19 @@ describe('momentum engine basic', () => {
   })
 
   it('imputes missing domains when strategy neutral-impute', () => {
-    const engine = createMomentumEngine({})
+    const engine = createMomentumEngineWithDefaults({})
     const days = genDays(10, { habits: { target: 2, count: 2, reached: true } })
     const r = engine.compute(days)
     // tasks & focus missing -> imputed or reweighted depending on strategy (current default neutral-impute)
     // Under neutral-impute, weights remain original while value is neutral (0.55 / 0.5 etc)
-    const task = r.factors.find(f => f.key === 'tasks')
-    const focus = r.factors.find(f => f.key === 'focus')
+    const task = r.factors.find(f => f.id === 'tasks')
+    const focus = r.factors.find(f => f.id === 'focus')
     expect(task?.weight).toBeGreaterThan(0) // weight not zero under neutral-impute
     expect(focus?.weight).toBeGreaterThan(0)
   })
 
   it('gap detection identifies largest gap', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const today = new Date().toISOString().slice(0, 10)
     const d1 = new Date(Date.now() - 9 * 86400000).toISOString().slice(0, 10)
     const d2 = new Date(Date.now() - 5 * 86400000).toISOString().slice(0, 10)
@@ -81,7 +83,7 @@ describe('momentum engine basic', () => {
   })
 
   it('applies gap decay to reduce smoothed value vs no-gap scenario', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const baseDay = new Date(Date.now() - 9 * 86400000)
     function day(n: number) { return new Date(baseDay.getTime() + n * 86400000).toISOString().slice(0, 10) }
     // Scenario A: consecutive days
@@ -104,7 +106,7 @@ describe('momentum engine basic', () => {
   })
 
   it('decayEvents structure and multiplier bounds', () => {
-    const engine = createMomentumEngine()
+    const engine = createMomentumEngineWithDefaults()
     const base = new Date(Date.now() - 12 * 86400000)
     const day = (n: number) => new Date(base.getTime() + n * 86400000).toISOString().slice(0, 10)
     const days: MomentumInputDay[] = [
@@ -132,5 +134,44 @@ describe('momentum engine basic', () => {
         expect(mult).toBeGreaterThan(expectedDecayFactor * 0.3)
       }
     }
+  })
+
+  it('honors custom factor registry entries', () => {
+    const customFactor: MomentumFactorDefinition = {
+      id: 'energy',
+      label: 'Energy',
+      defaultWeight: 0.08,
+      neutralValue: 0.5,
+      requiredDomains: ['xp'],
+      compute: ({ days, windowDays }) => {
+        const window = days.slice(-windowDays)
+        const totalXp = window.reduce((sum, day) => sum + (day.xp?.xpGained ?? 0), 0)
+        const observed = window.some(day => (day.xp?.xpGained ?? 0) > 0)
+        const average = window.length ? totalXp / (window.length * 100) : 0
+        return {
+          value: Math.min(1, average),
+          observed,
+          extras: { averageXp: window.length ? totalXp / window.length : 0 }
+        }
+      }
+    }
+
+    const registry = [...createDefaultMomentumFactors(), customFactor]
+    const engine = createMomentumEngine({ factors: registry })
+    const days = genDays(10, {
+      habits: { target: 2, count: 2, reached: true },
+      tasks: { planned: [{ importance: 'normal' }], completed: [{ importance: 'normal' }], microTaskCount: 0 },
+      focus: { deepBlocks: [{ minutes: 45 }] },
+      xp: { xpGained: 40 }
+    })
+
+    const result = engine.compute(days)
+    expect(engine.config.factors).toContain('energy')
+
+    const energyFactor = result.factors.find(f => f.id === 'energy')
+    expect(energyFactor).toBeDefined()
+    expect(energyFactor?.weight).toBeCloseTo(0.08)
+    expect(energyFactor?.observed).toBe(true)
+    expect(energyFactor?.extras).toEqual({ averageXp: 40 })
   })
 })

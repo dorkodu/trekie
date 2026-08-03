@@ -3,7 +3,7 @@ import { AppSpotlightProvider } from "@web/components/app/spotlight";
 import { Toaster } from "@web/components/ui/sonner";
 import ModalsProvider from "@web/lib/modals/provider";
 
-export const Route = createRootRouteWithContext<{}>()({
+export const Route = createRootRouteWithContext<object>()({
   component: RootComponent,
 });
 

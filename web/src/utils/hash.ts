@@ -15,7 +15,7 @@ export const cyrb53 = (str: string, seed: number = 0) => {
   return 4294967296 * (2097151 & h2) + (h1 >>> 0)
 }
 
-export const hash = (data: any) =>
+export const hash = (data: unknown) =>
   xxHash32(JSON.stringify(data), 0)
     .toString(16)
 

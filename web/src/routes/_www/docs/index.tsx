@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_www/docs/')({
 })
 
 function Page() {
-  return <div>Hello "/_www/docs/"!</div>
+  return <div>Hello &quot;/_www/docs/&quot;!</div>
 }

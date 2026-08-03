@@ -1,4 +1,4 @@
-import type { MomentumFactorValuesRaw, MomentumResult } from './types'
+import type { MomentumBuiltInFactorId, MomentumFactorId, MomentumResult } from './types'
 
 export interface MomentumExplanationOptions {
   /** Minimum weight*impact below which we hide a factor (default 0 => show all) */
@@ -10,7 +10,7 @@ export interface MomentumExplanationOptions {
 }
 
 export interface FactorExplanation {
-  key: keyof MomentumFactorValuesRaw
+  id: MomentumFactorId
   label: string
   value: number
   weight: number
@@ -27,7 +27,7 @@ export interface MomentumExplanation {
   summary: string
 }
 
-const FACTOR_LABEL: Record<keyof MomentumFactorValuesRaw, string> = {
+const FACTOR_LABEL: Record<MomentumBuiltInFactorId, string> = {
   consistency: 'Consistency',
   habits: 'Habits',
   tasks: 'Tasks',
@@ -42,9 +42,9 @@ function classifyValue(v: number): 'strong' | 'neutral' | 'weak' {
   return 'weak'
 }
 
-function buildMessage(key: keyof MomentumFactorValuesRaw, value: number, _weight: number, strength: FactorExplanation['strength']): string {
+function buildMessage(id: MomentumFactorId, value: number, _weight: number, strength: FactorExplanation['strength'], label: string): string {
   const pct = Math.round(value * 100)
-  switch (key) {
+  switch (id) {
     case 'consistency':
       if (strength === 'strong') return `Showing up reliably (${pct}% of recent target presence).`
       if (strength === 'neutral') return `Moderate day completion; locking targets would raise reliability.`
@@ -66,7 +66,9 @@ function buildMessage(key: keyof MomentumFactorValuesRaw, value: number, _weight
       if (strength === 'neutral') return `Some focus depth—one longer block would strengthen it.`
       return `Shallow focus—schedule a protected deep block (45–60m).`
     default:
-      return '—'
+      if (strength === 'strong') return `${label} performing strongly—keep the streak going.`
+      if (strength === 'neutral') return `${label} holding steady; small pushes could elevate it.`
+      return `${label} underperforming—identify quick wins to lift it.`
   }
 }
 
@@ -77,30 +79,22 @@ function buildMessage(key: keyof MomentumFactorValuesRaw, value: number, _weight
 export function explainMomentum(result: MomentumResult, opts: MomentumExplanationOptions = {}): MomentumExplanation {
   const { minContribution = 0, includeContributions = true, round = (n: number) => Number(n.toFixed(2)) } = opts
 
-  const factorMap = new Map<keyof MomentumFactorValuesRaw, { weight: number; value: number }>()
-  for (const f of result.factors) {
-    factorMap.set(f.key, { weight: f.weight, value: f.value })
-  }
-
   const imputedSet = new Set(result.imputedFactors || [])
-  const explanations: FactorExplanation[] = (Array.from(factorMap.keys()) as (keyof MomentumFactorValuesRaw)[])
-    .map(key => {
-      const entry = factorMap.get(key)
-      if (!entry) return null
-      const { weight, value } = entry
-      const contribution = weight * value
-      if (contribution < minContribution) {
-        return null
-      }
-      const strength = classifyValue(value)
+  const explanations: FactorExplanation[] = result.factors
+    .map(summary => {
+      const baseLabel = FACTOR_LABEL[summary.id as MomentumBuiltInFactorId] ?? summary.label ?? summary.id
+      const label = baseLabel + (imputedSet.has(summary.id) ? ' (imputed)' : '')
+      const contribution = summary.weight * summary.value
+      if (contribution < minContribution) return null
+      const strength = classifyValue(summary.value)
       return {
-        key,
-        label: FACTOR_LABEL[key] + (imputedSet.has(key) ? ' (imputed)' : ''),
-        value: round(value),
-        weight: round(weight),
+        id: summary.id,
+        label,
+        value: round(summary.value),
+        weight: round(summary.weight),
         contribution: round(contribution),
         strength,
-        message: buildMessage(key, value, weight, strength)
+        message: buildMessage(summary.id, summary.value, summary.weight, strength, baseLabel)
       }
     })
     .filter((x): x is FactorExplanation => !!x)

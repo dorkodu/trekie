@@ -3,6 +3,18 @@ import { useMomentum } from '../useMomentum';
 
 interface MomentumCardProps { windowDays?: number; showExplanation?: boolean }
 
+interface MomentumBand {
+  current?: { label?: string };
+  label?: string;
+}
+
+interface MomentumFactor {
+  id?: string;
+  key?: string;
+  label?: string;
+  message?: string;
+}
+
 function TrendIndicator({ trend }: { trend: number | undefined }) {
   if (trend === undefined || Number.isNaN(trend)) return <span className="text-muted-foreground">--</span>
   const sign = trend > 0 ? '+' : ''
@@ -62,7 +74,8 @@ export const MomentumCard: React.FC<MomentumCardProps> = ({ windowDays = 10, sho
     )
   }
 
-  const band = (data.bands as any)?.current?.label || (data.bands as any)?.current?.label || (data.bands as any)?.label
+  const bands = data.bands as MomentumBand | undefined;
+  const band = bands?.current?.label || bands?.current?.label || bands?.label
   const trendPct = typeof data.trend === 'number' ? data.trend * 100 : undefined
   const coverage = data.coverage
   const confidence = data.confidence
@@ -103,22 +116,22 @@ export const MomentumCard: React.FC<MomentumCardProps> = ({ windowDays = 10, sho
           {recentDecayCount > 0 && (
             <div className="text-[10px] text-indigo-400 font-mono">Cooling applied (gap decay smoothing)</div>
           )}
-          {(data.explanation as any).topFactors?.length > 0 && (
+          {((data.explanation as { topFactors?: MomentumFactor[] }).topFactors?.length ?? 0) > 0 && (
             <div>
               <div className="font-medium text-muted-foreground mb-0.5">Top Drivers</div>
               <ul className="list-disc list-inside space-y-0.5">
-                {(data.explanation as any).topFactors.slice(0, 3).map((f: any) => (
-                  <li key={f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.key}</span> {f.message}</li>
+                {(data.explanation as { topFactors?: MomentumFactor[] }).topFactors!.slice(0, 3).map((f) => (
+                  <li key={f.id || f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.label || f.id || f.key}</span> {f.message}</li>
                 ))}
               </ul>
             </div>
           )}
-          {(data.explanation as any).weakFactors?.length > 0 && (
+          {((data.explanation as { weakFactors?: MomentumFactor[] }).weakFactors?.length ?? 0) > 0 && (
             <div>
               <div className="font-medium text-muted-foreground mb-0.5">Weak Spots</div>
               <ul className="list-disc list-inside space-y-0.5">
-                {(data.explanation as any).weakFactors.slice(0, 3).map((f: any) => (
-                  <li key={f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.key}</span> {f.message}</li>
+                {(data.explanation as { weakFactors?: MomentumFactor[] }).weakFactors!.slice(0, 3).map((f) => (
+                  <li key={f.id || f.key}><span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">{f.label || f.id || f.key}</span> {f.message}</li>
                 ))}
               </ul>
             </div>

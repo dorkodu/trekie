@@ -37,7 +37,7 @@ function HabitView() {
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">Habit Not Found</h1>
           <p className="text-muted-foreground mb-4">
-            The habit you're looking for doesn't exist or has been deleted.
+            The habit you&apos;re looking for doesn&apos;t exist or has been deleted.
           </p>
           <Button onClick={() => navigate({ to: '/home' })}>
             Go Home
@@ -129,7 +129,7 @@ function HabitView() {
                   {todaysCount}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  Today's Progress
+                  Today&apos;s Progress
                 </div>
               </div>
               <div className="text-center">
@@ -145,7 +145,7 @@ function HabitView() {
                   {Math.round(progressPercentage)}%
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  Today's Progress
+                  Today&apos;s Progress
                 </div>
               </div>
             </div>
@@ -153,7 +153,7 @@ function HabitView() {
             {/* Progress Bar */}
             <div className="mt-6">
               <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                <span>Today's Progress</span>
+                <span>Today&apos;s Progress</span>
                 <span>{todaysCount} / {habitData.dailyTarget}</span>
               </div>
               <div className="w-full bg-secondary rounded-full h-3">
@@ -179,7 +179,7 @@ function HabitView() {
                     ✅ Target Achieved!
                   </Badge>
                   <span className="text-sm text-muted-foreground">
-                    Great job! You've completed your daily target.
+                    Great job! You&apos;ve completed your daily target.
                   </span>
                 </>
               ) : (

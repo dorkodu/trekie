@@ -85,8 +85,8 @@ function HabitForm({ habit, onSuccess, onCancel }: HabitFormProps) {
             validators={{
               onChange: ({ value }) =>
                 value.length < 1 ? 'Title is required' : undefined,
-            }}
-            children={(field) => (
+            }}>
+            {(field) => (
               <div>
                 <Input
                   id="title"
@@ -104,7 +104,7 @@ function HabitForm({ habit, onSuccess, onCancel }: HabitFormProps) {
                 )}
               </div>
             )}
-          />
+          </form.Field>
         </div>
 
         <div className="space-y-2">
@@ -112,8 +112,8 @@ function HabitForm({ habit, onSuccess, onCancel }: HabitFormProps) {
             Description <span className="text-muted-foreground">(Optional)</span>
           </Label>
           <form.Field
-            name="description"
-            children={(field) => (
+            name="description">
+            {(field) => (
               <Textarea
                 id="description"
                 placeholder="e.g., Stay hydrated throughout the day"
@@ -124,7 +124,7 @@ function HabitForm({ habit, onSuccess, onCancel }: HabitFormProps) {
                 disabled={isSubmitting}
               />
             )}
-          />
+          </form.Field>
         </div>
 
         <div className="space-y-2">
@@ -136,8 +136,8 @@ function HabitForm({ habit, onSuccess, onCancel }: HabitFormProps) {
             validators={{
               onChange: ({ value }) =>
                 value < 1 ? 'Daily target must be at least 1' : undefined,
-            }}
-            children={(field) => (
+            }}>
+            {(field) => (
               <div>
                 <Input
                   id="dailyTarget"
@@ -157,7 +157,7 @@ function HabitForm({ habit, onSuccess, onCancel }: HabitFormProps) {
                 )}
               </div>
             )}
-          />
+          </form.Field>
         </div>
 
         <div className="flex gap-3 pt-4">

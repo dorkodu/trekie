@@ -13,16 +13,6 @@ export const Route = createFileRoute('/_www/login')({
   component: Page,
 })
 
-interface Credentials {
-  loginName: string
-  password: string
-}
-
-const defaultCredentials: Credentials = {
-  loginName: '',
-  password: ''
-}
-
 function Page() {
   return (
     <main className="flex h-screen items-center justify-center">

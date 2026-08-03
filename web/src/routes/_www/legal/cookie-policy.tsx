@@ -121,7 +121,7 @@ function CookiePolicy() {
         Website and some features may not function properly.
       </p>
       <p>
-        If You'd like to delete Cookies or instruct your web browser to delete or refuse Cookies,
+        If You&apos;d like to delete Cookies or instruct your web browser to delete or refuse Cookies,
         please visit the help pages of your web browser.
       </p>
       <ul>
@@ -175,7 +175,7 @@ function CookiePolicy() {
         </li>
       </ul>
       <p>
-        For any other web browser, please visithey@dorkodu.com your web browser's official web
+        For any other web browser, please visithey@dorkodu.com your web browser&apos;s official web
         pages.
       </p>
       <h4>More Information about Cookies</h4>

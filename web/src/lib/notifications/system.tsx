@@ -20,7 +20,7 @@ export function show(data: NotificationData): string {
     setTimeout(onOpen, 0);
   }
 
-  const toastId = toast.custom((_toastId) => createToastContent(rest), {
+  const toastId = toast.custom(() => createToastContent(rest), {
     id,
     duration: autoClose === false ? Infinity : autoClose,
     position,

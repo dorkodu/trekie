@@ -21,12 +21,12 @@ function NewTodoPage() {
       <div>
         <div>
           <h2>Create New Todo</h2>
-          <p>Let's add something to your list!</p>
+          <p>Let&apos;s add something to your list!</p>
         </div>
         <div>
           <TodoForm
             mode="create"
-            onSuccess={(todo) => {
+            onSuccess={() => {
               navigate({ to: '/home' })
             }}
           />

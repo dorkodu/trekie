@@ -82,7 +82,7 @@ export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
           notifications.success("Todo updated successfully!");
           onSuccess?.({ ...todo, ...parsed.data })
         }
-      } catch (err) {
+      } catch {
         notifications.error("Unexpected Error", "Something went wrong. Please try again.");
       } finally {
         setIsSubmitting(false)
@@ -174,7 +174,7 @@ export function TodoForm({ mode, todo, onSuccess, onDelete }: TodoFormProps) {
                   qc.invalidateQueries({ queryKey: ['todos'] })
                   notifications.success("Todo deleted successfully!");
                   onDelete?.(todo)
-                } catch (err) {
+                } catch {
                   notifications.error("Unexpected Error", "Something went wrong. Please try again.");
                 } finally {
                   setIsDeleting(false)

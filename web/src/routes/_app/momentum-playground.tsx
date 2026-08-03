@@ -17,7 +17,7 @@ const IMPORTANCE_LABEL: Record<ImportanceLevel, string> = {
   critical: "Critical"
 };
 
-interface TaskMatrix extends Record<ImportanceLevel, number> { }
+type TaskMatrix = Record<ImportanceLevel, number>
 
 interface MomentumEntry {
   day: string;
@@ -734,9 +734,9 @@ function MomentumSnapshotView({ snapshot }: { snapshot: MomentumSnapshot }) {
           </div>
           <div className="space-y-2">
             {snapshot.explanation.factors.map(factor => (
-              <div key={factor.key} className="flex flex-col gap-1 rounded border border-muted/40 p-2">
+              <div key={factor.id} className="flex flex-col gap-1 rounded border border-muted/40 p-2">
                 <div className="flex items-center justify-between text-xs font-semibold uppercase">
-                  <span>{factor.label}</span>
+                  <span>{factor.label || factor.id}</span>
                   <span className="font-mono text-[11px] text-muted-foreground">
                     {factor.weight.toFixed(2)} · {factor.value.toFixed(2)}
                   </span>

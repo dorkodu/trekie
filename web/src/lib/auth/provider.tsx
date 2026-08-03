@@ -35,7 +35,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const loading = opLoading || sessionPending;
   // prefer local error, else session hook error message
-  const combinedError = error || (sessionError ? (sessionError as any)?.message || 'Session error' : null);
+  const combinedError = error || (sessionError ? (sessionError instanceof Error ? sessionError.message : 'Session error') : null);
 
   const login = async (identifier: string, password: string): Promise<boolean> => {
     // rudimentary email detection
@@ -67,8 +67,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setError("Login failed.");
         return false;
       }
-    } catch (err: any) {
-      setError(err?.message || "Login failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login failed.");
       return false;
     } finally {
       setOpLoading(false);
@@ -96,8 +96,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setError("Login failed.");
         return false;
       }
-    } catch (err: any) {
-      setError(err?.message || "Login failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login failed.");
       return false;
     } finally {
       setOpLoading(false);
@@ -137,8 +137,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setError("Signup failed.");
         return false;
       }
-    } catch (err: any) {
-      setError(err?.message || "Signup failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Signup failed.");
       return false;
     } finally {
       setOpLoading(false);
@@ -151,7 +151,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setOpLoading(true);
       await authClient.signOut();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Logout failed:', err);
     } finally {
       setOpLoading(false);
@@ -159,6 +159,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const forgotPassword = async (email: string): Promise<boolean> => {
+    void email;
     try {
       setOpLoading(true);
       setError(null);
@@ -175,8 +176,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // }
 
       return true;
-    } catch (err: any) {
-      setError(err?.message || "Failed to send reset email.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to send reset email.");
       return false;
     } finally {
       setOpLoading(false);
@@ -215,7 +216,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       // Otherwise, username is available
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.warn('Username availability check failed:', err);
       // On error, assume username might be taken for safety
       return false;
@@ -237,8 +238,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // On success, could optimistically update user object if needed via mutation endpoint
 
       return true;
-    } catch (err: any) {
-      setError(err?.message || "Failed to complete onboarding.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to complete onboarding.");
       return false;
     } finally {
       setOpLoading(false);

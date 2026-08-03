@@ -6,6 +6,8 @@ import twemoji from "twemoji";
 interface Props {
   emoji: string;
   size?: number;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export default function Emoji({

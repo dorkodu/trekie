@@ -13,6 +13,19 @@
     "db"
   ],
   "scripts": {
+    "check": "bun check:types && bun check:lint",
+    "check:fix": "bun prettier --write \"**/*.{ts,tsx,js,jsx,json,yaml,yml,css,md}\" --ignore-path .gitignore",
+    "check:types": "bun --cwd api tsc --noEmit && bun --cwd web tsc --noEmit && bun --cwd sdk tsc --noEmit",
+    "check:lint": "bun --cwd web lint",
+    "test": "bun test",
+    "dev": "docker compose up -d && bun --cwd api dev & bun --cwd web dev & wait",
+    "build": "bun --cwd api build && bun --cwd web build",
+    "preview": "bun --cwd web serve",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down",
+    "db:reset": "docker compose down -v",
+    "db:generate": "bun --cwd api run db:generate",
+    "db:migrate": "bun --cwd api run db:migrate",
     "clean": "rm -rf node_modules web/node_modules api/node_modules sdk/node_modules db/node_modules bun.lockb web/bun.lockb api/bun.lockb sdk/bun.lockb db/bun.lockb"
   }
 }

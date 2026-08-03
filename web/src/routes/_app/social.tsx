@@ -55,7 +55,17 @@ function NewsFeed() {
   );
 }
 
-function CommitActivityCard({ record }: { record: any }) {
+interface CommitRecord {
+  id: string
+  kind: string
+  event: string
+  timestamp: string | number | Date
+  instanceId: string
+  reward?: { xp: number; coins: number }
+  data?: Record<string, unknown>
+}
+
+function CommitActivityCard({ record }: { record: CommitRecord }) {
   return (
     <Card className="shadow-sm p-2 rounded-lg border w-full mb-2">
       <Stack gap={2}>

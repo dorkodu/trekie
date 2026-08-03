@@ -74,7 +74,7 @@ function About() {
 
         <Text>
           Why did you pick this idea to work on? Do you have domain expertise in
-          this area? How do you know people need what you're making? I needed a
+          this area? How do you know people need what you&apos;re making? I needed a
           life dashboard with an AI productivity companion to set goals, connect
           actions to them and be able to track & measure the progress, in a fun
           way, then share my journey with friends. We spent nearly 2 years
@@ -83,20 +83,20 @@ function About() {
           and game design. Most people are satisfied with Duolingo and wish it
           was fun to do other chores. I hear many folks complain about losing
           the track of their life, failing to set goals, lacking a routine:
-          thousands tweet their new year's life goals, looking for
+          thousands tweet their new year&apos;s life goals, looking for
           accountability buddies, or complaining from complexity of productivity
           apps. So with latest trends, even if AI agents replace 90% of our
-          daily digital activity, there is a need for a glue layer where "you"
-          take control.
+daily digital activity, there is a need for a glue layer where &quot;you&quot;
+take control.
         </Text>
 
         <Text>
           Who are your competitors? What do you understand about your business
-          that they don't? Not much direct competition. Duolingo is the most
-          famous example, but it's only for language learning. Habitica, LifeUp
-          etc. are few apps that tried gamified habits. There are many custom
-          Notion templates but your life can't fit in a spreadsheet. Apps are
-          indie, but don't have dedicated teams, they ignore user feedback, have
+that they don&apos;t? Not much direct competition. Duolingo is the most
+famous example, but it&apos;s only for language learning. Habitica, LifeUp
+etc. are few apps that tried gamified habits. There are many custom
+Notion templates but your life can&apos;t fit in a spreadsheet. Apps are
+indie, but don&apos;t have dedicated teams, they ignore user feedback, have
           high churn, lack an active community. UIs are either too game-like and
           distracting or too simple to the point of boring you, not
           beginner-friendly and unclear. They all ignore social features,
